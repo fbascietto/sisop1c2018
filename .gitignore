@@ -51,8 +51,6 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-.project
-.cproject
 .settings
 *.o
 *.so
