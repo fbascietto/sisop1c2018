@@ -30,7 +30,12 @@
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1778166319" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.exe.debug.328043920" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.debug">
+<<<<<<< Updated upstream
 								<option id="gnu.c.link.option.libs.996577750" superClass="gnu.c.link.option.libs" useByScannerDiscovery="false" valueType="libs">
+=======
+								<option id="gnu.c.link.option.libs.339704583" name="Libraries (-l)" superClass="gnu.c.link.option.libs" useByScannerDiscovery="false" valueType="libs">
+									<listOptionValue builtIn="false" value="readline"/>
+>>>>>>> Stashed changes
 									<listOptionValue builtIn="false" value="commons"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.linker.input.1705976678" superClass="cdt.managedbuild.tool.gnu.c.linker.input">
@@ -106,5 +111,9 @@
 		</scannerConfigBuildInfo>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+<<<<<<< Updated upstream
+=======
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
+>>>>>>> Stashed changes
 	<storageModule moduleId="refreshScope"/>
 </cproject>
