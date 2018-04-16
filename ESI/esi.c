@@ -11,9 +11,9 @@ int main(int args, char* argv[]) {
 
 	}*/
 
-	// ruta_script_ejecuciones = argv[1];
+	ruta_script_ejecuciones = argv[1];
 
-	cargar_configuracion();
+	t_config* config = cargar_configuracion();
 
 	coordinador_socket = 0;
 
@@ -31,7 +31,9 @@ int main(int args, char* argv[]) {
 	enviarInt(coordinador_socket, ESI);
 	enviarInt(planificador_socket, ESI);
 
-	//esperar al planificador antes de parsear
+	leerScript(ruta_script_ejecuciones);
+
+	config_destroy(config);
 
 	return 0;
 
