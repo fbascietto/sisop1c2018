@@ -1,10 +1,18 @@
 #include <stdio.h>
 #include <commons/config.h>
 #include <commons/string.h>
+#include <commons/log.h>
 #include "../Biblioteca/protocolo.h"
 
 #ifndef ESI_H_
 #define ESI_H_
+
+t_log_level T;
+t_log_level I;
+t_log_level E;
+t_log* logT;
+t_log* logI;
+t_log* logE;
 
 char* ruta_script_ejecuciones;
 

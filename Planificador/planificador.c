@@ -33,7 +33,7 @@ int main(){
 void configureLogger(){
 
 	  LogL = LOG_LEVEL_TRACE;
-	  logPlan = log_create("planificador.log","Planificador", false, LogL);
+	  logPlan = log_create("../Logs/planificador.log","Planificador", false, LogL);
 
 }
 

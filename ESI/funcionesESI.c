@@ -33,6 +33,17 @@ t_config* cargar_configuracion(){
 
 }
 
+void configureLoggers(){
+
+	  T = LOG_LEVEL_TRACE;
+	  I = LOG_LEVEL_INFO;
+	  E = LOG_LEVEL_ERROR;
+	  logT = log_create("../Logs/ESI.log","ESI", false, T);
+	  logI = log_create("../Logs/ESI.log", "ESI", false, I);
+	  logE = log_create("../Logs/ESI.log", "ESI", true, E);
+
+}
+
 void leerScript(char* ruta){
 
 	int accion;
@@ -41,10 +52,7 @@ void leerScript(char* ruta){
 
 	FILE* f1 = fopen(ruta, "r");
 	if(f1 == NULL){
-		char* error = string_new();
-		string_append_with_format(&error, "No existe el script con ruta %s", ruta);
-		perror(error);
-		free(error);
+		log_error(logE, "No existe el script con ruta %s", ruta);
 		exit(0);
 	}
 

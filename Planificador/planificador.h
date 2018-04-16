@@ -16,20 +16,12 @@
 t_log_level LogL;
 t_log* logPlan;
 
-typedef struct {
-	int socketEscucha;
-	fd_set fdSocketEscucha;
-} t_esperar_conexion;
-
-
 char* planificador_Algoritmo;
 char* coordinador_IP;
 int estimacion_inicial;
 int coordinador_Puerto;
 int planificador_Puerto_Escucha;
 char** claves_Ini_Bloqueadas;
-
-int planificador_Socket;
 
 void configureLogger();
 void *esperarConexiones(void *args);

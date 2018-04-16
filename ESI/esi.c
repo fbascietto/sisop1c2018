@@ -15,8 +15,9 @@ int main(int args, char* argv[]) {
 
 	t_config* config = cargar_configuracion();
 
-	coordinador_socket = 0;
+	configureLoggers();
 
+	coordinador_socket = 0;
 	planificador_socket = 0;
 
 	//Intenta conectarse hasta que se conecta a ambos
@@ -34,6 +35,9 @@ int main(int args, char* argv[]) {
 	leerScript(ruta_script_ejecuciones);
 
 	config_destroy(config);
+	log_destroy(logT);
+	log_destroy(logI);
+	log_destroy(logE);
 
 	return 0;
 
