@@ -2,18 +2,42 @@
 
 int main(){
 	configureLogger();
-	iniciaConsola();
+	cargar_configuracion();
+
+	int socketEscucha;
+	fd_set fdSocketsEscucha;
+
+	FD_ZERO(&fdSocketsEscucha);
+	socketEscucha = escuchar(planificador_Puerto_Escucha);
+
+	FD_SET(socketEscucha, &fdSocketsEscucha);
+
+	pthread_t threadEsperaConexiones;
+	pthread_t threadEscucharConsola;
+	t_esperar_conexion *esperarConexion;
+
+	esperarConexion = malloc(sizeof(t_esperar_conexion));
+	esperarConexion->fdSocketEscucha = fdSocketsEscucha;
+	esperarConexion->socketEscucha = socketEscucha;
+
+	int er1 = pthread_create(&threadEscucharConsola,NULL,iniciaConsola,NULL);
+	int er2 = pthread_create(&threadEsperaConexiones, NULL,esperarConexiones,(void*) esperarConexion);
+
+	pthread_join(threadEscucharConsola, NULL);
+	pthread_join(threadEsperaConexiones, NULL);
+
+	free(esperarConexion);
 	return 0;
 }
 
 void configureLogger(){
 
 	  LogL = LOG_LEVEL_TRACE;
-	  logPlan = log_create("planificador.log","Planificador", true, LogL);
+	  logPlan = log_create("planificador.log","Planificador", false, LogL);
 
 }
 
-void iniciaConsola(){
+void * iniciaConsola(){
 
 	log_trace(logPlan,"Se inicializa la consola del planificador. \n");
 
@@ -91,7 +115,71 @@ void iniciaConsola(){
 	}
 }
 
+void cargar_configuracion(){
+
+	t_config* infoConfig;
+
+	infoConfig = config_create("../Configuracion/planificador.config");
+
+	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){
+		planificador_Puerto_Escucha = config_get_int_value(infoConfig, "PUERTO_ESCUCHA");
+	}
+
+	if(config_has_property(infoConfig, "ALGORITMO")){
+		planificador_Algoritmo = config_get_string_value(infoConfig, "ALGORITMO");
+	}
+
+	if(config_has_property(infoConfig, "ESTIMACION_INICIAL")){
+		estimacion_inicial = config_get_int_value(infoConfig, "ESTIMACION_INICIAL");
+	}
+
+	if(config_has_property(infoConfig, "IP_COORDINADOR")){
+		coordinador_IP = config_get_string_value(infoConfig, "IP_COORDINADOR");
+	}
+
+	if(config_has_property(infoConfig, "PUERTO_COORDINADOR")){
+		coordinador_Puerto = config_get_int_value(infoConfig, "PUERTO_COORDINADOR");
+	}
+
+	if(config_has_property(infoConfig, "CLAVES_INI_BLOQUEADAS")){
+		claves_Ini_Bloqueadas = config_get_array_value(infoConfig, "CLAVES_INI_BLOQUEADAS");
+	}
+
+}
+
 void exit_gracefully(int return_nr) {
   	log_destroy(logPlan);
 	exit(return_nr);
+}
+
+void *esperarConexiones(void *args) {
+
+	t_esperar_conexion *argumentos = (t_esperar_conexion*) args;
+	printf("Esperando conexiones...\n");
+
+	// ---------------ME QUEDO ESPERANDO UNA CONEXION NUEVA--------------
+	while (1) {
+
+		int nuevoSocket = -1;
+
+		nuevoSocket = esperarConexionesSocket(&argumentos->fdSocketEscucha,argumentos->socketEscucha);
+
+		if (nuevoSocket != -1) {
+			log_trace(logPlan,"Nuevo Socket!");
+			printf("Nueva Conexion Recibida - Socket N°: %d\n",	nuevoSocket);
+
+			int cliente;
+			recibirInt(nuevoSocket,&cliente);
+
+			switch(cliente){
+			case ESI:
+				printf("ESI.\n");
+				break;
+			default:
+				printf("What.\n");
+				break;
+
+			}
+		}
+	}
 }

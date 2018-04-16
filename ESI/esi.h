@@ -1,13 +1,5 @@
-/*
- * esi.h
- *
- *  Created on: 14 abr. 2018
- *      Author: utnso
- */
-
 #include <commons/config.h>
 #include "../Biblioteca/protocolo.h"
-//#include "../Biblioteca/sockets.h"
 
 #ifndef ESI_H_
 #define ESI_H_

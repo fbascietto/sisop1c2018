@@ -1,3 +1,6 @@
+#ifndef COORDINADOR_H_
+#define COORDINADOR_H_
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,33 +13,17 @@
 #include "../Biblioteca/protocolo.h"
 #include "../Biblioteca/biblio_sockets.c"
 
-#ifndef PLANIFICADOR_H_
-#define PLANIFICADOR_H_
-
-t_log_level LogL;
-t_log* logPlan;
-
 typedef struct {
 	int socketEscucha;
 	fd_set fdSocketEscucha;
 } t_esperar_conexion;
 
+int coordinador_Puerto_Escucha;
+char* coordinador_Algoritmo;
+int cantidad_Entradas;
+int tamanio_Entrada;
+int retardo;
 
-char* planificador_Algoritmo;
-char* coordinador_IP;
-int estimacion_inicial;
-int coordinador_Puerto;
-int planificador_Puerto_Escucha;
-char** claves_Ini_Bloqueadas;
-
-int planificador_Socket;
-
-void configureLogger();
 void *esperarConexiones(void *args);
-void * iniciaConsola();
-void cargar_configuracion();
-void *esperarConexiones(void *args);
-void exit_gracefully(int return_nr);
 
-
-#endif
+#endif /* COORDINADOR_H_ */

@@ -1,4 +1,5 @@
 #include "esi.h"
+#include "../Biblioteca/biblio_sockets.c"
 
 int main(int args, char* argv[]) {
 
@@ -10,15 +11,17 @@ int main(int args, char* argv[]) {
 
 	}*/
 
-	ruta_script_ejecuciones = argv[1];
+	// ruta_script_ejecuciones = argv[1];
 
 	cargar_configuracion();
 
 	coordinador_socket = 0;
+
 	planificador_socket = 0;
 
 	//Intenta conectarse hasta que se conecta a ambos
-	/*while(coordinador_socket == 0 || planificador_socket == 0){
+
+	while(coordinador_socket == 0 || planificador_socket == 0){
 
 		if(coordinador_socket == 0) coordinador_socket = conectarseA(coordinador_IP, coordinador_puerto);
 		if(planificador_socket == 0) planificador_socket = conectarseA(planificador_IP, planificador_puerto);
@@ -26,7 +29,7 @@ int main(int args, char* argv[]) {
 	}
 
 	enviarInt(coordinador_socket, ESI);
-	enviarInt(planificador_socket, ESI);*/
+	enviarInt(planificador_socket, ESI);
 
 	//esperar al planificador antes de parsear
 
