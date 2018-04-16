@@ -43,6 +43,11 @@ void *esperarConexiones(void *args) {
 			case ESI:
 				printf("ESI.\n");
 				break;
+			case INSTANCIA:
+				printf("INSTANCIA.\n");
+				char* nombre = recibirMensajeArchivo(nuevoSocket);
+				printf("%s.\n", nombre);
+				break;
 			default:
 				printf("What.\n");
 				break;
