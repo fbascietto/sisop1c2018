@@ -13,11 +13,6 @@
 #include "../Biblioteca/protocolo.h"
 #include "../Biblioteca/biblio_sockets.c"
 
-typedef struct {
-	int socketEscucha;
-	fd_set fdSocketEscucha;
-} t_esperar_conexion;
-
 int coordinador_Puerto_Escucha;
 char* coordinador_Algoritmo;
 int cantidad_Entradas;
