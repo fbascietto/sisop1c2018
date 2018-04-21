@@ -11,7 +11,7 @@
 #include <readline/readline.h> // Para usar readline
 #include "../Biblioteca/estructuras.h"
 #include "../Biblioteca/protocolo.h"
-#include "../Biblioteca/biblio_sockets.c"
+#include "../Biblioteca/biblio_sockets.h"
 
 int coordinador_Puerto_Escucha;
 char* coordinador_Algoritmo;

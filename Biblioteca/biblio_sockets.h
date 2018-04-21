@@ -12,7 +12,7 @@
 #define TAMBUFFER 1024
 #define MAX_CLIENTES 10
 
-int enviarMensajeArchivo(int socketDestino, char* mensaje);
+int enviarMensaje(int socketDestino, char* mensaje);
 char *recibirMensajeArchivo(int socketDestino);
 int escuchar(int puerto);
 int conectarseA(char *ip, int puerto);

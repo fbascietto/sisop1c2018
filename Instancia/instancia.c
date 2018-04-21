@@ -1,5 +1,4 @@
 #include "instancia.h"
-#include "../Biblioteca/biblio_sockets.c"
 
 int main(){
 	int coordinador_socket;
@@ -8,7 +7,7 @@ int main(){
 
 	coordinador_socket = conectarseA(coordinador_IP, coordinador_Puerto);
 	enviarInt(coordinador_socket, INSTANCIA);
-	enviarMensajeArchivo(coordinador_socket,nombre_Instancia);
+	enviarMensaje(coordinador_socket,nombre_Instancia);
 	return 0;
 }
 

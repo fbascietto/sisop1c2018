@@ -5,7 +5,7 @@
  * Recibe un mensaje y lo envia al socketDestino
  * Retorna los bytes enviados o -1 si hubo un error
  */
-int enviarMensajeArchivo(int socketDestino, char* mensaje) {
+int enviarMensaje(int socketDestino, char* mensaje) {
 	int totalEnviado=0, bytesRestantes, lenEnviado;
 
 	int len = strlen(mensaje);
