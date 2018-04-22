@@ -1,4 +1,6 @@
 #include "planificador.h"
+#include "../Biblioteca/estructuras.h"
+#include "funcionesplanificador.h"
 
 int main(){
 	configureLogger();
@@ -12,8 +14,8 @@ int main(){
 
 	FD_SET(socketEscucha, &fdSocketsEscucha);
 
-	pthread_t threadEsperaConexiones;
 	pthread_t threadEscucharConsola;
+	pthread_t threadPlanificar;
 	t_esperar_conexion *esperarConexion;
 
 	esperarConexion = malloc(sizeof(t_esperar_conexion));
@@ -21,10 +23,10 @@ int main(){
 	esperarConexion->socketEscucha = socketEscucha;
 
 	int er1 = pthread_create(&threadEscucharConsola,NULL,iniciaConsola,NULL);
-	int er2 = pthread_create(&threadEsperaConexiones, NULL,esperarConexiones,(void*) esperarConexion);
+	int er2 = pthread_create(&threadPlanificar, NULL,planificar,(void*) esperarConexion);
 
 	pthread_join(threadEscucharConsola, NULL);
-	pthread_join(threadEsperaConexiones, NULL);
+	pthread_join(planificar, NULL);
 
 	free(esperarConexion);
 	return 0;
@@ -150,36 +152,4 @@ void cargar_configuracion(){
 void exit_gracefully(int return_nr) {
   	log_destroy(logPlan);
 	exit(return_nr);
-}
-
-void *esperarConexiones(void *args) {
-
-	t_esperar_conexion *argumentos = (t_esperar_conexion*) args;
-	printf("Esperando conexiones...\n");
-
-	// ---------------ME QUEDO ESPERANDO UNA CONEXION NUEVA--------------
-	while (1) {
-
-		int nuevoSocket = -1;
-
-		nuevoSocket = esperarConexionesSocket(&argumentos->fdSocketEscucha,argumentos->socketEscucha);
-
-		if (nuevoSocket != -1) {
-			log_trace(logPlan,"Nuevo Socket!");
-			printf("Nueva Conexion Recibida - Socket N°: %d\n",	nuevoSocket);
-
-			int cliente;
-			recibirInt(nuevoSocket,&cliente);
-
-			switch(cliente){
-			case ESI:
-				printf("ESI.\n");
-				break;
-			default:
-				printf("What.\n");
-				break;
-
-			}
-		}
-	}
 }
