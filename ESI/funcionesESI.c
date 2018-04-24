@@ -35,12 +35,12 @@ t_config* cargar_configuracion(){
 
 void configureLoggers(){
 
-	  T = LOG_LEVEL_TRACE;
-	  I = LOG_LEVEL_INFO;
-	  E = LOG_LEVEL_ERROR;
-	  logT = log_create("../Logs/ESI.log","ESI", false, T);
-	  logI = log_create("../Logs/ESI.log", "ESI", false, I);
-	  logE = log_create("../Logs/ESI.log", "ESI", true, E);
+	T = LOG_LEVEL_TRACE;
+	I = LOG_LEVEL_INFO;
+	E = LOG_LEVEL_ERROR;
+	logT = log_create("../Logs/ESI.log","ESI", false, T);
+	logI = log_create("../Logs/ESI.log", "ESI", false, I);
+	logE = log_create("../Logs/ESI.log", "ESI", true, E);
 
 }
 
@@ -65,14 +65,39 @@ void leerScript(char* ruta){
 
 	while(1){
 
-		fgets(linea, largo, f1);
-
 		recibirInt(planificador_socket, &accion);
 
-		//switch(accion){
+		switch(accion){
 
+		case EJECUTAR_LINEA:
 
-		//}
+			fgets(linea, largo, f1);
+			t_esi_operacion parsed = parse(linea);
+			if(parsed.valido){
+				switch(parsed.keyword){
+
+				case GET:
+					enviarInt(coordinador_socket, GET_KEY);
+					//enviar la key
+					break;
+				case SET:
+					enviarInt(coordinador_socket, SET_KEY);
+					//enviar la key
+					break;
+				case STORE:
+					enviarInt(coordinador_socket, STORE_KEY);
+					//enviar la key
+					break;
+				default:
+					fprintf(stderr, "No pude interpretar <%s>\n", linea);
+					exit(EXIT_FAILURE);
+
+				}
+
+			}
+
+		}
+
 
 	}
 
