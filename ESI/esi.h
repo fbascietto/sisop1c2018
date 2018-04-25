@@ -3,7 +3,7 @@
 #include <commons/string.h>
 #include <commons/log.h>
 #include <parsi/parser.h>
-#include "../Biblioteca/protocolo.h"
+#include "../Recursos/protocolo.h"
 #include "../Biblioteca/biblio_sockets.h"
 
 #ifndef ESI_H_

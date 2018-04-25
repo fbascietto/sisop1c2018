@@ -1,5 +1,4 @@
 #include "planificador.h"
-#include "../Biblioteca/estructuras.h"
 #include "funcionesplanificador.h"
 
 int main(){

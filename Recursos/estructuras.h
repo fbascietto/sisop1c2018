@@ -1,6 +1,7 @@
 #ifndef ESTRUCTURAS_H_
 #define ESTRUCTURAS_H_
 
+#include <sys/socket.h>
 
 typedef struct {
 	int socketEscucha;
