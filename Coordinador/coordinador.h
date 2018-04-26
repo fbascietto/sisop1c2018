@@ -38,6 +38,6 @@ typedef struct {
 
 void *esperarConexiones(void *args);
 void cargarConfiguracion();
-void despachar_solicitud(t_instancia unaInstancia, t_solicitud una_solicitud);
+void despachar_solicitud(t_instancia* unaInstancia, t_solicitud una_solicitud);
 
 #endif /* COORDINADOR_H_ */

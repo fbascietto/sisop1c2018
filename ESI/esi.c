@@ -31,7 +31,7 @@ int main(int args, char* argv[]) {
 	enviarInt(coordinador_socket, ESI);
 	enviarInt(planificador_socket, ESI);
 
-	leerScript(ruta_script_ejecuciones);
+	correrScript(ruta_script_ejecuciones);
 
 	config_destroy(config);
 	log_destroy(logT);

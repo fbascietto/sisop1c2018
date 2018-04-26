@@ -28,7 +28,9 @@ int planificador_socket;
 
 
 t_config* cargar_configuracion();
-void leerScript(char*);
+void configureLoggers();
+void avisarAlPlanificador(int);
+void correrScript(char*);
 
 
 #endif /* ESI_H_ */
