@@ -20,3 +20,7 @@ int siguiente(int posicion_puntero, int tamanio){
 		return 0;
 	}
 }
+
+void despachar_solicitud(t_instancia* instancia, t_solicitud una_solicitud){
+	//TODO: implementar
+}
