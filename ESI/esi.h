@@ -9,6 +9,8 @@
 #ifndef ESI_H_
 #define ESI_H_
 
+#define VALUE_NOT_USED -1
+
 t_log_level T;
 t_log_level I;
 t_log_level E;
@@ -29,7 +31,7 @@ int planificador_socket;
 
 t_config* cargar_configuracion();
 void configureLoggers();
-void avisarAlPlanificador(int);
+void avisarAlPlanificador(int, int, FILE*);
 void correrScript(char*);
 
 

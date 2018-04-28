@@ -19,7 +19,7 @@
 #define ABORTAR 12
 #define EJECUCION_OK 13
 #define EN_ESPERA 14
-#define EJECUCION_INVALIDA 15
+#define EJECUCION_INVALIDA 15 //tambien la usa ESI, Coordinador
 
 //Protocolo de Mensajes ESI,Coordinador (26-40)
 

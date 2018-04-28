@@ -44,7 +44,7 @@ void configureLoggers(){
 
 }
 
-void avisarAlPlanificador(int respuesta_del_coordinador){
+void avisarAlPlanificador(int respuesta_del_coordinador, int position_to_reread, FILE* script){
 
 	switch(respuesta_del_coordinador){
 
@@ -56,12 +56,17 @@ void avisarAlPlanificador(int respuesta_del_coordinador){
 	case CLAVE_BLOQUEADA:
 
 		enviarInt(planificador_socket, EN_ESPERA);
-		//esperar a tener la llave para ejecutar
+		fseek(script, position_to_reread, SEEK_SET);
 		break;
 
 	case CLAVE_INEXISTENTE:
 
 		enviarInt(planificador_socket, EJECUCION_INVALIDA);
+		break;
+
+	case EJECUCION_OK:
+
+		enviarInt(planificador_socket, EJECUCION_OK);
 		break;
 
 	}
@@ -88,12 +93,15 @@ void correrScript(char* ruta){
 
 	linea = malloc(largo);
 
+	int position_before_read;
+
 	while(1){
 
 		recibirInt(planificador_socket, &accion);
 
 		if(accion == EJECUTAR_LINEA){
 
+			position_before_read = ftell(f1);
 			fgets(linea, largo, f1);
 			t_esi_operacion parsed = parse(linea);
 			int longitud_clave;
@@ -109,7 +117,7 @@ void correrScript(char* ruta){
 					enviarInt(coordinador_socket, longitud_clave);
 					enviarMensaje(coordinador_socket, parsed.argumentos.GET.clave);
 					recibirInt(coordinador_socket, &respuesta);
-					avisarAlPlanificador(respuesta);
+					avisarAlPlanificador(respuesta, position_before_read, f1);
 					break;
 				case SET:
 					enviarInt(coordinador_socket, SET_KEY);
@@ -120,7 +128,7 @@ void correrScript(char* ruta){
 					enviarInt(coordinador_socket, longitud_valor);
 					enviarMensaje(coordinador_socket, parsed.argumentos.SET.valor);
 					recibirInt(coordinador_socket, &respuesta);
-					avisarAlPlanificador(respuesta);
+					avisarAlPlanificador(respuesta, VALUE_NOT_USED, NULL);
 					break;
 				case STORE:
 					enviarInt(coordinador_socket, STORE_KEY);
@@ -128,7 +136,7 @@ void correrScript(char* ruta){
 					enviarInt(coordinador_socket, longitud_clave);
 					enviarMensaje(coordinador_socket, parsed.argumentos.STORE.clave);
 					recibirInt(coordinador_socket, &respuesta);
-					avisarAlPlanificador(respuesta);
+					avisarAlPlanificador(respuesta, VALUE_NOT_USED, NULL);
 					break;
 				default:
 					fprintf(stderr, "No pude interpretar <%s>\n", linea);
