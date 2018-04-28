@@ -30,5 +30,8 @@
 #define CLAVE_BLOQUEADA 30
 #define CLAVE_INEXISTENTE 31
 
+//Protocolo de tamaños
+#define LONGITUD_CLAVE 41
+
 
 #endif /* PROTOCOLO_H_ */

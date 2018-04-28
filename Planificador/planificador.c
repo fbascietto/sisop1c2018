@@ -8,6 +8,8 @@ int main(){
 	int socketEscucha;
 	fd_set fdSocketsEscucha;
 
+	inicializarColas();
+
 	FD_ZERO(&fdSocketsEscucha);
 	socketEscucha = escuchar(planificador_Puerto_Escucha);
 
@@ -29,6 +31,11 @@ int main(){
 
 	free(esperarConexion);
 	return 0;
+}
+
+void inicializarColas(){
+	colaListos = queue_create();
+	colaTerminados = queue_create();
 }
 
 void configureLogger(){

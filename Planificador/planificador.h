@@ -5,6 +5,7 @@
 #include <commons/log.h>
 #include <commons/config.h>
 #include <commons/string.h>
+#include <commons/collections/queue.h>
 #include <readline/readline.h> // Para usar readline
 #include "../Recursos/estructuras.h"
 #include "../Recursos/protocolo.h"
@@ -16,12 +17,27 @@
 t_log_level LogL;
 t_log* logPlan;
 
+typedef struct {
+	int id;
+	t_list* claves;
+	int rafagaEstimada;
+} t_proceso_esi;
+
+typedef struct {
+	int idProceso;
+	char clave[LONGITUD_CLAVE];
+	t_queue* colaBloqueados;
+} t_clave;
+
 char* planificador_Algoritmo;
 char* coordinador_IP;
 int estimacion_inicial;
 int coordinador_Puerto;
 int planificador_Puerto_Escucha;
 char** claves_Ini_Bloqueadas;
+
+t_queue* colaListos;
+t_queue* colaTerminados;
 
 void configureLogger();
 void *esperarConexiones(void *args);
