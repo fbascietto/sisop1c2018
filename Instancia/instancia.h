@@ -11,6 +11,8 @@
 #include "../Recursos/estructuras.h"
 #include "../Recursos/protocolo.h"
 #include "../Biblioteca/biblio_sockets.h"
+#include "funcionesInstancia.h"
+
 
 
 char* coordinador_IP;

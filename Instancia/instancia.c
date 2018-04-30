@@ -1,5 +1,6 @@
 #include "instancia.h"
 
+
 int main(){
 	int coordinador_socket;
 
@@ -8,6 +9,10 @@ int main(){
 	coordinador_socket = conectarseA(coordinador_IP, coordinador_Puerto);
 	enviarInt(coordinador_socket, INSTANCIA);
 	enviarMensaje(coordinador_socket,nombre_Instancia);
+
+	entradas =  list_create();
+
+
 	return 0;
 }
 
