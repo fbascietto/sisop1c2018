@@ -13,15 +13,8 @@
 #include "../Biblioteca/biblio_sockets.h"
 #include "funcionesInstancia.h"
 
-
-
-char* coordinador_IP;
-int coordinador_Puerto;
-char* reemplazo_Algoritmo;
-char* punto_Montaje;
-char* nombre_Instancia;
-int intervalo_dump;
-
 void cargar_configuracion();
+void configureLoggers(char* name);
+void destroyLoggers();
 
 #endif /* INSTANCIA_H_ */

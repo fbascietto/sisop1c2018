@@ -2,17 +2,28 @@
 
 
 int main(){
+
 	int coordinador_socket;
+	FILE* archivoDatos;
 
 	cargar_configuracion();
+	configureLoggers(nombre_Instancia);
 
 	coordinador_socket = conectarseA(coordinador_IP, coordinador_Puerto);
 	enviarInt(coordinador_socket, INSTANCIA);
 	enviarMensaje(coordinador_socket,nombre_Instancia);
 
+	recibirInt(coordinador_socket, &qEntradas);
+	recibirInt(coordinador_socket, &tamanioEntrada);
+
+	archivoDatos = inicializarPuntoMontaje(punto_Montaje, nombre_Instancia);
+
 	entradas =  list_create();
 
+	/*
+	 *  while que espera peticiones de escritura */
 
+	destroyLoggers();
 	return 0;
 }
 
@@ -57,4 +68,28 @@ void cargar_configuracion(){
 		intervalo_dump = config_get_int_value(infoConfig, "INTERVALO_DUMP");
 	}
 
+}
+
+void configureLoggers(char* instName){
+
+	T = LOG_LEVEL_TRACE;
+	I = LOG_LEVEL_INFO;
+	E = LOG_LEVEL_ERROR;
+
+	char* logPath = string_new();
+	string_append(logPath,"../Logs/");
+	string_append(logPath,instName);
+	string_append(logPath,".log");
+
+	logT = log_create("../Logs/ESI.log","ESI", false, T);
+	logI = log_create("../Logs/ESI.log", "ESI", false, I);
+	logE = log_create("../Logs/ESI.log", "ESI", true, E);
+
+	/* 	free(logPath); SE LIBERA LA MEMORIA DE LAS CADENAS ARMADAS CON LAS COMMONS?*/
+}
+
+void destroyLoggers(){
+	log_destroy(logT);
+	log_destroy(logI);
+	log_destroy(logE);
 }

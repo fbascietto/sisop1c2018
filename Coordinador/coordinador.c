@@ -46,6 +46,8 @@ void *esperarConexiones(void *args) {
 			case INSTANCIA:
 				printf("INSTANCIA.\n");
 				char* nombre = recibirMensajeArchivo(nuevoSocket);
+				enviarInt(cantidad_Entradas);
+				enviarInt(tamanio_Entrada);
 				printf("%s.\n", nombre);
 				break;
 			default:
@@ -71,16 +73,16 @@ void cargar_configuracion(){
 		coordinador_Algoritmo = config_get_string_value(infoConfig, "ALGORITMO");
 	}
 
-	if(config_has_property(infoConfig, "ESTIMACION_INICIAL")){
-		cantidad_Entradas = config_get_int_value(infoConfig, "ESTIMACION_INICIAL");
+	if(config_has_property(infoConfig, "CANTIDAD_ENTRADAS")){
+		cantidad_Entradas = config_get_int_value(infoConfig, "CANTIDAD_ENTRADAS");
 	}
 
-	if(config_has_property(infoConfig, "IP_COORDINADOR")){
-		tamanio_Entrada = config_get_int_value(infoConfig, "IP_COORDINADOR");
+	if(config_has_property(infoConfig, "TAMANIO_ENTRADA")){
+		tamanio_Entrada = config_get_int_value(infoConfig, "TAMANIO_ENTRADA");
 	}
 
-	if(config_has_property(infoConfig, "PUERTO_COORDINADOR")){
-		retardo = config_get_int_value(infoConfig, "PUERTO_COORDINADOR");
+	if(config_has_property(infoConfig, "RETARDO")){
+		retardo = config_get_int_value(infoConfig, "RETARDO");
 	}
 
 }
