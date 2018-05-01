@@ -17,7 +17,7 @@ int main(){
 
 	FD_SET(socketEscucha, &fdSocketsEscucha);
 
-	int* socketCoordinador = conectarConCoordinador();
+	int socketCoordinador = conectarConCoordinador();
 
 	pthread_t threadEscucharConsola;
 	pthread_t threadPlanificar;
@@ -30,7 +30,7 @@ int main(){
 
 	int er1 = pthread_create(&threadEscucharConsola,NULL,iniciaConsola,NULL);
 	int er2 = pthread_create(&threadPlanificar, NULL,planificar,(void*) esperarConexion);
-	int er3 = pthread_create(&threadConexionesNuevas, NULL,esperarConexionesESIs,(void*) esperarConexion, (void*) socketCoordinador);
+	int er3 = pthread_create(&threadConexionesNuevas, NULL,esperarConexionesESIs,(void*) esperarConexion, (void*) &socketCoordinador);
 
 	pthread_join(threadEscucharConsola, NULL);
 	pthread_join(planificar, NULL);

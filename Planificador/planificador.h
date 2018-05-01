@@ -50,7 +50,8 @@ void * iniciaConsola();
 void cargar_configuracion();
 void *esperarConexiones(void *args);
 void exit_gracefully(int return_nr);
-int* conectarCoordinador();
+int conectarCoordinador();
+t_proceso_esi* recibirNuevoESI(int idESI, int fd);
 
 
 #endif

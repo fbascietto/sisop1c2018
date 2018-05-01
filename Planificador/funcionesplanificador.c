@@ -39,7 +39,6 @@ void *planificar(void *args1){
 			}
 		}
 	}
-}
 
 t_proceso_esi* recibirNuevoESI(int idESI, int fd){
 	t_proceso_esi* nuevoProcesoESI = malloc(sizeof(t_proceso_esi));
@@ -92,18 +91,19 @@ void recibirMensajeCoordinador(int socketCliente){
 	}
 }
 
-int* conectarCoordinador(){
+int conectarCoordinador(){
 	int socketCoordinador = conectarseA(coordinador_IP, coordinador_Puerto);
 	FD_SET(socketCoordinador, &fdConexiones);
-	return &socketCoordinador;
+	return socketCoordinador;
 }
 
 
 void esperarConexionesESIs(void* esperarConexion, void* socketCoordinador){
-	t_esperar_conexion argumentos = (t_esperar_conexion)* esperarConexion;
-	&fdmax = (int*) socketCoordinador;
+	t_esperar_conexion* argumentos = (t_esperar_conexion*) esperarConexion;
+	int* socketMax = (int*) socketCoordinador;
+	fdmax = *socketMax;
 	while(1){
-		int conexionNueva = esperarConexionesSocket(argumentos->fdSocketEscucha, *fdmax);
+		int conexionNueva = esperarConexionesSocket(&argumentos->fdSocketEscucha, fdmax);
 
 		//TODO: chequear que la conexion fue correcta
 
@@ -115,8 +115,8 @@ void esperarConexionesESIs(void* esperarConexion, void* socketCoordinador){
 		//mutex con la funcion planificar()
 
 		FD_SET(conexionNueva, &fdConexiones);
-		if (conexionNueva > *fdmax) {
-			*fdmax = conexionNueva;
+		if (conexionNueva > fdmax) {
+			fdmax = conexionNueva;
 		}
 	}
 
