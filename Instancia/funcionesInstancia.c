@@ -26,7 +26,7 @@ void eliminarEntrada(char * key){
 		return (strcmp(entrada->key,key));
 	}
 
-	t_entrada * entrada =(t_entrada *) list_remove_by_condition(entradas,findByKey);
+	t_entrada * entrada =(t_entrada *) list_remove_by_condition(tablaEntradas,findByKey);
 	free(entrada);
 }
 
@@ -58,7 +58,7 @@ FILE* inicializarPuntoMontaje(char * path, char * filename){
 }
 
 
-int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, void * escribir){
+int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, char * escribir){
 
 	unsigned char* map;
 
@@ -93,9 +93,10 @@ int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, void * escribir){
 	//free(bloqueArchivo);
 	close(data);
 	return strlen(escribir);
+
 }
 
-void * recibirValue(socketConn){
+int recibirValue(int socketConn, char* bloqueArchivo){
 
 		int largoMensaje = 0;
 		int bytesRecibidos = 0;
@@ -103,7 +104,7 @@ void * recibirValue(socketConn){
 
 		recibirInt(socketConn,&largoMensaje);
 
-		char * bloqueArchivo;
+
 			bloqueArchivo = malloc((size_t)largoMensaje);
 
 		while(recibido<largoMensaje){
@@ -119,10 +120,10 @@ void * recibirValue(socketConn){
 		}
 		if(recibido <= 0){
 			log_error(logT,"no se recibio nada del socket %d",socketConn);
-			return -1;
-
 		}
-		return bloqueArchivo;
+		return recibido;
+
+
 }
 
 

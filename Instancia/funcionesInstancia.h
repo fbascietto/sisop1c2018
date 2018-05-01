@@ -46,7 +46,7 @@ FILE* inicializarPuntoMontaje(char * path, char * filename);
 void cargar_configuracion();
 void configureLoggers(char* name);
 void destroyLoggers();
-int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, int socketConn);
-void * recibirValue(socketConn);
+int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, char * escribir);
+int recibirValue(int socketConn, char* bloqueArchivo);
 
 #endif /* FUNCIONESINSTANCIA_H_ */
