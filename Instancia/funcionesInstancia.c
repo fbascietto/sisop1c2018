@@ -7,7 +7,7 @@
 #include "funcionesInstancia.h"
 
 
-int  almacenarEntrada(char key[40], FILE* archivoDatos, void * value){
+int  almacenarEntrada(char key[LONGITUD_CLAVE], FILE* archivoDatos, void * value){
 
 	t_entrada * entrada = malloc(sizeof(t_entrada));
 
@@ -92,7 +92,7 @@ int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, void * escribir){
 
 	//free(bloqueArchivo);
 	close(data);
-
+	return strlen(escribir);
 }
 
 void * recibirValue(socketConn){
@@ -141,7 +141,7 @@ void configureLoggers(char* instName){
 	logI = log_create("../Logs/ESI.log", "ESI", false, I);
 	logE = log_create("../Logs/ESI.log", "ESI", true, E);
 
-	/* 	free(logPath); SE LIBERA LA MEMORIA DE LAS CADENAS ARMADAS CON LAS COMMONS?*/
+	/* 	free(logPath); */
 }
 
 void destroyLoggers(){
@@ -150,3 +150,35 @@ void destroyLoggers(){
 	log_destroy(logE);
 }
 
+
+void cargar_configuracion(){
+
+	t_config* infoConfig;
+
+	infoConfig = config_create("../Configuracion/instancia.config");
+
+	if(config_has_property(infoConfig, "IP_COORDINADOR")){
+		coordinador_IP = config_get_string_value(infoConfig, "IP_COORDINADOR");
+	}
+
+	if(config_has_property(infoConfig, "PUERTO_COORDINADOR")){
+		coordinador_Puerto = config_get_int_value(infoConfig, "PUERTO_COORDINADOR");
+	}
+
+	if(config_has_property(infoConfig, "ALGORITMO")){
+		reemplazo_Algoritmo = config_get_string_value(infoConfig, "ALGORITMO");
+	}
+
+	if(config_has_property(infoConfig, "PUNTO_MONTAJE")){
+		punto_Montaje = config_get_string_value(infoConfig, "PUNTO_MONTAJE");
+	}
+
+	if(config_has_property(infoConfig, "NOMBRE")){
+		nombre_Instancia = config_get_string_value(infoConfig, "NOMBRE");
+	}
+
+	if(config_has_property(infoConfig, "INTERVALO_DUMP")){
+		intervalo_dump = config_get_int_value(infoConfig, "INTERVALO_DUMP");
+	}
+
+}

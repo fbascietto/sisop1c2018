@@ -1,9 +1,3 @@
-/*
- * funcionesInstancia.h
- *
- *  Created on: Apr 30, 2018
- *      Author: utnso
- */
 
 #ifndef FUNCIONESINSTANCIA_H_
 #define FUNCIONESINSTANCIA_H_
@@ -25,7 +19,7 @@
 
 
 typedef struct {
-	char key[40];
+	char key[LONGITUD_CLAVE];
 	int entry;
 	int size;
 } t_entrada;
