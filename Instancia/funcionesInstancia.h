@@ -30,7 +30,7 @@ typedef struct {
 	int size;
 } t_entrada;
 
-t_list * entradas;
+t_list * tablaEntradas;
 char* coordinador_IP;
 int coordinador_Puerto;
 char* reemplazo_Algoritmo;
@@ -46,12 +46,13 @@ t_log* logT;
 t_log* logI;
 t_log* logE;
 
-
 void eliminarEntrada(char * key);
 int  almacenarEntrada(char key[40], FILE* archivoDatos, void * value);
 FILE* inicializarPuntoMontaje(char * path, char * filename);
 void cargar_configuracion();
 void configureLoggers(char* name);
 void destroyLoggers();
+int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, int socketConn);
+void * recibirValue(socketConn);
 
 #endif /* FUNCIONESINSTANCIA_H_ */

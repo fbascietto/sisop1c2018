@@ -18,7 +18,7 @@ int main(){
 
 	archivoDatos = inicializarPuntoMontaje(punto_Montaje, nombre_Instancia);
 
-	entradas =  list_create();
+	tablaEntradas =  list_create();
 
 	/*
 	 *  while que espera peticiones de escritura */

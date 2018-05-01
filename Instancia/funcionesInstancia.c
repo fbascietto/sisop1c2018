@@ -12,10 +12,10 @@ int  almacenarEntrada(char key[40], FILE* archivoDatos, void * value){
 	t_entrada * entrada = malloc(sizeof(t_entrada));
 
 	strcpy(entrada->key,key);
-	entrada->entry = list_size(entradas);
-	entrada->size = escribirEntrada(entrada,archivoDatos, value);
+	entrada->entry = escribirEntrada(entrada,archivoDatos, value);/* numero de entrada */
+	entrada->size = strlen(value); /* largo de value */
 
-	list_add(entradas,entrada);
+	list_add(tablaEntradas,entrada);
 
 	return 1;
 }
@@ -55,30 +55,39 @@ FILE* inicializarPuntoMontaje(char * path, char * filename){
 	fallocate(fd,0,0,qEntradas*tamanioEntrada); /* se alloca la memoria a mapear */
 
 	return instanciaDat;
-
 }
 
 
-int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, int socketConn, void * escribir){
+int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, void * escribir){
 
 	unsigned char* map;
-	//map = malloc(sizeof(unsigned char)*(1024*1024));
-	int numEntrada;
 
-
+	int numEntrada = 0; /* ToDo: depende del algoritmo la asignación de la entrada a utilizar*/
 
 	int data = fileno(archivoDatos);
 
-	map = (unsigned char*) mmap(NULL, qEntradas * tamanioEntrada , PROT_READ | PROT_WRITE, MAP_SHARED, data, sizeof(unsigned char)*qEntradas*tamanioEntrada);
+	map = (unsigned char*) mmap(NULL, qEntradas * tamanioEntrada , PROT_READ | PROT_WRITE, MAP_SHARED, data, sizeof(unsigned char)*numEntrada*tamanioEntrada);
 
 	if (map == MAP_FAILED){
 		close(data);
-		log_error(logE,"Error en el mapeo de instacia.dat.\n");
+		log_error(logE,"Error en el mapeo de instancia.dat.\n");
 		exit(EXIT_FAILURE);
 	   }
 
+	int i = 0;
 
-	log_trace(logT,"Se escribió con exito sobre entrada %d.", numEntrada);
+	for (;i<strlen(escribir);i++){
+			map[i]=escribir[i];
+	}
+
+	int entradasOcupadas = strlen(escribir)/tamanioEntrada;
+
+	if (strlen(escribir) % tamanioEntrada > 0){
+		log_trace(logT,"Se escribió con exito sobre la entrada %d y con un total de %d entradas.", numEntrada, entradasOcupadas + 1);
+	} else {
+		log_trace(logT,"Se escribió con exito sobre la entrada %d y con un total de %d entradas.", numEntrada, entradasOcupadas);
+
+	}
 	munmap(map,qEntradas * tamanioEntrada);
 
 	//free(bloqueArchivo);
@@ -88,8 +97,6 @@ int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, int socketConn, voi
 
 void * recibirValue(socketConn){
 
-		int i = 0;
-		int j = 0;
 		int largoMensaje = 0;
 		int bytesRecibidos = 0;
 		int recibido = 0;
@@ -98,8 +105,6 @@ void * recibirValue(socketConn){
 
 		char * bloqueArchivo;
 			bloqueArchivo = malloc((size_t)largoMensaje);
-
-
 
 		while(recibido<largoMensaje){
 		int bytesAleer = 0;
@@ -118,7 +123,6 @@ void * recibirValue(socketConn){
 
 		}
 		return bloqueArchivo;
-
 }
 
 
