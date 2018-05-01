@@ -19,13 +19,13 @@ t_log* logPlan;
 
 typedef struct {
 	int id;
-	t_list* claves;
+	t_queue* clavesTomadas;
 	int rafagaEstimada;
 } t_proceso_esi;
 
 typedef struct {
 	int idProceso;
-	char clave[LONGITUD_CLAVE];
+	char claveValor[LONGITUD_CLAVE];
 	t_queue* colaBloqueados;
 } t_clave;
 

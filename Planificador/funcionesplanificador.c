@@ -48,7 +48,7 @@ void *planificar(void *args){
 t_proceso_esi* recibirNuevoESI(int fd){
 	t_proceso_esi* nuevoProcesoESI = malloc(sizeof(t_proceso_esi));
 	nuevoProcesoESI->id = fd;
-	nuevoProcesoESI->claves = queue_create();
+	nuevoProcesoESI->clavesTomadas = queue_create();
 	//TODO: setear rafaga estimado de archivo de config
 	return nuevoProcesoESI;
 }
