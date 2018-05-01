@@ -19,8 +19,10 @@ t_log* logPlan;
 
 typedef struct {
 	int id;
-	t_list* claves;
+	int fd;
+	t_list* clavesTomadas;
 	int rafagaEstimada;
+	int tiempoEspera;
 } t_proceso_esi;
 
 typedef struct {
@@ -36,6 +38,9 @@ int coordinador_Puerto;
 int planificador_Puerto_Escucha;
 char** claves_Ini_Bloqueadas;
 
+int fdmax;
+fd_set fdConexiones;
+
 t_queue* colaListos;
 t_queue* colaTerminados;
 
@@ -45,6 +50,7 @@ void * iniciaConsola();
 void cargar_configuracion();
 void *esperarConexiones(void *args);
 void exit_gracefully(int return_nr);
+int* conectarCoordinador();
 
 
 #endif

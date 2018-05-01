@@ -3,39 +3,35 @@
 #include <string.h>
 #include "funcionesplanificador.h"
 
-void *planificar(void *args){
+void *planificar(void *args1){
 
-	t_esperar_conexion *argumentos = (t_esperar_conexion*) args;
-	int listener = argumentos->socketEscucha;
-	// main loop
-	fd_set master;
+	t_esperar_conexion *argumentos = (t_esperar_conexion*) args1;
 	fd_set read_fds;
-	int fdmax;
-	FD_SET(listener,&master);
-	fdmax = listener;
+	fd_set* conexionesActivas = &fdConexiones;
+
+	int fdmaxHelper;
+
 	for(;;) {
-		read_fds = master; // copy it
-		if (select(fdmax+1, &read_fds, NULL, NULL, NULL) == -1) {
+
+
+
+		//mutex con la funcion esperarConexionesESIs()
+		fdmaxHelper = fdmax;
+		read_fds = fdConexiones; // copiar fd_set
+		// fin mutex con la funcion esperarConexionesESIs()
+
+		//TODO: struct timeval para el ultimo parametro del select
+		if (select(fdmaxHelper+1, &read_fds, NULL, NULL, NULL) == -1) {
 			perror("select");
 			exit(4);
 		}
 		int socketIterado;
 		// run through the existing connections looking for data to read
-		for(socketIterado = 0; socketIterado <= fdmax; socketIterado++) {
+
+		for(socketIterado = 0; socketIterado <= fdmaxHelper; socketIterado++) {
+
 			if (FD_ISSET(socketIterado, &read_fds)) { // we got one!!
-				if (socketIterado == listener) {
-					//Es una conexion nueva
-					int newfd = aceptarConexion(listener);
-					if (newfd == -1) {
-						perror("accept");
-					} else {
-						FD_SET(newfd, &master); // add to master set
-						if (newfd > fdmax) {    // keep track of the max
-							fdmax = newfd;
-						}
-						t_proceso_esi* nuevoEsi = recibirNuevoESI(newfd);
-						moverAListos(nuevoEsi);
-					}
+
 				} else {
 					//Es un mensaje de un cliente ya existente
 					recibirMensajeCliente(socketIterado);
@@ -45,10 +41,11 @@ void *planificar(void *args){
 	}
 }
 
-t_proceso_esi* recibirNuevoESI(int fd){
+t_proceso_esi* recibirNuevoESI(int idESI, int fd){
 	t_proceso_esi* nuevoProcesoESI = malloc(sizeof(t_proceso_esi));
-	nuevoProcesoESI->id = fd;
-	nuevoProcesoESI->claves = queue_create();
+	nuevoProcesoESI->id = idESI;
+	nuevoProcesoESI->fd = fd;
+	nuevoProcesoESI->clavesTomadas = queue_create();
 	//TODO: setear rafaga estimado de archivo de config
 	return nuevoProcesoESI;
 }
@@ -61,12 +58,12 @@ void recibirMensajeCliente(int socketCliente){
 	int cliente;
 	recibirInt(socketCliente,&cliente);
 	switch(cliente){
-		case ESI:
-			recibirMensajeEsi(socketCliente);
-			break;
-		case COORDINADOR:
-			recibirMensajeCoordinador(socketCliente);
-			break;
+	case ESI:
+		recibirMensajeEsi(socketCliente);
+		break;
+	case COORDINADOR:
+		recibirMensajeCoordinador(socketCliente);
+		break;
 	}
 }
 
@@ -74,15 +71,15 @@ void recibirMensajeEsi(int socketCliente){
 	int mensaje;
 	recibirInt(socketCliente,&mensaje);
 	switch(mensaje){
-		case EJECUCION_OK:;
-			//TODO:
-			break;
-		case EJECUCION_INVALIDA:;
-			//TODO:
-			break;
-		case EN_ESPERA:;
-			//TODO:
-			break;
+	case EJECUCION_OK:;
+	//TODO:
+	break;
+	case EJECUCION_INVALIDA:;
+	//TODO:
+	break;
+	case EN_ESPERA:;
+	//TODO:
+	break;
 	}
 
 }
@@ -91,6 +88,37 @@ void recibirMensajeCoordinador(int socketCliente){
 	int mensaje;
 	recibirInt(socketCliente,&mensaje);
 	switch(mensaje){
-		//TODO
+	//TODO
 	}
 }
+
+int* conectarCoordinador(){
+	int socketCoordinador = conectarseA(coordinador_IP, coordinador_Puerto);
+	FD_SET(socketCoordinador, &fdConexiones);
+	return &socketCoordinador;
+}
+
+
+void esperarConexionesESIs(void* esperarConexion, void* socketCoordinador){
+	t_esperar_conexion argumentos = (t_esperar_conexion)* esperarConexion;
+	&fdmax = (int*) socketCoordinador;
+	while(1){
+		int conexionNueva = esperarConexionesSocket(argumentos->fdSocketEscucha, *fdmax);
+
+		//TODO: chequear que la conexion fue correcta
+
+		int idESI;
+		recibirInt(conexionNueva, &idESI);
+		t_proceso_esi* nuevoESI = recibirNuevoESI(idESI, conexionNueva);
+		moverAListos(nuevoESI);
+
+		//mutex con la funcion planificar()
+
+		FD_SET(conexionNueva, &fdConexiones);
+		if (conexionNueva > *fdmax) {
+			*fdmax = conexionNueva;
+		}
+	}
+
+}
+

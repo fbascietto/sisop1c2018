@@ -13,5 +13,6 @@ void recibirMensajeCliente(int socketCliente);
 void recibirMensajeEsi(int socketCliente);
 void recibirMensajeCoordinador(int socketCliente);
 
+
 #endif
 

@@ -13,10 +13,15 @@ int main(){
 	FD_ZERO(&fdSocketsEscucha);
 	socketEscucha = escuchar(planificador_Puerto_Escucha);
 
+	FD_ZERO(&fdConexiones);
+
 	FD_SET(socketEscucha, &fdSocketsEscucha);
+
+	int* socketCoordinador = conectarConCoordinador();
 
 	pthread_t threadEscucharConsola;
 	pthread_t threadPlanificar;
+	pthread_t threadConexionesNuevas;
 	t_esperar_conexion *esperarConexion;
 
 	esperarConexion = malloc(sizeof(t_esperar_conexion));
@@ -25,6 +30,7 @@ int main(){
 
 	int er1 = pthread_create(&threadEscucharConsola,NULL,iniciaConsola,NULL);
 	int er2 = pthread_create(&threadPlanificar, NULL,planificar,(void*) esperarConexion);
+	int er3 = pthread_create(&threadConexionesNuevas, NULL,esperarConexionesESIs,(void*) esperarConexion, (void*) socketCoordinador);
 
 	pthread_join(threadEscucharConsola, NULL);
 	pthread_join(planificar, NULL);
