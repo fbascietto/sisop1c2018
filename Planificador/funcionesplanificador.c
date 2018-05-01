@@ -45,7 +45,7 @@ t_proceso_esi* recibirNuevoESI(int idESI, int fd){
 	t_proceso_esi* nuevoProcesoESI = malloc(sizeof(t_proceso_esi));
 	nuevoProcesoESI->id = idESI;
 	nuevoProcesoESI->fd = fd;
-	nuevoProcesoESI->clavesTomadas = queue_create();
+	nuevoProcesoESI->clavesTomadas = list_create();
 	//TODO: setear rafaga estimado de archivo de config
 	return nuevoProcesoESI;
 }

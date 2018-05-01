@@ -27,7 +27,7 @@ typedef struct {
 
 typedef struct {
 	int idProceso;
-	char clave[LONGITUD_CLAVE];
+	char claveValor[LONGITUD_CLAVE];
 	t_queue* colaBloqueados;
 } t_clave;
 
