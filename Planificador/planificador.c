@@ -32,6 +32,7 @@ int main(){
 	  por lo tanto, tiene el numero de socket mas grande.
 	 */
 	fdMaxConexionesActivas = socketCoordinador;
+	FD_SET(socketCoordinador, &fdConexiones);
 
 	int er1 = pthread_create(&threadEscucharConsola,NULL,iniciaConsola,NULL);
 	int er2 = pthread_create(&threadPlanificar, NULL,planificar,(void*) esperarConexion);
