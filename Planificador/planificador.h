@@ -38,7 +38,7 @@ int coordinador_Puerto;
 int planificador_Puerto_Escucha;
 char** claves_Ini_Bloqueadas;
 
-int fdmax;
+int fdMaxConexionesActivas;
 fd_set fdConexiones;
 
 t_queue* colaListos;
@@ -52,6 +52,7 @@ void *esperarConexiones(void *args);
 void exit_gracefully(int return_nr);
 int conectarCoordinador();
 t_proceso_esi* recibirNuevoESI(int idESI, int fd);
+void esperarConexionesESIs(void* esperarConexion);
 
 
 #endif

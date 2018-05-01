@@ -16,7 +16,7 @@ void *planificar(void *args1){
 
 
 		//mutex con la funcion esperarConexionesESIs()
-		fdmaxHelper = fdmax;
+		fdmaxHelper = fdMaxConexionesActivas;
 		read_fds = fdConexiones; // copiar fd_set
 		// fin mutex con la funcion esperarConexionesESIs()
 
@@ -98,12 +98,11 @@ int conectarCoordinador(){
 }
 
 
-void esperarConexionesESIs(void* esperarConexion, void* socketCoordinador){
+void esperarConexionesESIs(void* esperarConexion){
 	t_esperar_conexion* argumentos = (t_esperar_conexion*) esperarConexion;
-	int* socketMax = (int*) socketCoordinador;
-	fdmax = *socketMax;
+
 	while(1){
-		int conexionNueva = esperarConexionesSocket(&argumentos->fdSocketEscucha, fdmax);
+		int conexionNueva = esperarConexionesSocket(&argumentos->fdSocketEscucha, argumentos->socketEscucha);
 
 		//TODO: chequear que la conexion fue correcta
 
@@ -115,8 +114,8 @@ void esperarConexionesESIs(void* esperarConexion, void* socketCoordinador){
 		//mutex con la funcion planificar()
 
 		FD_SET(conexionNueva, &fdConexiones);
-		if (conexionNueva > fdmax) {
-			fdmax = conexionNueva;
+		if (conexionNueva > fdMaxConexionesActivas) {
+			fdMaxConexionesActivas = conexionNueva;
 		}
 	}
 

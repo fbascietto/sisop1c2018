@@ -11,6 +11,7 @@ void moverAListos(t_proceso_esi* procesoEsi);
 void recibirMensajeCliente(int socketCliente);
 void recibirMensajeEsi(int socketCliente);
 void recibirMensajeCoordinador(int socketCliente);
+int conectarCoordinador();
 
 
 #endif
