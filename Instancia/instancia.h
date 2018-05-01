@@ -13,8 +13,6 @@
 #include "../Biblioteca/biblio_sockets.h"
 #include "funcionesInstancia.h"
 
-void cargar_configuracion();
-void configureLoggers(char* name);
-void destroyLoggers();
+
 
 #endif /* INSTANCIA_H_ */

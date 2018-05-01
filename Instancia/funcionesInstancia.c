@@ -7,13 +7,13 @@
 #include "funcionesInstancia.h"
 
 
-int  almacenarEntrada(char key[40], FILE* archivoDatos, int socketConn){
+int  almacenarEntrada(char key[40], FILE* archivoDatos, void * value){
 
 	t_entrada * entrada = malloc(sizeof(t_entrada));
 
 	strcpy(entrada->key,key);
 	entrada->entry = list_size(entradas);
-	entrada->size = escribirEntrada(entrada,archivoDatos, socketConn);
+	entrada->size = escribirEntrada(entrada,archivoDatos, value);
 
 	list_add(entradas,entrada);
 
@@ -59,14 +59,13 @@ FILE* inicializarPuntoMontaje(char * path, char * filename){
 }
 
 
-int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, int socketConn){
+int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, int socketConn, void * escribir){
 
 	unsigned char* map;
 	//map = malloc(sizeof(unsigned char)*(1024*1024));
 	int numEntrada;
 
-	char * bloqueArchivo;
-	bloqueArchivo = malloc((size_t)tamanioEntrada);
+
 
 	int data = fileno(archivoDatos);
 
@@ -79,35 +78,71 @@ int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, int socketConn){
 	   }
 
 
-	int i = 0;
-	int j = 0;
-	int largoMensaje = 0;
-	int bytesRecibidos = 0;
-	int recibido = 0;
-
-	recibirInt(socketConn,&largoMensaje);
-
-	while(recibido<largoMensaje){
-	int bytesAleer = 0;
-	recibirInt(socketConn,&bytesAleer);
-		while(bytesRecibidos<bytesAleer){
-					bytesRecibidos += recv(socketConn,bloqueArchivo,(size_t)bytesAleer-bytesRecibidos,NULL);
-					for (;j<strlen(bloqueArchivo);j++){
-							map[i]=bloqueArchivo[j];
-							i++;
-					}
-					j=0;
-				}
-				recibido += bytesRecibidos;
-				bytesRecibidos = 0;
-
-
-			}
-
 	log_trace(logT,"Se escribió con exito sobre entrada %d.", numEntrada);
 	munmap(map,qEntradas * tamanioEntrada);
 
-	free(bloqueArchivo);
+	//free(bloqueArchivo);
 	close(data);
-	return recibido;
+
 }
+
+void * recibirValue(socketConn){
+
+		int i = 0;
+		int j = 0;
+		int largoMensaje = 0;
+		int bytesRecibidos = 0;
+		int recibido = 0;
+
+		recibirInt(socketConn,&largoMensaje);
+
+		char * bloqueArchivo;
+			bloqueArchivo = malloc((size_t)largoMensaje);
+
+
+
+		while(recibido<largoMensaje){
+		int bytesAleer = 0;
+		recibirInt(socketConn,&bytesAleer);
+			while(bytesRecibidos<bytesAleer){
+						bytesRecibidos += recv(socketConn,bloqueArchivo,(size_t)bytesAleer-bytesRecibidos,NULL);
+
+			}
+			recibido += bytesRecibidos;
+			bytesRecibidos = 0;
+
+		}
+		if(recibido <= 0){
+			log_error(logT,"no se recibio nada del socket %d",socketConn);
+			return -1;
+
+		}
+		return bloqueArchivo;
+
+}
+
+
+void configureLoggers(char* instName){
+
+	T = LOG_LEVEL_TRACE;
+	I = LOG_LEVEL_INFO;
+	E = LOG_LEVEL_ERROR;
+
+	char* logPath = string_new();
+	string_append(logPath,"../Logs/");
+	string_append(logPath,instName);
+	string_append(logPath,".log");
+
+	logT = log_create("../Logs/ESI.log","ESI", false, T);
+	logI = log_create("../Logs/ESI.log", "ESI", false, I);
+	logE = log_create("../Logs/ESI.log", "ESI", true, E);
+
+	/* 	free(logPath); SE LIBERA LA MEMORIA DE LAS CADENAS ARMADAS CON LAS COMMONS?*/
+}
+
+void destroyLoggers(){
+	log_destroy(logT);
+	log_destroy(logI);
+	log_destroy(logE);
+}
+

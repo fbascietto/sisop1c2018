@@ -69,27 +69,3 @@ void cargar_configuracion(){
 	}
 
 }
-
-void configureLoggers(char* instName){
-
-	T = LOG_LEVEL_TRACE;
-	I = LOG_LEVEL_INFO;
-	E = LOG_LEVEL_ERROR;
-
-	char* logPath = string_new();
-	string_append(logPath,"../Logs/");
-	string_append(logPath,instName);
-	string_append(logPath,".log");
-
-	logT = log_create("../Logs/ESI.log","ESI", false, T);
-	logI = log_create("../Logs/ESI.log", "ESI", false, I);
-	logE = log_create("../Logs/ESI.log", "ESI", true, E);
-
-	/* 	free(logPath); SE LIBERA LA MEMORIA DE LAS CADENAS ARMADAS CON LAS COMMONS?*/
-}
-
-void destroyLoggers(){
-	log_destroy(logT);
-	log_destroy(logI);
-	log_destroy(logE);
-}

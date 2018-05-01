@@ -48,8 +48,10 @@ t_log* logE;
 
 
 void eliminarEntrada(char * key);
-int  almacenarEntrada(char key[40], FILE* archivoDatos, int socketConn);
+int  almacenarEntrada(char key[40], FILE* archivoDatos, void * value);
 FILE* inicializarPuntoMontaje(char * path, char * filename);
-
+void cargar_configuracion();
+void configureLoggers(char* name);
+void destroyLoggers();
 
 #endif /* FUNCIONESINSTANCIA_H_ */
