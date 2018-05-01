@@ -41,18 +41,31 @@ char** claves_Ini_Bloqueadas;
 int fdMaxConexionesActivas;
 fd_set fdConexiones;
 
-t_queue* colaListos;
+t_list* listaKeys;
+t_list* colaListos;
 t_queue* colaTerminados;
+
+t_proceso_esi* esi_ejecutando;
 
 void configureLogger();
 void *esperarConexiones(void *args);
-void * iniciaConsola();
 void cargar_configuracion();
 void *esperarConexiones(void *args);
-void exit_gracefully(int return_nr);
-int conectarCoordinador();
+void *planificar(void *args);
 t_proceso_esi* recibirNuevoESI(int idESI, int fd);
 void esperarConexionesESIs(void* esperarConexion);
+void moverAListos(t_proceso_esi* procesoEsi);
+void recibirMensajeCliente(int socketCliente);
+void recibirMensajeEsi(int socketCliente);
+void recibirMensajeCoordinador(int socketCliente);
+int conectarCoordinador();
+
+//funciones consola
+void * iniciaConsola();
+void exit_gracefully(int return_nr);
+bool coincideValor(void*);
+void block(char*, int);
+void unblock(char*);
 
 
 #endif

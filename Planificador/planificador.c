@@ -1,5 +1,4 @@
 #include "planificador.h"
-#include "funcionesplanificador.h"
 
 int main(){
 	configureLogger();
@@ -62,59 +61,100 @@ void * iniciaConsola(){
 
 	log_trace(logPlan,"Se inicializa la consola del planificador. \n");
 
+	//comandos de consola
+	char* exit = "exit";
+	char* pausar = "pausar";
+	char* continuar = "continuar";
+	char* bloquear = "bloquear";
+	char* desbloquear = "desbloquear";
+	char* listar = "listar";
+	char* status = "status";
+	char* kill = "kill";
+	char* deadlock = "deadlock";
+	char* info = "info";
+
+	char* linea;
+	char** parametros;
+
 	while(1) {
-		char* linea = readline("DR-Planificador:" );
+		linea = readline("DR-Planificador:" );
 
 		if(linea)
 			add_history(linea);
 
-		if(!strncmp(linea, "exit", 4)) {
-			log_trace(logPlan,"Consola recibe ""exit""");
+		if(!strncmp(linea, exit, strlen(exit))) {
+			log_trace(logPlan,"Consola recibe ""%s""\n", exit);
 			free(linea);
 			exit_gracefully(1);
-		} else if(!strncmp(linea, "pausa", 5))
+		} else if(!strncmp(linea, pausar, strlen(pausar)))
 		{
-			log_trace(logPlan,"Consola recibe ""pausa""");
+			log_trace(logPlan,"Consola recibe ""%s""\n", pausar);
 			free(linea);
 
-		} else if(!strncmp(linea, "continuar", 9))
+		} else if(!strncmp(linea, continuar, strlen(continuar)))
 		{
-			log_trace(logPlan,"Consola recibe ""continuar""");
+			log_trace(logPlan,"Consola recibe ""%s""\n", continuar);
 			free(linea);
 
-		} else if(!strncmp(linea, "bloquear", 8))
+		} else if(!strncmp(linea, bloquear, strlen(bloquear)))
 		{
-			log_trace(logPlan,"Consola recibe ""bloquear""");
+			log_trace(logPlan,"Consola recibe ""%s""\n", bloquear);
+			parametros = string_split(linea, " ");
+			if(parametros[1] == NULL){
+				printf("Faltan argumentos: bloquear [clave] [ID]\n");
+			}else{
+				if (parametros[2] == NULL){
+					printf("Faltan argumentos: bloquear [clave] [ID]\n");
+				}else{
+					if(parametros[3] != NULL){
+						printf("Demasiados argumentos: bloquear [clave] [ID]\n");
+					}else{
+						char* key = parametros[1];
+						int ESI_ID = atoi(parametros[2]);
+						block(key, ESI_ID);
+					}
+				}
+			}
+
+		} else if(!strncmp(linea, desbloquear, strlen(desbloquear)))
+		{
+			log_trace(logPlan,"Consola recibe ""%s""\n", desbloquear);
+			parametros = string_split(linea, " ");
+			if(parametros[1] == NULL){
+				printf("Faltan argumentos: desbloquear [clave]\n");
+			}else{
+				if(parametros[2] != NULL){
+					printf("Demasiados argumentos: desbloquear [clave]\n");
+				}else{
+					char* key = parametros[1];
+					unblock(key);
+				}
+			}
 			free(linea);
 
-		} else if(!strncmp(linea, "desbloquear", 11))
+		} else if(!strncmp(linea, listar, strlen(listar)))
 		{
-			log_trace(logPlan,"Consola recibe ""desbloquear""");
+			log_trace(logPlan,"Consola recibe ""%s""\n", listar);
 			free(linea);
 
-		} else if(!strncmp(linea, "listar", 6))
+		} else if(!strncmp(linea, status, strlen(status)))
 		{
-			log_trace(logPlan,"Consola recibe ""listar""");
+			log_trace(logPlan,"Consola recibe ""%s""\n", status);
 			free(linea);
 
-		} else if(!strncmp(linea, "status", 6))
+		} else if(!strncmp(linea, kill, strlen(kill)))
 		{
-			log_trace(logPlan,"Consola recibe ""status""");
+			log_trace(logPlan,"Consola recibe ""%s""\n", kill);
 			free(linea);
 
-		} else if(!strncmp(linea, "kill", 4))
+		} else if(!strncmp(linea, deadlock, strlen(deadlock)))
 		{
-			log_trace(logPlan,"Consola recibe ""kill""");
+			log_trace(logPlan,"Consola recibe ""%s""\n", deadlock);
 			free(linea);
 
-		} else if(!strncmp(linea, "deadlock", 8))
+		} else if(!strncmp(linea, info, strlen(info)))
 		{
-			log_trace(logPlan,"Consola recibe ""deadlock""");
-			free(linea);
-
-		} else if(!strncmp(linea, "info", 4))
-		{
-			log_trace(logPlan,"Consola recibe ""info""\n");
+			log_trace(logPlan,"Consola recibe ""%s""\n", info);
 			printf("Destino-Rusia Planificador: Ayuda\n");
 			printf("Los parámetros se indican con <> \n------\n");
 			printf("pausa - Pausar planificación : El Planificador no le dará nuevas órdenes de ejecución a ningún ESI mientras se encuentre pausado.\n");
@@ -129,7 +169,7 @@ void * iniciaConsola(){
 		}
 		else {
 			printf("No se reconoce el comando ""%s""\n",linea);
-			printf("Para más información utilice el comando ""info"".\n");
+			printf("Para más información utilice el comando ""%s"".\n", info);
 			free(linea);
 		}
 

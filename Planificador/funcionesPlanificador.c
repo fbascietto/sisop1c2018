@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "funcionesplanificador.h"
+#include "planificador.h"
 
 void *planificar(void *args1){
 
