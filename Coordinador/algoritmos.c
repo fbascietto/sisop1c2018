@@ -4,7 +4,7 @@
  *  Created on: Apr 26, 2018
  *      Author: utnso
  */
-#include "coordinador.h"
+#include "funcionesCoordinador.h"
 
 
 void equitativeLoad(t_solicitud una_solicitud){

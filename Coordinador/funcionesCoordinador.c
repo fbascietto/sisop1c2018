@@ -13,7 +13,7 @@ void *esperarConexiones(void *args) {
 	while (1) {
 
 		int nuevoSocket = -1;
-		char* nombre;
+		//char* nombre;
 
 		nuevoSocket = esperarConexionesSocket(&argumentos->fdSocketEscucha,argumentos->socketEscucha);
 
@@ -41,10 +41,7 @@ void *esperarConexiones(void *args) {
 				break;
 
 			case INSTANCIA:
-				nombre = recibirMensajeArchivo(nuevoSocket);
-				enviarInt(nuevoSocket,cantidad_Entradas);
-				enviarInt(nuevoSocket,tamanio_Entrada);
-				log_trace(logT,"Conexión de %s.", nombre);
+				crearInstancia(nuevoSocket);
 				break;
 
 			default:
@@ -53,6 +50,54 @@ void *esperarConexiones(void *args) {
 			}
 		}
 	}
+}
+
+int crearInstancia(int nuevoSocket){
+					t_instancia * instancia = malloc(sizeof(t_instancia));
+
+					instancia->nombre = recibirMensajeArchivo(nuevoSocket);
+					instancia->socket = nuevoSocket;
+					if(enviarInt(nuevoSocket,cantidad_Entradas)<=0){
+						return -1;
+					}
+					if(enviarInt(nuevoSocket,tamanio_Entrada)<=0){
+						return -1;
+					}
+
+					list_add(instancias,instancia);
+					log_trace(logT,"Conexión de %s.", instancia->nombre);
+					return 1;
+}
+
+int enviarEntradaInstancia(char key[LONGITUD_CLAVE] , char * value, t_instancia * instancia){
+	if(enviarKey(key,instancia->socket)<=0){
+		log_error(logE,"no se pudo enviar entrada a la instancia %s",instancia->nombre);
+		return -1;
+	}
+	if(enviarValue(value,instancia->socket)<=0){
+		log_error(logE,"no se pudo enviar entrada a la instancia %s",instancia->nombre);
+		return -1;
+	}
+	instancia->q_keys = instancia->q_keys +1;
+
+	return 1;
+
+}
+
+int enviarKey(char key[LONGITUD_CLAVE], int socket ){
+	int totalEnviado = 0;
+	int lenEnviado = 0;
+	while(totalEnviado < LONGITUD_CLAVE) {
+			lenEnviado = 0;
+			lenEnviado = send(socket, key[totalEnviado], LONGITUD_CLAVE-totalEnviado, 0);
+			if(lenEnviado < 0){ perror("error al enviar\n"); return -1;}
+			totalEnviado = totalEnviado + lenEnviado;
+		}
+	return totalEnviado;
+}
+
+int enviarValue(char * value, int socket){
+	return enviarMensaje(value,socket);
 }
 
 void cargar_configuracion(){

@@ -23,9 +23,13 @@ int main(int argc, char **argv) {
 
 			tablaEntradas =  list_create();
 
-			/*
-			 *  while que espera peticiones de escritura
-			 */
+			while(1){
+				if(recibirEntrada(coordinador_socket,archivoDatos)<=0){
+					//TODO que hace si da error?
+				}
+
+			}
+
 
 			destroyLoggers();
 

@@ -126,6 +126,45 @@ int recibirValue(int socketConn, char* bloqueArchivo){
 
 }
 
+int recibirKey(int socket, char key [LONGITUD_CLAVE]){
+	int size = LONGITUD_CLAVE;
+		char * mensaje = malloc(size);
+
+			int largoLeido = 0, llegoTodo = 0, totalLeido = 0, tamanio = size;
+		while(!llegoTodo){
+				largoLeido = recv(socket, mensaje + totalLeido, size, 0);
+
+				//toda esta fumada es para cuando algun cliente se desconecta.
+				if(largoLeido == -1){
+					printf("Socket dice: Cliente en socket N° %d se desconecto\n", socket);
+					log_error(logT,"no se recibio nada del socket %d",socket);
+				}
+
+				totalLeido += largoLeido;
+				size -= largoLeido;
+				if(size <= 0) llegoTodo = 1;
+			}
+		strcpy(key,mensaje);
+		free(mensaje);
+		return totalLeido;
+}
+
+int recibirEntrada(int socket, FILE * file){
+
+	char key [LONGITUD_CLAVE];
+	char * value;
+
+	if(recibirKey(socket,key)<=0){
+		return -1;
+	}
+	if(recibirValue(socket,value)<=0){
+		return -1;
+	}
+
+	return almacenarEntrada(key,file, value);
+
+}
+
 
 void configureLoggers(char* instName){
 

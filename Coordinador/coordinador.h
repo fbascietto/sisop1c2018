@@ -15,8 +15,8 @@
 #include "../Biblioteca/biblio_sockets.h"
 #include "funcionesCoordinador.h"
 
-t_list* instancias;
+
 //para equitative load, posicion del puntero en la lista
-int posicion_puntero;
+
 
 #endif /* COORDINADOR_H_ */

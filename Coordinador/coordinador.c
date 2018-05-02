@@ -7,6 +7,9 @@ int main(){
 	int socketEscucha;
 	fd_set fdSocketsEscucha;
 
+	instancias = list_create();
+	posicion_puntero = 0;
+
 	FD_ZERO(&fdSocketsEscucha);
 	socketEscucha = escuchar(coordinador_Puerto_Escucha);
 
@@ -19,5 +22,6 @@ int main(){
 
 	esperarConexiones((void*) esperarConexion);
 	destroyLoggers();
+	list_destroy(instancias);
 	return 0;
 }

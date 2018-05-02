@@ -41,12 +41,14 @@ t_log* logI;
 t_log* logE;
 
 void eliminarEntrada(char * key);
-int  almacenarEntrada(char key[40], FILE* archivoDatos, void * value);
+int  almacenarEntrada(char key[LONGITUD_CLAVE], FILE* archivoDatos, void * value);
 FILE* inicializarPuntoMontaje(char * path, char * filename);
 void cargar_configuracion();
 void configureLoggers(char* name);
 void destroyLoggers();
 int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, char * escribir);
 int recibirValue(int socketConn, char* bloqueArchivo);
+int recibirEntrada(int socket, FILE * file);
+int recibirKey(int socket, char key [LONGITUD_CLAVE]);
 
 #endif /* FUNCIONESINSTANCIA_H_ */
