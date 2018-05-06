@@ -55,3 +55,35 @@ void unblock(char* key_value){
 	list_add(colaListos, esi_a_desbloquear);
 
 }
+
+void pause(){
+	sem_wait(pausarPlanificacion);
+}
+
+void goOn(){
+	sem_post(pausarPlanificacion);
+}
+
+void listBlocked(char* keySearch){
+	bool coincideValor(void* key){
+		t_clave* clave = (t_clave*) key;
+		return strcmp(clave->claveValor, keySearch) == 0;
+	}
+	void printEsi(void* procesoEsi){
+		t_proceso_esi* esi = (t_proceso_esi*) procesoEsi;
+		printf("ESI ID: ""%d"".\n", esi->id);
+	}
+
+	t_clave* key = list_find(listaKeys, coincideValor);
+
+	if(key==NULL){
+		printf("No se encontró el recurso con key: ""%s"".\n", keySearch);
+
+	} else if (queue_is_empty(key->colaBloqueados)){
+		printf("La lista de bloqueados está vacía.\n");
+
+	} else {
+		printf("La lista de bloqueados para la clave especificada es:\n");
+		list_iterate(key->colaBloqueados->elements, printEsi);
+	}
+}

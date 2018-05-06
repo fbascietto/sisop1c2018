@@ -8,6 +8,7 @@ int main(){
 	fd_set fdSocketsEscucha;
 
 	inicializarColas();
+	inicializarSemaforos();
 
 	FD_ZERO(&fdSocketsEscucha);
 	socketEscucha = escuchar(planificador_Puerto_Escucha);
@@ -46,8 +47,12 @@ int main(){
 }
 
 void inicializarColas(){
-	colaListos = queue_create();
+	colaListos = list_create();
 	colaTerminados = queue_create();
+}
+
+void inicializarSemaforos(){
+	sem_init(pausarPlanificacion, 0, 1);
 }
 
 void configureLogger(){
@@ -135,6 +140,14 @@ void * iniciaConsola(){
 		} else if(!strncmp(linea, listar, strlen(listar)))
 		{
 			log_trace(logPlan,"Consola recibe ""%s""\n", listar);
+			if(parametros[1] == NULL){
+				printf("Faltan argumentos: listar [clave]\n");
+			} else if(parametros[2] != NULL){
+				printf("Demasiados argumentos: listar [clave]\n");
+			}else{
+				char* key = parametros[1];
+				listBlocked(key);
+			}
 			free(linea);
 
 		} else if(!strncmp(linea, status, strlen(status)))

@@ -10,12 +10,16 @@
 #include "../Recursos/estructuras.h"
 #include "../Recursos/protocolo.h"
 #include "../Biblioteca/biblio_sockets.h"
+#include <semaphore.h>
 
 #ifndef PLANIFICADOR_H_
 #define PLANIFICADOR_H_
 
 t_log_level LogL;
 t_log* logPlan;
+
+//semáforos
+sem_t* pausarPlanificacion;
 
 typedef struct {
 	int id;
