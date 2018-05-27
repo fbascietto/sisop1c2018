@@ -57,8 +57,8 @@ void inicializarSemaforos(){
 
 void configureLogger(){
 
-	  LogL = LOG_LEVEL_TRACE;
-	  logPlan = log_create("../Logs/planificador.log","Planificador", false, LogL);
+	LogL = LOG_LEVEL_TRACE;
+	logPlan = log_create("../Logs/planificador.log","Planificador", false, LogL);
 
 }
 
@@ -89,17 +89,29 @@ void * iniciaConsola(){
 
 		if(!strncmp(linea, exit, strlen(exit))) {
 			log_trace(logPlan,"Consola recibe ""%s""\n", exit);
+			parametros = string_split(linea, " ");
+			if(parametros[1] != NULL){
+				printf("La funcion no lleva argumentos.");
+			}
 			free(linea);
 			exit_gracefully(1);
 		} else if(!strncmp(linea, pausar, strlen(pausar)))
 		{
 			log_trace(logPlan,"Consola recibe ""%s""\n", pausar);
+			parametros = string_split(linea, " ");
+			if(parametros[1] != NULL){
+				printf("La funcion no lleva argumentos.");
+			}
 			pauseScheduler();
 			free(linea);
 
 		} else if(!strncmp(linea, continuar, strlen(continuar)))
 		{
 			log_trace(logPlan,"Consola recibe ""%s""\n", continuar);
+			parametros = string_split(linea, " ");
+			if(parametros[1] != NULL){
+				printf("La funcion no lleva argumentos.");
+			}
 			goOn();
 			free(linea);
 
@@ -233,6 +245,6 @@ void cargar_configuracion(){
 }
 
 void exit_gracefully(int return_nr) {
-  	log_destroy(logPlan);
+	log_destroy(logPlan);
 	exit(return_nr);
 }

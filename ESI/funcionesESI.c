@@ -153,6 +153,7 @@ void correrScript(char* ruta){
 
 		}else{
 			if(accion == ABORTAR){
+				//avisarle al coordinador?
 				break;
 			}
 		}

@@ -32,7 +32,7 @@ void block(char* key_value, int ESI_ID){
 	if(esi_ejecutando->id == ESI_ID){
 		queue_push(key->colaBloqueados, esi_ejecutando);
 	}else{
-		t_proceso_esi* esi_a_bloquear = list_find(colaListos, coincideID);
+		t_proceso_esi* esi_a_bloquear = list_find(colaListos->elements, coincideID);
 		queue_push(key->colaBloqueados, esi_a_bloquear);
 	}
 
@@ -90,6 +90,8 @@ void listBlockedProcesses(char* keySearch){
 
 void matarProceso(int ESI_ID){
 
+	t_proceso_esi* proceso_a_matar;
+
 	bool coincideID(void* proceso){
 
 		t_proceso_esi* esi = (t_proceso_esi*) proceso;
@@ -118,7 +120,15 @@ void matarProceso(int ESI_ID){
 
 	}
 
-	t_proceso_esi* proceso_a_matar = esi_ejecutando;
+	bool coincideProceso(void* proceso){
+
+		t_proceso_esi* esi = (t_proceso_esi*) proceso;
+
+		return esi->id == proceso_a_matar->id;
+
+	}
+
+	proceso_a_matar = esi_ejecutando;
 
 	if(coincideID(proceso_a_matar)){
 
@@ -131,7 +141,7 @@ void matarProceso(int ESI_ID){
 
 		if(proceso_a_matar != NULL){
 
-			list_remove(clave_bloqueando_proceso->colaBloqueados->elements, proceso_a_matar);
+			list_remove_by_condition(clave_bloqueando_proceso->colaBloqueados->elements, coincideProceso);
 
 		}else{
 
@@ -139,7 +149,7 @@ void matarProceso(int ESI_ID){
 
 			if(proceso_a_matar != NULL){
 
-				list_remove(colaListos->elements, proceso_a_matar);
+				list_remove_by_condition(colaListos->elements, coincideProceso);
 
 			}else{
 
