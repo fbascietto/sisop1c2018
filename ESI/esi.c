@@ -19,17 +19,31 @@ int main(int args, char* argv[]) {
 	coordinador_socket = 0;
 	planificador_socket = 0;
 
-	//Intenta conectarse hasta que se conecta a ambos
+	//Intenta conectarse al coordinador
 
-	while(coordinador_socket == 0 || planificador_socket == 0){
+	while(coordinador_socket == 0){
 
-		if(coordinador_socket == 0) coordinador_socket = conectarseA(coordinador_IP, coordinador_puerto);
-		if(planificador_socket == 0) planificador_socket = conectarseA(planificador_IP, planificador_puerto);
+		coordinador_socket = conectarseA(coordinador_IP, coordinador_puerto);
 
 	}
 
+	//protocolo (handshake)
 	enviarInt(coordinador_socket, ESI);
-	enviarInt(planificador_socket, ESI);
+
+	//recibe identificador de ESI para enviar a planificador
+	recibirInt(coordinador_socket, &id_proceso);
+
+	while(planificador_socket == 0){
+
+		planificador_socket = conectarseA(planificador_IP, planificador_puerto);
+
+	}
+
+//	//protocolo (handshake)
+//	enviarInt(planificador_socket, ESI);
+
+	//envia identificador de ESI al planificador
+	enviarInt(planificador_socket, id_proceso);
 
 	correrScript(ruta_script_ejecuciones);
 

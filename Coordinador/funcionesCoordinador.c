@@ -29,6 +29,8 @@ void *esperarConexiones(void *args) {
 			case ESI:
 				// printf("ESI.\n");
 				log_trace(logT,"Conexion de ESI.");
+				//envia al esi su nro de socket para enviarle al planificador
+				enviarInt(nuevoSocket, nuevoSocket);
 				pthread_t threadAtencionESI;
 				argsESI->socket = nuevoSocket;
 				if(pthread_create(&threadAtencionESI,NULL,atenderESI,(void*) argsESI)){

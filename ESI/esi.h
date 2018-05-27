@@ -28,6 +28,7 @@ char* planificador_IP;
 int planificador_puerto;
 int planificador_socket;
 
+int id_proceso;
 
 t_config* cargar_configuracion();
 void configureLoggers();
