@@ -94,11 +94,13 @@ void * iniciaConsola(){
 		} else if(!strncmp(linea, pausar, strlen(pausar)))
 		{
 			log_trace(logPlan,"Consola recibe ""%s""\n", pausar);
+			pauseScheduler();
 			free(linea);
 
 		} else if(!strncmp(linea, continuar, strlen(continuar)))
 		{
 			log_trace(logPlan,"Consola recibe ""%s""\n", continuar);
+			goOn();
 			free(linea);
 
 		} else if(!strncmp(linea, bloquear, strlen(bloquear)))
@@ -146,7 +148,7 @@ void * iniciaConsola(){
 				printf("Demasiados argumentos: listar [clave]\n");
 			}else{
 				char* key = parametros[1];
-				listBlocked(key);
+				listBlockedProcesses(key);
 			}
 			free(linea);
 
@@ -158,6 +160,15 @@ void * iniciaConsola(){
 		} else if(!strncmp(linea, kill, strlen(kill)))
 		{
 			log_trace(logPlan,"Consola recibe ""%s""\n", kill);
+			parametros = string_split(linea, " ");
+			if(parametros[1] == NULL){
+				printf("Faltan argumentos: kill [id]\n");
+			}else if(parametros[2] != NULL){
+				printf("Demasiados argumentos: kill [id]\n");
+			}else{
+				int ESI_ID = atoi(parametros[1]);
+				matarProceso(ESI_ID);
+			}
 			free(linea);
 
 		} else if(!strncmp(linea, deadlock, strlen(deadlock)))

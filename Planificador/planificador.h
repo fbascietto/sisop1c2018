@@ -46,7 +46,7 @@ int fdMaxConexionesActivas;
 fd_set fdConexiones;
 
 t_list* listaKeys;
-t_list* colaListos;
+t_queue* colaListos;
 t_queue* colaTerminados;
 
 t_proceso_esi* esi_ejecutando;
