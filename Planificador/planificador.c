@@ -223,11 +223,21 @@ void cargar_configuracion(){
 	}
 
 	if(config_has_property(infoConfig, "ALGORITMO")){
-		planificador_Algoritmo = config_get_string_value(infoConfig, "ALGORITMO");
+		planificador = config_get_string_value(infoConfig, "ALGORITMO");
+
+		if(strcmp(planificador, "SJF_SIN_DESALOJO") == 0){
+			planificador_Algoritmo = SJF_SIN_DESALOJO;
+		}
+		if(strcmp(planificador, "SJF_CON_DESALOJO") == 0){
+			planificador_Algoritmo = SJF_CON_DESALOJO;
+		}
+		if(strcmp(planificador, "HRRN") == 0){
+			planificador_Algoritmo = HRRN;
+		}
 	}
 
 	if(config_has_property(infoConfig, "ESTIMACION_INICIAL")){
-		estimacion_inicial = config_get_int_value(infoConfig, "ESTIMACION_INICIAL");
+		estimacion_inicial = config_get_int_value(infoConfig, "ESTIMACION_INICIAL") / 100;
 	}
 
 	if(config_has_property(infoConfig, "IP_COORDINADOR")){

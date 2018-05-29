@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include <pthread.h>
 #include <commons/log.h>
 #include <commons/config.h>
@@ -26,6 +27,7 @@ typedef struct {
 	int fd;
 	t_list* clavesTomadas;
 	int rafagaEstimada;
+	int rafagaActual;
 	int tiempoEspera;
 } t_proceso_esi;
 
@@ -35,7 +37,8 @@ typedef struct {
 	t_queue* colaBloqueados;
 } t_clave;
 
-char* planificador_Algoritmo;
+int planificador_Algoritmo;
+char* planificador;
 char* coordinador_IP;
 int estimacion_inicial;
 int coordinador_Puerto;
@@ -51,18 +54,30 @@ t_queue* colaTerminados;
 
 t_proceso_esi* esi_ejecutando;
 
+//funciones de log y config
 void configureLogger();
-void *esperarConexiones(void *args);
 void cargar_configuracion();
+
+//funciones sockets
+int conectarCoordinador();
 void *esperarConexiones(void *args);
-void *planificar(void *args);
 t_proceso_esi* recibirNuevoESI(int idESI, int fd);
 void esperarConexionesESIs(void* esperarConexion);
-void moverAListos(t_proceso_esi* procesoEsi);
 void recibirMensajeCliente(int socketCliente);
 void recibirMensajeEsi(int socketCliente);
 void recibirMensajeCoordinador(int socketCliente);
-int conectarCoordinador();
+
+//funciones de planificacion
+void planificar(void *args);
+void moverAListos(t_proceso_esi* procesoEsi);
+void ordenarListos();
+void quick(t_list* unaLista, int limite_izq, int limite_der);
+void actualizarColaListos();
+void cambiarEstimado(void* unEsi);
+int promedioExponencial(t_proceso_esi* unEsi);
+int estimacionHRRN(t_proceso_esi* unEsi);
+void enviarEsiAEjecutar(t_proceso_esi* ESIMenorRafaga);
+
 
 //funciones consola
 void * iniciaConsola();

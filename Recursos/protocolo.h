@@ -33,5 +33,9 @@
 //Protocolo de tamaños
 #define LONGITUD_CLAVE 41
 
+//Protocolo de Algoritmos del Planificador
+#define SJF_SIN_DESALOJO 51
+#define SJF_CON_DESALOJO 52
+#define HRRN 53
 
 #endif /* PROTOCOLO_H_ */
