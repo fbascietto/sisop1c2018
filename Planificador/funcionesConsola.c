@@ -88,6 +88,21 @@ void listBlockedProcesses(char* keySearch){
 	}
 }
 
+
+void liberarKeys(t_proceso_esi* esi){
+	list_iterate(esi->clavesTomadas, liberarKey);
+}
+
+void liberarKey(void* key){
+
+	t_clave* clave = (t_clave*) key;
+
+	t_proceso_esi* esi_a_desbloquear = queue_pop(clave->colaBloqueados);
+
+	list_add(colaListos->elements, esi_a_desbloquear);
+
+}
+
 void matarProceso(int ESI_ID){
 
 	t_proceso_esi* proceso_a_matar;
@@ -107,16 +122,6 @@ void matarProceso(int ESI_ID){
 		t_proceso_esi* un_esi = list_find(clave->colaBloqueados->elements, coincideID);
 
 		return un_esi != NULL;
-
-	}
-
-	void liberarPrimero(void* key){
-
-		t_clave* clave = (t_clave*) key;
-
-		t_proceso_esi* esi_a_desbloquear = queue_pop(clave->colaBloqueados);
-
-		list_add(colaListos->elements, esi_a_desbloquear);
 
 	}
 
@@ -166,7 +171,7 @@ void matarProceso(int ESI_ID){
 
 		enviarInt(proceso_a_matar->fd, ABORTAR);
 
-		list_iterate(proceso_a_matar->clavesTomadas, liberarPrimero);
+		liberarKeys(proceso_a_matar);
 		queue_push(colaTerminados, proceso_a_matar);
 
 	}

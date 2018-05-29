@@ -8,13 +8,12 @@ void planificar(void *args1){
 	fd_set* conexionesActivas = &fdConexiones;
 
 	int fdmaxHelper;
-	bool iterar;
+	bool iterar = true;
 	for(;;) {
 
 		actualizarColaListos();
 		ordenarListos();
-
-		enviarEsiAEjecutar((t_proceso_esi*) list_get(colaListos, 0));
+		enviarMejorEsiAEjecutar();
 
 		//mutex con la funcion esperarConexionesESIs()
 		fdmaxHelper = fdMaxConexionesActivas;
@@ -35,8 +34,11 @@ void planificar(void *args1){
 
 			} else {
 				//Es un mensaje de un cliente ya existente
-				recibirMensajeCliente(socketIterado);
+				iterar = recibirMensajeCliente(socketIterado);
 
+				if(iterar == false){
+					break;
+				}
 				}
 			}
 		}
@@ -44,9 +46,9 @@ void planificar(void *args1){
 
 void ordenarListos(){
 
-	t_list* unaLista = colaListos;
+	t_list* unaLista = colaListos->elements;
 
-	quick(unaLista, 0, list_size(colaListos)-1);
+	quick(unaLista, 0, list_size(colaListos->elements)-1);
 
 }
 
@@ -101,7 +103,7 @@ void quick(t_list* unaLista, int limite_izq, int limite_der){
 
 void actualizarColaListos(){
 	if(planificador_Algoritmo == HRRN){
-	list_iterate(colaListos, cambiarEstimado);
+	list_iterate(colaListos->elements, cambiarEstimado);
 	}
 }
 
@@ -143,30 +145,33 @@ t_proceso_esi* recibirNuevoESI(int idESI, int fd){
 }
 
 void moverAListos(t_proceso_esi* procesoEsi){
-	list_add(colaListos,procesoEsi);
+	list_add(colaListos->elements,procesoEsi);
 }
 
-void recibirMensajeCliente(int socketCliente){
+bool recibirMensajeCliente(int socketCliente){
 	int cliente;
+	bool iterar = true;
 	recibirInt(socketCliente,&cliente);
 	switch(cliente){
 	case ESI:
-		recibirMensajeEsi(socketCliente);
+		iterar = recibirMensajeEsi(socketCliente);
 		break;
 	case COORDINADOR:
 		recibirMensajeCoordinador(socketCliente);
 		break;
 	}
+	return iterar;
 }
 
 //TODO
-void enviarEsiAEjecutar(t_proceso_esi* ESIMenorRafaga){
-	esi_ejecutando = ESIMenorRafaga;
+void enviarMejorEsiAEjecutar(){
+	esi_ejecutando = list_remove(colaListos->elements, 0);
 	enviarInt(esi_ejecutando->fd, EJECUTAR_LINEA);
 }
 
-void recibirMensajeEsi(int socketCliente){
+bool recibirMensajeEsi(int socketCliente){
 	int mensaje;
+	bool iterar = true;
 	recibirInt(socketCliente,&mensaje);
 	switch(mensaje){
 
@@ -182,26 +187,34 @@ void recibirMensajeEsi(int socketCliente){
 			actualizarColaListos();
 			if(planificador_Algoritmo == SJF_CON_DESALOJO){
 				ordenarListos();
-				t_proceso_esi* ESIMenorRafaga = list_remove(colaListos, 0);
+				t_proceso_esi* ESIMenorRafaga = list_remove(colaListos->elements, 0);
 				if(ESIMenorRafaga->rafagaEstimada < esi_ejecutando->rafagaEstimada){
 					moverAListos(esi_ejecutando);
 					cambiarEstimado(esi_ejecutando);
-					enviarEsiAEjecutar(ESIMenorRafaga);
+					enviarMejorEsiAEjecutar(ESIMenorRafaga);
 				} else{
-					list_add_in_index(colaListos, 0, ESIMenorRafaga);
+					list_add_in_index(colaListos->elements, 0, ESIMenorRafaga);
 				}
 			}
 	break;
 
 
+	//TODO:
 	case EJECUCION_INVALIDA:;
-	//TODO:
+		//finalizarESIEnEjecucion();
+		liberarKeys(esi_ejecutando);
+		iterar = false;
 	break;
+
+	//TODO
 	case EN_ESPERA:;
-	//TODO:
+		//moverABloqueados();
+		iterar = false;
 	break;
+
 	}
 
+	return iterar;
 }
 
 void recibirMensajeCoordinador(int socketCliente){

@@ -16,12 +16,11 @@
 #ifndef PLANIFICADOR_H_
 #define PLANIFICADOR_H_
 
-t_log_level LogL;
-t_log* logPlan;
 
 //semáforos
 sem_t* pausarPlanificacion;
 
+//structs
 typedef struct {
 	int id;
 	int fd;
@@ -37,6 +36,7 @@ typedef struct {
 	t_queue* colaBloqueados;
 } t_clave;
 
+//archivo de config y logs
 int planificador_Algoritmo;
 char* planificador;
 char* coordinador_IP;
@@ -44,14 +44,19 @@ int estimacion_inicial;
 int coordinador_Puerto;
 int planificador_Puerto_Escucha;
 char** claves_Ini_Bloqueadas;
+t_log_level LogL;
+t_log* logPlan;
 
+//select y fds
 int fdMaxConexionesActivas;
 fd_set fdConexiones;
 
+//colas y listas
 t_list* listaKeys;
 t_queue* colaListos;
 t_queue* colaTerminados;
 
+//esi en ejecucion
 t_proceso_esi* esi_ejecutando;
 
 //funciones de log y config
@@ -63,8 +68,8 @@ int conectarCoordinador();
 void *esperarConexiones(void *args);
 t_proceso_esi* recibirNuevoESI(int idESI, int fd);
 void esperarConexionesESIs(void* esperarConexion);
-void recibirMensajeCliente(int socketCliente);
-void recibirMensajeEsi(int socketCliente);
+bool recibirMensajeCliente(int socketCliente);
+bool recibirMensajeEsi(int socketCliente);
 void recibirMensajeCoordinador(int socketCliente);
 
 //funciones de planificacion
@@ -76,8 +81,11 @@ void actualizarColaListos();
 void cambiarEstimado(void* unEsi);
 int promedioExponencial(t_proceso_esi* unEsi);
 int estimacionHRRN(t_proceso_esi* unEsi);
-void enviarEsiAEjecutar(t_proceso_esi* ESIMenorRafaga);
+void enviarMejorEsiAEjecutar();
 
+//funciones de keys
+void liberarKeys(t_proceso_esi* esi);
+void liberarKey(void* key);
 
 //funciones consola
 void * iniciaConsola();
