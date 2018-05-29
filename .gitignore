@@ -52,6 +52,8 @@ Mkfile.old
 dkms.conf
 
 .settings
+.cproject
+.project
 *.o
 *.so
 *.d
