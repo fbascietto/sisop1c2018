@@ -160,7 +160,6 @@ int recibirEntrada(int socket, FILE * file){
 	if(recibirValue(socket,value)<=0){
 		return -1;
 	}
-
 	return almacenarEntrada(key,file, value);
 
 }
@@ -173,15 +172,15 @@ void configureLoggers(char* instName){
 	E = LOG_LEVEL_ERROR;
 
 	char* logPath = string_new();
-	string_append(logPath,"../Logs/");
-	string_append(logPath,instName);
-	string_append(logPath,".log");
+	string_append(&logPath,"../Logs/");
+	string_append(&logPath,instName);
+	string_append(&logPath,".log");
 
-	logT = log_create("../Logs/ESI.log","ESI", false, T);
-	logI = log_create("../Logs/ESI.log", "ESI", false, I);
-	logE = log_create("../Logs/ESI.log", "ESI", true, E);
+	logT = log_create(logPath,"ESI", false, T);
+	logI = log_create(logPath, "ESI", false, I);
+	logE = log_create(logPath, "ESI", true, E);
 
-	/* 	free(logPath); */
+	 	free(logPath);
 }
 
 void destroyLoggers(){

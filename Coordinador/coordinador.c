@@ -21,6 +21,7 @@ int main(){
 	esperarConexion->socketEscucha = socketEscucha;
 
 	esperarConexiones((void*) esperarConexion);
+
 	destroyLoggers();
 	list_destroy(instancias);
 	return 0;

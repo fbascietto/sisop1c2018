@@ -1,12 +1,23 @@
 #include "instancia.h"
-//#include "instanciaTest.h"
+#include <CUnit/Basic.h>
+#include "cunit_def.h"
 
 int main(int argc, char **argv) {
-	/*if (strcmp(argv[1], "-testea") == 0){
+	/*if ((argc > 1) && (strcmp(argv[1], "-testea") == 0)){
 		printf("corriendo test");
-		correrTests();
+
+
+		CU_initialize_registry();
+
+		CU_register_suites(suites);
+
+		CU_basic_set_mode(CU_BRM_VERBOSE);
+		CU_basic_run_tests();
+		CU_cleanup_registry();
+
+		return CU_get_error();
 	}else {*/
-		int coordinador_socket;
+			int coordinador_socket;
 			FILE* archivoDatos;
 
 			cargar_configuracion();

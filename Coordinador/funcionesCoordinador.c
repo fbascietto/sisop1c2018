@@ -44,6 +44,7 @@ void *esperarConexiones(void *args) {
 
 			case INSTANCIA:
 				crearInstancia(nuevoSocket);
+
 				break;
 
 			default:
