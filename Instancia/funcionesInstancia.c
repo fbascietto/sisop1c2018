@@ -35,7 +35,7 @@ FILE* inicializarPuntoMontaje(char * path, char * filename){
 	int status = mkdir(path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 	char* nuevoArchivo = string_new();
 
-	if (status < 0){
+	if (status < 0 && (errno != EEXIST)){
 		/*informar error en la creación de la carpeta y salir de manera ordenada*/
 		log_error(logE, "Fallo al generar el archivo .dat de la instancia.");
 		exit(EXIT_FAILURE);
@@ -45,7 +45,7 @@ FILE* inicializarPuntoMontaje(char * path, char * filename){
 	string_append(&nuevoArchivo, filename);
 	string_append(&nuevoArchivo, ".dat");
 
-	FILE* instanciaDat = fopen(nuevoArchivo,"rw");
+	FILE* instanciaDat = fopen(nuevoArchivo,"w+");
 	if (instanciaDat == NULL){
 			log_error(logE, "Fallo al generar el archivo .dat de la instancia.");
 			exit(EXIT_FAILURE);

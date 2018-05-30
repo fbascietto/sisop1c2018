@@ -1,4 +1,6 @@
 #include "funcionesCoordinador.h"
+#include <readline/readline.h>
+
 
 void *esperarConexiones(void *args) {
 
@@ -44,7 +46,7 @@ void *esperarConexiones(void *args) {
 
 			case INSTANCIA:
 				crearInstancia(nuevoSocket);
-
+				simulaEntrada(nuevoSocket);
 				break;
 
 			default:
@@ -92,15 +94,15 @@ int enviarKey(char key[LONGITUD_CLAVE], int socket ){
 	int lenEnviado = 0;
 	while(totalEnviado < LONGITUD_CLAVE) {
 			lenEnviado = 0;
-			lenEnviado = send(socket, key[totalEnviado], LONGITUD_CLAVE-totalEnviado, 0);
-			if(lenEnviado < 0){ perror("error al enviar\n"); return -1;}
+			lenEnviado = send(socket, &key[totalEnviado], LONGITUD_CLAVE-totalEnviado, 0);
+			if(lenEnviado < 0){ perror("error al enviar"); return -1;}
 			totalEnviado = totalEnviado + lenEnviado;
 		}
 	return totalEnviado;
 }
 
 int enviarValue(char * value, int socket){
-	return enviarMensaje(value,socket);
+	return enviarMensaje(socket, value);
 }
 
 void cargar_configuracion(){
@@ -149,10 +151,25 @@ void destroyLoggers(){
 	log_destroy(logE);
 }
 
-void *atenderESI(void *args){
+void atenderESI(void *args){
 	t_argumentos_thESI * argumentos = (t_argumentos_thESI *) args;
 	int socket = argumentos->socket;
+}
 
 
+void simulaEntrada(int socket){
+	char* linea;
+	linea = readline("ComandoESI:" );
+	char** parametros;
+	parametros = string_split(linea, " ");
 
+	char key[LONGITUD_CLAVE];
+	strcpy(key,parametros[0]);
+	/*
+	 * parametro 0 = key
+	 * parametro 1 = value
+	 *
+	 * */
+	enviarKey(key,socket);
+	enviarValue(parametros[1],socket);
 }

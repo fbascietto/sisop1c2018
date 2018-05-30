@@ -16,6 +16,7 @@
 #include <sys/stat.h> /* contiene las constantes para MKDIR */
 #include <sys/mman.h> /* para el uso de MMAP */
 #include <fcntl.h> /* para el uso de fallocate */
+#include <errno.h>
 
 
 typedef struct {

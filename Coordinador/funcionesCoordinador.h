@@ -61,10 +61,14 @@ void despachar_solicitud(t_instancia* unaInstancia, t_solicitud una_solicitud);
 void cargar_configuracion();
 void configureLoggers();
 void destroyLoggers();
-void * atenderESI(void *args);
+void atenderESI(void *args);
 int crearInstancia(int nuevoSocket);
 int enviarKey(char key[LONGITUD_CLAVE], int socket );
 int enviarValue(char * value, int socket);
 int enviarEntradaInstancia(char key[LONGITUD_CLAVE] , char * value, t_instancia * instancia);
+
+//funciones a borrar
+void simulaEntrada(int socket);
+
 
 #endif /* FUNCIONESCOORDINADOR_H_ */
