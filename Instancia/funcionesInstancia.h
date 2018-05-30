@@ -49,7 +49,7 @@ void cargar_configuracion();
 void configureLoggers(char* name);
 void destroyLoggers();
 int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, char * escribir);
-int recibirValue(int socketConn, char* bloqueArchivo);
+int recibirValue(int socketConn, char** bloqueArchivo);
 int recibirEntrada(int socket, FILE * file);
 int recibirKey(int socket, char key [LONGITUD_CLAVE]);
 

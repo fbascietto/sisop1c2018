@@ -98,7 +98,7 @@ int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, char * escribir){
 
 }
 
-int recibirValue(int socketConn, char* bloqueArchivo){
+int recibirValue(int socketConn, char** value){
 
 		int largoMensaje = 0;
 		int bytesRecibidos = 0;
@@ -106,14 +106,11 @@ int recibirValue(int socketConn, char* bloqueArchivo){
 
 		recibirInt(socketConn,&largoMensaje);
 
-
-			bloqueArchivo = malloc((size_t)largoMensaje);
+		*value = malloc((size_t)largoMensaje);
 
 		while(recibido<largoMensaje){
-		int bytesAleer = 0;
-		recibirInt(socketConn,&bytesAleer);
-			while(bytesRecibidos<bytesAleer){
-						bytesRecibidos += recv(socketConn,bloqueArchivo,(size_t)bytesAleer-bytesRecibidos,NULL);
+			while(bytesRecibidos<largoMensaje){
+						bytesRecibidos += recv(socketConn,*value,(size_t)largoMensaje-bytesRecibidos,NULL);
 
 			}
 			recibido += bytesRecibidos;
@@ -123,6 +120,7 @@ int recibirValue(int socketConn, char* bloqueArchivo){
 		if(recibido <= 0){
 			log_error(logT,"no se recibio nada del socket %d",socketConn);
 		}
+
 		return recibido;
 
 
@@ -155,11 +153,11 @@ int recibirEntrada(int socket, FILE * file){
 
 	char key [LONGITUD_CLAVE];
 	char * value;
-
+	//value = string_new();
 	if(recibirKey(socket,key)<=0){
 		return -1;
 	}
-	if(recibirValue(socket,value)<=0){
+	if(recibirValue(socket,&value)<=0){
 		return -1;
 	}
 	return almacenarEntrada(key,file, value);
@@ -178,9 +176,9 @@ void configureLoggers(char* instName){
 	string_append(&logPath,instName);
 	string_append(&logPath,".log");
 
-	logT = log_create(logPath,"ESI", false, T);
-	logI = log_create(logPath, "ESI", false, I);
-	logE = log_create(logPath, "ESI", true, E);
+	logT = log_create(logPath,"Instacia", false, T);
+	logI = log_create(logPath, "Instacia", false, I);
+	logE = log_create(logPath, "Instacia", true, E);
 
 	 	free(logPath);
 }
