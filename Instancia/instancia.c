@@ -20,6 +20,8 @@ int main(int argc, char **argv) {
 			int coordinador_socket;
 			FILE* archivoDatos;
 
+			numEntradaActual = 0;
+
 			cargar_configuracion();
 			configureLoggers(nombre_Instancia);
 

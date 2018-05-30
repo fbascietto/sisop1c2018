@@ -33,6 +33,7 @@ char* nombre_Instancia;
 int intervalo_dump;
 int qEntradas;
 int tamanioEntrada;
+int numEntradaActual;
 t_log_level T;
 t_log_level I;
 t_log_level E;

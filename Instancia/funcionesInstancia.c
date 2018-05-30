@@ -62,11 +62,11 @@ int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, char * escribir){
 
 	unsigned char* map;
 
-	int numEntrada = 0; /* ToDo: depende del algoritmo la asignación de la entrada a utilizar*/
+	/* int numEntrada = 0; ToDo: depende del algoritmo la asignación de la entrada a utilizar*/
 
 	int data = fileno(archivoDatos);
 
-	map = (unsigned char*) mmap(NULL, qEntradas * tamanioEntrada , PROT_READ | PROT_WRITE, MAP_SHARED, data, sizeof(unsigned char)*numEntrada*tamanioEntrada);
+	map = (unsigned char*) mmap(NULL, qEntradas * tamanioEntrada , PROT_READ | PROT_WRITE, MAP_SHARED, data, sizeof(unsigned char)*numEntradaActual*tamanioEntrada);
 
 	if (map == MAP_FAILED){
 		close(data);
@@ -83,13 +83,15 @@ int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, char * escribir){
 	int entradasOcupadas = strlen(escribir)/tamanioEntrada;
 
 	if (strlen(escribir) % tamanioEntrada > 0){
-		log_trace(logT,"Se escribió con exito sobre la entrada %d y con un total de %d entradas.", numEntrada, entradasOcupadas + 1);
-	} else {
-		log_trace(logT,"Se escribió con exito sobre la entrada %d y con un total de %d entradas.", numEntrada, entradasOcupadas);
+		log_trace(logT,"Se escribió con exito sobre la entrada %d y con un total de %d entradas.", numEntradaActual, entradasOcupadas + 1);
 
+	} else {
+		log_trace(logT,"Se escribió con exito sobre la entrada %d y con un total de %d entradas.", numEntradaActual, entradasOcupadas);
 	}
 	munmap(map,qEntradas * tamanioEntrada);
 
+
+	numEntradaActual += entradasOcupadas;
 	//free(bloqueArchivo);
 	close(data);
 	return strlen(escribir);
