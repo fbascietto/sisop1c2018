@@ -89,7 +89,7 @@ int enviarEntradaInstancia(char key[LONGITUD_CLAVE] , char * value, t_instancia 
 		log_error(logE,"no se pudo enviar entrada a la instancia %s",instancia->nombre);
 		return -1;
 	}
-	instancia->q_keys = instancia->q_keys +1;
+	list_add(instancia->claves, key);
 
 	return 1;
 

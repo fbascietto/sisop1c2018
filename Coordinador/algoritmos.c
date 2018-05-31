@@ -8,9 +8,9 @@
 
 
 void equitativeLoad(t_solicitud una_solicitud){
-	t_instancia* instancia = list_get(instancias, posicion_puntero);
+	t_instancia* instancia = list_get(instancias, proxima_posicion_instancia);
 	despachar_solicitud(instancia, una_solicitud);
-	posicion_puntero = siguiente(posicion_puntero, list_size(instancias));
+	proxima_posicion_instancia = siguiente(proxima_posicion_instancia, list_size(instancias));
 }
 
 int siguiente(int posicion_puntero, int tamanio){

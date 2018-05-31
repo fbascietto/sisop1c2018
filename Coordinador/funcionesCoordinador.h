@@ -66,7 +66,7 @@ void configureLoggers();
 void destroyLoggers();
 void atenderESI(void *args);
 int crearInstancia(int nuevoSocket);
-void eliminarInstancia(t_instancia * instancia)
+void eliminarInstancia(t_instancia * instancia);
 int enviarKey(char key[LONGITUD_CLAVE], int socket );
 int enviarValue(char * value, int socket);
 int enviarEntradaInstancia(char key[LONGITUD_CLAVE] , char * value, t_instancia * instancia);
