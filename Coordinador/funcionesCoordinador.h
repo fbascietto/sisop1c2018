@@ -35,7 +35,7 @@ typedef struct {
 typedef struct {
 	char* nombre;
 	int socket;
-	int * q_keys;
+	t_list * claves;
 
 } t_instancia;
 
@@ -52,8 +52,11 @@ t_log* logT;
 t_log* logI;
 t_log* logE;
 
-int posicion_puntero;
+
+int proxima_posicion_instancia;
 t_list * instancias;
+
+t_list * claves_bloqueadas;
 
 void *esperarConexiones(void *args);
 void cargarConfiguracion();
@@ -63,9 +66,13 @@ void configureLoggers();
 void destroyLoggers();
 void atenderESI(void *args);
 int crearInstancia(int nuevoSocket);
+void eliminarInstancia(t_instancia * instancia)
 int enviarKey(char key[LONGITUD_CLAVE], int socket );
 int enviarValue(char * value, int socket);
 int enviarEntradaInstancia(char key[LONGITUD_CLAVE] , char * value, t_instancia * instancia);
+int elegirInstancia(t_instancia * instancia);
+int bloquearKey(char * key);
+int ejecutarOperacionGET(char* key);
 
 //funciones a borrar
 void simulaEntrada(int socket);

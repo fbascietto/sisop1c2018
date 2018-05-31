@@ -8,7 +8,9 @@ int main(){
 	fd_set fdSocketsEscucha;
 
 	instancias = list_create();
-	posicion_puntero = 0;
+	proxima_posicion_instancia = 0;
+
+	claves_bloqueadas = list_create();
 
 	FD_ZERO(&fdSocketsEscucha);
 	socketEscucha = escuchar(coordinador_Puerto_Escucha);

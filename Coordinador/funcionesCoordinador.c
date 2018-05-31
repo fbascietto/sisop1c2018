@@ -68,10 +68,16 @@ int crearInstancia(int nuevoSocket){
 					if(enviarInt(nuevoSocket,tamanio_Entrada)<=0){
 						return -1;
 					}
-
+					instancia->claves = list_create();
 					list_add(instancias,instancia);
 					log_trace(logT,"Conexión de %s.", instancia->nombre);
 					return 1;
+}
+
+void eliminarInstancia(t_instancia * instancia){
+	free(instancia->nombre);
+	list_destroy(instancia->claves);
+	free(instancia);
 }
 
 int enviarEntradaInstancia(char key[LONGITUD_CLAVE] , char * value, t_instancia * instancia){
@@ -157,6 +163,80 @@ void atenderESI(void *args){
 }
 
 
+int ejecutarOperacionGET(char* key){
+	int pos = -1;
+	t_instancia * instancia;
+	pos = buscarInstanciaContenedora(key, instancia);
+	if(pos<0){
+		log_trace(logT,"No se encontro la clave %s en ninguna instancia", key);
+		if(elegirInstancia(instancia)<0){
+			log_trace(logE,"No se pudo guardar la clave %s en ninguna instancia", key);
+			return -1;
+		}
+	}
+
+	return bloquearKey(key);
+}
+
+
+int bloquearKey(char * key){
+	int a = -1;
+	a = list_add(claves_bloqueadas, key);
+	log_trace(logT, "clave %s bloqueada", key);
+	return a;
+}
+
+int elegirInstancia(t_instancia * instancia){
+
+	if(strcmp(coordinador_Algoritmo,"EL")==0){
+		if(proxima_posicion_instancia  >= list_size(instancias) ){
+			proxima_posicion_instancia = 0;
+		}
+		instancia = list_get(instancias,proxima_posicion_instancia);
+		log_trace(logT,"se eligio la instancia %s para el guardado de clave", instancia->nombre);
+		return proxima_posicion_instancia++;
+	}else
+	if(strcmp(coordinador_Algoritmo,"LSU")==0){
+		//TODO
+	}else
+	if(strcmp(coordinador_Algoritmo,"KE")==0){
+		//TODO
+	}
+
+
+	return -1;
+}
+
+int buscarInstanciaContenedora(char* key, t_instancia * instancia){
+	int pos = -1;
+	int encontro = 0;
+	bool* contieneClave(void* parametro) {
+			t_instancia* inst = (t_instancia*) parametro;
+			encontro = contieneClaveInstancia(inst,key);
+			++pos;
+			return (encontro);
+	}
+
+	instancia = list_find(instancias,contieneClave);
+	if(encontro){
+		return pos;
+	}else{
+		return -1;
+	}
+
+}
+
+int contieneClaveInstancia(t_instancia * instancia, char* key){
+
+	bool* contieneClave(void* parametro) {
+				char* clave = (char*) parametro;
+				return (strcmp(clave,key)==0);
+		}
+
+	return list_size(list_filter(instancia->claves,contieneClave(key)));
+}
+
+/**************** FUNCIONES PRUEBA ************************/
 void simulaEntrada(int socket){
 	char* linea;
 	linea = readline("ComandoESI:" );
