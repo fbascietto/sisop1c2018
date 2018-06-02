@@ -38,4 +38,8 @@
 #define SJF_CON_DESALOJO 52
 #define HRRN 53
 
+
+//Protocolo de Mensajes Coordinador/Instancia (61-75)
+#define ENVIO_ENTRADA 61
+
 #endif /* PROTOCOLO_H_ */
