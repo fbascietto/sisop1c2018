@@ -1,8 +1,13 @@
 #include "planificador.h"
 
 int main(){
+
+
 	configureLogger();
 	cargar_configuracion();
+
+	//inicializa un semaforo no compartido de valor 0
+	sem_init(&productorConsumidor, 0, 0);
 
 	int socketEscucha;
 	fd_set fdSocketsEscucha;
@@ -64,7 +69,14 @@ void destruirSemaforos(){
 void configureLogger(){
 
 	LogL = LOG_LEVEL_TRACE;
+
+	/* ejecutar desde ECLIPSE *
 	logPlan = log_create("../Recursos/Logs/planificador.log","Planificador", true, LogL);
+	 * /
+
+	/* para ejecutar desde CONSOLA */
+	logPlan = log_create("../../Recursos/Logs/planificador.log","Planificador", true, LogL);
+
 	log_trace(logPlan, "inicializacion de logs");
 }
 
@@ -233,7 +245,13 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
+	/*	para correr desde ECLIPSE
 	infoConfig = config_create("../Recursos/Configuracion/planificador.config");
+	 * */
+
+	/* para correr desde CONSOLA */
+	infoConfig = config_create("../../Recursos/Configuracion/planificador.config");
+
 
 	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){
 		planificador_Puerto_Escucha = config_get_int_value(infoConfig, "PUERTO_ESCUCHA");

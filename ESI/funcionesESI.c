@@ -11,7 +11,13 @@ t_config* cargar_configuracion(){
 
 	t_config* infoConfig;
 
+	/* para correr desde ECLIPSE
 	infoConfig = config_create("../Recursos/Configuracion/esi.config");
+	 */
+
+	/* para correr desde CONSOLA*/
+	infoConfig = config_create("../../Recursos/Configuracion/esi.config");
+
 
 	if(config_has_property(infoConfig, "IP_COORDINADOR")){
 		coordinador_IP = config_get_string_value(infoConfig, "IP_COORDINADOR");
@@ -38,9 +44,17 @@ void configureLoggers(){
 	T = LOG_LEVEL_TRACE;
 	I = LOG_LEVEL_INFO;
 	E = LOG_LEVEL_ERROR;
+
+	/* para correr desde ECLIPSE *
 	logT = log_create("../Recursos/Logs/ESI.log","ESI", false, T);
 	logI = log_create("../Recursos/Logs/ESI.log", "ESI", false, I);
 	logE = log_create("../Recursos/Logs/ESI.log", "ESI", true, E);
+	 */
+
+	/* para correr desde CONSOLA */
+	logT = log_create("../../Recursos/Logs/ESI.log","ESI", true, T);
+	logI = log_create("../../Recursos/Logs/ESI.log", "ESI", true, I);
+	logE = log_create("../../Recursos/Logs/ESI.log", "ESI", true, E);
 
 }
 
@@ -97,7 +111,11 @@ void correrScript(char* ruta){
 
 	while(1){
 
+		log_info(logI, "Espero mensaje del planificador");
+
 		recibirInt(planificador_socket, &accion);
+
+		log_info(logI, "Recibi mensaje del planificador");
 
 		if(accion == EJECUTAR_LINEA){
 

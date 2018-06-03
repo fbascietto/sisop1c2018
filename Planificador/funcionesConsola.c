@@ -52,7 +52,7 @@ void unblock(char* key_value){
 
 	t_clave* key = list_find(listaKeys, coincideValor);
 	t_proceso_esi* esi_a_desbloquear = queue_pop(key->colaBloqueados);
-	list_add(colaListos->elements, esi_a_desbloquear);
+	moverAListos(esi_a_desbloquear);
 
 }
 

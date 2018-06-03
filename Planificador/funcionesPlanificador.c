@@ -24,29 +24,28 @@ void recibirInstancia(int socketCoordinador){
 
 void* planificar(void * args){
 
-	int socketMejorEsi = enviarMejorEsiAEjecutar();
+
+	int socketMejorEsi;
+	bool replanificar = true;
 
 	while(1){
 
 		if(pausarPlanificacion){
+
 			pthread_mutex_lock(&pausarPlanificacionSem);
 		}
 
-		bool replanificar = false;
 
-		if(socketMejorEsi == 0){
-			replanificar = true;
-		}
+		sem_wait(&productorConsumidor);
 
-		if(replanificar){
-			socketMejorEsi = enviarMejorEsiAEjecutar();
-		}
+		socketMejorEsi = enviarMejorEsiAEjecutar();
 
 		while(replanificar) {
 			replanificar = recibirMensajeCliente(socketMejorEsi);
 
 		}
 
+		replanificar = true;
 
 	}
 
@@ -153,7 +152,9 @@ t_proceso_esi* recibirNuevoESI(int idESI, int fd){
 }
 
 void moverAListos(t_proceso_esi* procesoEsi){
-	list_add(colaListos->elements,procesoEsi);
+	queue_push(colaListos,procesoEsi);
+	log_trace(logPlan, "ESI agregado a la cola de listos!");
+	sem_post(&productorConsumidor);
 }
 
 bool recibirMensajeCliente(int socketCliente){
@@ -170,17 +171,19 @@ bool recibirMensajeCliente(int socketCliente){
 
 //TODO
 int enviarMejorEsiAEjecutar(){
-
-	if(list_size(colaListos->elements) > 0 ){
 		actualizarColaListos();
 		ordenarListos();
-		esi_ejecutando = list_remove(colaListos->elements, 0);
+		esi_ejecutando = queue_pop(colaListos);
 		int socketEsiEjectutando = esi_ejecutando->fd;
 		enviarInt(socketEsiEjectutando, EJECUTAR_LINEA);
 		return socketEsiEjectutando;
-	} else{
-		return 0;
-	}
+}
+
+int enviarAEjecutar(t_proceso_esi* ESIMenorRafaga){
+		esi_ejecutando = ESIMenorRafaga;
+		int socketEsiEjectutando = esi_ejecutando->fd;
+		enviarInt(socketEsiEjectutando, EJECUTAR_LINEA);
+		return socketEsiEjectutando;
 }
 
 bool recibirMensajeEsi(int socketCliente){
@@ -201,11 +204,11 @@ bool recibirMensajeEsi(int socketCliente){
 	actualizarColaListos();
 	if(planificador_Algoritmo == SJF_CON_DESALOJO){
 		ordenarListos();
-		t_proceso_esi* ESIMenorRafaga = list_remove(colaListos->elements, 0);
+		t_proceso_esi* ESIMenorRafaga = queue_pop(colaListos);
 		if(ESIMenorRafaga->rafagaEstimada < esi_ejecutando->rafagaEstimada){
 			moverAListos(esi_ejecutando);
 			cambiarEstimado(esi_ejecutando);
-			enviarMejorEsiAEjecutar(ESIMenorRafaga);
+			enviarAEjecutar(ESIMenorRafaga);
 		} else{
 			list_add_in_index(colaListos->elements, 0, ESIMenorRafaga);
 		}
@@ -276,13 +279,18 @@ void* esperarConexionesESIs(void* esperarConexion){
 	t_esperar_conexion* argumentos = (t_esperar_conexion*) esperarConexion;
 
 	while(1){
+
 		int conexionNueva = esperarConexionesSocket(&argumentos->fdSocketEscucha, argumentos->socketEscucha);
 
+		log_trace(logPlan, "Recibi un nuevo ESI!");
 		//TODO: chequear que la conexion fue correcta
 
 		int idESI;
 		recibirInt(conexionNueva, &idESI);
+		log_trace(logPlan, "ID del ESI %d", idESI);
+
 		t_proceso_esi* nuevoESI = recibirNuevoESI(idESI, conexionNueva);
+		log_trace(logPlan, "ESI creado!");
 		moverAListos(nuevoESI);
 
 		//mutex con la funcion planificar()

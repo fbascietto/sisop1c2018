@@ -27,6 +27,7 @@ int busquedaClave;
 bool pausarPlanificacion;
 pthread_mutex_t respuestaBusquedaClave;
 pthread_mutex_t pausarPlanificacionSem;
+sem_t productorConsumidor;
 void inicializarSemaforos();
 void destruirSemaforos();
 void pauseScheduler();
@@ -102,6 +103,7 @@ void cambiarEstimado(void* unEsi);
 int promedioExponencial(t_proceso_esi* unEsi);
 int estimacionHRRN(t_proceso_esi* unEsi);
 int enviarMejorEsiAEjecutar();
+int enviarAEjecutar(t_proceso_esi* ESIMenorRafaga);
 void finalizarESIEnEjecucion();
 void moverABloqueados();
 

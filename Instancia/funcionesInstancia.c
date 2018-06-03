@@ -200,13 +200,21 @@ void configureLoggers(char* instName){
 	E = LOG_LEVEL_ERROR;
 
 	char* logPath = string_new();
+
+	/* para correr desde ECLIPSE
 	string_append(&logPath,"../Recursos/Logs/");
+	 * */
+
+	/* para correr desde CONSOLA*/
+	string_append(&logPath,"../../Recursos/Logs/");
+
 	string_append(&logPath,instName);
 	string_append(&logPath,".log");
 
 	logT = log_create(logPath,"Instacia", false, T);
 	logI = log_create(logPath, "Instacia", false, I);
 	logE = log_create(logPath, "Instacia", true, E);
+
 
 	 	free(logPath);
 }
