@@ -122,8 +122,6 @@ void correrScript(char* ruta){
 			position_before_read = ftell(f1);
 			fgets(linea, largo, f1);
 			t_esi_operacion parsed = parse(linea);
-			int longitud_clave;
-			int longitud_valor;
 			int respuesta;
 
 			if(parsed.valido){
@@ -131,27 +129,19 @@ void correrScript(char* ruta){
 
 				case GET:
 					enviarInt(coordinador_socket, GET_KEY);
-					longitud_clave = strlen(parsed.argumentos.GET.clave);
-					enviarInt(coordinador_socket, longitud_clave);
 					enviarMensaje(coordinador_socket, parsed.argumentos.GET.clave);
 					recibirInt(coordinador_socket, &respuesta);
 					avisarAlPlanificador(respuesta, position_before_read, f1);
 					break;
 				case SET:
 					enviarInt(coordinador_socket, SET_KEY);
-					longitud_clave = strlen(parsed.argumentos.SET.clave);
-					enviarInt(coordinador_socket, longitud_clave);
 					enviarMensaje(coordinador_socket, parsed.argumentos.SET.clave);
-					longitud_valor = strlen(parsed.argumentos.SET.valor);
-					enviarInt(coordinador_socket, longitud_valor);
 					enviarMensaje(coordinador_socket, parsed.argumentos.SET.valor);
 					recibirInt(coordinador_socket, &respuesta);
 					avisarAlPlanificador(respuesta, VALUE_NOT_USED, NULL);
 					break;
 				case STORE:
 					enviarInt(coordinador_socket, STORE_KEY);
-					longitud_clave = strlen(parsed.argumentos.STORE.clave);
-					enviarInt(coordinador_socket, longitud_clave);
 					enviarMensaje(coordinador_socket, parsed.argumentos.STORE.clave);
 					recibirInt(coordinador_socket, &respuesta);
 					avisarAlPlanificador(respuesta, VALUE_NOT_USED, NULL);

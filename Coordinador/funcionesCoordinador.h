@@ -83,6 +83,7 @@ int ejecutar_operacion_set(char key[LONGITUD_CLAVE], char * value, t_instancia *
 int ejecutar_operacion_store(char key[LONGITUD_CLAVE], t_instancia * instancia);
 int contieneClaveInstancia(t_instancia * instancia, char key[LONGITUD_CLAVE]);
 int buscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia * instancia);
+int simularBuscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia* instancia);
 int elegirInstancia(t_instancia * instancia);
 
 

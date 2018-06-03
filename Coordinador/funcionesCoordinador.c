@@ -189,6 +189,57 @@ void atenderESI(void *args){
 	int socket = argumentos->socket;
 }
 
+void recibirMensajeESI(int socket){
+
+	int mensaje;
+
+	recibirInt(socket, &mensaje);
+
+	char* clave;
+	char* valor;
+	t_instancia* instancia;
+	int retorno;
+
+	switch(mensaje){
+
+	case GET_KEY:
+		clave = recibirMensajeArchivo(socket);
+		ejecutarOperacionGET(clave);
+		//todo: validar mensajes de errores hacia ESI de operacion GET
+		enviarInt(socket, EJECUCION_OK);
+		break;
+
+	case SET_KEY:
+		clave = recibirMensajeArchivo(socket);
+		valor = recibirMensajeArchivo(socket);
+		retorno = buscarInstanciaContenedora(clave, instancia);
+		if(retorno == -1){
+			enviarInt(socket, CLAVE_INEXISTENTE);
+			break;
+		}
+		ejecutar_operacion_set(clave, valor, instancia);
+		enviarInt(socket, EJECUCION_OK);
+		break;
+
+	case STORE_KEY:
+		clave = recibirMensajeArchivo(socket);
+		retorno = buscarInstanciaContenedora(clave, instancia);
+		if(retorno == -1){
+			enviarInt(socket, CLAVE_INEXISTENTE);
+			break;
+		}
+		ejecutar_operacion_store(clave, instancia);
+		enviarInt(socket, EJECUCION_OK);
+		break;
+
+	default:
+		//TODO: error
+		break;
+
+	}
+
+}
+
 void atenderPlanificador(void *args){
 	t_argumentos_thPlanificador * argumentos =  (t_argumentos_thPlanificador *) args;
 	int socket = argumentos->socket;
@@ -207,7 +258,24 @@ void recibirMensajePlanificador(int socket){
 
 	recibirInt(socket, &mensaje);
 
+	t_instancia* instancia;
+	char* clave;
+	int retorno;
+
 	switch(mensaje){
+
+	case DONDE_ESTA_LA_CLAVE:
+
+		clave = recibirMensajeArchivo(socket);
+		retorno = simularBuscarInstanciaContenedora(clave, instancia);
+		if(retorno > 0){
+			enviarInt(socket, CLAVE_ENCONTRADA);
+		}else{
+			enviarInt(socket, CLAVE_NO_ENCONTRADA);
+		}
+
+		enviarMensaje(socket, instancia->nombre);
+		break;
 
 	default:
 
@@ -280,6 +348,19 @@ int buscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia * instancia
 	}
 
 }
+
+int simularBuscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia* instancia){
+
+	/*todo: busca la clave en las instancias. Si no la encuentra, simula guardarla. Siempre almacena
+	 * el valor de la instancia donde esta la clave o donde estaria la clave en la instancia que recibe
+	 * la funcion como parametro y retorna 1 en el caso que haya encontrado la clave, 0 en el caso de que
+	 * haya simulado la distribucion.
+	 */
+
+	return 0;
+
+}
+
 
 int contieneClaveInstancia(t_instancia * instancia, char key[LONGITUD_CLAVE]){
 
