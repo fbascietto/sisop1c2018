@@ -27,6 +27,7 @@ bool pausarPlanificacion;
 pthread_mutex_t respuestaBusquedaClave;
 pthread_mutex_t pausarPlanificacionSem;
 void inicializarSemaforos();
+void destruirSemaforos();
 void pauseScheduler();
 void goOn();
 

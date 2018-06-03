@@ -12,6 +12,7 @@
 #define ESI 1
 #define COORDINADOR 2
 #define INSTANCIA 3
+#define PLANIFICADOR 4
 
 //Protocolo de Mensajes ESI,Planificador (11-25)
 

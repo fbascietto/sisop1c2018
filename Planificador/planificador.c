@@ -58,6 +58,7 @@ void inicializarSemaforos(){
 
 void destruirSemaforos(){
 	pthread_mutex_destroy(&pausarPlanificacionSem);
+	pthread_mutex_destroy(&respuestaBusquedaClave);
 }
 
 void configureLogger(){
