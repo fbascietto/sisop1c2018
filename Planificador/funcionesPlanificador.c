@@ -267,6 +267,8 @@ void conectarCoordinador(){
 		}
 	}
 
+	enviarInt(socketCoordinador, PLANIFICADOR);
+
 }
 
 

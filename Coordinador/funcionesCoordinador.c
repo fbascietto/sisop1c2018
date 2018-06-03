@@ -8,6 +8,8 @@ void *esperarConexiones(void *args) {
 
 	t_argumentos_thESI * argsESI = malloc(sizeof(t_argumentos_thESI));
 
+	t_argumentos_thPlanificador * argsPlanificador = malloc(sizeof(t_argumentos_thPlanificador));
+
 	printf("Esperando conexiones...\n");
 
 	// ---------------ME QUEDO ESPERANDO UNA CONEXION NUEVA--------------
@@ -44,6 +46,14 @@ void *esperarConexiones(void *args) {
 				}*/
 				break;
 
+			case PLANIFICADOR:;
+			pthread_t threadAtencionPlanificador;
+			argsPlanificador->socket = nuevoSocket;
+			if(pthread_create(&threadAtencionPlanificador,NULL,atenderPlanificador,(void*) argsPlanificador)){
+				log_error(logE,"Error generando thread para Planificador");
+			}
+			break;
+
 			case INSTANCIA:
 				crearInstancia(nuevoSocket);
 				/* borrar */simulaEntrada(nuevoSocket);
@@ -58,27 +68,27 @@ void *esperarConexiones(void *args) {
 }
 
 int crearInstancia(int nuevoSocket){
-					t_instancia * instancia = malloc(sizeof(t_instancia));
+	t_instancia * instancia = malloc(sizeof(t_instancia));
 
-					instancia->nombre = recibirMensajeArchivo(nuevoSocket);
-					instancia->socket = nuevoSocket;
-					if(enviarInt(nuevoSocket,cantidad_Entradas)<=0){
-						return -1;
-					}
-					if(enviarInt(nuevoSocket,tamanio_Entrada)<=0){
-						return -1;
-					}
-					instancia->claves = list_create();
-					list_add(instancias,instancia);
-					log_trace(logT,"Conexión de %s.", instancia->nombre);
-					return 1;
+	instancia->nombre = recibirMensajeArchivo(nuevoSocket);
+	instancia->socket = nuevoSocket;
+	if(enviarInt(nuevoSocket,cantidad_Entradas)<=0){
+		return -1;
+	}
+	if(enviarInt(nuevoSocket,tamanio_Entrada)<=0){
+		return -1;
+	}
+	instancia->claves = list_create();
+	list_add(instancias,instancia);
+	log_trace(logT,"Conexión de %s.", instancia->nombre);
+	return 1;
 }
 
 void eliminarInstancia(t_instancia * instancia){
 	bool* mismo_nombre(void* parametro) {
-				t_instancia* inst = (t_instancia*) parametro;
-				return strcmp(inst->nombre,instancia->nombre) == 0;
-		}
+		t_instancia* inst = (t_instancia*) parametro;
+		return strcmp(inst->nombre,instancia->nombre) == 0;
+	}
 	list_remove_by_condition(instancias,mismo_nombre);
 	free(instancia->nombre);
 	list_destroy(instancia->claves);
@@ -103,11 +113,11 @@ int enviarKey(char key[LONGITUD_CLAVE], int socket ){
 	int totalEnviado = 0;
 	int lenEnviado = 0;
 	while(totalEnviado < LONGITUD_CLAVE) {
-			lenEnviado = 0;
-			lenEnviado = send(socket, &key[totalEnviado], LONGITUD_CLAVE-totalEnviado, 0);
-			if(lenEnviado < 0){ perror("error al enviar"); return -1;}
-			totalEnviado = totalEnviado + lenEnviado;
-		}
+		lenEnviado = 0;
+		lenEnviado = send(socket, &key[totalEnviado], LONGITUD_CLAVE-totalEnviado, 0);
+		if(lenEnviado < 0){ perror("error al enviar"); return -1;}
+		totalEnviado = totalEnviado + lenEnviado;
+	}
 	return totalEnviado;
 }
 
@@ -166,6 +176,33 @@ void atenderESI(void *args){
 	int socket = argumentos->socket;
 }
 
+void atenderPlanificador(void *args){
+	t_argumentos_thPlanificador * argumentos =  (t_argumentos_thPlanificador *) args;
+	int socket = argumentos->socket;
+
+	while(1){
+
+		recibirMensajePlanificador(socket);
+
+	}
+
+}
+
+void recibirMensajePlanificador(int socket){
+
+	int mensaje;
+
+	recibirInt(socket, &mensaje);
+
+	switch(mensaje){
+
+	default:
+
+		log_error(logE, "No reconozco ese mensaje\n");
+
+	}
+
+}
 
 /*********** OPERACION GET **************/
 int ejecutarOperacionGET(char key[LONGITUD_CLAVE]){
@@ -201,12 +238,12 @@ int elegirInstancia(t_instancia * instancia){
 		log_trace(logT,"se eligio la instancia %s para el guardado de clave", instancia->nombre);
 		return proxima_posicion_instancia++;
 	}else
-	if(strcmp(coordinador_Algoritmo,"LSU")==0){
-		//TODO
-	}else
-	if(strcmp(coordinador_Algoritmo,"KE")==0){
-		//TODO
-	}
+		if(strcmp(coordinador_Algoritmo,"LSU")==0){
+			//TODO
+		}else
+			if(strcmp(coordinador_Algoritmo,"KE")==0){
+				//TODO
+			}
 
 
 	return -1;
@@ -216,10 +253,10 @@ int buscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia * instancia
 	int pos = -1;
 	int encontro = 0;
 	bool* contieneClave(void* parametro) {
-			t_instancia* inst = (t_instancia*) parametro;
-			encontro = contieneClaveInstancia(inst,key);
-			++pos;
-			return (encontro);
+		t_instancia* inst = (t_instancia*) parametro;
+		encontro = contieneClaveInstancia(inst,key);
+		++pos;
+		return (encontro);
 	}
 
 	instancia = (t_instancia *)list_find(instancias,contieneClave);
@@ -234,9 +271,9 @@ int buscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia * instancia
 int contieneClaveInstancia(t_instancia * instancia, char key[LONGITUD_CLAVE]){
 
 	bool* contieneClave(void* parametro) {
-				char* clave = (char*) parametro;
-				return (strcmp(clave,key)==0);
-		}
+		char* clave = (char*) parametro;
+		return (strcmp(clave,key)==0);
+	}
 
 	t_list* list = list_filter(instancia->claves,contieneClave(key));
 	int size = list_size(list);
@@ -255,12 +292,12 @@ int ejecutar_operacion_set(char key[LONGITUD_CLAVE], char * value, t_instancia *
 	}
 	if(enviarKey(key, socket)<=0){
 		log_trace(logE,"error al enviar la clave %s a la instancia %s",key,instancia->nombre);
-				return -1;
+		return -1;
 
 	}
 	if(enviarValue(value,socket)){
 		log_trace(logE,"error al enviar el valor %s de la clave %s a la instancia %s",value,key,instancia->nombre);
-				return -1;
+		return -1;
 	}
 	return 1;
 }
@@ -287,9 +324,9 @@ int ejecutar_operacion_store(char key[LONGITUD_CLAVE], t_instancia * instancia){
 void liberar_clave(char key[LONGITUD_CLAVE]){
 
 	bool* igualClave(void* parametro) {
-					char* clave = (char*)parametro;
-					return (strcmp(clave,key)==0);
-			}
+		char* clave = (char*)parametro;
+		return (strcmp(clave,key)==0);
+	}
 
 	list_remove(claves_bloqueadas,igualClave);
 	log_trace(logT, "se libero la clave %s", key);

@@ -26,6 +26,10 @@ typedef struct {
 } t_argumentos_thESI;
 
 typedef struct {
+	int socket;
+} t_argumentos_thPlanificador;
+
+typedef struct {
 	int id;
 	char key[LONGITUD_CLAVE];
 	char* value;
@@ -64,6 +68,8 @@ void cargar_configuracion();
 void configureLoggers();
 void destroyLoggers();
 void atenderESI(void *args);
+void atenderPlanificador(void *args);
+void recibirMensajePlanificador(int socket);
 int crearInstancia(int nuevoSocket);
 void eliminarInstancia(t_instancia * instancia);
 int enviarKey(char key[LONGITUD_CLAVE], int socket );
