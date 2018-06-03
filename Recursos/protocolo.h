@@ -41,5 +41,6 @@
 
 //Protocolo de Mensajes Coordinador/Instancia (61-75)
 #define ENVIO_ENTRADA 61
+#define STORE_ENTRADA 62
 
 #endif /* PROTOCOLO_H_ */

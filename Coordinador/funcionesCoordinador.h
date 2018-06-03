@@ -36,7 +36,6 @@ typedef struct {
 	char* nombre;
 	int socket;
 	t_list * claves;
-
 } t_instancia;
 
 
@@ -71,8 +70,16 @@ int enviarKey(char key[LONGITUD_CLAVE], int socket );
 int enviarValue(char * value, int socket);
 int enviarEntradaInstancia(char key[LONGITUD_CLAVE] , char * value, t_instancia * instancia);
 int elegirInstancia(t_instancia * instancia);
-int bloquearKey(char * key);
-int ejecutarOperacionGET(char* key);
+int bloquearKey(char key[LONGITUD_CLAVE]);
+void liberar_clave(char key[LONGITUD_CLAVE]);
+int ejecutarOperacionGET(char key[LONGITUD_CLAVE]);
+int ejecutar_operacion_set(char key[LONGITUD_CLAVE], char * value, t_instancia * instancia);
+int ejecutar_operacion_store(char key[LONGITUD_CLAVE], t_instancia * instancia);
+int contieneClaveInstancia(t_instancia * instancia, char key[LONGITUD_CLAVE]);
+int buscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia * instancia);
+int elegirInstancia(t_instancia * instancia);
+
+
 
 //funciones a borrar
 void simulaEntrada(int socket);

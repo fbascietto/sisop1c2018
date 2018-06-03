@@ -46,7 +46,7 @@ void *esperarConexiones(void *args) {
 
 			case INSTANCIA:
 				crearInstancia(nuevoSocket);
-				simulaEntrada(nuevoSocket);
+				/* borrar */simulaEntrada(nuevoSocket);
 				break;
 
 			default:
@@ -75,12 +75,17 @@ int crearInstancia(int nuevoSocket){
 }
 
 void eliminarInstancia(t_instancia * instancia){
+	bool* mismo_nombre(void* parametro) {
+				t_instancia* inst = (t_instancia*) parametro;
+				return strcmp(inst->nombre,instancia->nombre) == 0;
+		}
+	list_remove_by_condition(instancias,mismo_nombre);
 	free(instancia->nombre);
 	list_destroy(instancia->claves);
 	free(instancia);
 }
 
-int enviarEntradaInstancia(char key[LONGITUD_CLAVE] , char * value, t_instancia * instancia){
+int enviarEntradaInstancia(char key[LONGITUD_CLAVE], char* value, t_instancia * instancia){
 	if(enviarKey(key,instancia->socket)<=0){
 		log_error(logE,"no se pudo enviar entrada a la instancia %s",instancia->nombre);
 		return -1;
@@ -89,7 +94,6 @@ int enviarEntradaInstancia(char key[LONGITUD_CLAVE] , char * value, t_instancia 
 		log_error(logE,"no se pudo enviar entrada a la instancia %s",instancia->nombre);
 		return -1;
 	}
-	list_add(instancia->claves, key);
 
 	return 1;
 
@@ -163,7 +167,8 @@ void atenderESI(void *args){
 }
 
 
-int ejecutarOperacionGET(char* key){
+/*********** OPERACION GET **************/
+int ejecutarOperacionGET(char key[LONGITUD_CLAVE]){
 	int pos = -1;
 	t_instancia * instancia;
 	pos = buscarInstanciaContenedora(key, instancia);
@@ -179,11 +184,11 @@ int ejecutarOperacionGET(char* key){
 }
 
 
-int bloquearKey(char * key){
-	int a = -1;
-	a = list_add(claves_bloqueadas, key);
+int bloquearKey(char key[LONGITUD_CLAVE]){
+
+	list_add(claves_bloqueadas, key);
 	log_trace(logT, "clave %s bloqueada", key);
-	return a;
+	return 1;
 }
 
 int elegirInstancia(t_instancia * instancia){
@@ -207,7 +212,7 @@ int elegirInstancia(t_instancia * instancia){
 	return -1;
 }
 
-int buscarInstanciaContenedora(char* key, t_instancia * instancia){
+int buscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia * instancia){
 	int pos = -1;
 	int encontro = 0;
 	bool* contieneClave(void* parametro) {
@@ -217,7 +222,7 @@ int buscarInstanciaContenedora(char* key, t_instancia * instancia){
 			return (encontro);
 	}
 
-	instancia = list_find(instancias,contieneClave);
+	instancia = (t_instancia *)list_find(instancias,contieneClave);
 	if(encontro){
 		return pos;
 	}else{
@@ -226,15 +231,70 @@ int buscarInstanciaContenedora(char* key, t_instancia * instancia){
 
 }
 
-int contieneClaveInstancia(t_instancia * instancia, char* key){
+int contieneClaveInstancia(t_instancia * instancia, char key[LONGITUD_CLAVE]){
 
 	bool* contieneClave(void* parametro) {
 				char* clave = (char*) parametro;
 				return (strcmp(clave,key)==0);
 		}
 
-	return list_size(list_filter(instancia->claves,contieneClave(key)));
+	t_list* list = list_filter(instancia->claves,contieneClave(key));
+	int size = list_size(list);
+	free(list);
+	return size;
 }
+/**************** FIN OPERACION GET ***************/
+
+
+/***************** OPERACION SET ******************/
+int ejecutar_operacion_set(char key[LONGITUD_CLAVE], char * value, t_instancia * instancia){
+	int socket = instancia->socket;
+	if(enviarInt(socket,ENVIO_ENTRADA)<=0){
+		log_trace(logE,"error de comunicacion con la instancia %s al enviar la clave %s",instancia->nombre, key);
+		return -1;
+	}
+	if(enviarKey(key, socket)<=0){
+		log_trace(logE,"error al enviar la clave %s a la instancia %s",key,instancia->nombre);
+				return -1;
+
+	}
+	if(enviarValue(value,socket)){
+		log_trace(logE,"error al enviar el valor %s de la clave %s a la instancia %s",value,key,instancia->nombre);
+				return -1;
+	}
+	return 1;
+}
+/*************** FIN OPERACION SET ****************/
+
+/*************** OPERACION STORE *****************/
+int ejecutar_operacion_store(char key[LONGITUD_CLAVE], t_instancia * instancia){
+	int socket = instancia->socket;
+	if(enviarInt(socket,STORE_ENTRADA)<=0){
+		liberar_clave(key);
+		log_trace(logE,"error al ejecutar STORE con instancia %s de la clave %s",instancia->nombre, key);
+		return -1;
+	}else{
+		if(enviarKey(key,socket)<=0){
+			liberar_clave(key);
+			log_trace(logE,"error al ejecutar STORE con instancia %s de la clave %s",instancia->nombre, key);
+			return -1;
+		}
+	}
+	liberar_clave(key);
+	return 1;
+}
+
+void liberar_clave(char key[LONGITUD_CLAVE]){
+
+	bool* igualClave(void* parametro) {
+					char* clave = (char*)parametro;
+					return (strcmp(clave,key)==0);
+			}
+
+	list_remove(claves_bloqueadas,igualClave);
+	log_trace(logT, "se libero la clave %s", key);
+}
+/*************** FIN OPERACION STORE *****************/
 
 /**************** FUNCIONES PRUEBA ************************/
 void simulaEntrada(int socket){

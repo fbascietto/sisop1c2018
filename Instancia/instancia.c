@@ -37,9 +37,20 @@ int main(int argc, char **argv) {
 			tablaEntradas =  list_create();
 
 			while(1){
-				if(recibirEntrada(coordinador_socket,archivoDatos)<=0){
-					//TODO que hace si da error?
+
+				int instruccion;
+				recibirInt(coordinador_socket,&instruccion);
+				switch(instruccion){
+					case ENVIO_ENTRADA:
+						if(recibirEntrada(coordinador_socket,archivoDatos)<=0){
+											//TODO que hace si da error?
+						}
+						break;
+					case STORE_ENTRADA:
+						ejecutarStore(coordinador_socket);
+
 				}
+
 
 			}
 

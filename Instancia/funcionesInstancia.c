@@ -149,6 +149,10 @@ int recibirKey(int socket, char key [LONGITUD_CLAVE]){
 		return totalLeido;
 }
 
+
+
+
+/********** OPERACION SET ************/
 int recibirEntrada(int socket, FILE * file){
 
 	char key [LONGITUD_CLAVE];
@@ -163,7 +167,31 @@ int recibirEntrada(int socket, FILE * file){
 	return almacenarEntrada(key,file, value);
 
 }
+/******** FIN OPERACION SET **********/
 
+
+/******** OPERACION STORE **********/
+int ejecutarStore(int coordinador_socket){
+		char key[LONGITUD_CLAVE];
+		if(recibirKey(coordinador_socket,key)<=0){
+			log_trace(logE, "error al recibir clave para persistir");
+			return -1;
+		}else{
+			if(persistir_clave(key)<=0){
+				log_trace(logE, "error al persisir clave");
+				return -1;
+			}
+		}
+		return 1;
+}
+
+
+int persistir_clave(char key[LONGITUD_CLAVE]){
+	//TODO persisir tipo archivos onda el dump??
+	return 1;
+}
+
+/********* FIN OPERACION STORE *********/
 
 void configureLoggers(char* instName){
 
