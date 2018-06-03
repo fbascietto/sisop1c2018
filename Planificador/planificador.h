@@ -21,7 +21,7 @@ int socketCoordinador;
 
 //semáforos
 bool pausarPlanificacion;
-sem_t* pausarPlanificacionSem;
+pthread_mutex_t pausarPlanificacionSem;
 void inicializarSemaforos();
 void pauseScheduler();
 void goOn();

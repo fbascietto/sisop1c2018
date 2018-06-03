@@ -62,7 +62,7 @@ void pauseScheduler(){
 
 void goOn(){
 	pausarPlanificacion = false;
-	sem_post(pausarPlanificacionSem);
+	pthread_mutex_unlock(&pausarPlanificacionSem);
 }
 
 void getStatus(char* keySearch){

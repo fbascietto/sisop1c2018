@@ -9,7 +9,7 @@ void escucharCoordinador(){
 		case COORDINADOR:
 			recibirInt(socketCoordinador,&mensaje);
 			switch(mensaje){
-				//TODO
+			//TODO
 			}
 			break;
 		}
@@ -22,22 +22,27 @@ void planificar(){
 	while(1){
 
 		if(pausarPlanificacion){
-			sem_wait(pausarPlanificacionSem);
+			pthread_mutex_lock(&pausarPlanificacionSem);
 		}
 
-		bool rePlanificar = false;
+		bool replanificar = false;
 
 		if(socketMejorEsi == 0){
-			rePlanificar = true;
+			replanificar = true;
 		}
 
-		if(rePlanificar){
+		if(replanificar){
 			socketMejorEsi = enviarMejorEsiAEjecutar();
 		}
 
-		rePlanificar = recibirMensajeCliente(socketMejorEsi);
+		while(replanificar) {
+			replanificar = recibirMensajeCliente(socketMejorEsi);
+
+		}
+
 
 	}
+
 }
 
 void ordenarListos(){
@@ -160,12 +165,12 @@ bool recibirMensajeCliente(int socketCliente){
 int enviarMejorEsiAEjecutar(){
 
 	if(list_size(colaListos->elements) > 0 ){
-	actualizarColaListos();
-	ordenarListos();
-	esi_ejecutando = list_remove(colaListos->elements, 0);
-	int socketEsiEjectutando = esi_ejecutando->fd;
-	enviarInt(socketEsiEjectutando, EJECUTAR_LINEA);
-	return socketEsiEjectutando;
+		actualizarColaListos();
+		ordenarListos();
+		esi_ejecutando = list_remove(colaListos->elements, 0);
+		int socketEsiEjectutando = esi_ejecutando->fd;
+		enviarInt(socketEsiEjectutando, EJECUTAR_LINEA);
+		return socketEsiEjectutando;
 	} else{
 		return 0;
 	}
@@ -203,8 +208,8 @@ bool recibirMensajeEsi(int socketCliente){
 
 	//TODO:
 	case EJECUCION_INVALIDA:;
-		finalizarESIEnEjecucion();
-		iterar = false;
+	finalizarESIEnEjecucion();
+	iterar = false;
 	break;
 
 	//TODO
@@ -244,7 +249,7 @@ void conectarCoordinador(){
 
 	while(socketCoordinador == 0){
 
-	socketCoordinador = conectarseA(coordinador_IP, coordinador_Puerto);
+		socketCoordinador = conectarseA(coordinador_IP, coordinador_Puerto);
 
 	}
 

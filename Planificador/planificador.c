@@ -40,6 +40,8 @@ int main(){
 	pthread_join(threadCoordinador, NULL);
 
 	free(esperarConexion);
+	destruirSemaforos();
+
 	return 0;
 }
 
@@ -50,7 +52,11 @@ void inicializarColas(){
 
 void inicializarSemaforos(){
 	pausarPlanificacion = false;
-	sem_init(pausarPlanificacionSem, 0, 1);
+	pthread_mutex_init(&pausarPlanificacionSem, NULL);
+}
+
+void destruirSemaforos(){
+	pthread_mutex_destroy(&pausarPlanificacionSem);
 }
 
 void configureLogger(){
