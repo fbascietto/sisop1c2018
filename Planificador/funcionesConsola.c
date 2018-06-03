@@ -91,9 +91,21 @@ void getStatus(char* keySearch){
 	}
 	instanciaClave = recibirMensajeArchivo(socketCoordinador);
 
+	t_queue* bloqueados = key->colaBloqueados;
+
 	printf("Valor de clave: ""%s"".\n", keyValue);
 	printf("Resultado de la búsqueda: ""%s"".\n", mensajeBusqueda);
 	printf("Instancia: ""%s"".\n", instanciaClave);
+	printf("Listado de esi bloqueados por clave: \n");
+	if(queue_is_empty(bloqueados)){
+		printf("Vacío");
+	}else{
+		int i;
+		for (i = 0; i < list_size(bloqueados->elements); ++i) {
+			t_proceso_esi* esi = list_get(bloqueados->elements,i);
+			printf("ESI id: ""%s"".\n",esi->id);
+		}
+	}
 
 }
 
