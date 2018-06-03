@@ -52,5 +52,6 @@ int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, char * escribir);
 int recibirValue(int socketConn, char** bloqueArchivo);
 int recibirEntrada(int socket, FILE * file);
 int recibirKey(int socket, char key [LONGITUD_CLAVE]);
+int persistir_clave(char key[LONGITUD_CLAVE]);
 
 #endif /* FUNCIONESINSTANCIA_H_ */

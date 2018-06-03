@@ -40,6 +40,7 @@
 
 //Protocolo de Mensajes Coordinador/Instancia (61-75)
 #define ENVIO_ENTRADA 61
+#define STORE_ENTRADA 62
 
 //Protocolo Planificador, Coordinador (75-100)
 #define DONDE_ESTA_LA_CLAVE 75
