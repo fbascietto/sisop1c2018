@@ -11,7 +11,7 @@ t_config* cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	infoConfig = config_create("../Configuracion/esi.config");
+	infoConfig = config_create("../Recursos/Configuracion/esi.config");
 
 	if(config_has_property(infoConfig, "IP_COORDINADOR")){
 		coordinador_IP = config_get_string_value(infoConfig, "IP_COORDINADOR");
@@ -38,9 +38,9 @@ void configureLoggers(){
 	T = LOG_LEVEL_TRACE;
 	I = LOG_LEVEL_INFO;
 	E = LOG_LEVEL_ERROR;
-	logT = log_create("../Logs/ESI.log","ESI", false, T);
-	logI = log_create("../Logs/ESI.log", "ESI", false, I);
-	logE = log_create("../Logs/ESI.log", "ESI", true, E);
+	logT = log_create("../Recursos/Logs/ESI.log","ESI", false, T);
+	logI = log_create("../Recursos/Logs/ESI.log", "ESI", false, I);
+	logE = log_create("../Recursos/Logs/ESI.log", "ESI", true, E);
 
 }
 

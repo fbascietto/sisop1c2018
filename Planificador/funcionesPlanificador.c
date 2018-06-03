@@ -1,6 +1,6 @@
 #include "planificador.h"
 
-void escucharCoordinador(){
+void* escucharCoordinador(void* args){
 	while(1){
 		int mensaje;
 		recibirInt(socketCoordinador,&mensaje);
@@ -16,11 +16,13 @@ void escucharCoordinador(){
 		}
 	}
 }
+
 void recibirInstancia(int socketCoordinador){
-	recibirInt(socketCoordinador,&instanciaBusqueda);
+	instanciaBusqueda = recibirMensajeArchivo(socketCoordinador);
 	pthread_mutex_unlock(&respuestaBusquedaClave);
 }
-void planificar(){
+
+void* planificar(void * args){
 
 	int socketMejorEsi = enviarMejorEsiAEjecutar();
 
@@ -252,16 +254,23 @@ void conectarCoordinador(){
 
 	socketCoordinador = 0;
 
-	while(socketCoordinador == 0){
+	int a = 3;
+
+	while(1){
 
 		socketCoordinador = conectarseA(coordinador_IP, coordinador_Puerto);
 
+		if(socketCoordinador == 0){
+			sleep(a++);
+		}else{
+			break;
+		}
 	}
 
 }
 
 
-void esperarConexionesESIs(void* esperarConexion){
+void* esperarConexionesESIs(void* esperarConexion){
 	t_esperar_conexion* argumentos = (t_esperar_conexion*) esperarConexion;
 
 	while(1){

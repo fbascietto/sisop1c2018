@@ -200,7 +200,7 @@ void configureLoggers(char* instName){
 	E = LOG_LEVEL_ERROR;
 
 	char* logPath = string_new();
-	string_append(&logPath,"../Logs/");
+	string_append(&logPath,"../Recursos/Logs/");
 	string_append(&logPath,instName);
 	string_append(&logPath,".log");
 
@@ -222,7 +222,7 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	infoConfig = config_create("../Configuracion/instancia.config");
+	infoConfig = config_create("../Recursos/Configuracion/instancia.config");
 
 	if(config_has_property(infoConfig, "IP_COORDINADOR")){
 		coordinador_IP = config_get_string_value(infoConfig, "IP_COORDINADOR");

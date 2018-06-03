@@ -3,6 +3,8 @@
 #include <string.h>
 #include <stdbool.h>
 #include <pthread.h>
+#include <unistd.h>
+#include <readline/history.h>
 #include <commons/log.h>
 #include <commons/config.h>
 #include <commons/string.h>
@@ -17,7 +19,6 @@
 #define PLANIFICADOR_H_
 
 
-int socketCoordinador;
 
 char* instanciaBusqueda;
 int busquedaClave;
@@ -29,6 +30,7 @@ pthread_mutex_t pausarPlanificacionSem;
 void inicializarSemaforos();
 void pauseScheduler();
 void goOn();
+void destruirSemaforos();
 
 //structs
 typedef struct {
@@ -60,6 +62,7 @@ t_log* logPlan;
 //select y fds
 int fdMaxConexionesActivas;
 fd_set fdConexiones;
+int socketCoordinador;
 
 //colas y listas
 t_list* listaKeys;
@@ -78,17 +81,18 @@ void configureLogger();
 void cargar_configuracion();
 
 //funciones sockets
-void escucharCoordinador();
+void* escucharCoordinador(void* args);
 void conectarCoordinador();
 void *esperarConexiones(void *args);
 t_proceso_esi* recibirNuevoESI(int idESI, int fd);
-void esperarConexionesESIs(void* esperarConexion);
+void* esperarConexionesESIs(void* esperarConexion);
 bool recibirMensajeCliente(int socketCliente);
 bool recibirMensajeEsi(int socketCliente);
 void recibirMensajeCoordinador(int socketCliente);
+void recibirInstancia(int socketCoordinador);
 
 //funciones de planificacion
-void planificar();
+void* planificar(void* args);
 void moverAListos(t_proceso_esi* procesoEsi);
 void ordenarListos();
 void quick(t_list* unaLista, int limite_izq, int limite_der);
@@ -112,6 +116,7 @@ void block(char*, int);
 void unblock(char*);
 void getStatus(char* keySearch);
 void listBlockedProcesses(char* keySearch);
+void matarProceso(int ESI_ID);
 
 
 #endif

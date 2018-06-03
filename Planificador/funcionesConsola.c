@@ -102,7 +102,7 @@ void getStatus(char* keySearch){
 		int i;
 		for (i = 0; i < list_size(bloqueados->elements); ++i) {
 			t_proceso_esi* esi = list_get(bloqueados->elements,i);
-			printf("ESI id: ""%s"".\n",esi->id);
+			printf("ESI id: ""%d"".\n",esi->id);
 		}
 	}
 

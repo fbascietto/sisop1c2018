@@ -29,10 +29,10 @@ int main(){
 	esperarConexion->fdSocketEscucha = fdSocketsEscucha;
 	esperarConexion->socketEscucha = socketEscucha;
 
-	int er1 = pthread_create(&threadEscucharConsola,NULL,iniciaConsola,NULL);
-	int er2 = pthread_create(&threadPlanificar, NULL,planificar, NULL);
-	int er3 = pthread_create(&threadConexionesNuevas, NULL,esperarConexionesESIs,(void*) esperarConexion);
-	int er4 = pthread_create(&threadCoordinador, NULL,escucharCoordinador,NULL);
+	pthread_create(&threadEscucharConsola,NULL,iniciaConsola,NULL);
+	pthread_create(&threadPlanificar, NULL,planificar, NULL);
+	pthread_create(&threadConexionesNuevas, NULL,esperarConexionesESIs,(void*) esperarConexion);
+	pthread_create(&threadCoordinador, NULL,escucharCoordinador,NULL);
 
 	pthread_join(threadEscucharConsola, NULL);
 	pthread_join(threadPlanificar, NULL);
@@ -63,8 +63,8 @@ void destruirSemaforos(){
 void configureLogger(){
 
 	LogL = LOG_LEVEL_TRACE;
-	logPlan = log_create("../Logs/planificador.log","Planificador", false, LogL);
-
+	logPlan = log_create("../Recursos/Logs/planificador.log","Planificador", true, LogL);
+	log_trace(logPlan, "inicializacion de logs");
 }
 
 void * iniciaConsola(){
@@ -232,10 +232,11 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	infoConfig = config_create("../Configuracion/planificador.config");
+	infoConfig = config_create("../Recursos/Configuracion/planificador.config");
 
 	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){
 		planificador_Puerto_Escucha = config_get_int_value(infoConfig, "PUERTO_ESCUCHA");
+		log_info(logPlan, "puerto que escucha %d", planificador_Puerto_Escucha);
 	}
 
 	if(config_has_property(infoConfig, "ALGORITMO")){
@@ -244,28 +245,37 @@ void cargar_configuracion(){
 		if(strcmp(planificador, "SJF_SIN_DESALOJO") == 0){
 			planificador_Algoritmo = SJF_SIN_DESALOJO;
 		}
-		if(strcmp(planificador, "SJF_CON_DESALOJO") == 0){
+		else if(strcmp(planificador, "SJF_CON_DESALOJO") == 0){
 			planificador_Algoritmo = SJF_CON_DESALOJO;
 		}
-		if(strcmp(planificador, "HRRN") == 0){
+		else if(strcmp(planificador, "HRRN") == 0){
 			planificador_Algoritmo = HRRN;
+		}else{
+			log_error(logPlan, "ALGORITMO NO RECONOCIDO, SE SETEO %s", planificador);
+			exit(0);
 		}
+		log_info(logPlan, "algoritmo seleccionado %s", planificador);
+
 	}
 
 	if(config_has_property(infoConfig, "ESTIMACION_INICIAL")){
 		estimacion_inicial = config_get_int_value(infoConfig, "ESTIMACION_INICIAL") / 100;
+		log_info(logPlan, "estimacion inicial %d", estimacion_inicial);
 	}
 
 	if(config_has_property(infoConfig, "IP_COORDINADOR")){
 		coordinador_IP = config_get_string_value(infoConfig, "IP_COORDINADOR");
+		log_info(logPlan, "IP del coordinador %s", coordinador_IP);
 	}
 
 	if(config_has_property(infoConfig, "PUERTO_COORDINADOR")){
 		coordinador_Puerto = config_get_int_value(infoConfig, "PUERTO_COORDINADOR");
+		log_info(logPlan, "puerto del coordinador %d", coordinador_Puerto);
 	}
 
 	if(config_has_property(infoConfig, "CLAVES_INI_BLOQUEADAS")){
 		claves_Ini_Bloqueadas = config_get_array_value(infoConfig, "CLAVES_INI_BLOQUEADAS");
+		log_info(logPlan, "puerto de escucha %d", planificador_Puerto_Escucha);
 	}
 
 }
