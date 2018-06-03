@@ -38,8 +38,12 @@
 #define SJF_CON_DESALOJO 52
 #define HRRN 53
 
-
 //Protocolo de Mensajes Coordinador/Instancia (61-75)
 #define ENVIO_ENTRADA 61
+
+//Protocolo Planificador, Coordinador (75-100)
+#define DONDE_ESTA_LA_CLAVE 75
+#define CLAVE_ENCONTRADA 76
+#define CLAVE_NO_ENCONTRADA 77
 
 #endif /* PROTOCOLO_H_ */

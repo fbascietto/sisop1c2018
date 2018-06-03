@@ -17,6 +17,8 @@
 #define PLANIFICADOR_H_
 
 
+int socketCoordinador;
+
 //semáforos
 sem_t* pausarPlanificacion;
 

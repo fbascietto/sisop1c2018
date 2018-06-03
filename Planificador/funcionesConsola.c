@@ -64,6 +64,38 @@ void goOn(){
 	sem_post(pausarPlanificacion);
 }
 
+void getStatus(char* keySearch){
+	char* keyValue;
+	char* mensajeBusqueda;
+	char* instanciaClave;
+	bool coincideValor(void* key){
+		t_clave* clave = (t_clave*) key;
+		return strcmp(clave->claveValor, keySearch) == 0;
+	}
+
+	t_clave* key = list_find(listaKeys, coincideValor);
+
+	keyValue = (key != NULL) ? key->claveValor : NULL;
+
+	enviarInt(socketCoordinador,DONDE_ESTA_LA_CLAVE);
+	int busquedaClave;
+	recibirInt(socketCoordinador,&busquedaClave);
+	switch(busquedaClave){
+		case CLAVE_ENCONTRADA:
+			mensajeBusqueda = "La clave fue encontrada";
+			break;
+		case CLAVE_NO_ENCONTRADA:
+			mensajeBusqueda = "La clave no fue encontrada, se simula distribucion";
+			break;
+	}
+	instanciaClave = recibirMensajeArchivo(socketCoordinador);
+
+	printf("Valor de clave: ""%s"".\n", keyValue);
+	printf("Resultado de la búsqueda: ""%s"".\n", mensajeBusqueda);
+	printf("Instancia: ""%s"".\n", instanciaClave);
+
+}
+
 void listBlockedProcesses(char* keySearch){
 	bool coincideValor(void* key){
 		t_clave* clave = (t_clave*) key;

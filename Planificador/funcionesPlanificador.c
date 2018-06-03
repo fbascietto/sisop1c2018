@@ -1,6 +1,18 @@
 #include "planificador.h"
 
-
+void escucharCoordinador(){
+	int cliente;
+	int mensaje;
+	recibirInt(socketCoordinador,&cliente);
+	switch(cliente){
+	case COORDINADOR:
+		recibirInt(socketCoordinador,&mensaje);
+		switch(mensaje){
+			//TODO
+		}
+		break;
+	}
+}
 void planificar(void *args1){
 
 	t_esperar_conexion *argumentos = (t_esperar_conexion*) args1;
@@ -155,9 +167,6 @@ bool recibirMensajeCliente(int socketCliente){
 	switch(cliente){
 	case ESI:
 		iterar = recibirMensajeEsi(socketCliente);
-		break;
-	case COORDINADOR:
-		recibirMensajeCoordinador(socketCliente);
 		break;
 	}
 	return iterar;

@@ -17,11 +17,12 @@ int main(){
 
 	FD_SET(socketEscucha, &fdSocketsEscucha);
 
-	int socketCoordinador = conectarCoordinador();
+	socketCoordinador = conectarCoordinador();
 
 	pthread_t threadEscucharConsola;
 	pthread_t threadPlanificar;
 	pthread_t threadConexionesNuevas;
+	pthread_t threadCoordinador;
 	t_esperar_conexion *esperarConexion;
 
 	esperarConexion = malloc(sizeof(t_esperar_conexion));
@@ -37,10 +38,12 @@ int main(){
 	int er1 = pthread_create(&threadEscucharConsola,NULL,iniciaConsola,NULL);
 	int er2 = pthread_create(&threadPlanificar, NULL,planificar,(void*) esperarConexion);
 	int er3 = pthread_create(&threadConexionesNuevas, NULL,esperarConexionesESIs,(void*) esperarConexion);
+	int er4 = pthread_create(&threadCoordinador, NULL,escucharCoordinador,NULL);
 
 	pthread_join(threadEscucharConsola, NULL);
-	pthread_join(planificar, NULL);
-	pthread_join(esperarConexionesESIs, NULL);
+	pthread_join(threadPlanificar, NULL);
+	pthread_join(threadConexionesNuevas, NULL);
+	pthread_join(threadCoordinador, NULL);
 
 	free(esperarConexion);
 	return 0;
@@ -167,6 +170,17 @@ void * iniciaConsola(){
 		} else if(!strncmp(linea, status, strlen(status)))
 		{
 			log_trace(logPlan,"Consola recibe ""%s""\n", status);
+			parametros = string_split(linea, " ");
+			if(parametros[1] == NULL){
+				printf("Faltan argumentos: status [clave]\n");
+			}else{
+				if(parametros[2] != NULL){
+					printf("Demasiados argumentos: status [clave]\n");
+				}else{
+					char* key = parametros[1];
+					getStatus(key);
+				}
+			}
 			free(linea);
 
 		} else if(!strncmp(linea, kill, strlen(kill)))
