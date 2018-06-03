@@ -2,18 +2,23 @@
 
 void escucharCoordinador(){
 	while(1){
-		int cliente;
 		int mensaje;
-		recibirInt(socketCoordinador,&cliente);
-		switch(cliente){
-		case COORDINADOR:
-			recibirInt(socketCoordinador,&mensaje);
-			switch(mensaje){
-			//TODO
-			}
+		recibirInt(socketCoordinador,&mensaje);
+		switch(mensaje){
+		case CLAVE_ENCONTRADA:
+			busquedaClave = CLAVE_ENCONTRADA;
+			recibirInstancia(socketCoordinador);
+			break;
+		case CLAVE_NO_ENCONTRADA:
+			busquedaClave = CLAVE_NO_ENCONTRADA;
+			recibirInstancia(socketCoordinador);
 			break;
 		}
 	}
+}
+void recibirInstancia(int socketCoordinador){
+	recibirInt(socketCoordinador,&instanciaBusqueda);
+	pthread_mutex_unlock(&respuestaBusquedaClave);
 }
 void planificar(){
 

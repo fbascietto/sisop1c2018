@@ -68,7 +68,6 @@ void goOn(){
 void getStatus(char* keySearch){
 	char* keyValue;
 	char* mensajeBusqueda;
-	char* instanciaClave;
 	bool coincideValor(void* key){
 		t_clave* clave = (t_clave*) key;
 		return strcmp(clave->claveValor, keySearch) == 0;
@@ -79,8 +78,9 @@ void getStatus(char* keySearch){
 	keyValue = (key != NULL) ? key->claveValor : NULL;
 
 	enviarInt(socketCoordinador,DONDE_ESTA_LA_CLAVE);
-	int busquedaClave;
-	recibirInt(socketCoordinador,&busquedaClave);
+
+	pthread_mutex_lock(&respuestaBusquedaClave);
+
 	switch(busquedaClave){
 		case CLAVE_ENCONTRADA:
 			mensajeBusqueda = "La clave fue encontrada";
@@ -89,13 +89,12 @@ void getStatus(char* keySearch){
 			mensajeBusqueda = "La clave no fue encontrada, se simula distribucion";
 			break;
 	}
-	instanciaClave = recibirMensajeArchivo(socketCoordinador);
 
 	t_queue* bloqueados = key->colaBloqueados;
 
 	printf("Valor de clave: ""%s"".\n", keyValue);
 	printf("Resultado de la búsqueda: ""%s"".\n", mensajeBusqueda);
-	printf("Instancia: ""%s"".\n", instanciaClave);
+	printf("Instancia: ""%s"".\n", instanciaBusqueda);
 	printf("Listado de esi bloqueados por clave: \n");
 	if(queue_is_empty(bloqueados)){
 		printf("Vacío");

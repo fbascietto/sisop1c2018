@@ -53,6 +53,7 @@ void inicializarColas(){
 void inicializarSemaforos(){
 	pausarPlanificacion = false;
 	pthread_mutex_init(&pausarPlanificacionSem, NULL);
+	pthread_mutex_init(&respuestaBusquedaClave, NULL);
 }
 
 void destruirSemaforos(){

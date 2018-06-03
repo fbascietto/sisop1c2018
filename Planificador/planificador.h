@@ -19,8 +19,12 @@
 
 int socketCoordinador;
 
+char* instanciaBusqueda;
+int busquedaClave;
+
 //semáforos
 bool pausarPlanificacion;
+pthread_mutex_t respuestaBusquedaClave;
 pthread_mutex_t pausarPlanificacionSem;
 void inicializarSemaforos();
 void pauseScheduler();
