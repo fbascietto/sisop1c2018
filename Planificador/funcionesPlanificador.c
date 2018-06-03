@@ -13,48 +13,30 @@ void escucharCoordinador(){
 		break;
 	}
 }
-void planificar(void *args1){
+void planificar(){
 
-	t_esperar_conexion *argumentos = (t_esperar_conexion*) args1;
-	fd_set read_fds;
-	fd_set* conexionesActivas = &fdConexiones;
+	int socketMejorEsi = enviarMejorEsiAEjecutar();
 
-	int fdmaxHelper;
-	bool iterar = true;
-	for(;;) {
+	while(1){
 
-		actualizarColaListos();
-		ordenarListos();
-		enviarMejorEsiAEjecutar();
-
-		//mutex con la funcion esperarConexionesESIs()
-		fdmaxHelper = fdMaxConexionesActivas;
-		read_fds = fdConexiones; // copiar fd_set
-		// fin mutex con la funcion esperarConexionesESIs()
-
-		//TODO: struct timeval para el ultimo parametro del select
-		if (select(fdmaxHelper+1, &read_fds, NULL, NULL, NULL) == -1) {
-			perror("select");
-			exit(4);
+		if(pausarPlanificacion){
+			sem_wait(pausarPlanificacionSem);
 		}
-		int socketIterado;
-		// run through the existing connections looking for data to read
 
-		for(socketIterado = 0; socketIterado <= fdmaxHelper; socketIterado++) {
+		bool rePlanificar = false;
 
-			if (FD_ISSET(socketIterado, &read_fds)) { // we got one!!
-
-			} else {
-				//Es un mensaje de un cliente ya existente
-				iterar = recibirMensajeCliente(socketIterado);
-
-				if(iterar == false){
-					break;
-				}
-				}
-			}
+		if(socketMejorEsi == 0){
+			rePlanificar = true;
 		}
+
+		if(rePlanificar){
+			socketMejorEsi = enviarMejorEsiAEjecutar();
+		}
+
+		rePlanificar = recibirMensajeCliente(socketMejorEsi);
+
 	}
+}
 
 void ordenarListos(){
 
@@ -68,54 +50,54 @@ void ordenarListos(){
 //pendiente testearlo
 void quick(t_list* unaLista, int limite_izq, int limite_der){
 
-    int izq,der;
+	int izq,der;
 	t_proceso_esi* pivote;
 
-    izq= limite_izq;
+	izq= limite_izq;
 
-    der = limite_der;
+	der = limite_der;
 
-    pivote = list_get(unaLista, (izq+der)/2);
+	pivote = list_get(unaLista, (izq+der)/2);
 
-    t_proceso_esi* temporal;
-    t_proceso_esi* esiDer;
-    t_proceso_esi* esiIzq;
+	t_proceso_esi* temporal;
+	t_proceso_esi* esiDer;
+	t_proceso_esi* esiIzq;
 
-    do{
+	do{
 
-        while((esiIzq->rafagaEstimada < pivote->rafagaEstimada) && izq<limite_der){
-        	izq++;
-        	esiIzq = list_get(unaLista,izq);
-        }
+		while((esiIzq->rafagaEstimada < pivote->rafagaEstimada) && izq<limite_der){
+			izq++;
+			esiIzq = list_get(unaLista,izq);
+		}
 
-        while((pivote->rafagaEstimada < esiDer->rafagaEstimada) && der > limite_izq){
-        	der--;
-        	esiDer = list_get(unaLista, der);
-        }
+		while((pivote->rafagaEstimada < esiDer->rafagaEstimada) && der > limite_izq){
+			der--;
+			esiDer = list_get(unaLista, der);
+		}
 
-        if(izq <=der){
+		if(izq <=der){
 
-        	temporal= list_get(unaLista,izq);
+			temporal= list_get(unaLista,izq);
 
-        	list_replace(unaLista,izq,list_get(unaLista,der));
-        	list_replace(unaLista,der,temporal);
+			list_replace(unaLista,izq,list_get(unaLista,der));
+			list_replace(unaLista,der,temporal);
 
-        	izq++;
-        	der--;
+			izq++;
+			der--;
 
-        }
+		}
 
-    }while(izq<=der);
+	}while(izq<=der);
 
-    if(limite_izq<der){quick(unaLista,limite_izq,der);}
+	if(limite_izq<der){quick(unaLista,limite_izq,der);}
 
-    if(limite_der>izq){quick(unaLista,izq,limite_der);}
+	if(limite_der>izq){quick(unaLista,izq,limite_der);}
 }
 
 
 void actualizarColaListos(){
 	if(planificador_Algoritmo == HRRN){
-	list_iterate(colaListos->elements, cambiarEstimado);
+		list_iterate(colaListos->elements, cambiarEstimado);
 	}
 }
 
@@ -173,9 +155,18 @@ bool recibirMensajeCliente(int socketCliente){
 }
 
 //TODO
-void enviarMejorEsiAEjecutar(){
+int enviarMejorEsiAEjecutar(){
+
+	if(list_size(colaListos->elements) > 0 ){
+	actualizarColaListos();
+	ordenarListos();
 	esi_ejecutando = list_remove(colaListos->elements, 0);
-	enviarInt(esi_ejecutando->fd, EJECUTAR_LINEA);
+	int socketEsiEjectutando = esi_ejecutando->fd;
+	enviarInt(socketEsiEjectutando, EJECUTAR_LINEA);
+	return socketEsiEjectutando;
+	} else{
+		return 0;
+	}
 }
 
 bool recibirMensajeEsi(int socketCliente){
@@ -192,38 +183,49 @@ bool recibirMensajeEsi(int socketCliente){
 	 * 		3.1- se chequea si hay algun valor de estimado menor en cuyo caso se reemplaza
 	 */
 	case EJECUCION_OK:;
-			esi_ejecutando ->rafagaActual++;
-			actualizarColaListos();
-			if(planificador_Algoritmo == SJF_CON_DESALOJO){
-				ordenarListos();
-				t_proceso_esi* ESIMenorRafaga = list_remove(colaListos->elements, 0);
-				if(ESIMenorRafaga->rafagaEstimada < esi_ejecutando->rafagaEstimada){
-					moverAListos(esi_ejecutando);
-					cambiarEstimado(esi_ejecutando);
-					enviarMejorEsiAEjecutar(ESIMenorRafaga);
-				} else{
-					list_add_in_index(colaListos->elements, 0, ESIMenorRafaga);
-				}
-			}
+	esi_ejecutando ->rafagaActual++;
+	actualizarColaListos();
+	if(planificador_Algoritmo == SJF_CON_DESALOJO){
+		ordenarListos();
+		t_proceso_esi* ESIMenorRafaga = list_remove(colaListos->elements, 0);
+		if(ESIMenorRafaga->rafagaEstimada < esi_ejecutando->rafagaEstimada){
+			moverAListos(esi_ejecutando);
+			cambiarEstimado(esi_ejecutando);
+			enviarMejorEsiAEjecutar(ESIMenorRafaga);
+		} else{
+			list_add_in_index(colaListos->elements, 0, ESIMenorRafaga);
+		}
+	}
 	break;
 
 
 	//TODO:
 	case EJECUCION_INVALIDA:;
-		//finalizarESIEnEjecucion();
-		liberarKeys(esi_ejecutando);
+		finalizarESIEnEjecucion();
 		iterar = false;
 	break;
 
 	//TODO
 	case EN_ESPERA:;
-		//moverABloqueados();
-		iterar = false;
+	moverABloqueados();
+	iterar = false;
 	break;
 
 	}
 
 	return iterar;
+}
+
+void moverABloqueados(){
+	block(keySolicitada, esi_ejecutando->id);
+}
+
+void finalizarESIEnEjecucion(){
+	t_proceso_esi* esi_terminado = esi_ejecutando;
+	queue_push(colaTerminados, esi_terminado);
+	liberarKeys(esi_terminado);
+
+
 }
 
 void recibirMensajeCoordinador(int socketCliente){
@@ -234,10 +236,16 @@ void recibirMensajeCoordinador(int socketCliente){
 	}
 }
 
-int conectarCoordinador(){
-	int socketCoordinador = conectarseA(coordinador_IP, coordinador_Puerto);
-	FD_SET(socketCoordinador, &fdConexiones);
-	return socketCoordinador;
+void conectarCoordinador(){
+
+	socketCoordinador = 0;
+
+	while(socketCoordinador == 0){
+
+	socketCoordinador = conectarseA(coordinador_IP, coordinador_Puerto);
+
+	}
+
 }
 
 

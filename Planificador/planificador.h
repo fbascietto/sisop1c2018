@@ -20,7 +20,11 @@
 int socketCoordinador;
 
 //semáforos
-sem_t* pausarPlanificacion;
+bool pausarPlanificacion;
+sem_t* pausarPlanificacionSem;
+void inicializarSemaforos();
+void pauseScheduler();
+void goOn();
 
 //structs
 typedef struct {
@@ -60,13 +64,18 @@ t_queue* colaTerminados;
 
 //esi en ejecucion
 t_proceso_esi* esi_ejecutando;
+char* keySolicitada;
+
+//funciones de colas
+void inicializarColas();
 
 //funciones de log y config
 void configureLogger();
 void cargar_configuracion();
 
 //funciones sockets
-int conectarCoordinador();
+void escucharCoordinador();
+void conectarCoordinador();
 void *esperarConexiones(void *args);
 t_proceso_esi* recibirNuevoESI(int idESI, int fd);
 void esperarConexionesESIs(void* esperarConexion);
@@ -75,7 +84,7 @@ bool recibirMensajeEsi(int socketCliente);
 void recibirMensajeCoordinador(int socketCliente);
 
 //funciones de planificacion
-void planificar(void *args);
+void planificar();
 void moverAListos(t_proceso_esi* procesoEsi);
 void ordenarListos();
 void quick(t_list* unaLista, int limite_izq, int limite_der);
@@ -83,7 +92,9 @@ void actualizarColaListos();
 void cambiarEstimado(void* unEsi);
 int promedioExponencial(t_proceso_esi* unEsi);
 int estimacionHRRN(t_proceso_esi* unEsi);
-void enviarMejorEsiAEjecutar();
+int enviarMejorEsiAEjecutar();
+void finalizarESIEnEjecucion();
+void moverABloqueados();
 
 //funciones de keys
 void liberarKeys(t_proceso_esi* esi);
@@ -95,6 +106,8 @@ void exit_gracefully(int return_nr);
 bool coincideValor(void*);
 void block(char*, int);
 void unblock(char*);
+void getStatus(char* keySearch);
+void listBlockedProcesses(char* keySearch);
 
 
 #endif

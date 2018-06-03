@@ -57,11 +57,12 @@ void unblock(char* key_value){
 }
 
 void pauseScheduler(){
-	sem_wait(pausarPlanificacion);
+	pausarPlanificacion = true;
 }
 
 void goOn(){
-	sem_post(pausarPlanificacion);
+	pausarPlanificacion = false;
+	sem_post(pausarPlanificacionSem);
 }
 
 void getStatus(char* keySearch){

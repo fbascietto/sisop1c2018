@@ -17,7 +17,7 @@ int main(){
 
 	FD_SET(socketEscucha, &fdSocketsEscucha);
 
-	socketCoordinador = conectarCoordinador();
+	conectarCoordinador();
 
 	pthread_t threadEscucharConsola;
 	pthread_t threadPlanificar;
@@ -29,14 +29,8 @@ int main(){
 	esperarConexion->fdSocketEscucha = fdSocketsEscucha;
 	esperarConexion->socketEscucha = socketEscucha;
 
-	/*Al comenzar el socket coordinador es nuestro primer cliente,
-	  por lo tanto, tiene el numero de socket mas grande.
-	 */
-	fdMaxConexionesActivas = socketCoordinador;
-	FD_SET(socketCoordinador, &fdConexiones);
-
 	int er1 = pthread_create(&threadEscucharConsola,NULL,iniciaConsola,NULL);
-	int er2 = pthread_create(&threadPlanificar, NULL,planificar,(void*) esperarConexion);
+	int er2 = pthread_create(&threadPlanificar, NULL,planificar, NULL);
 	int er3 = pthread_create(&threadConexionesNuevas, NULL,esperarConexionesESIs,(void*) esperarConexion);
 	int er4 = pthread_create(&threadCoordinador, NULL,escucharCoordinador,NULL);
 
@@ -50,12 +44,13 @@ int main(){
 }
 
 void inicializarColas(){
-	colaListos = list_create();
+	colaListos = queue_create();
 	colaTerminados = queue_create();
 }
 
 void inicializarSemaforos(){
-	sem_init(pausarPlanificacion, 0, 1);
+	pausarPlanificacion = false;
+	sem_init(pausarPlanificacionSem, 0, 1);
 }
 
 void configureLogger(){
