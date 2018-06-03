@@ -1,16 +1,18 @@
 #include "planificador.h"
 
 void escucharCoordinador(){
-	int cliente;
-	int mensaje;
-	recibirInt(socketCoordinador,&cliente);
-	switch(cliente){
-	case COORDINADOR:
-		recibirInt(socketCoordinador,&mensaje);
-		switch(mensaje){
-			//TODO
+	while(1){
+		int cliente;
+		int mensaje;
+		recibirInt(socketCoordinador,&cliente);
+		switch(cliente){
+		case COORDINADOR:
+			recibirInt(socketCoordinador,&mensaje);
+			switch(mensaje){
+				//TODO
+			}
+			break;
 		}
-		break;
 	}
 }
 void planificar(){
