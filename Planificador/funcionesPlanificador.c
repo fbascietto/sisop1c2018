@@ -34,7 +34,7 @@ void* escucharCoordinador(void* args){
 			claveObtenida = obtenerKey(keyBuscada);
 			if(claveObtenida == NULL){
 				enviarInt(socketCoordinador, CLAVE_INEXISTENTE);
-			} else if(claveObtenida->idProceso != esi_ejecutando->id){
+			} else if(claveObtenida->esi_poseedor->id != esi_ejecutando->id){
 				enviarInt(socketCoordinador, CLAVE_NO_RESERVADA);
 			} else {
 				enviarInt(socketCoordinador, CLAVE_RESERVADA);
@@ -45,7 +45,7 @@ void* escucharCoordinador(void* args){
 			claveObtenida = obtenerKey(keyBuscada);
 			if(claveObtenida == NULL){
 				enviarInt(socketCoordinador, CLAVE_INEXISTENTE);
-			} else if(claveObtenida->idProceso != esi_ejecutando->id){
+			} else if(claveObtenida->esi_poseedor->id != esi_ejecutando->id){
 				enviarInt(socketCoordinador, CLAVE_NO_RESERVADA);
 			} else {
 				liberarKey(claveObtenida);
@@ -60,12 +60,12 @@ t_clave* crearNuevaKey(char* clave){
 	t_clave* nuevaKey = malloc(sizeof(t_clave));
 	strcpy(nuevaKey->claveValor, clave);
 	queue_create(nuevaKey->colaBloqueados);
-	nuevaKey->idProceso=0;
+	nuevaKey->esi_poseedor->id = 0;
 	return nuevaKey;
 }
 
 void asignarKey(t_clave* clave,t_proceso_esi* esi){
-	clave->idProceso = esi->id;
+	clave->esi_poseedor->id = esi->id;
 }
 
 void recibirInstancia(int socketCoordinador){
@@ -74,7 +74,7 @@ void recibirInstancia(int socketCoordinador){
 }
 
 bool estaLibre(t_clave* clave){
-	return clave->idProceso == 0;
+	return clave->esi_poseedor == NULL;
 }
 
 void* planificar(void * args){

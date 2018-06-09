@@ -7,35 +7,89 @@
 
 #include "planificador.h"
 
+
+bool coincideID(int idP1, int idP2){
+
+	return idP1 == idP2;
+
+}
+
+
+bool coincideValor(char* keyValue1, char* keyValue2){
+
+	return strcmp(keyValue1, keyValue2) == 0;
+
+
+}
+
+bool coincideCola(t_queue* procesos, int idProceso){
+
+	int i;
+	t_proceso_esi* procesoEncontrado;
+
+	for(i=0; i<list_size(procesos->elements); i++){
+
+		procesoEncontrado = list_get(procesos->elements, i);
+
+		if(coincideID(procesoEncontrado->id, idProceso)){
+			return true;
+		}
+
+	}
+
+	return false;
+
+}
+
+
 /*
  * Tener en cuenta que puede devolver NULL
  */
 t_clave* obtenerKey(char* key_value){
 
-	bool coincideValor(void* key){
+	int i;
+	t_clave* keyEncontrada;
 
-		t_clave* clave = (t_clave*) key;
+	for(i=0; i<list_size(listaKeys); i++){
 
-		return strcmp(clave->claveValor, key_value) == 0;
+		keyEncontrada = list_get(listaKeys, i);
 
+		if(coincideValor(keyEncontrada->claveValor, key_value)){
+			return keyEncontrada;
+		}
 
 	}
 
-	t_clave* key = list_find(listaKeys, coincideValor);
-	return key;
+	keyEncontrada = NULL;
+	return keyEncontrada;
+
 }
 
 
+t_proceso_esi* removerEsiSegunID(t_list* procesos, int ID){
 
-void block(char* key_value, int ESI_ID){
+	int i;
+	t_proceso_esi* esiRemovido;
 
-	bool coincideID(void* proceso){
+	for(i=0; i<list_size(procesos); i++){
 
-		t_proceso_esi* esi = (t_proceso_esi*) proceso;
+		esiRemovido = list_get(procesos, i);
 
-		return esi->id == ESI_ID;
+		if(coincideID(esiRemovido->id, ID)){
+			list_remove(procesos, i);
+			break;
+		}
+
+		esiRemovido = NULL;
 
 	}
+
+	return esiRemovido;
+
+}
+
+
+void block(char* key_value, int ESI_ID){
 
 	t_clave* key = obtenerKey(key_value);
 
@@ -43,7 +97,7 @@ void block(char* key_value, int ESI_ID){
 		if(esi_ejecutando->id == ESI_ID){
 			queue_push(key->colaBloqueados, esi_ejecutando);
 		}else{
-			t_proceso_esi* esi_a_bloquear = list_remove_by_condition(colaListos->elements, coincideID);
+			t_proceso_esi* esi_a_bloquear = removerEsiSegunID(colaListos->elements, ESI_ID);
 			if(esi_a_bloquear != NULL){
 				sem_wait(&productorConsumidor);
 				queue_push(key->colaBloqueados, esi_a_bloquear);
@@ -141,9 +195,49 @@ void liberarKey(void* key){
 
 	t_proceso_esi* esi_a_desbloquear = queue_pop(clave->colaBloqueados);
 
-	clave->idProceso = 0;
+	clave->esi_poseedor = NULL;
 
 	queue_push(colaListos, esi_a_desbloquear);
+
+}
+
+t_clave* obtenerKeySegunProcesoBloqueado(int esiID){
+
+	int i;
+	t_clave* keyEncontrada;
+
+	for(i=0; i<list_size(listaKeys); i++){
+
+		keyEncontrada = list_get(listaKeys, i);
+
+		if(coincideCola(keyEncontrada->colaBloqueados, esiID)){
+			return keyEncontrada;
+		}
+
+	}
+
+	keyEncontrada = NULL;
+	return keyEncontrada;
+
+}
+
+t_proceso_esi* encontrarEsiSegunID(t_list* procesos, int ID){
+
+	int i;
+	t_proceso_esi* esiEncontrado;
+
+	for(i=0; i<list_size(procesos); i++){
+
+		esiEncontrado = list_get(procesos, i);
+
+		if(coincideID(esiEncontrado->id, ID)){
+			return esiEncontrado;
+		}
+
+	}
+
+	esiEncontrado = NULL;
+	return esiEncontrado;
 
 }
 
@@ -151,55 +245,28 @@ void matarProceso(int ESI_ID){
 
 	t_proceso_esi* proceso_a_matar;
 
-
-	bool coincideID(void* proceso){
-
-		t_proceso_esi* esi = (t_proceso_esi*) proceso;
-
-		return esi->id == ESI_ID;
-
-	}
-
-	bool coincideCola(void* key){
-
-		t_clave* clave = (t_clave*) key;
-
-		t_proceso_esi* un_esi = list_find(clave->colaBloqueados->elements, coincideID);
-
-		return un_esi != NULL;
-
-	}
-
-	bool coincideProceso(void* proceso){
-
-		t_proceso_esi* esi = (t_proceso_esi*) proceso;
-
-		return esi->id == proceso_a_matar->id;
-
-	}
-
 	proceso_a_matar = esi_ejecutando;
 
-	if(coincideID(proceso_a_matar)){
+	if(coincideID(proceso_a_matar->id, ESI_ID)){
 
 		esi_ejecutando = NULL;
 
 	}else{
 
-		t_clave* clave_bloqueando_proceso = list_find(listaKeys, coincideCola);
-		proceso_a_matar = list_find(clave_bloqueando_proceso->colaBloqueados->elements, coincideID);
+		t_clave* clave_bloqueando_proceso = obtenerKeySegunProcesoBloqueado(ESI_ID);
+		proceso_a_matar = encontrarEsiSegunID(clave_bloqueando_proceso->colaBloqueados->elements, ESI_ID);
 
 		if(proceso_a_matar != NULL){
 
-			list_remove_by_condition(clave_bloqueando_proceso->colaBloqueados->elements, coincideProceso);
+			removerEsiSegunID(clave_bloqueando_proceso->colaBloqueados->elements, proceso_a_matar->id);
 
 		}else{
 
-			proceso_a_matar = list_find(colaListos->elements, coincideID);
+			proceso_a_matar = encontrarEsiSegunID(colaListos->elements, ESI_ID);
 
 			if(proceso_a_matar != NULL){
 
-				list_remove_by_condition(colaListos->elements, coincideProceso);
+				removerEsiSegunID(colaListos->elements, proceso_a_matar->id);
 
 			}else{
 
@@ -225,25 +292,13 @@ void detectarDeadlock(){
 
 	int i;
 	t_clave* key;
-	t_proceso_esi* esiInterbloqueo;
-
-	//creacion de dummy list de keys para poder realizar cambios en ella
-	//---------------------------------------------
-
-	t_list* listaKeysReemplazo = list_create();
-
-	for(i=0; i<list_size(listaKeys); i++){
-
-		key = list_get(listaKeys, 0);
-		list_add(listaKeysReemplazo, key);
-
-	}
+	t_proceso_esi* esiInterbloqueo = NULL;
 
 	//----------------------------------------------
 
-	for(i=0; i<list_size(listaKeysReemplazo); i++){
+	for(i=0; i<list_size(listaKeys); i++){
 
-		t_clave* key = list_get(listaKeysReemplazo, i);
+		key = list_get(listaKeys, i);
 
 		//		if(key->esi_poseedor == NULL){
 		//
