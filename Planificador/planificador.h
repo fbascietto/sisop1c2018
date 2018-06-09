@@ -107,6 +107,7 @@ void moverABloqueados();
 void liberarKeys(t_proceso_esi* esi);
 void liberarKey(void* key);
 t_clave* obtenerKey(char* key_value);
+t_clave* obtenerKeySegunProcesoBloqueado(int esiID);
 void asignarKey(t_clave* clave,t_proceso_esi* esi);
 bool estaLibre(t_clave* clave);
 t_clave* crearNuevaKey(char* clave);
@@ -115,7 +116,6 @@ t_clave* crearNuevaKey(char* clave);
 //funciones consola
 void * iniciaConsola();
 void exit_gracefully(int return_nr);
-bool coincideValor(void*);
 void block(char*, int);
 void unblock(char*);
 void pauseScheduler();
@@ -124,8 +124,16 @@ void getStatus(char* keySearch);
 void listBlockedProcesses(char* keySearch);
 void matarProceso(int ESI_ID);
 void detectarDeadlock();
+
+
+//funciones auxiliares
+bool coincideID(int idP1, int idP2);
+bool coincideValor(char*, char*);
+bool coincideCola(t_queue*, int);
+t_proceso_esi* removerEsiSegunID(t_list* procesos, int ID);
 bool estaBloqueadoPorAlgunoDeLaCola(t_queue* bloqueadosPorEsi1, t_proceso_esi* esi1, t_proceso_esi* esiInterbloqueo);
 bool estaBloqueado(t_proceso_esi* esi, t_clave* keyQueNecesita);
+
 
 
 #endif
