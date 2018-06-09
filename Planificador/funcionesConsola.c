@@ -328,18 +328,10 @@ bool estaBloqueadoPorAlgunoDeLaCola(t_queue* bloqueadosPorEsi1, t_proceso_esi* e
 	t_clave* keyQueNecesitaEsi1;
 	t_proceso_esi* esiAux;
 
-	bool coincideProceso(void* proceso){
-
-		t_proceso_esi* unEsi = (t_proceso_esi*) proceso;
-
-		return unEsi->id == keyQueNecesitaEsi1->esi_poseedor->id;
-
-	}
-
 
 	if(estaBloqueado(esi1, keyQueNecesitaEsi1)){
 
-		esiAux = list_find(bloqueadosPorEsi1->elements, coincideProceso);
+		esiAux = encontrarEsiSegunID(bloqueadosPorEsi1->elements, keyQueNecesitaEsi1->esi_poseedor->id);
 
 		if(esiAux == NULL){
 			//significa que no hay ningun deadlock directo
@@ -358,27 +350,7 @@ bool estaBloqueadoPorAlgunoDeLaCola(t_queue* bloqueadosPorEsi1, t_proceso_esi* e
 bool estaBloqueado(t_proceso_esi* esi, t_clave* keyQueNecesita){
 
 
-	bool coincideID(void* procesoEsi){
-
-		t_proceso_esi* proceso = (t_proceso_esi*) procesoEsi;
-
-		return proceso->id == esi->id;
-
-	}
-
-	bool coincideCola(void* key){
-
-		t_clave* clave = (t_clave*) key;
-
-		t_proceso_esi* un_esi = list_find(clave->colaBloqueados->elements, coincideID);
-
-		return un_esi != NULL;
-
-	}
-
-	t_clave* key;
-
-	key = list_find(listaKeys, coincideCola);
+	t_clave* key = obtenerKeySegunProcesoBloqueado(esi->id);
 
 	if(key == NULL){
 		return false;
