@@ -3,7 +3,11 @@
 void* escucharCoordinador(void* args){
 	while(1){
 		int mensaje;
+		char* keyBuscada;
+		t_clave* claveObtenida = NULL;
 		recibirInt(socketCoordinador,&mensaje);
+		log_trace(logPlan, "recibi mensaje del coordinador, recibi un %d", mensaje);
+
 		switch(mensaje){
 		case CLAVE_ENCONTRADA:
 			busquedaClave = CLAVE_ENCONTRADA;
@@ -13,13 +17,64 @@ void* escucharCoordinador(void* args){
 			busquedaClave = CLAVE_NO_ENCONTRADA;
 			recibirInstancia(socketCoordinador);
 			break;
-		}
+		case GET_KEY:
+			keyBuscada =recibirMensajeArchivo(socketCoordinador);
+			claveObtenida = obtenerKey(keyBuscada);
+			if(claveObtenida == NULL || estaLibre(claveObtenida)){
+				claveObtenida = crearNuevaKey(keyBuscada);
+				asignarKey(claveObtenida, esi_ejecutando);
+				enviarInt(socketCoordinador, CLAVE_OTORGADA);
+			} else{
+				strncpy(keySolicitada, keyBuscada, LONGITUD_CLAVE);
+				enviarInt(socketCoordinador, CLAVE_BLOQUEADA);
+			}
+			break;
+		case SET_KEY:
+			keyBuscada =recibirMensajeArchivo(socketCoordinador);
+			claveObtenida = obtenerKey(keyBuscada);
+			if(claveObtenida == NULL){
+				enviarInt(socketCoordinador, CLAVE_INEXISTENTE);
+			} else if(claveObtenida->idProceso != esi_ejecutando->id){
+				enviarInt(socketCoordinador, CLAVE_NO_RESERVADA);
+			} else {
+				enviarInt(socketCoordinador, CLAVE_RESERVADA);
+			}
+			break;
+		case STORE_KEY:
+			keyBuscada =recibirMensajeArchivo(socketCoordinador);
+			claveObtenida = obtenerKey(keyBuscada);
+			if(claveObtenida == NULL){
+				enviarInt(socketCoordinador, CLAVE_INEXISTENTE);
+			} else if(claveObtenida->idProceso != esi_ejecutando->id){
+				enviarInt(socketCoordinador, CLAVE_NO_RESERVADA);
+			} else {
+				liberarKey(claveObtenida);
+				enviarInt(socketCoordinador, CLAVE_LIBERADA);
+			}
+			break;
 	}
+}
+}
+
+t_clave* crearNuevaKey(char* clave){
+	t_clave* nuevaKey = malloc(sizeof(t_clave));
+	strcpy(nuevaKey->claveValor, clave);
+	queue_create(nuevaKey->colaBloqueados);
+	nuevaKey->idProceso=0;
+	return nuevaKey;
+}
+
+void asignarKey(t_clave* clave,t_proceso_esi* esi){
+	clave->idProceso = esi->id;
 }
 
 void recibirInstancia(int socketCoordinador){
 	instanciaBusqueda = recibirMensajeArchivo(socketCoordinador);
 	pthread_mutex_unlock(&respuestaBusquedaClave);
+}
+
+bool estaLibre(t_clave* clave){
+	return clave->idProceso == 0;
 }
 
 void* planificar(void * args){
@@ -31,7 +86,6 @@ void* planificar(void * args){
 	while(1){
 
 		if(pausarPlanificacion){
-
 			pthread_mutex_lock(&pausarPlanificacionSem);
 		}
 
@@ -42,7 +96,9 @@ void* planificar(void * args){
 
 		while(replanificar) {
 			replanificar = recibirMensajeCliente(socketMejorEsi);
-
+			if(replanificar == true){
+				enviarAEjecutar(esi_ejecutando);
+			}
 		}
 
 		replanificar = true;
@@ -55,7 +111,7 @@ void ordenarListos(){
 
 	t_list* unaLista = colaListos->elements;
 
-	quick(unaLista, 0, list_size(colaListos->elements)-1);
+	quick(unaLista, 0, queue_size(colaListos)-1);
 
 }
 
@@ -72,9 +128,8 @@ void quick(t_list* unaLista, int limite_izq, int limite_der){
 
 	pivote = list_get(unaLista, (izq+der)/2);
 
-	t_proceso_esi* temporal;
-	t_proceso_esi* esiDer;
-	t_proceso_esi* esiIzq;
+	t_proceso_esi* esiDer = list_get(unaLista, der);
+	t_proceso_esi* esiIzq = list_get(unaLista, izq);
 
 	do{
 
@@ -90,10 +145,8 @@ void quick(t_list* unaLista, int limite_izq, int limite_der){
 
 		if(izq <=der){
 
-			temporal= list_get(unaLista,izq);
-
-			list_replace(unaLista,izq,list_get(unaLista,der));
-			list_replace(unaLista,der,temporal);
+			esiIzq = list_replace(unaLista,izq,list_get(unaLista,der));
+			list_replace(unaLista,der,esiIzq);
 
 			izq++;
 			der--;
@@ -137,7 +190,7 @@ int promedioExponencial(t_proceso_esi* unEsi){
 
 int estimacionHRRN(t_proceso_esi* unEsi){
 	int promedio = promedioExponencial(unEsi);
-	return (promedio + unEsi ->tiempoEspera) / promedio;
+	return (promedio + unEsi ->tiempoEspera + 1) / promedio;
 }
 
 t_proceso_esi* recibirNuevoESI(int idESI, int fd){
@@ -153,7 +206,7 @@ t_proceso_esi* recibirNuevoESI(int idESI, int fd){
 
 void moverAListos(t_proceso_esi* procesoEsi){
 	queue_push(colaListos,procesoEsi);
-	log_trace(logPlan, "ESI agregado a la cola de listos!");
+	log_trace(logPlan, "ESI %d agregado a la cola de listos!", procesoEsi->id);
 	sem_post(&productorConsumidor);
 }
 
@@ -169,21 +222,19 @@ bool recibirMensajeCliente(int socketCliente){
 	return iterar;
 }
 
-//TODO
+/*Se asume que a esta funcion se llama cuando al menos hay un elemento*/
 int enviarMejorEsiAEjecutar(){
-		actualizarColaListos();
-		ordenarListos();
-		esi_ejecutando = queue_pop(colaListos);
-		int socketEsiEjectutando = esi_ejecutando->fd;
-		enviarInt(socketEsiEjectutando, EJECUTAR_LINEA);
-		return socketEsiEjectutando;
+	actualizarColaListos();
+	//si la funcion de abajo esta comentada, deberia funcionar como FIFO
+	//ordenarListos();
+	return enviarAEjecutar(queue_pop(colaListos));
 }
 
 int enviarAEjecutar(t_proceso_esi* ESIMenorRafaga){
-		esi_ejecutando = ESIMenorRafaga;
-		int socketEsiEjectutando = esi_ejecutando->fd;
-		enviarInt(socketEsiEjectutando, EJECUTAR_LINEA);
-		return socketEsiEjectutando;
+	esi_ejecutando = ESIMenorRafaga;
+	int socketEsiEjectutando = esi_ejecutando->fd;
+	enviarInt(socketEsiEjectutando, EJECUTAR_LINEA);
+	return socketEsiEjectutando;
 }
 
 bool recibirMensajeEsi(int socketCliente){
@@ -203,14 +254,22 @@ bool recibirMensajeEsi(int socketCliente){
 	esi_ejecutando ->rafagaActual++;
 	actualizarColaListos();
 	if(planificador_Algoritmo == SJF_CON_DESALOJO){
-		ordenarListos();
+		if(queue_size(colaListos)>0){
+		//comentar esta funcion para que funcione como FIFO junto con enviarMejorESIAEjecutar()
+		//ordenarListos();
 		t_proceso_esi* ESIMenorRafaga = queue_pop(colaListos);
+		if(ESIMenorRafaga == NULL){
+			break; //osea, que no hay elementos en listos
+		}
+		sem_wait(&productorConsumidor);
 		if(ESIMenorRafaga->rafagaEstimada < esi_ejecutando->rafagaEstimada){
 			moverAListos(esi_ejecutando);
 			cambiarEstimado(esi_ejecutando);
 			enviarAEjecutar(ESIMenorRafaga);
 		} else{
-			list_add_in_index(colaListos->elements, 0, ESIMenorRafaga);
+			sem_post(&productorConsumidor);
+			queue_push(colaListos, ESIMenorRafaga);
+		}
 		}
 	}
 	break;
@@ -239,18 +298,13 @@ void moverABloqueados(){
 
 void finalizarESIEnEjecucion(){
 	t_proceso_esi* esi_terminado = esi_ejecutando;
+	//TODO desconexion del fd_set del esi
+	int socketESIFinalizado = (esi_terminado->fd);
+	FD_CLR(socketESIFinalizado, &fdConexiones);
+
+	enviarInt(esi_ejecutando->fd, ABORTAR);
 	queue_push(colaTerminados, esi_terminado);
 	liberarKeys(esi_terminado);
-
-
-}
-
-void recibirMensajeCoordinador(int socketCliente){
-	int mensaje;
-	recibirInt(socketCliente,&mensaje);
-	switch(mensaje){
-	//TODO
-	}
 }
 
 void conectarCoordinador(){
@@ -272,6 +326,7 @@ void conectarCoordinador(){
 
 	enviarInt(socketCoordinador, PLANIFICADOR);
 
+	log_trace(logPlan, "Conectado con el Coordinador");
 }
 
 

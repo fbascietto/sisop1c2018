@@ -22,11 +22,11 @@
 
 
 typedef struct {
-	int socket;
+	int socketESI;
 } t_argumentos_thESI;
 
 typedef struct {
-	int socket;
+	int socketPlanificador;
 } t_argumentos_thPlanificador;
 
 typedef struct {
@@ -38,7 +38,7 @@ typedef struct {
 
 typedef struct {
 	char* nombre;
-	int socket;
+	int socketInstancia;
 	t_list * claves;
 } t_instancia;
 
@@ -55,6 +55,7 @@ t_log* logT;
 t_log* logI;
 t_log* logE;
 
+t_argumentos_thPlanificador * argsPlanificador;
 
 int proxima_posicion_instancia;
 t_list * instancias;
@@ -67,7 +68,7 @@ void despachar_solicitud(t_instancia* unaInstancia, t_solicitud una_solicitud);
 void cargar_configuracion();
 void configureLoggers();
 void destroyLoggers();
-void atenderESI(void *args);
+void* atenderESI(void *args);
 void atenderPlanificador(void *args);
 void recibirMensajePlanificador(int socket);
 int crearInstancia(int nuevoSocket);
@@ -85,6 +86,7 @@ int contieneClaveInstancia(t_instancia * instancia, char key[LONGITUD_CLAVE]);
 int buscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia * instancia);
 int simularBuscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia* instancia);
 int elegirInstancia(t_instancia * instancia);
+void recibirMensajeESI(int socket);
 
 
 

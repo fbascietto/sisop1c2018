@@ -48,4 +48,14 @@
 #define CLAVE_ENCONTRADA 76
 #define CLAVE_NO_ENCONTRADA 77
 
+#define GET_KEY 80
+#define SET_KEY 81
+#define STORE_KEY 82
+#define CLAVE_OTORGADA 90 //respuesta de GET
+#define CLAVE_BLOQUEADA 91 //respuesta de GET
+#define CLAVE_RESERVADA 92 //respuesta de SET
+#define CLAVE_LIBERADA 93 //respuesta de STORE
+#define CLAVE_INEXISTENTE 94 //respuesta de SET y STORE
+#define CLAVE_NO_RESERVADA 95 //respuesta de SET y STORE
+
 #endif /* PROTOCOLO_H_ */

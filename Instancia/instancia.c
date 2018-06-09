@@ -2,7 +2,7 @@
 #include <CUnit/Basic.h>
 // #include "cunit_def.h"
 
-int main(int argc, char **argv) {
+int main() {
 	/*if ((argc > 1) && (strcmp(argv[1], "-testea") == 0)){
 		printf("corriendo test");
 

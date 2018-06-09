@@ -87,7 +87,6 @@ t_proceso_esi* recibirNuevoESI(int idESI, int fd);
 void* esperarConexionesESIs(void* esperarConexion);
 bool recibirMensajeCliente(int socketCliente);
 bool recibirMensajeEsi(int socketCliente);
-void recibirMensajeCoordinador(int socketCliente);
 void recibirInstancia(int socketCoordinador);
 
 //funciones de planificacion
@@ -107,6 +106,11 @@ void moverABloqueados();
 //funciones de keys
 void liberarKeys(t_proceso_esi* esi);
 void liberarKey(void* key);
+t_clave* obtenerKey(char* key_value);
+void asignarKey(t_clave* clave,t_proceso_esi* esi);
+bool estaLibre(t_clave* clave);
+t_clave* crearNuevaKey(char* clave);
+
 
 //funciones consola
 void * iniciaConsola();

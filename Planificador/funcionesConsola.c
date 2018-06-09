@@ -7,8 +7,10 @@
 
 #include "planificador.h"
 
-
-void block(char* key_value, int ESI_ID){
+/*
+ * Tener en cuenta que puede devolver NULL
+ */
+t_clave* obtenerKey(char* key_value){
 
 	bool coincideValor(void* key){
 
@@ -18,6 +20,14 @@ void block(char* key_value, int ESI_ID){
 
 
 	}
+
+	t_clave* key = list_find(listaKeys, coincideValor);
+	return key;
+}
+
+
+
+void block(char* key_value, int ESI_ID){
 
 	bool coincideID(void* proceso){
 
@@ -27,13 +37,18 @@ void block(char* key_value, int ESI_ID){
 
 	}
 
-	t_clave* key = list_find(listaKeys, coincideValor);
+	t_clave* key = obtenerKey(key_value);
 
-	if(esi_ejecutando->id == ESI_ID){
-		queue_push(key->colaBloqueados, esi_ejecutando);
-	}else{
-		t_proceso_esi* esi_a_bloquear = list_find(colaListos->elements, coincideID);
-		queue_push(key->colaBloqueados, esi_a_bloquear);
+	if(key != NULL){
+		if(esi_ejecutando->id == ESI_ID){
+			queue_push(key->colaBloqueados, esi_ejecutando);
+		}else{
+			t_proceso_esi* esi_a_bloquear = list_remove_by_condition(colaListos->elements, coincideID);
+			if(esi_a_bloquear != NULL){
+				sem_wait(&productorConsumidor);
+				queue_push(key->colaBloqueados, esi_a_bloquear);
+			}
+		}
 	}
 
 }
@@ -41,16 +56,7 @@ void block(char* key_value, int ESI_ID){
 void unblock(char* key_value){
 
 
-	bool coincideValor(void* key){
-
-		t_clave* clave = (t_clave*) key;
-
-		return strcmp(clave->claveValor, key_value) == 0;
-
-
-	}
-
-	t_clave* key = list_find(listaKeys, coincideValor);
+	t_clave* key = obtenerKey(key_value);
 	t_proceso_esi* esi_a_desbloquear = queue_pop(key->colaBloqueados);
 	moverAListos(esi_a_desbloquear);
 
@@ -68,12 +74,8 @@ void goOn(){
 void getStatus(char* keySearch){
 	char* keyValue;
 	char* mensajeBusqueda;
-	bool coincideValor(void* key){
-		t_clave* clave = (t_clave*) key;
-		return strcmp(clave->claveValor, keySearch) == 0;
-	}
 
-	t_clave* key = list_find(listaKeys, coincideValor);
+	t_clave* key = obtenerKey(keySearch);
 
 	keyValue = (key != NULL) ? key->claveValor : NULL;
 
@@ -109,16 +111,12 @@ void getStatus(char* keySearch){
 }
 
 void listBlockedProcesses(char* keySearch){
-	bool coincideValor(void* key){
-		t_clave* clave = (t_clave*) key;
-		return strcmp(clave->claveValor, keySearch) == 0;
-	}
 	void printEsi(void* procesoEsi){
 		t_proceso_esi* esi = (t_proceso_esi*) procesoEsi;
 		printf("ESI ID: ""%d"".\n", esi->id);
 	}
 
-	t_clave* key = list_find(listaKeys, coincideValor);
+	t_clave* key = obtenerKey(keySearch);
 
 	if(key==NULL){
 		printf("No se encontró el recurso con key: ""%s"".\n", keySearch);
@@ -143,13 +141,16 @@ void liberarKey(void* key){
 
 	t_proceso_esi* esi_a_desbloquear = queue_pop(clave->colaBloqueados);
 
-	list_add(colaListos->elements, esi_a_desbloquear);
+	clave->idProceso = 0;
+
+	queue_push(colaListos, esi_a_desbloquear);
 
 }
 
 void matarProceso(int ESI_ID){
 
 	t_proceso_esi* proceso_a_matar;
+
 
 	bool coincideID(void* proceso){
 
@@ -214,7 +215,6 @@ void matarProceso(int ESI_ID){
 	if(proceso_a_matar != NULL){
 
 		enviarInt(proceso_a_matar->fd, ABORTAR);
-
 		liberarKeys(proceso_a_matar);
 		queue_push(colaTerminados, proceso_a_matar);
 

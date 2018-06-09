@@ -51,6 +51,7 @@ int main(){
 }
 
 void inicializarColas(){
+	listaKeys = list_create();
 	colaListos = queue_create();
 	colaTerminados = queue_create();
 }
@@ -64,20 +65,6 @@ void inicializarSemaforos(){
 void destruirSemaforos(){
 	pthread_mutex_destroy(&pausarPlanificacionSem);
 	pthread_mutex_destroy(&respuestaBusquedaClave);
-}
-
-void configureLogger(){
-
-	LogL = LOG_LEVEL_TRACE;
-
-	/* ejecutar desde ECLIPSE *
-	logPlan = log_create("../Recursos/Logs/planificador.log","Planificador", true, LogL);
-	 * /
-
-	/* para ejecutar desde CONSOLA */
-	logPlan = log_create("../../Recursos/Logs/planificador.log","Planificador", true, LogL);
-
-	log_trace(logPlan, "inicializacion de logs");
 }
 
 void * iniciaConsola(){
@@ -246,15 +233,33 @@ void * iniciaConsola(){
 	}
 }
 
+void configureLogger(){
+
+	LogL = LOG_LEVEL_TRACE;
+
+	/* ejecutar desde ECLIPSE *
+	vaciarArchivo("../Recursos/Logs/Planificador.log");
+	logPlan = log_create("../Recursos/Logs/Planificador.log","Planificador", true, LogL);
+	 */
+
+	/* para ejecutar desde CONSOLA
+	 */
+	vaciarArchivo("../../Recursos/Logs/Planificador.log");
+	logPlan = log_create("../../Recursos/Logs/Planificador.log","Planificador", true, LogL);
+
+	log_trace(logPlan, "inicializacion de logs");
+}
+
 void cargar_configuracion(){
 
 	t_config* infoConfig;
 
 	/*	para correr desde ECLIPSE
 	infoConfig = config_create("../Recursos/Configuracion/planificador.config");
-	 * */
+	*/
 
-	/* para correr desde CONSOLA */
+	/* para correr desde CONSOLA
+	 */
 	infoConfig = config_create("../../Recursos/Configuracion/planificador.config");
 
 
@@ -277,6 +282,7 @@ void cargar_configuracion(){
 		}else{
 			log_error(logPlan, "ALGORITMO NO RECONOCIDO, SE SETEO %s", planificador);
 			exit(0);
+
 		}
 		log_info(logPlan, "algoritmo seleccionado %s", planificador);
 

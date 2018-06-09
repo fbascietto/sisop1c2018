@@ -46,12 +46,14 @@ void configureLoggers(){
 	E = LOG_LEVEL_ERROR;
 
 	/* para correr desde ECLIPSE *
+	vaciarArchivo("../Recursos/Logs/ESI.log");
 	logT = log_create("../Recursos/Logs/ESI.log","ESI", false, T);
 	logI = log_create("../Recursos/Logs/ESI.log", "ESI", false, I);
 	logE = log_create("../Recursos/Logs/ESI.log", "ESI", true, E);
 	 */
 
 	/* para correr desde CONSOLA */
+	vaciarArchivo("../../Recursos/Logs/ESI.log");
 	logT = log_create("../../Recursos/Logs/ESI.log","ESI", true, T);
 	logI = log_create("../../Recursos/Logs/ESI.log", "ESI", true, I);
 	logE = log_create("../../Recursos/Logs/ESI.log", "ESI", true, E);
@@ -59,6 +61,8 @@ void configureLoggers(){
 }
 
 void avisarAlPlanificador(int respuesta_del_coordinador, int position_to_reread, FILE* script){
+
+	enviarInt(planificador_socket, ESI);
 
 	switch(respuesta_del_coordinador){
 
@@ -115,7 +119,7 @@ void correrScript(char* ruta){
 
 		recibirInt(planificador_socket, &accion);
 
-		log_info(logI, "Recibi mensaje del planificador");
+		log_info(logI, "Recibi mensaje del planificador, recibi %d", accion);
 
 		if(accion == EJECUTAR_LINEA){
 
@@ -131,6 +135,7 @@ void correrScript(char* ruta){
 					enviarInt(coordinador_socket, GET_KEY);
 					enviarMensaje(coordinador_socket, parsed.argumentos.GET.clave);
 					recibirInt(coordinador_socket, &respuesta);
+					log_trace(logT, "recibi %d del coordinador", respuesta);
 					avisarAlPlanificador(respuesta, position_before_read, f1);
 					break;
 				case SET:
@@ -138,12 +143,14 @@ void correrScript(char* ruta){
 					enviarMensaje(coordinador_socket, parsed.argumentos.SET.clave);
 					enviarMensaje(coordinador_socket, parsed.argumentos.SET.valor);
 					recibirInt(coordinador_socket, &respuesta);
+					log_trace(logT, "recibi %d del coordinador", respuesta);
 					avisarAlPlanificador(respuesta, VALUE_NOT_USED, NULL);
 					break;
 				case STORE:
 					enviarInt(coordinador_socket, STORE_KEY);
 					enviarMensaje(coordinador_socket, parsed.argumentos.STORE.clave);
 					recibirInt(coordinador_socket, &respuesta);
+					log_trace(logT, "recibi %d del coordinador", respuesta);
 					avisarAlPlanificador(respuesta, VALUE_NOT_USED, NULL);
 					break;
 				default:
@@ -155,9 +162,9 @@ void correrScript(char* ruta){
 			}
 
 			destruir_operacion(parsed);
-			if(respuesta == CLAVE_INEXISTENTE){
-				break;
-			}
+//			if(respuesta == CLAVE_INEXISTENTE){
+//				break;
+//			}
 
 		}else{
 			if(accion == ABORTAR){

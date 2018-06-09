@@ -118,7 +118,14 @@
 		<project id="Planificador.cdt.managedbuild.target.gnu.exe.1539357094" name="Executable" projectType="cdt.managedbuild.target.gnu.exe"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/Planificador"/>
+		</configuration>
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/Planificador"/>
+		</configuration>
+	</storageModule>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.1788028833;cdt.managedbuild.config.gnu.exe.debug.1788028833.;cdt.managedbuild.tool.gnu.c.compiler.exe.debug.84764724;cdt.managedbuild.tool.gnu.c.compiler.input.676277147">

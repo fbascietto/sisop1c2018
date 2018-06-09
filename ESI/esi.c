@@ -38,10 +38,13 @@ int main(int args, char* argv[]) {
 	//protocolo (handshake)
 	enviarInt(coordinador_socket, ESI);
 
+	log_trace(logI, "esperando el ID");
+
 	//recibe identificador de ESI para enviar a planificador
 	recibirInt(coordinador_socket, &id_proceso);
 
 	log_trace(logT, "ID del ESI: %d", id_proceso);
+	log_info(logI, "conectando con el Planificador");
 
 	a = 3;
 	while(planificador_socket == 0){
