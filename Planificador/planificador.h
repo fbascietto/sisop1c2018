@@ -30,9 +30,6 @@ pthread_mutex_t pausarPlanificacionSem;
 sem_t productorConsumidor;
 void inicializarSemaforos();
 void destruirSemaforos();
-void pauseScheduler();
-void goOn();
-void destruirSemaforos();
 
 //structs
 typedef struct {
@@ -45,7 +42,7 @@ typedef struct {
 } t_proceso_esi;
 
 typedef struct {
-	int idProceso;
+	t_proceso_esi* esi_poseedor;
 	char claveValor[LONGITUD_CLAVE];
 	t_queue* colaBloqueados;
 } t_clave;
@@ -117,9 +114,14 @@ void exit_gracefully(int return_nr);
 bool coincideValor(void*);
 void block(char*, int);
 void unblock(char*);
+void pauseScheduler();
+void goOn();
 void getStatus(char* keySearch);
 void listBlockedProcesses(char* keySearch);
 void matarProceso(int ESI_ID);
+void detectarDeadlock();
+bool estaBloqueadoPorAlgunoDeLaCola(t_queue* bloqueadosPorEsi1, t_proceso_esi* esi1, t_proceso_esi* esiInterbloqueo);
+bool estaBloqueado(t_proceso_esi* esi, t_clave* keyQueNecesita);
 
 
 #endif

@@ -215,6 +215,11 @@ void * iniciaConsola(){
 		} else if(!strncmp(linea, deadlock, strlen(deadlock)))
 		{
 			log_trace(logPlan,"Consola recibe ""%s""\n", deadlock);
+			parametros = string_split(linea, " ");
+			if(parametros[1] != NULL){
+				printf("La funcion no lleva argumentos.");
+			}
+			detectarDeadlock();
 			free(linea);
 
 		} else if(!strncmp(linea, info, strlen(info)))

@@ -82,12 +82,12 @@ void getStatus(char* keySearch){
 	pthread_mutex_lock(&respuestaBusquedaClave);
 
 	switch(busquedaClave){
-		case CLAVE_ENCONTRADA:
-			mensajeBusqueda = "La clave fue encontrada";
-			break;
-		case CLAVE_NO_ENCONTRADA:
-			mensajeBusqueda = "La clave no fue encontrada, se simula distribucion";
-			break;
+	case CLAVE_ENCONTRADA:
+		mensajeBusqueda = "La clave fue encontrada";
+		break;
+	case CLAVE_NO_ENCONTRADA:
+		mensajeBusqueda = "La clave no fue encontrada, se simula distribucion";
+		break;
 	}
 
 	t_queue* bloqueados = key->colaBloqueados;
@@ -220,4 +220,125 @@ void matarProceso(int ESI_ID){
 
 	}
 }
+
+void detectarDeadlock(){
+
+	int i;
+	t_clave* key;
+	t_proceso_esi* esiInterbloqueo;
+
+	//creacion de dummy list de keys para poder realizar cambios en ella
+	//---------------------------------------------
+
+	t_list* listaKeysReemplazo = list_create();
+
+	for(i=0; i<list_size(listaKeys); i++){
+
+		key = list_get(listaKeys, 0);
+		list_add(listaKeysReemplazo, key);
+
+	}
+
+	//----------------------------------------------
+
+	for(i=0; i<list_size(listaKeysReemplazo); i++){
+
+		t_clave* key = list_get(listaKeysReemplazo, i);
+
+		//		if(key->esi_poseedor == NULL){
+		//
+		//			//si no hay ningun esi que posea esa key
+		//			list_remove(listaKeysReemplazo, i);
+		//			i--;
+		//
+		//		}else{
+		//
+		//
+		//
+		//		}
+
+		if(estaBloqueadoPorAlgunoDeLaCola(key->colaBloqueados, key->esi_poseedor, esiInterbloqueo)){
+
+			printf("El ESI %d y el ESI %d estan en deadlock.\n", key->esi_poseedor->id, esiInterbloqueo->id);
+
+		}
+
+	}
+
+}
+
+bool estaBloqueadoPorAlgunoDeLaCola(t_queue* bloqueadosPorEsi1, t_proceso_esi* esi1, t_proceso_esi* esiInterbloqueo){
+
+
+	t_clave* keyQueNecesitaEsi1;
+	t_proceso_esi* esiAux;
+
+	bool coincideProceso(void* proceso){
+
+		t_proceso_esi* unEsi = (t_proceso_esi*) proceso;
+
+		return unEsi->id == keyQueNecesitaEsi1->esi_poseedor->id;
+
+	}
+
+
+	if(estaBloqueado(esi1, keyQueNecesitaEsi1)){
+
+		esiAux = list_find(bloqueadosPorEsi1->elements, coincideProceso);
+
+		if(esiAux == NULL){
+			//significa que no hay ningun deadlock directo
+			return false;
+		}
+
+		esiInterbloqueo = esiAux;
+		return true;
+
+	}
+
+	return false;
+
+}
+
+bool estaBloqueado(t_proceso_esi* esi, t_clave* keyQueNecesita){
+
+
+	bool coincideID(void* procesoEsi){
+
+		t_proceso_esi* proceso = (t_proceso_esi*) procesoEsi;
+
+		return proceso->id == esi->id;
+
+	}
+
+	bool coincideCola(void* key){
+
+		t_clave* clave = (t_clave*) key;
+
+		t_proceso_esi* un_esi = list_find(clave->colaBloqueados->elements, coincideID);
+
+		return un_esi != NULL;
+
+	}
+
+	t_clave* key;
+
+	key = list_find(listaKeys, coincideCola);
+
+	if(key == NULL){
+		return false;
+	}
+
+	keyQueNecesita = key;
+	return true;
+
+
+}
+
+
+
+
+
+
+
 
