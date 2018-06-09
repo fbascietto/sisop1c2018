@@ -5,7 +5,7 @@ int main(){
 	cargar_configuracion();
 	configureLoggers();
 	pthread_mutex_init(&mx_logOp, NULL);
-	logOp = generarlogDeOperaciones();
+    generarlogDeOperaciones();
 
 	int socketEscucha;
 	fd_set fdSocketsEscucha;
@@ -29,6 +29,6 @@ int main(){
 
 	destroyLoggers();
 	list_destroy(instancias);
-
+	pthread_mutex_destroy(&mx_logOp);
 	return 0;
 }

@@ -90,7 +90,7 @@ int buscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia * instancia
 int simularBuscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia* instancia);
 int elegirInstancia(t_instancia * instancia);
 void recibirMensajeESI(int socket);
-FILE* generarlogDeOperaciones();
+void generarlogDeOperaciones();
 int logueaOperacion(char* operacion, char* key, char* value, int socket);
 
 
