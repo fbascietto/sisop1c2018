@@ -188,6 +188,61 @@ void destroyLoggers(){
 	log_destroy(logE);
 }
 
+void generarlogDeOperaciones(){
+
+		FILE *operaciones;
+
+		int nuevo = 0;
+
+		operaciones = fopen("operaciones.log", "r");
+
+		if(!operaciones) //archivo no existe, crear
+		{
+			operaciones = fopen("operaciones.log", "w");
+			nuevo = 1;
+			if (operaciones == NULL) printf("Error al generar operaciones.log\n");
+
+		} else {
+			freopen("operaciones.log","a",operaciones);
+		}
+
+		if(nuevo){
+			fprintf(operaciones,"%s%s", "ESI	|", "	OPERACION\n");
+		}
+
+		fclose(operaciones);
+}
+
+int logueaOperacion(char* operacion, char* key, char* value, int socket){
+
+	pthread_mutex_lock(&mx_logOp);
+	FILE *operaciones;
+	operaciones = fopen("operaciones.log", "a");
+
+	char* linea = string_new();
+
+	/*creo linea para log*/
+	string_append(&linea, "ESI");
+	char* ESIindx = string_itoa(socket);
+	string_append(&linea, ESIindx);
+	string_append(&linea, "	|	");
+	string_append(&linea, operacion);
+	string_append(&linea, " ");
+	string_append(&linea, key);
+	string_append(&linea, " ");
+	string_append(&linea, value);
+
+	fprintf(logOp,"%s", linea);
+
+	free(linea);
+	free(ESIindx); /*???*/
+
+	fclose(operaciones);
+	pthread_mutex_unlock(&mx_logOp);
+	/* chequear para error y devolver -1*/
+	return 1;
+}
+
 void* atenderESI(void *args){
 
 	t_argumentos_thESI* nuevoESI = (t_argumentos_thESI*) args;
@@ -216,6 +271,7 @@ void recibirMensajeESI(int socket){
 
 		case GET_KEY:;
 			clave = recibirMensajeArchivo(socket);
+			logueaOperacion("GET",clave,"",socket);
 			enviarInt(argsPlanificador->socketPlanificador, GET_KEY);
 			enviarMensaje(argsPlanificador->socketPlanificador, clave);
 
@@ -223,69 +279,74 @@ void recibirMensajeESI(int socket){
 			recibirInt(argsPlanificador->socketPlanificador, &codigo);
 
 			switch(codigo){
-			case CLAVE_OTORGADA:;
-			ejecutarOperacionGET(clave);
-			enviarInt(socket, EJECUCION_OK);
-			break;
-			case CLAVE_BLOQUEADA:;
-			//TODO que deberia hacer el coordinador?
-			enviarInt(socket, EN_ESPERA);
+				case CLAVE_OTORGADA:;
+				ejecutarOperacionGET(clave);
+				enviarInt(socket, EJECUCION_OK);
+				break;
+
+				case CLAVE_BLOQUEADA:;
+				//TODO que deberia hacer el coordinador?
+				enviarInt(socket, EN_ESPERA);
+				break;
 			}
 			//todo: validar mensajes de errores hacia ESI de operacion GET
 			break;
 
-			case SET_KEY:
-				clave = recibirMensajeArchivo(socket);
-				valor = recibirMensajeArchivo(socket);
-				retorno = buscarInstanciaContenedora(clave, instancia);
-				if(retorno == -1){
-					enviarInt(socket, CLAVE_INEXISTENTE);
-					break;
-				}
-				enviarInt(argsPlanificador->socketPlanificador, SET_KEY);
-				enviarMensaje(argsPlanificador->socketPlanificador, clave);
-				recibirInt(argsPlanificador->socketPlanificador, &codigo);
-				switch(codigo){
-				case CLAVE_RESERVADA:;
-				ejecutar_operacion_set(clave, valor, instancia);
-				enviarInt(socket, EJECUCION_OK);
-				break;
-				case CLAVE_NO_RESERVADA:;
-				enviarInt(socket, EJECUCION_INVALIDA);
-				break;
-				case CLAVE_INEXISTENTE:;
-				enviarInt(socket, EJECUCION_INVALIDA);
-				break;
-				}
-				break;
+		case SET_KEY:
+			clave = recibirMensajeArchivo(socket);
+			valor = recibirMensajeArchivo(socket);
+			logueaOperacion("SET",clave,valor,socket);
 
-				case STORE_KEY:
-					clave = recibirMensajeArchivo(socket);
-					retorno = buscarInstanciaContenedora(clave, instancia);
-					if(retorno == -1){
-						enviarInt(socket, CLAVE_INEXISTENTE);
-						break;
-					}
-					enviarInt(argsPlanificador->socketPlanificador, STORE_KEY);
-					enviarMensaje(argsPlanificador->socketPlanificador, clave);
-					recibirInt(argsPlanificador->socketPlanificador, &codigo);
-					switch(codigo){
-					case CLAVE_LIBERADA:;
-					ejecutar_operacion_store(clave, instancia);
-					enviarInt(socket, EJECUCION_OK);
-					break;
-					case CLAVE_NO_RESERVADA:;
-					enviarInt(socket, EJECUCION_INVALIDA);
-					break;
-					case CLAVE_INEXISTENTE:;
-					enviarInt(socket, EJECUCION_INVALIDA);
-					break;
-					}
-					break;
-
-			default:
-						log_error(logE,"error de codigo, recibi %d", mensaje);
+			retorno = buscarInstanciaContenedora(clave, instancia);
+			if(retorno == -1){
+				enviarInt(socket, CLAVE_INEXISTENTE);
 				break;
+			}
+			enviarInt(argsPlanificador->socketPlanificador, SET_KEY);
+			enviarMensaje(argsPlanificador->socketPlanificador, clave);
+			recibirInt(argsPlanificador->socketPlanificador, &codigo);
+			switch(codigo){
+			case CLAVE_RESERVADA:;
+			ejecutar_operacion_set(clave, valor, instancia);
+			enviarInt(socket, EJECUCION_OK);
+			break;
+			case CLAVE_NO_RESERVADA:;
+			enviarInt(socket, EJECUCION_INVALIDA);
+			break;
+			case CLAVE_INEXISTENTE:;
+			enviarInt(socket, EJECUCION_INVALIDA);
+			break;
+			}
+			break;
+
+		case STORE_KEY:
+			clave = recibirMensajeArchivo(socket);
+			retorno = buscarInstanciaContenedora(clave, instancia);
+			logueaOperacion("STORE",clave,"",socket);
+			if(retorno == -1){
+				enviarInt(socket, CLAVE_INEXISTENTE);
+				break;
+			}
+			enviarInt(argsPlanificador->socketPlanificador, STORE_KEY);
+			enviarMensaje(argsPlanificador->socketPlanificador, clave);
+			recibirInt(argsPlanificador->socketPlanificador, &codigo);
+			switch(codigo){
+			case CLAVE_LIBERADA:;
+			ejecutar_operacion_store(clave, instancia);
+			enviarInt(socket, EJECUCION_OK);
+			break;
+			case CLAVE_NO_RESERVADA:;
+			enviarInt(socket, EJECUCION_INVALIDA);
+			break;
+			case CLAVE_INEXISTENTE:;
+			enviarInt(socket, EJECUCION_INVALIDA);
+			break;
+			}
+			break;
+
+		default:
+			log_error(logE,"error de codigo, recibi %d", mensaje);
+			break;
 
 		}
 	}

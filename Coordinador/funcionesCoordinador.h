@@ -55,7 +55,10 @@ t_log* logT;
 t_log* logI;
 t_log* logE;
 
+FILE* logOp;
+
 t_argumentos_thPlanificador * argsPlanificador;
+pthread_mutex_t mx_logOp;
 
 int proxima_posicion_instancia;
 t_list * instancias;
@@ -87,6 +90,8 @@ int buscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia * instancia
 int simularBuscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia* instancia);
 int elegirInstancia(t_instancia * instancia);
 void recibirMensajeESI(int socket);
+FILE* generarlogDeOperaciones();
+int logueaOperacion(char* operacion, char* key, char* value, int socket);
 
 
 

@@ -194,7 +194,7 @@ int ejecutarStore(int coordinador_socket){
 			return -1;
 		}else{
 			if(persistir_clave(key)<=0){
-				log_trace(logE, "error al persisir clave");
+				log_trace(logE, "error al persistir clave");
 				return -1;
 			}
 		}
@@ -259,6 +259,12 @@ int algoritmoR(char* algoritmo){
 
 int calculoCircular(){
 	int size = list_size(tablaEntradas);
+	if(size==qEntradas){
+		/* empieza a reemplazar entradas, TODO modificación en la lista*/
+		size = 0;
+
+	}
+
 	return size;
 }
 

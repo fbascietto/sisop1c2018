@@ -1,8 +1,11 @@
 #include "coordinador.h"
 
 int main(){
+
 	cargar_configuracion();
 	configureLoggers();
+	pthread_mutex_init(&mx_logOp, NULL);
+	logOp = generarlogDeOperaciones();
 
 	int socketEscucha;
 	fd_set fdSocketsEscucha;
@@ -26,5 +29,6 @@ int main(){
 
 	destroyLoggers();
 	list_destroy(instancias);
+
 	return 0;
 }
