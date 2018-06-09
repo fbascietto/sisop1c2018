@@ -28,7 +28,7 @@ typedef struct {
 t_list * tablaEntradas;
 char* coordinador_IP;
 int coordinador_Puerto;
-char* reemplazo_Algoritmo;
+int reemplazo_Algoritmo;
 char* punto_Montaje;
 char* nombre_Instancia;
 int intervalo_dump;
@@ -53,5 +53,8 @@ int recibirValue(int socketConn, char** bloqueArchivo);
 int recibirEntrada(int socket, FILE * file);
 int recibirKey(int socket, char key [LONGITUD_CLAVE]);
 int persistir_clave(char key[LONGITUD_CLAVE]);
+int algoritmoR(char* algoritmo);
+int calculoCircular();
+
 
 #endif /* FUNCIONESINSTANCIA_H_ */

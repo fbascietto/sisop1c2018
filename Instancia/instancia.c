@@ -20,9 +20,8 @@ int main() {
 			int coordinador_socket;
 			FILE* archivoDatos;
 
-			numEntradaActual = 0;
-
 			cargar_configuracion();
+
 			configureLoggers(nombre_Instancia);
 
 			coordinador_socket = conectarseA(coordinador_IP, coordinador_Puerto);
@@ -35,6 +34,24 @@ int main() {
 			archivoDatos = inicializarPuntoMontaje(punto_Montaje, nombre_Instancia);
 
 			tablaEntradas =  list_create();
+
+			// TODO: levantar tabla de entradas anterior, de ser necesario
+
+			switch (reemplazo_Algoritmo){
+
+				case CIRCULAR  :
+			      numEntradaActual = calculoCircular();
+			      break;
+				case LRU  :
+				  numEntradaActual = 0; /* calculoLRU(); */
+				  break;
+				case BSU  :
+			      numEntradaActual = 0; /* calculoBSU(); */
+				break;
+			  	default:
+			  	  numEntradaActual = reemplazo_Algoritmo;
+			  	/* Acusar error, exit_gracefully */
+			}
 
 			while(1){
 

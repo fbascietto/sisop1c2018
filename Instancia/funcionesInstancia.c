@@ -12,7 +12,7 @@ int  almacenarEntrada(char key[LONGITUD_CLAVE], FILE* archivoDatos, void * value
 	t_entrada * entrada = malloc(sizeof(t_entrada));
 
 	strcpy(entrada->key,key);
-	entrada->entry = escribirEntrada(entrada,archivoDatos, value);/* numero de entrada */
+	entrada->entry = escribirEntrada(entrada,archivoDatos, value); /* numero de entrada */
 	entrada->size = strlen(value); /* largo de value */
 
 	list_add(tablaEntradas,entrada);
@@ -62,8 +62,6 @@ int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, char * escribir){
 
 	unsigned char* map;
 
-	/* int numEntrada = 0; ToDo: depende del algoritmo la asignación de la entrada a utilizar*/
-
 	int data = fileno(archivoDatos);
 
 	map = (unsigned char*) mmap(NULL, qEntradas * tamanioEntrada , PROT_READ | PROT_WRITE, MAP_SHARED, data, sizeof(unsigned char)*numEntradaActual*tamanioEntrada);
@@ -91,7 +89,7 @@ int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, char * escribir){
 	munmap(map,qEntradas * tamanioEntrada);
 
 
-	numEntradaActual += entradasOcupadas;
+
 	//free(bloqueArchivo);
 	close(data);
 	return strlen(escribir);
@@ -164,7 +162,25 @@ int recibirEntrada(int socket, FILE * file){
 	if(recibirValue(socket,&value)<=0){
 		return -1;
 	}
-	return almacenarEntrada(key,file, value);
+
+	int lenValue = strlen(value);
+	int entradasAOcupar;
+
+	if(lenValue % tamanioEntrada){
+		entradasAOcupar = (lenValue / tamanioEntrada) +1;
+	} else {
+		entradasAOcupar = (lenValue / tamanioEntrada);
+	}
+
+	for(int i=0;i<entradasAOcupar;i++){
+		char* segmento;
+		segmento = malloc(tamanioEntrada);
+		segmento = strncpy(segmento,value+(i*tamanioEntrada),tamanioEntrada);
+		almacenarEntrada(key,file, segmento);
+		numEntradaActual = calculoCircular();
+	}
+
+	return lenValue;
 
 }
 /******** FIN OPERACION SET **********/
@@ -201,8 +217,6 @@ void configureLoggers(char* instName){
 
 	char* logPath = string_new();
 
-
-
 	/* para correr desde ECLIPSE
 	string_append(&logPath,"../Recursos/Logs/");
 	 */
@@ -229,6 +243,24 @@ void destroyLoggers(){
 	log_destroy(logE);
 }
 
+int algoritmoR(char* algoritmo){
+	int value;
+
+	if(!strncmp(algoritmo, "CIRCULAR", 8)){
+		value = CIRCULAR;
+	} else if (!strncmp(algoritmo, "LRU", 3)){
+		value = LRU;
+	} else if (!strncmp(algoritmo, "BSU", 3)){
+		value = BSU;
+	} else {value = -1;}
+
+	return value;
+}
+
+int calculoCircular(){
+	int size = list_size(tablaEntradas);
+	return size;
+}
 
 void cargar_configuracion(){
 
@@ -250,7 +282,7 @@ void cargar_configuracion(){
 	}
 
 	if(config_has_property(infoConfig, "ALGORITMO")){
-		reemplazo_Algoritmo = config_get_string_value(infoConfig, "ALGORITMO");
+		reemplazo_Algoritmo = algoritmoR(config_get_string_value(infoConfig, "ALGORITMO"));
 	}
 
 	if(config_has_property(infoConfig, "PUNTO_MONTAJE")){
@@ -266,3 +298,4 @@ void cargar_configuracion(){
 	}
 
 }
+

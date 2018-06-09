@@ -58,4 +58,11 @@
 #define CLAVE_INEXISTENTE 94 //respuesta de SET y STORE
 #define CLAVE_NO_RESERVADA 95 //respuesta de SET y STORE
 
+
+//Protocolo de Algoritmos de la instancia
+#define CIRCULAR 76
+#define LRU 77
+#define BSU 78
+
+
 #endif /* PROTOCOLO_H_ */
