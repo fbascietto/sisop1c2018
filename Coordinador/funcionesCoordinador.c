@@ -211,7 +211,7 @@ void recibirMensajeESI(int socket){
 
 		recibirInt(socket, &mensaje);
 
-//		log_trace(logT, "recibi mensaje del esi %d, pidio un %s", socket, mensaje);
+//		log_trace(logT, "recibi mensaje del esi %d, pidio un %d", socket, mensaje);
 		switch(mensaje){
 
 		case GET_KEY:;
@@ -386,11 +386,11 @@ int elegirInstancia(t_instancia * instancia){
 int buscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia * instancia){
 	int pos = -1;
 	int encontro = 0;
-	bool* contieneClave(void* parametro) {
+	bool contieneClave(void* parametro) {
 		t_instancia* inst = (t_instancia*) parametro;
 		encontro = contieneClaveInstancia(inst,key);
 		++pos;
-		return (encontro);
+		return encontro;
 	}
 
 	instancia = (t_instancia *)list_find(instancias,contieneClave);

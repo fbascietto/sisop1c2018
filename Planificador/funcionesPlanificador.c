@@ -60,12 +60,12 @@ t_clave* crearNuevaKey(char* clave){
 	t_clave* nuevaKey = malloc(sizeof(t_clave));
 	strcpy(nuevaKey->claveValor, clave);
 	queue_create(nuevaKey->colaBloqueados);
-	nuevaKey->esi_poseedor->id = 0;
+	nuevaKey->esi_poseedor = NULL;
 	return nuevaKey;
 }
 
 void asignarKey(t_clave* clave,t_proceso_esi* esi){
-	clave->esi_poseedor->id = esi->id;
+	clave->esi_poseedor = esi;
 }
 
 void recibirInstancia(int socketCoordinador){
@@ -241,6 +241,7 @@ bool recibirMensajeEsi(int socketCliente){
 	int mensaje;
 	bool iterar = true;
 	recibirInt(socketCliente,&mensaje);
+	log_trace(logPlan, "recibi %d", mensaje);
 	switch(mensaje){
 
 	/*
@@ -287,6 +288,11 @@ bool recibirMensajeEsi(int socketCliente){
 	iterar = false;
 	break;
 
+
+	case FINALIZACION_OK:;
+	finalizarESIEnEjecucion();
+	iterar=false;
+	break;
 	}
 
 	return iterar;
@@ -301,8 +307,7 @@ void finalizarESIEnEjecucion(){
 	//TODO desconexion del fd_set del esi
 	int socketESIFinalizado = (esi_terminado->fd);
 	FD_CLR(socketESIFinalizado, &fdConexiones);
-
-	enviarInt(esi_ejecutando->fd, ABORTAR);
+	close(socketESIFinalizado);
 	queue_push(colaTerminados, esi_terminado);
 	liberarKeys(esi_terminado);
 }

@@ -193,11 +193,14 @@ void liberarKey(void* key){
 
 	t_clave* clave = (t_clave*) key;
 
-	t_proceso_esi* esi_a_desbloquear = queue_pop(clave->colaBloqueados);
-
 	clave->esi_poseedor = NULL;
 
-	queue_push(colaListos, esi_a_desbloquear);
+	if(queue_size(clave->colaBloqueados)>0){
+
+		t_proceso_esi* esi_a_desbloquear = queue_pop(clave->colaBloqueados);
+
+		moverAListos( esi_a_desbloquear);
+	}
 
 }
 

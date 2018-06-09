@@ -12,11 +12,12 @@ t_config* cargar_configuracion(){
 	t_config* infoConfig;
 
 	/* para correr desde ECLIPSE
-	infoConfig = config_create("../Recursos/Configuracion/esi.config");
 	 */
+	infoConfig = config_create("../Recursos/Configuracion/esi.config");
 
-	/* para correr desde CONSOLA*/
+	/* para correr desde CONSOLA
 	infoConfig = config_create("../../Recursos/Configuracion/esi.config");
+	 */
 
 
 	if(config_has_property(infoConfig, "IP_COORDINADOR")){
@@ -46,17 +47,18 @@ void configureLoggers(){
 	E = LOG_LEVEL_ERROR;
 
 	/* para correr desde ECLIPSE *
+	 */
 	vaciarArchivo("../Recursos/Logs/ESI.log");
 	logT = log_create("../Recursos/Logs/ESI.log","ESI", false, T);
 	logI = log_create("../Recursos/Logs/ESI.log", "ESI", false, I);
 	logE = log_create("../Recursos/Logs/ESI.log", "ESI", true, E);
-	 */
 
-	/* para correr desde CONSOLA */
+	/* para correr desde CONSOLA
 	vaciarArchivo("../../Recursos/Logs/ESI.log");
 	logT = log_create("../../Recursos/Logs/ESI.log","ESI", true, T);
 	logI = log_create("../../Recursos/Logs/ESI.log", "ESI", true, I);
 	logE = log_create("../../Recursos/Logs/ESI.log", "ESI", true, E);
+	 */
 
 }
 
@@ -83,7 +85,6 @@ void avisarAlPlanificador(int respuesta_del_coordinador, int position_to_reread,
 		break;
 
 	case EJECUCION_OK:
-
 		enviarInt(planificador_socket, EJECUCION_OK);
 		break;
 
@@ -97,6 +98,7 @@ void correrScript(char* ruta){
 	int accion;
 	int largo;
 	char* linea;
+	bool ejecucionOK=true;
 
 	FILE* f1 = fopen(ruta, "r");
 	if(f1 == NULL){
@@ -136,7 +138,7 @@ void correrScript(char* ruta){
 					enviarMensaje(coordinador_socket, parsed.argumentos.GET.clave);
 					recibirInt(coordinador_socket, &respuesta);
 					log_trace(logT, "recibi %d del coordinador", respuesta);
-					avisarAlPlanificador(respuesta, position_before_read, f1);
+						avisarAlPlanificador(respuesta, position_before_read, f1);
 					break;
 				case SET:
 					enviarInt(coordinador_socket, SET_KEY);
@@ -144,14 +146,14 @@ void correrScript(char* ruta){
 					enviarMensaje(coordinador_socket, parsed.argumentos.SET.valor);
 					recibirInt(coordinador_socket, &respuesta);
 					log_trace(logT, "recibi %d del coordinador", respuesta);
-					avisarAlPlanificador(respuesta, VALUE_NOT_USED, NULL);
+						avisarAlPlanificador(respuesta, VALUE_NOT_USED, NULL);
 					break;
 				case STORE:
 					enviarInt(coordinador_socket, STORE_KEY);
 					enviarMensaje(coordinador_socket, parsed.argumentos.STORE.clave);
 					recibirInt(coordinador_socket, &respuesta);
 					log_trace(logT, "recibi %d del coordinador", respuesta);
-					avisarAlPlanificador(respuesta, VALUE_NOT_USED, NULL);
+						avisarAlPlanificador(respuesta, VALUE_NOT_USED, NULL);
 					break;
 				default:
 					fprintf(stderr, "No pude interpretar <%s>\n", linea);
@@ -163,6 +165,7 @@ void correrScript(char* ruta){
 
 			destruir_operacion(parsed);
 			if(respuesta == CLAVE_INEXISTENTE){
+				ejecucionOK=false;
 				break;
 			}
 
@@ -174,8 +177,10 @@ void correrScript(char* ruta){
 		}
 	}
 
-	if(largo == ftell(f1)) enviarInt(planificador_socket, FINALIZACION_OK);
-
+	if(ejecucionOK){
+//		recibirInt(planificador_socket, &mensaje);
+		if(accion == EJECUTAR_LINEA) enviarInt(planificador_socket, FINALIZACION_OK);
+	}
 	fclose(f1);
 	free(linea);
 
