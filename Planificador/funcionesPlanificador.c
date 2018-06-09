@@ -96,7 +96,7 @@ void* planificar(void * args){
 
 		while(replanificar) {
 			replanificar = recibirMensajeCliente(socketMejorEsi);
-			if(replanificar == true){
+			if(replanificar){
 				enviarAEjecutar(esi_ejecutando);
 			}
 		}

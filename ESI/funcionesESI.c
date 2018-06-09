@@ -12,12 +12,12 @@ t_config* cargar_configuracion(){
 	t_config* infoConfig;
 
 	/* para correr desde ECLIPSE
-	 */
 	infoConfig = config_create("../Recursos/Configuracion/esi.config");
+	 */
 
 	/* para correr desde CONSOLA
-	infoConfig = config_create("../../Recursos/Configuracion/esi.config");
 	 */
+	infoConfig = config_create("../../Recursos/Configuracion/esi.config");
 
 
 	if(config_has_property(infoConfig, "IP_COORDINADOR")){
@@ -47,18 +47,18 @@ void configureLoggers(){
 	E = LOG_LEVEL_ERROR;
 
 	/* para correr desde ECLIPSE *
-	 */
 	vaciarArchivo("../Recursos/Logs/ESI.log");
 	logT = log_create("../Recursos/Logs/ESI.log","ESI", false, T);
 	logI = log_create("../Recursos/Logs/ESI.log", "ESI", false, I);
 	logE = log_create("../Recursos/Logs/ESI.log", "ESI", true, E);
+	 */
 
 	/* para correr desde CONSOLA
+	 */
 	vaciarArchivo("../../Recursos/Logs/ESI.log");
 	logT = log_create("../../Recursos/Logs/ESI.log","ESI", true, T);
 	logI = log_create("../../Recursos/Logs/ESI.log", "ESI", true, I);
 	logE = log_create("../../Recursos/Logs/ESI.log", "ESI", true, E);
-	 */
 
 }
 
@@ -107,7 +107,7 @@ void correrScript(char* ruta){
 	}
 
 	fseek(f1, 0, SEEK_END);
-	largo = ftell(f1);
+	largo = ftell(f1) + 1;
 
 	rewind(f1);
 
@@ -115,7 +115,7 @@ void correrScript(char* ruta){
 
 	int position_before_read;
 
-	while(ftell(f1) < largo){
+	while(ftell(f1)+1 < largo){
 
 		log_info(logI, "Espero mensaje del planificador");
 
@@ -178,8 +178,10 @@ void correrScript(char* ruta){
 	}
 
 	if(ejecucionOK){
-//		recibirInt(planificador_socket, &mensaje);
-		if(accion == EJECUTAR_LINEA) enviarInt(planificador_socket, FINALIZACION_OK);
+		int mensaje;
+		recibirInt(planificador_socket, &mensaje);
+		enviarInt(planificador_socket, ESI);
+		enviarInt(planificador_socket, FINALIZACION_OK);
 	}
 	fclose(f1);
 	free(linea);
