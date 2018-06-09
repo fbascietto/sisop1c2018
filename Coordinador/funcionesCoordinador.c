@@ -133,9 +133,9 @@ void cargar_configuracion(){
 	infoConfig = config_create("../Recursos/Configuracion/coordinador.config");
 	 */
 
+	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
 	/*para correr desde CONSOLA
 	*/
-	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
 
 	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){
 		coordinador_Puerto_Escucha = config_get_int_value(infoConfig, "PUERTO_ESCUCHA");
@@ -232,7 +232,7 @@ int logueaOperacion(char* operacion, char* key, char* value, int socket){
 	string_append(&linea, " ");
 	string_append(&linea, value);
 
-	fprintf(logOp,"%s", linea);
+	fprintf(operaciones,"%s", linea);
 
 	free(linea);
 	free(ESIindx); /*???*/
