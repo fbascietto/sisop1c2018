@@ -21,6 +21,7 @@
 #define EJECUCION_OK 13
 #define EN_ESPERA 14
 #define EJECUCION_INVALIDA 15 //tambien la usa ESI, Coordinador
+#define FINALIZACION_OK 16
 
 //Protocolo de Mensajes ESI,Coordinador (26-40)
 

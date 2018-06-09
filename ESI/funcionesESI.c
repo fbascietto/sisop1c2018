@@ -113,7 +113,7 @@ void correrScript(char* ruta){
 
 	int position_before_read;
 
-	while(1){
+	while(ftell(f1) < largo){
 
 		log_info(logI, "Espero mensaje del planificador");
 
@@ -162,9 +162,9 @@ void correrScript(char* ruta){
 			}
 
 			destruir_operacion(parsed);
-//			if(respuesta == CLAVE_INEXISTENTE){
-//				break;
-//			}
+			if(respuesta == CLAVE_INEXISTENTE){
+				break;
+			}
 
 		}else{
 			if(accion == ABORTAR){
@@ -173,6 +173,8 @@ void correrScript(char* ruta){
 			}
 		}
 	}
+
+	if(largo == ftell(f1)) enviarInt(planificador_socket, FINALIZACION_OK);
 
 	fclose(f1);
 	free(linea);
