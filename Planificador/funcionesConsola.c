@@ -391,7 +391,7 @@ void obtenerKeysAsignadas(t_queue* bloqueados, t_list* procesosEnDeadlock){
 			if(!list_is_empty(procesosEnDeadlock)) agregarElementos(procesosEnDeadlock, procesosEnDeadlockAux);
 			
 			//se compara con el primer proceso (posicion 0) para ver si es bloqueado por alguna de las keys del proceso
-			processToCompare = list_get(procesosEnDeadlock, 0);
+			processToCompare = list_get(procesosEnDeadlockAux, 0);
 
 			keyToCompare = obtenerKeySegunProcesoBloqueado(processToCompare->id);
 
