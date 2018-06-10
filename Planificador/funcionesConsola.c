@@ -291,58 +291,163 @@ void matarProceso(int ESI_ID){
 	}
 }
 
-void detectarDeadlock(){
+void agregarElementos(t_list* origen, t_list* destino){
 
 	int i;
-	t_clave* key;
-	t_proceso_esi* esiInterbloqueo = NULL;
 
-	//----------------------------------------------
+	for(i=0; i<list_size(origen); i++){
 
-	for(i=0; i<list_size(listaKeys); i++){
-
-		key = list_get(listaKeys, i);
-
-		//		if(key->esi_poseedor == NULL){
-		//
-		//			//si no hay ningun esi que posea esa key
-		//			list_remove(listaKeysReemplazo, i);
-		//			i--;
-		//
-		//		}else{
-		//
-		//
-		//
-		//		}
-
-		if(estaBloqueadoPorAlgunoDeLaCola(key->colaBloqueados, key->esi_poseedor, esiInterbloqueo)){
-
-			printf("El ESI %d y el ESI %d estan en deadlock.\n", key->esi_poseedor->id, esiInterbloqueo->id);
-
-		}
+		list_add(destino, list_get(origen, i));
 
 	}
 
 }
 
-bool estaBloqueadoPorAlgunoDeLaCola(t_queue* bloqueadosPorEsi1, t_proceso_esi* esi1, t_proceso_esi* esiInterbloqueo){
 
+void detectarDeadlock(){
 
-	t_clave* keyQueNecesitaEsi1;
-	t_proceso_esi* esiAux;
+	int i;
+	t_clave* key;
+	t_list* keysAsignadas;
+	t_list* procesosEnDeadlock = list_create();
+	encontroDeadlock = false;
 
+	for(i=0; i<list_size(listaKeys); i++){
 
-	if(estaBloqueado(esi1, keyQueNecesitaEsi1)){
+		key = list_get(listaKeys, i);
 
-		esiAux = encontrarEsiSegunID(bloqueadosPorEsi1->elements, keyQueNecesitaEsi1->esi_poseedor->id);
+		keysAsignadas = obtenerKeysAsignadasDeUnProceso(key->esi_poseedor);
 
-		if(esiAux == NULL){
-			//significa que no hay ningun deadlock directo
-			return false;
+		verificarEsperaCircular(keysAsignadas, procesosEnDeadlock);
+
+		if(encontroDeadlock){
+			break;
 		}
 
-		esiInterbloqueo = esiAux;
-		return true;
+	}
+
+	list_destroy(procesosEnDeadlock);
+
+}
+
+void verificarEsperaCircular(t_list* keys, t_list* procesosEnDeadlock){
+
+	int i;
+	t_clave* key;
+
+	t_list* procesosEnDeadlockAux = list_create();
+
+	if(!list_is_empty(procesosEnDeadlock)) agregarElementos(procesosEnDeadlock, procesosEnDeadlockAux);
+
+	for(i=0; i<list_size(listaKeys); i++){
+
+		key = list_get(listaKeys, i);
+
+		if(!list_is_empty(key->colaBloqueados->elements)) verificarEsperaCircularParaUnaKey(key, procesosEnDeadlockAux);
+
+		if(encontroDeadlock){
+
+			imprimirIDs(procesosEnDeadlockAux);
+			break;
+
+		}
+
+	}
+
+	list_destroy(procesosEnDeadlockAux);
+
+}
+
+void verificarEsperaCircularParaUnaKey(t_clave* key, t_list* procesosEnDeadlock){
+
+	list_add(procesosEnDeadlock, key->esi_poseedor);
+
+	if(!list_is_empty(key->colaBloqueados->elements)){
+
+		obtenerKeysAsignadas(key->colaBloqueados, procesosEnDeadlock);
+
+	}
+
+
+}
+
+void obtenerKeysAsignadas(t_queue* bloqueados, t_list* procesosEnDeadlock){
+
+	int i;
+	t_proceso_esi* proceso;
+	t_proceso_esi* processToCompare;
+	t_list* keysAsignadas;
+	t_clave* keyToCompare;
+	t_list* procesosEnDeadlockAux = list_create();
+
+	for(i=0; i<list_size(bloqueados->elements); i++){
+
+		proceso = list_get(bloqueados->elements, i);
+
+		keysAsignadas = obtenerKeysAsignadasDeUnProceso(proceso);
+
+		if(!list_is_empty(keysAsignadas)){
+
+			if(!list_is_empty(procesosEnDeadlock)) agregarElementos(procesosEnDeadlock, procesosEnDeadlockAux);
+			
+			//se compara con el primer proceso (posicion 0) para ver si es bloqueado por alguna de las keys del proceso
+			processToCompare = list_get(procesosEnDeadlock, 0);
+
+			keyToCompare = obtenerKeySegunProcesoBloqueado(processToCompare->id);
+
+
+			if(estaLaKey(keysAsignadas, keyToCompare)){
+
+				encontroDeadlock = true;
+				list_add(procesosEnDeadlock, proceso);
+				break;
+
+			}else{
+
+				list_add(procesosEnDeadlockAux, proceso);
+				verificarEsperaCircular(keysAsignadas, procesosEnDeadlockAux);
+
+			}
+
+		}
+
+		list_clean(procesosEnDeadlockAux);
+
+	}
+
+	list_destroy(procesosEnDeadlockAux);
+
+}
+
+t_list* obtenerKeysAsignadasDeUnProceso(t_proceso_esi* proceso){
+
+	t_list* keysAsignadas = list_create();
+	t_clave* key;
+	int i;
+
+	for(i=0; i<list_size(listaKeys); i++){
+
+		key = list_get(listaKeys, i);
+
+		if(coincideID(key->esi_poseedor->id, proceso->id)) list_add(keysAsignadas, key);
+
+	}
+
+	return keysAsignadas;
+
+}
+
+
+bool estaLaKey(t_list* keys, t_clave* key){
+
+	int i;
+	t_clave* keyEncontrada;
+
+	for(i=0; i<list_size(keys); i++){
+
+		keyEncontrada = list_get(keys, i);
+
+		if(coincideValor(key->claveValor, keyEncontrada->claveValor)) return true;
 
 	}
 
@@ -350,22 +455,30 @@ bool estaBloqueadoPorAlgunoDeLaCola(t_queue* bloqueadosPorEsi1, t_proceso_esi* e
 
 }
 
-bool estaBloqueado(t_proceso_esi* esi, t_clave* keyQueNecesita){
 
 
-	t_clave* key = obtenerKeySegunProcesoBloqueado(esi->id);
+void imprimirIDs(t_list* procesosEnDeadlock){
 
-	if(key == NULL){
-		return false;
+	int i;
+	t_proceso_esi* proceso;
+
+	printf("Estan en deadlock los procesos: ");
+
+	for(i=0; i<list_size(procesosEnDeadlock); i++){
+
+		proceso = list_get(procesosEnDeadlock, i);
+
+		printf("%d", proceso->id);
+
+		if(i + 1 != list_size(procesosEnDeadlock)){
+			printf(", ");
+		}else{
+			printf(".\n");
+		}
+
 	}
 
-	keyQueNecesita = key;
-	return true;
-
-
 }
-
-
 
 
 

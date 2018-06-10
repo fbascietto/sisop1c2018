@@ -72,6 +72,9 @@ t_queue* colaTerminados;
 t_proceso_esi* esi_ejecutando;
 char* keySolicitada;
 
+//auxiliar para funcion de deadlock
+bool encontroDeadlock;
+
 //funciones de colas
 void inicializarColas();
 
@@ -84,8 +87,7 @@ void* escucharCoordinador(void* args);
 void conectarCoordinador();
 void *esperarConexiones(void *args);
 t_proceso_esi* recibirNuevoESI(int idESI, int fd);
-void* esperarConexionesESIs(void* esperarConexion);
-bool recibirMensajeCliente(int socketCliente);
+void* esperarConexionesClientes(void* esperarConexion);
 bool recibirMensajeEsi(int socketCliente);
 void recibirInstancia(int socketCoordinador);
 
@@ -131,9 +133,13 @@ bool coincideID(int idP1, int idP2);
 bool coincideValor(char*, char*);
 bool coincideCola(t_queue*, int);
 t_proceso_esi* removerEsiSegunID(t_list* procesos, int ID);
-bool estaBloqueadoPorAlgunoDeLaCola(t_queue* bloqueadosPorEsi1, t_proceso_esi* esi1, t_proceso_esi* esiInterbloqueo);
-bool estaBloqueado(t_proceso_esi* esi, t_clave* keyQueNecesita);
-
+void verificarEsperaCircular(t_list* keys, t_list* procesosEnDeadlock);
+void verificarEsperaCircularParaUnaKey(t_clave* key, t_list* procesosEnDeadlock);
+void obtenerKeysAsignadas(t_queue* bloqueados, t_list* procesosEnDeadlock);
+t_list* obtenerKeysAsignadasDeUnProceso(t_proceso_esi* proceso);
+bool estaLaKey(t_list* keys, t_clave* key);
+void imprimirIDs(t_list* procesosEnDeadlock);
+void agregarElementos(t_list* origen, t_list* destino);
 
 
 #endif

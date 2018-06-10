@@ -36,7 +36,7 @@ int main(){
 
 	pthread_create(&threadEscucharConsola,NULL,iniciaConsola,NULL);
 	pthread_create(&threadPlanificar, NULL,planificar, NULL);
-	pthread_create(&threadConexionesNuevas, NULL,esperarConexionesESIs,(void*) esperarConexion);
+	pthread_create(&threadConexionesNuevas, NULL,esperarConexionesClientes,(void*) esperarConexion);
 	pthread_create(&threadCoordinador, NULL,escucharCoordinador,NULL);
 
 	pthread_join(threadEscucharConsola, NULL);
@@ -242,10 +242,10 @@ void configureLogger(){
 	logPlan = log_create("../Recursos/Logs/Planificador.log","Planificador", true, LogL);
 	 */
 
-	/* para ejecutar desde CONSOLA
-	 */
 	vaciarArchivo("../../Recursos/Logs/Planificador.log");
 	logPlan = log_create("../../Recursos/Logs/Planificador.log","Planificador", true, LogL);
+	/* para ejecutar desde CONSOLA
+	 */
 
 	log_trace(logPlan, "inicializacion de logs");
 }
@@ -256,11 +256,11 @@ void cargar_configuracion(){
 
 	/*	para correr desde ECLIPSE
 	infoConfig = config_create("../Recursos/Configuracion/planificador.config");
-	*/
+	 */
 
+	infoConfig = config_create("../../Recursos/Configuracion/planificador.config");
 	/* para correr desde CONSOLA
 	 */
-	infoConfig = config_create("../../Recursos/Configuracion/planificador.config");
 
 
 	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){

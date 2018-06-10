@@ -64,8 +64,6 @@ void configureLoggers(){
 
 void avisarAlPlanificador(int respuesta_del_coordinador, int position_to_reread, FILE* script){
 
-	enviarInt(planificador_socket, ESI);
-
 	switch(respuesta_del_coordinador){
 
 	case CLAVE_LIBRE:
@@ -98,7 +96,7 @@ void correrScript(char* ruta){
 	int accion;
 	int largo;
 	char* linea;
-	bool ejecucionOK=true;
+	bool ejecucionOK = true;
 
 	FILE* f1 = fopen(ruta, "r");
 	if(f1 == NULL){
@@ -138,7 +136,7 @@ void correrScript(char* ruta){
 					enviarMensaje(coordinador_socket, parsed.argumentos.GET.clave);
 					recibirInt(coordinador_socket, &respuesta);
 					log_trace(logT, "recibi %d del coordinador", respuesta);
-						avisarAlPlanificador(respuesta, position_before_read, f1);
+					avisarAlPlanificador(respuesta, position_before_read, f1);
 					break;
 				case SET:
 					enviarInt(coordinador_socket, SET_KEY);
@@ -146,14 +144,14 @@ void correrScript(char* ruta){
 					enviarMensaje(coordinador_socket, parsed.argumentos.SET.valor);
 					recibirInt(coordinador_socket, &respuesta);
 					log_trace(logT, "recibi %d del coordinador", respuesta);
-						avisarAlPlanificador(respuesta, VALUE_NOT_USED, NULL);
+					avisarAlPlanificador(respuesta, VALUE_NOT_USED, NULL);
 					break;
 				case STORE:
 					enviarInt(coordinador_socket, STORE_KEY);
 					enviarMensaje(coordinador_socket, parsed.argumentos.STORE.clave);
 					recibirInt(coordinador_socket, &respuesta);
 					log_trace(logT, "recibi %d del coordinador", respuesta);
-						avisarAlPlanificador(respuesta, VALUE_NOT_USED, NULL);
+					avisarAlPlanificador(respuesta, VALUE_NOT_USED, NULL);
 					break;
 				default:
 					fprintf(stderr, "No pude interpretar <%s>\n", linea);
@@ -165,7 +163,7 @@ void correrScript(char* ruta){
 
 			destruir_operacion(parsed);
 			if(respuesta == CLAVE_INEXISTENTE){
-				ejecucionOK=false;
+				ejecucionOK = false;
 				break;
 			}
 
@@ -178,10 +176,8 @@ void correrScript(char* ruta){
 	}
 
 	if(ejecucionOK){
-		int mensaje;
-		recibirInt(planificador_socket, &mensaje);
-		enviarInt(planificador_socket, ESI);
-		enviarInt(planificador_socket, FINALIZACION_OK);
+		recibirInt(planificador_socket, &accion);
+		if(accion == EJECUTAR_LINEA) enviarInt(planificador_socket, FINALIZACION_OK);
 	}
 	fclose(f1);
 	free(linea);

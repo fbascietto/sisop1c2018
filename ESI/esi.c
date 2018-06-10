@@ -60,8 +60,8 @@ int main(int args, char* argv[]) {
 
 	log_info(logI, "Conectado con el planificador");
 
-	//	//protocolo (handshake)
-	//	enviarInt(planificador_socket, ESI);
+	//protocolo (handshake)
+	enviarInt(planificador_socket, ESI);
 
 	//envia identificador de ESI al planificador
 	enviarInt(planificador_socket, id_proceso);
