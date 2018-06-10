@@ -133,9 +133,13 @@ void getStatus(char* keySearch){
 
 	keyValue = (key != NULL) ? key->claveValor : NULL;
 
-	enviarInt(socketCoordinador,DONDE_ESTA_LA_CLAVE);
+	enviarInt(socketConsolaCoordinador,DONDE_ESTA_LA_CLAVE);
 
-	pthread_mutex_lock(&respuestaBusquedaClave);
+	int busquedaClave;
+
+	recibirInt(socketConsolaCoordinador, &busquedaClave);
+
+	char* instanciaBusqueda = recibirMensajeArchivo(socketConsolaCoordinador);
 
 	switch(busquedaClave){
 	case CLAVE_ENCONTRADA:

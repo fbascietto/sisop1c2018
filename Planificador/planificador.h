@@ -19,13 +19,8 @@
 #define PLANIFICADOR_H_
 
 
-
-char* instanciaBusqueda;
-int busquedaClave;
-
 //semáforos
 bool pausarPlanificacion;
-pthread_mutex_t respuestaBusquedaClave;
 pthread_mutex_t pausarPlanificacionSem;
 sem_t productorConsumidor;
 void inicializarSemaforos();
@@ -62,6 +57,7 @@ t_log* logPlan;
 int fdMaxConexionesActivas;
 fd_set fdConexiones;
 int socketCoordinador;
+int socketConsolaCoordinador;
 
 //colas y listas
 t_list* listaKeys;
@@ -85,11 +81,11 @@ void cargar_configuracion();
 //funciones sockets
 void* escucharCoordinador(void* args);
 void conectarCoordinador();
+void conectarConsolaACoordinador();
 void *esperarConexiones(void *args);
 t_proceso_esi* recibirNuevoESI(int idESI, int fd);
 void* esperarConexionesClientes(void* esperarConexion);
 bool recibirMensajeEsi(int socketCliente);
-void recibirInstancia(int socketCoordinador);
 
 //funciones de planificacion
 void* planificar(void* args);

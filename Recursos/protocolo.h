@@ -13,6 +13,7 @@
 #define COORDINADOR 2
 #define INSTANCIA 3
 #define PLANIFICADOR 4
+#define CONSOLA_PLANIFICADOR 5 //El planificador tendra 2 sockets de conexion con Coordinador, uno especifico para la consola.
 
 //Protocolo de Mensajes ESI,Planificador (11-25)
 

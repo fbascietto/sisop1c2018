@@ -7,6 +7,7 @@ void *esperarConexiones(void *args) {
 	t_esperar_conexion *argumentos = (t_esperar_conexion*) args;
 
 	argsPlanificador = malloc(sizeof(t_argumentos_thPlanificador));
+	argsConsolaPlanificador = malloc(sizeof(t_argumentos_thPlanificador));
 
 	printf("Esperando conexiones...\n");
 
@@ -49,7 +50,15 @@ void *esperarConexiones(void *args) {
 			case PLANIFICADOR:;
 			pthread_t threadAtencionPlanificador;
 			argsPlanificador->socketPlanificador = nuevoSocket;
-			if(pthread_create(&threadAtencionPlanificador,NULL,atenderPlanificador,(void*) argsPlanificador)){
+			if(pthread_create(&threadAtencionPlanificador,NULL,atenderPlanificador, NULL)){
+				log_error(logE,"Error generando thread para Planificador");
+			}
+			break;
+
+			case CONSOLA_PLANIFICADOR:;
+			pthread_t threadAtencionConsolaPlanificador;
+			argsConsolaPlanificador->socketPlanificador = nuevoSocket;
+			if(pthread_create(&threadAtencionConsolaPlanificador,NULL,atenderConsolaPlanificador, NULL)){
 				log_error(logE,"Error generando thread para Planificador");
 			}
 			break;
@@ -354,20 +363,27 @@ void recibirMensajeESI(int socket){
 }
 
 void atenderPlanificador(void *args){
-	t_argumentos_thPlanificador * argumentos =  (t_argumentos_thPlanificador *) args;
-	int socket = argumentos->socketPlanificador;
-
 	while(1){
 
-		//recibirMensajePlanificador(socket);
+		recibirMensajePlanificador(argsPlanificador->socketPlanificador);
 		//TODO
 		sleep(5);
 	}
 
 }
 
-void recibirMensajePlanificador(int socket){
+void atenderConsolaPlanificador(void *args){
 
+	while(1){
+
+		recibirMensajeConsolaPlanificador(argsConsolaPlanificador->socketPlanificador);
+		//TODO
+		sleep(5);
+	}
+
+}
+
+void recibirMensajeConsolaPlanificador(int socket){
 	int mensaje;
 
 	recibirInt(socket, &mensaje);
@@ -390,6 +406,22 @@ void recibirMensajePlanificador(int socket){
 
 		enviarMensaje(socket, instancia->nombre);
 		break;
+
+	default:
+
+		log_error(logE, "No reconozco ese mensaje\n");
+
+	}
+}
+
+void recibirMensajePlanificador(int socket){
+
+	int mensaje;
+
+	recibirInt(socket, &mensaje);
+
+	//TODO: Implementar los mensajes necesarios
+	switch(mensaje){
 
 	default:
 

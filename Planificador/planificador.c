@@ -23,6 +23,7 @@ int main(){
 	FD_SET(socketEscucha, &fdSocketsEscucha);
 
 	conectarCoordinador();
+	conectarConsolaACoordinador();
 
 	pthread_t threadEscucharConsola;
 	pthread_t threadPlanificar;
@@ -59,12 +60,10 @@ void inicializarColas(){
 void inicializarSemaforos(){
 	pausarPlanificacion = false;
 	pthread_mutex_init(&pausarPlanificacionSem, NULL);
-	pthread_mutex_init(&respuestaBusquedaClave, NULL);
 }
 
 void destruirSemaforos(){
 	pthread_mutex_destroy(&pausarPlanificacionSem);
-	pthread_mutex_destroy(&respuestaBusquedaClave);
 }
 
 void * iniciaConsola(){

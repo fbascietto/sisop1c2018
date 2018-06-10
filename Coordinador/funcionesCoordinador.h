@@ -58,6 +58,7 @@ t_log* logE;
 FILE* logOp;
 
 t_argumentos_thPlanificador * argsPlanificador;
+t_argumentos_thPlanificador * argsConsolaPlanificador;
 pthread_mutex_t mx_logOp;
 
 int proxima_posicion_instancia;
@@ -73,6 +74,8 @@ void configureLoggers();
 void destroyLoggers();
 void* atenderESI(void *args);
 void atenderPlanificador(void *args);
+void atenderConsolaPlanificador(void *args);
+void recibirMensajeConsolaPlanificador(int socket);
 void recibirMensajePlanificador(int socket);
 int crearInstancia(int nuevoSocket);
 void eliminarInstancia(t_instancia * instancia);

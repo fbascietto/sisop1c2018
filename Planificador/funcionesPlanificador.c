@@ -9,14 +9,6 @@ void* escucharCoordinador(void* args){
 		log_trace(logPlan, "recibi mensaje del coordinador, recibi un %d", mensaje);
 
 		switch(mensaje){
-		case CLAVE_ENCONTRADA:
-			busquedaClave = CLAVE_ENCONTRADA;
-			recibirInstancia(socketCoordinador);
-			break;
-		case CLAVE_NO_ENCONTRADA:
-			busquedaClave = CLAVE_NO_ENCONTRADA;
-			recibirInstancia(socketCoordinador);
-			break;
 		case GET_KEY:
 			keyBuscada =recibirMensajeArchivo(socketCoordinador);
 			claveObtenida = obtenerKey(keyBuscada);
@@ -66,11 +58,6 @@ t_clave* crearNuevaKey(char* clave){
 
 void asignarKey(t_clave* clave,t_proceso_esi* esi){
 	clave->esi_poseedor = esi;
-}
-
-void recibirInstancia(int socketCoordinador){
-	instanciaBusqueda = recibirMensajeArchivo(socketCoordinador);
-	pthread_mutex_unlock(&respuestaBusquedaClave);
 }
 
 bool estaLibre(t_clave* clave){
@@ -302,28 +289,49 @@ void finalizarESIEnEjecucion(){
 	liberarKeys(esi_terminado);
 }
 
-void conectarCoordinador(){
+void conectarConsolaACoordinador(){
 
-	socketCoordinador = 0;
+	socketConsolaCoordinador  = 0;
 
 	int a = 3;
 
 	while(1){
 
-		socketCoordinador = conectarseA(coordinador_IP, coordinador_Puerto);
+		socketConsolaCoordinador = conectarseA(coordinador_IP, coordinador_Puerto);
 
-		if(socketCoordinador == 0){
+		if(socketConsolaCoordinador == 0){
 			sleep(a++);
 		}else{
 			break;
 		}
 	}
 
-	enviarInt(socketCoordinador, PLANIFICADOR);
+	enviarInt(socketConsolaCoordinador, CONSOLA_PLANIFICADOR);
 
-	log_trace(logPlan, "Conectado con el Coordinador");
+	log_trace(logPlan, "Conectado consola con el Coordinador");
 }
 
+void conectarCoordinador(){
+
+	socketCoordinador = 0;
+
+			int a = 3;
+
+			while(1){
+
+				socketCoordinador = conectarseA(coordinador_IP, coordinador_Puerto);
+
+				if(socketCoordinador == 0){
+					sleep(a++);
+				}else{
+					break;
+				}
+			}
+
+			enviarInt(socketCoordinador, PLANIFICADOR);
+
+			log_trace(logPlan, "Conectado con el Coordinador");
+}
 
 void* esperarConexionesClientes(void* esperarConexion){
 	t_esperar_conexion* argumentos = (t_esperar_conexion*) esperarConexion;
