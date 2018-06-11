@@ -131,7 +131,6 @@ bool coincideCola(t_queue*, int);
 t_proceso_esi* removerEsiSegunID(t_list* procesos, int ID);
 void verificarEsperaCircular(t_list* keys, t_list* procesosEnDeadlock);
 void verificarEsperaCircularParaUnaKey(t_clave* key, t_list* procesosEnDeadlock);
-void obtenerKeysAsignadas(t_queue* bloqueados, t_list* procesosEnDeadlock);
 t_list* obtenerKeysAsignadasDeUnProceso(t_proceso_esi* proceso);
 bool estaLaKey(t_list* keys, t_clave* key);
 void imprimirIDs(t_list* procesosEnDeadlock);

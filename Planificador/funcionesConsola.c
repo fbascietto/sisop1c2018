@@ -320,6 +320,8 @@ void detectarDeadlock(){
 
 		key = list_get(listaKeys, i);
 
+		list_add(procesosEnDeadlock, key->esi_poseedor);
+
 		keysAsignadas = obtenerKeysAsignadasDeUnProceso(key->esi_poseedor);
 
 		verificarEsperaCircular(keysAsignadas, procesosEnDeadlock);
@@ -327,6 +329,8 @@ void detectarDeadlock(){
 		if(encontroDeadlock){
 			break;
 		}
+
+		list_clean(procesosEnDeadlock);
 
 	}
 
@@ -341,11 +345,11 @@ void verificarEsperaCircular(t_list* keys, t_list* procesosEnDeadlock){
 
 	t_list* procesosEnDeadlockAux = list_create();
 
-	if(!list_is_empty(procesosEnDeadlock)) agregarElementos(procesosEnDeadlock, procesosEnDeadlockAux);
+	for(i=0; i<list_size(keys); i++){
 
-	for(i=0; i<list_size(listaKeys); i++){
+		if(!list_is_empty(procesosEnDeadlock)) agregarElementos(procesosEnDeadlock, procesosEnDeadlockAux);
 
-		key = list_get(listaKeys, i);
+		key = list_get(keys, i);
 
 		if(!list_is_empty(key->colaBloqueados->elements)) verificarEsperaCircularParaUnaKey(key, procesosEnDeadlockAux);
 
@@ -356,6 +360,8 @@ void verificarEsperaCircular(t_list* keys, t_list* procesosEnDeadlock){
 
 		}
 
+		list_clean(procesosEnDeadlockAux);
+
 	}
 
 	list_destroy(procesosEnDeadlockAux);
@@ -364,19 +370,6 @@ void verificarEsperaCircular(t_list* keys, t_list* procesosEnDeadlock){
 
 void verificarEsperaCircularParaUnaKey(t_clave* key, t_list* procesosEnDeadlock){
 
-	list_add(procesosEnDeadlock, key->esi_poseedor);
-
-	if(!list_is_empty(key->colaBloqueados->elements)){
-
-		obtenerKeysAsignadas(key->colaBloqueados, procesosEnDeadlock);
-
-	}
-
-
-}
-
-void obtenerKeysAsignadas(t_queue* bloqueados, t_list* procesosEnDeadlock){
-
 	int i;
 	t_proceso_esi* proceso;
 	t_proceso_esi* processToCompare;
@@ -384,16 +377,16 @@ void obtenerKeysAsignadas(t_queue* bloqueados, t_list* procesosEnDeadlock){
 	t_clave* keyToCompare;
 	t_list* procesosEnDeadlockAux = list_create();
 
-	for(i=0; i<list_size(bloqueados->elements); i++){
+	for(i=0; i<list_size(key->colaBloqueados->elements); i++){
 
-		proceso = list_get(bloqueados->elements, i);
+		proceso = list_get(key->colaBloqueados->elements, i);
 
 		keysAsignadas = obtenerKeysAsignadasDeUnProceso(proceso);
 
 		if(!list_is_empty(keysAsignadas)){
 
 			if(!list_is_empty(procesosEnDeadlock)) agregarElementos(procesosEnDeadlock, procesosEnDeadlockAux);
-			
+
 			//se compara con el primer proceso (posicion 0) para ver si es bloqueado por alguna de las keys del proceso
 			processToCompare = list_get(procesosEnDeadlockAux, 0);
 
@@ -421,7 +414,9 @@ void obtenerKeysAsignadas(t_queue* bloqueados, t_list* procesosEnDeadlock){
 
 	list_destroy(procesosEnDeadlockAux);
 
+
 }
+
 
 t_list* obtenerKeysAsignadasDeUnProceso(t_proceso_esi* proceso){
 
