@@ -102,50 +102,105 @@ void ordenarListos(){
 
 }
 
-//algoritmo quicksort para ordenar listos
-//pendiente testearlo
-void quick(t_list* unaLista, int limite_izq, int limite_der){
+// Swap de los esis
+void swap(int x, int y, t_list* unaLista)
+{
+    t_proceso_esi* esiX = list_get(unaLista, x);
+    t_proceso_esi* esiY = list_get(unaLista, y);
 
-	int izq,der;
-	t_proceso_esi* pivote;
-
-	izq= limite_izq;
-
-	der = limite_der;
-
-	pivote = list_get(unaLista, (izq+der)/2);
-
-	t_proceso_esi* esiDer = list_get(unaLista, der);
-	t_proceso_esi* esiIzq = list_get(unaLista, izq);
-
-	do{
-
-		while((esiIzq->rafagaEstimada < pivote->rafagaEstimada) && izq<limite_der){
-			izq++;
-			esiIzq = list_get(unaLista,izq);
-		}
-
-		while((pivote->rafagaEstimada < esiDer->rafagaEstimada) && der > limite_izq){
-			der--;
-			esiDer = list_get(unaLista, der);
-		}
-
-		if(izq <=der){
-
-			esiIzq = list_replace(unaLista,izq,list_get(unaLista,der));
-			list_replace(unaLista,der,esiIzq);
-
-			izq++;
-			der--;
-
-		}
-
-	}while(izq<=der);
-
-	if(limite_izq<der){quick(unaLista,limite_izq,der);}
-
-	if(limite_der>izq){quick(unaLista,izq,limite_der);}
+    list_replace(unaLista, x, esiY);
+    list_replace(unaLista, y, esiX);
 }
+
+/* In this function last element is chosen as pivot,
+   then elements are arranged such that,all elements
+   smaller than pivot are arranged to left of pivot
+   and all greater elements to right of pivot */
+int partition(t_list* unaLista, int start, int end)
+{
+    t_proceso_esi* pivot = list_get(unaLista, end);    // choosing pivot element
+    t_proceso_esi* esiAux;
+    int pIndex = start;  // Index of first element
+    int i;
+    for (i=start; i<=end-1; i++)
+    {
+        /* If current element is smaller than or
+         equal to pivot then exchange it with element
+         at pIndex and increment the pIndex*/
+    	esiAux = list_get(unaLista,i);
+        if (esiAux->rafagaEstimada <= pivot->rafagaEstimada)
+        {
+            swap(pIndex, i, unaLista);
+            pIndex=pIndex+1;
+        }
+    }
+    /*exchange pivot with pIndex at the completion
+    of loop*/
+    swap(pIndex, end, unaLista);
+    return pIndex;
+}
+
+ /* The main function that implements QuickSort
+    A[] --> array to be sorted,
+    start  --> Starting index,
+    end  --> Ending index */
+void quick(t_list* unaLista, int start, int end)
+{
+    if (start < end)
+    {
+        /* p is pivot index after partitioning*/
+        int p = partition(unaLista, start, end);
+        // Recursively sort elements left of pivot
+        // and elements right of pivot
+        quick(unaLista, start, p-1);
+        quick(unaLista, p+1, end);
+    }
+}
+
+////algoritmo quicksort para ordenar listos
+////pendiente testearlo
+//void quick(t_list* unaLista, int limite_izq, int limite_der){
+//
+//	int izq,der;
+//	t_proceso_esi* pivote;
+//
+//	izq= limite_izq;
+//
+//	der = limite_der;
+//
+//	pivote = list_get(unaLista, (izq+der)/2);
+//
+//	t_proceso_esi* esiDer = list_get(unaLista, der);
+//	t_proceso_esi* esiIzq = list_get(unaLista, izq);
+//
+//	do{
+//
+//		while((esiIzq->rafagaEstimada < pivote->rafagaEstimada) && izq<limite_der){
+//			izq++;
+//			esiIzq = list_get(unaLista,izq);
+//		}
+//
+//		while((pivote->rafagaEstimada < esiDer->rafagaEstimada) && der > limite_izq){
+//			der--;
+//			esiDer = list_get(unaLista, der);
+//		}
+//
+//		if(izq <=der){
+//
+//			esiIzq = list_replace(unaLista,izq,list_get(unaLista,der));
+//			list_replace(unaLista,der,esiIzq);
+//
+//			izq++;
+//			der--;
+//
+//		}
+//
+//	}while(izq<=der);
+//
+//	if(limite_izq<der){quick(unaLista,limite_izq,der);}
+//
+//	if(limite_der>izq){quick(unaLista,izq,limite_der);}
+//}
 
 
 void actualizarColaListos(){

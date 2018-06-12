@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <pthread.h>
 #include <unistd.h>
+#include <math.h>
 #include <readline/history.h>
 #include <commons/log.h>
 #include <commons/config.h>

@@ -365,7 +365,7 @@ void recibirMensajeESI(int socket){
 void atenderPlanificador(void *args){
 	while(1){
 
-		recibirMensajePlanificador(argsPlanificador->socketPlanificador);
+	//	recibirMensajePlanificador(argsPlanificador->socketPlanificador);
 		//TODO
 		sleep(5);
 	}
@@ -376,7 +376,7 @@ void atenderConsolaPlanificador(void *args){
 
 	while(1){
 
-		recibirMensajeConsolaPlanificador(argsConsolaPlanificador->socketPlanificador);
+		//recibirMensajeConsolaPlanificador(argsConsolaPlanificador->socketPlanificador);
 		//TODO
 		sleep(5);
 	}
@@ -409,7 +409,7 @@ void recibirMensajeConsolaPlanificador(int socket){
 
 	default:
 
-		log_error(logE, "No reconozco ese mensaje\n");
+		log_error(logE, "No reconozco ese mensaje %d\n", mensaje);
 
 	}
 }
