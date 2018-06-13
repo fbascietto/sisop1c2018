@@ -98,28 +98,13 @@ int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, char * escribir){
 
 int recibirValue(int socketConn, char** value){
 
-		int largoMensaje = 0;
-		int bytesRecibidos = 0;
-		int recibido = 0;
+		*value = recibirMensajeArchivo(socketConn);
 
-		recibirInt(socketConn,&largoMensaje);
-
-		*value = malloc((size_t)largoMensaje);
-
-		while(recibido<largoMensaje){
-			while(bytesRecibidos<largoMensaje){
-						bytesRecibidos += recv(socketConn,*value,(size_t)largoMensaje-bytesRecibidos,NULL);
-
-			}
-			recibido += bytesRecibidos;
-			bytesRecibidos = 0;
-
-		}
-		if(recibido <= 0){
-			log_error(logT,"no se recibio nada del socket %d",socketConn);
+		if(strcmp(*value,"-1") == 0){
+			return -1;
 		}
 
-		return recibido;
+		return 1;
 
 
 }
@@ -203,7 +188,7 @@ int ejecutarStore(int coordinador_socket){
 
 
 int persistir_clave(char key[LONGITUD_CLAVE]){
-	//TODO persisir tipo archivos onda el dump??
+	//TODO persisir tipo archivos onda el dump?? SI
 	return 1;
 }
 
@@ -217,11 +202,11 @@ void configureLoggers(char* instName){
 
 	char* logPath = string_new();
 
-	/* para correr desde ECLIPSE
-	string_append(&logPath,"../Recursos/Logs/");
-	 */
+	/* para correr desde ECLIPSE */
+	//string_append(&logPath,"../Recursos/Logs/");
 
-	/* para correr desde CONSOLA*/
+
+	/* para correr desde CONSOLA */
 	string_append(&logPath,"../../Recursos/Logs/");
 
 	string_append(&logPath,instName);
@@ -272,9 +257,9 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	/* SI SE CORRE DESDE ECLIPSE
-	infoConfig = config_create("../Recursos/Configuracion/instancia.config");
-	 */
+	/* SI SE CORRE DESDE ECLIPSE */
+//	infoConfig = config_create("../Recursos/Configuracion/instancia.config");
+
 
 	/* SI SE CORRE DESDE CONSOLA*/
 	infoConfig = config_create("../../Recursos/Configuracion/instancia.config");

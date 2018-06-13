@@ -246,6 +246,7 @@ void configureLogger(){
 	/* para ejecutar desde CONSOLA
 	 */
 
+
 	log_trace(logPlan, "inicializacion de logs");
 }
 
@@ -257,9 +258,9 @@ void cargar_configuracion(){
 	infoConfig = config_create("../Recursos/Configuracion/planificador.config");
 	 */
 
+	/* para correr desde CONSOLA	 */
 	infoConfig = config_create("../../Recursos/Configuracion/planificador.config");
-	/* para correr desde CONSOLA
-	 */
+
 
 
 	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){

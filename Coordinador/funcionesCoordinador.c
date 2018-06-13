@@ -66,6 +66,7 @@ void *esperarConexiones(void *args) {
 			case INSTANCIA:
 				crearInstancia(nuevoSocket);
 				/* borrar simulaEntrada(nuevoSocket);*/
+
 				break;
 
 			default:
@@ -138,13 +139,12 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	/* para correr desde ECLIPSE
+	/* para correr desde ECLIPSE*/
 	infoConfig = config_create("../Recursos/Configuracion/coordinador.config");
-	 */
 
-	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
-	/*para correr desde CONSOLA
-	*/
+
+	/*para correr desde CONSOLA*/
+	//infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
 
 	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){
 		coordinador_Puerto_Escucha = config_get_int_value(infoConfig, "PUERTO_ESCUCHA");
@@ -158,8 +158,8 @@ void cargar_configuracion(){
 		cantidad_Entradas = config_get_int_value(infoConfig, "CANTIDAD_ENTRADAS");
 	}
 
-	if(config_has_property(infoConfig, "TAMANIO_ENTRADA")){
-		tamanio_Entrada = config_get_int_value(infoConfig, "TAMANIO_ENTRADA");
+	if(config_has_property(infoConfig, "TAMANO_ENTRADAS")){
+		tamanio_Entrada = config_get_int_value(infoConfig, "TAMANO_ENTRADAS");
 	}
 
 	if(config_has_property(infoConfig, "RETARDO")){
@@ -176,19 +176,20 @@ void configureLoggers(){
 	E = LOG_LEVEL_ERROR;
 
 
-	/* para correr desde ECLIPSE
+	/* para correr desde ECLIPSE*/
 	vaciarArchivo("../Recursos/Logs/Coordinador.log");
 	logT = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", false, T);
 	logI = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", false, I);
 	logE = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
-	 */
+
 
 	/* para correr desde CONSOLA
-	 */
+
 	vaciarArchivo("../../Recursos/Logs/Coordinador.log");
 	logT = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
+	 */
 }
 
 void destroyLoggers(){
@@ -308,23 +309,26 @@ void recibirMensajeESI(int socket){
 
 			retorno = buscarInstanciaContenedora(clave, instancia);
 			if(retorno == -1){
-				enviarInt(socket, CLAVE_INEXISTENTE);
-				break;
+				//TODO chequear que la clave este creada
+				if(elegirInstancia(instancia)<=0){
+					enviarInt(socket, CLAVE_INEXISTENTE);
+					break;
+
 			}
 			enviarInt(argsPlanificador->socketPlanificador, SET_KEY);
 			enviarMensaje(argsPlanificador->socketPlanificador, clave);
 			recibirInt(argsPlanificador->socketPlanificador, &codigo);
 			switch(codigo){
-			case CLAVE_RESERVADA:;
-			ejecutar_operacion_set(clave, valor, instancia);
-			enviarInt(socket, EJECUCION_OK);
-			break;
-			case CLAVE_NO_RESERVADA:;
-			enviarInt(socket, EJECUCION_INVALIDA);
-			break;
-			case CLAVE_INEXISTENTE:;
-			enviarInt(socket, EJECUCION_INVALIDA);
-			break;
+				case CLAVE_RESERVADA:;
+					ejecutar_operacion_set(clave, valor, instancia);
+					enviarInt(socket, EJECUCION_OK);
+					break;
+				case CLAVE_NO_RESERVADA:;
+					enviarInt(socket, EJECUCION_INVALIDA);
+					break;
+				case CLAVE_INEXISTENTE:;
+					enviarInt(socket, EJECUCION_INVALIDA);
+					break;
 			}
 			break;
 
@@ -433,6 +437,7 @@ void recibirMensajePlanificador(int socket){
 
 /*********** OPERACION GET **************/
 int ejecutarOperacionGET(char key[LONGITUD_CLAVE]){
+	//TODO corregir
 	int pos = -1;
 	t_instancia * instancia;
 	pos = buscarInstanciaContenedora(key, instancia);
@@ -575,10 +580,22 @@ void liberar_clave(char key[LONGITUD_CLAVE]){
 
 /**************** FUNCIONES PRUEBA ************************/
 void simulaEntrada(int socket){
+
+	char* lineaGET;
+	lineaGET = readline("SET:" );
+	char** parametrosGET;
+	parametrosGET = string_split(lineaGET, " ");
+
+	char keyGET[LONGITUD_CLAVE];
+	strcpy(keyGET,parametrosGET[0]);
+
+	ejecutarOperacionGET(keyGET);
+
 	char* linea;
-	linea = readline("ComandoESI:" );
+	linea = readline("SET:" );
 	char** parametros;
 	parametros = string_split(linea, " ");
+
 
 	char key[LONGITUD_CLAVE];
 	strcpy(key,parametros[0]);
@@ -587,6 +604,18 @@ void simulaEntrada(int socket){
 	 * parametro 1 = value
 	 *
 	 * */
+	t_instancia * instancia;
+	int a = buscarInstanciaContenedora(key, instancia);
+	enviarInt(socket,ENVIO_ENTRADA);
 	enviarKey(key,socket);
 	enviarValue(parametros[1],socket);
+
+	char* otra_linea = readline("STORE:" );
+	char** otros_parametros;
+	otros_parametros = string_split(otra_linea, " ");
+	enviarInt(socket,STORE_ENTRADA);
+	char otra_key[LONGITUD_CLAVE];
+	strcpy(otra_key,otros_parametros[0]);
+	enviarKey(otra_key,socket);
+
 }
