@@ -64,7 +64,7 @@ pthread_mutex_t mx_logOp;
 int proxima_posicion_instancia;
 t_list * instancias;
 
-t_list * claves_bloqueadas;
+t_list * claves_sin_instancia;
 
 void *esperarConexiones(void *args);
 void cargarConfiguracion();
@@ -85,9 +85,11 @@ int enviarEntradaInstancia(char key[LONGITUD_CLAVE] , char * value, t_instancia 
 int elegirInstancia(t_instancia * instancia);
 int bloquearKey(char key[LONGITUD_CLAVE]);
 void liberar_clave(char key[LONGITUD_CLAVE]);
-int ejecutarOperacionGET(char key[LONGITUD_CLAVE]);
-int ejecutar_operacion_set(char key[LONGITUD_CLAVE], char * value, t_instancia * instancia);
-int ejecutar_operacion_store(char key[LONGITUD_CLAVE], t_instancia * instancia);
+int ejecutarOperacionGET(int socket);
+int ejecutar_operacion_set(int socket);
+int ejecutar_operacion_set_instancia(char key[LONGITUD_CLAVE], char * value, t_instancia * instancia);
+int ejecutar_operacion_store(int socket);
+int ejecutar_operacion_store_instancia(char key[LONGITUD_CLAVE], t_instancia * instancia);
 int contieneClaveInstancia(t_instancia * instancia, char key[LONGITUD_CLAVE]);
 int buscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia * instancia);
 int simularBuscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia* instancia);
@@ -95,6 +97,7 @@ int elegirInstancia(t_instancia * instancia);
 void recibirMensajeESI(int socket);
 void generarlogDeOperaciones();
 int logueaOperacion(char* operacion, char* key, char* value, int socket);
+bool key_creada(char * key);
 
 
 

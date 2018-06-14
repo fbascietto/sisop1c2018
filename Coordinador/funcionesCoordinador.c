@@ -264,97 +264,22 @@ void* atenderESI(void *args){
 void recibirMensajeESI(int socket){
 
 	int mensaje;
-	char* clave;
-	char* valor;
-	t_instancia* instancia;
-	int retorno;
-
-
-
 	while(1){
-
 
 		recibirInt(socket, &mensaje);
 
-//		log_trace(logT, "recibi mensaje del esi %d, pidio un %d", socket, mensaje);
 		switch(mensaje){
 
 		case GET_KEY:;
-			clave = recibirMensajeArchivo(socket);
-			logueaOperacion("GET",clave,"",socket);
-			enviarInt(argsPlanificador->socketPlanificador, GET_KEY);
-			enviarMensaje(argsPlanificador->socketPlanificador, clave);
-
-			int codigo;
-			recibirInt(argsPlanificador->socketPlanificador, &codigo);
-
-			switch(codigo){
-				case CLAVE_OTORGADA:;
-				ejecutarOperacionGET(clave);
-				enviarInt(socket, EJECUCION_OK);
-				break;
-
-				case CLAVE_BLOQUEADA:;
-				//TODO que deberia hacer el coordinador?
-				enviarInt(socket, EN_ESPERA);
-				break;
-			}
-			//todo: validar mensajes de errores hacia ESI de operacion GET
+			ejecutarOperacionGET(socket);
 			break;
 
 		case SET_KEY:
-			clave = recibirMensajeArchivo(socket);
-			valor = recibirMensajeArchivo(socket);
-			logueaOperacion("SET",clave,valor,socket);
-
-			retorno = buscarInstanciaContenedora(clave, instancia);
-			if(retorno == -1){
-				//TODO chequear que la clave este creada
-				if(elegirInstancia(instancia)<=0){
-					enviarInt(socket, CLAVE_INEXISTENTE);
-					break;
-
-			}
-			enviarInt(argsPlanificador->socketPlanificador, SET_KEY);
-			enviarMensaje(argsPlanificador->socketPlanificador, clave);
-			recibirInt(argsPlanificador->socketPlanificador, &codigo);
-			switch(codigo){
-				case CLAVE_RESERVADA:;
-					ejecutar_operacion_set(clave, valor, instancia);
-					enviarInt(socket, EJECUCION_OK);
-					break;
-				case CLAVE_NO_RESERVADA:;
-					enviarInt(socket, EJECUCION_INVALIDA);
-					break;
-				case CLAVE_INEXISTENTE:;
-					enviarInt(socket, EJECUCION_INVALIDA);
-					break;
-			}
+			ejecutar_operacion_set(socket);
 			break;
 
 		case STORE_KEY:
-			clave = recibirMensajeArchivo(socket);
-			retorno = buscarInstanciaContenedora(clave, instancia);
-			logueaOperacion("STORE",clave,"",socket);
-			if(retorno == -1){
-				enviarInt(socket, CLAVE_INEXISTENTE);
-				break;
-			}
-			enviarInt(argsPlanificador->socketPlanificador, STORE_KEY);
-			enviarMensaje(argsPlanificador->socketPlanificador, clave);
-			recibirInt(argsPlanificador->socketPlanificador, &codigo);
-			switch(codigo){
-			case CLAVE_LIBERADA:;
-			ejecutar_operacion_store(clave, instancia);
-			enviarInt(socket, EJECUCION_OK);
-			break;
-			case CLAVE_NO_RESERVADA:;
-			enviarInt(socket, EJECUCION_INVALIDA);
-			break;
-			case CLAVE_INEXISTENTE:;
-			enviarInt(socket, EJECUCION_INVALIDA);
-			break;
-			}
+			ejecutar_operacion_store(socket);
 			break;
 
 		default:
@@ -436,26 +361,45 @@ void recibirMensajePlanificador(int socket){
 }
 
 /*********** OPERACION GET **************/
-int ejecutarOperacionGET(char key[LONGITUD_CLAVE]){
-	//TODO corregir
-	int pos = -1;
-	t_instancia * instancia;
-	pos = buscarInstanciaContenedora(key, instancia);
-	if(pos<0){
-		log_trace(logT,"No se encontro la clave %s en ninguna instancia", key);
-		if(elegirInstancia(instancia)<0){
-			log_trace(logE,"No se pudo guardar la clave %s en ninguna instancia", key);
-			return -1;
-		}
-	}
+int ejecutarOperacionGET(int socket){
 
-	return bloquearKey(key);
+	char * clave;
+	clave = recibirMensajeArchivo(socket);
+	logueaOperacion("GET",clave,"",socket);
+	enviarInt(argsPlanificador->socketPlanificador, GET_KEY);
+	enviarMensaje(argsPlanificador->socketPlanificador, clave);
+
+	int codigo;
+	if(recibirInt(argsPlanificador->socketPlanificador, &codigo)<=0){
+		log_error(logE,"error al recibir status de la clave %s del planificador",clave);
+	}
+	char key[LONGITUD_CLAVE];
+	strcpy(key,clave);
+	list_add(claves_sin_instancia,key);
+	free(clave);
+	switch(codigo){
+		case CLAVE_OTORGADA:
+			if(enviarInt(socket, EJECUCION_OK)<=0){
+				log_error(logE,"error de conexion con ESI en socket %d",socket);
+				return -1;
+			}
+			break;
+
+		case CLAVE_BLOQUEADA:
+			if(enviarInt(socket, EN_ESPERA)<=0){
+				log_error("error de conexion con ESI en socket %d",socket);
+				return -1;;
+			}
+		break;
+	}
+	return 1;
+				//todo: validar mensajes de errores hacia ESI de operacion GET}
 }
 
 
 int bloquearKey(char key[LONGITUD_CLAVE]){
 
-	list_add(claves_bloqueadas, key);
+
 	log_trace(logT, "clave %s bloqueada", key);
 	return 1;
 }
@@ -529,7 +473,72 @@ int contieneClaveInstancia(t_instancia * instancia, char key[LONGITUD_CLAVE]){
 
 
 /***************** OPERACION SET ******************/
-int ejecutar_operacion_set(char key[LONGITUD_CLAVE], char * value, t_instancia * instancia){
+int ejecutar_operacion_set(int socket){
+	char * clave;
+	char * valor;
+	char key[LONGITUD_CLAVE];
+	t_instancia * instancia;
+
+	clave = recibirMensajeArchivo(socket);
+	valor = recibirMensajeArchivo(socket);
+	logueaOperacion("SET",clave,valor,socket);
+
+	strcpy(key,clave);
+
+
+	if(buscarInstanciaContenedora(key, instancia)<0){
+
+		log_trace(logT,"No se encontro la clave %s en ninguna instancia", key);
+		if(!key_creada(clave)){
+			log_trace(logT,"La clave %s no se encuentra creada", key);
+			enviarInt(socket, CLAVE_INEXISTENTE);
+			free(valor);
+			free(clave);
+			return -1;
+		}
+		if(elegirInstancia(instancia)<=0){
+			log_trace(logT,"No se puede almacenar la clave %s en ninguna instancia", key);
+			enviarInt(socket, EJECUCION_INVALIDA);
+			free(valor);
+			free(clave);
+			return -1;
+		}
+		enviarInt(argsPlanificador->socketPlanificador, SET_KEY);
+		enviarMensaje(argsPlanificador->socketPlanificador, clave);
+		int codigo;
+		recibirInt(argsPlanificador->socketPlanificador, &codigo);
+		free(clave);
+
+		switch(codigo){
+			case CLAVE_RESERVADA:
+				ejecutar_operacion_set_instancia(key, valor, instancia);
+				enviarInt(socket, EJECUCION_OK);
+				break;
+			case CLAVE_NO_RESERVADA:
+				enviarInt(socket, EJECUCION_INVALIDA);
+				break;
+			case CLAVE_INEXISTENTE:
+				enviarInt(socket, EJECUCION_INVALIDA);
+				break;
+		}
+		free(valor);
+
+	}
+
+	return 1;
+
+}
+
+bool key_creada(char * key){
+	bool* igualClave(void* parametro) {
+			char* clave = (char*)parametro;
+			return (strcmp(clave,key)==0);
+		}
+
+	return list_any_satisfy(claves_sin_instancia,igualClave);
+}
+
+int ejecutar_operacion_set_instancia(char key[LONGITUD_CLAVE], char * value, t_instancia * instancia){
 	int socket = instancia->socketInstancia;
 	if(enviarInt(socket,ENVIO_ENTRADA)<=0){
 		log_trace(logE,"error de comunicacion con la instancia %s al enviar la clave %s",instancia->nombre, key);
@@ -549,7 +558,58 @@ int ejecutar_operacion_set(char key[LONGITUD_CLAVE], char * value, t_instancia *
 /*************** FIN OPERACION SET ****************/
 
 /*************** OPERACION STORE *****************/
-int ejecutar_operacion_store(char key[LONGITUD_CLAVE], t_instancia * instancia){
+
+int ejecutar_operacion_store(int socket){
+	t_instancia * instancia;
+	char* clave;
+	clave = recibirMensajeArchivo(socket);
+
+	char key[LONGITUD_CLAVE];
+	strcpy(key,clave);
+	int instancia_encontrada;
+	logueaOperacion("STORE",clave,"",socket);
+	instancia_encontrada = buscarInstanciaContenedora(key, instancia);
+	if( instancia_encontrada< 0){
+		if(!key_creada(clave)){
+			log_trace(logT,"La clave %s no se encuentra creada", clave);
+			enviarInt(socket, CLAVE_INEXISTENTE);
+			free(clave);
+			return -1;
+		}else{
+			log_trace(logT,"La clave %s no se encuentra seteada", clave);
+			enviarInt(socket, EJECUCION_INVALIDA);
+
+		}
+	}
+	enviarInt(argsPlanificador->socketPlanificador, STORE_KEY);
+	enviarMensaje(argsPlanificador->socketPlanificador, clave);
+	free(clave);
+	int codigo;
+	recibirInt(argsPlanificador->socketPlanificador, &codigo);
+	switch(codigo){
+		case CLAVE_LIBERADA:
+			if(instancia_encontrada >= 0 ){
+				if(ejecutar_operacion_store_instancia(key, instancia)<=0){
+					enviarInt(socket, ERROR_EJECUCION);
+					return -1;
+				}
+			}else{
+				enviarInt(socket, EJECUCION_INVALIDA);
+				break;
+			}
+			enviarInt(socket, EJECUCION_OK);
+			break;
+		case CLAVE_NO_RESERVADA:;
+			enviarInt(socket, EJECUCION_INVALIDA);
+			break;
+		case CLAVE_INEXISTENTE:;
+			enviarInt(socket, EJECUCION_INVALIDA);
+			break;
+	}
+	return 1;
+}
+
+int ejecutar_operacion_store_instancia(char key[LONGITUD_CLAVE], t_instancia * instancia){
 	int socket = instancia->socketInstancia;
 	if(enviarInt(socket,STORE_ENTRADA)<=0){
 		liberar_clave(key);
@@ -557,7 +617,6 @@ int ejecutar_operacion_store(char key[LONGITUD_CLAVE], t_instancia * instancia){
 		return -1;
 	}else{
 		if(enviarKey(key,socket)<=0){
-			liberar_clave(key);
 			log_trace(logE,"error al ejecutar STORE con instancia %s de la clave %s",instancia->nombre, key);
 			return -1;
 		}
@@ -573,10 +632,15 @@ void liberar_clave(char key[LONGITUD_CLAVE]){
 		return (strcmp(clave,key)==0);
 	}
 
-	list_remove(claves_bloqueadas,igualClave);
+	list_remove(claves_sin_instancia,igualClave);
 	log_trace(logT, "se libero la clave %s", key);
 }
 /*************** FIN OPERACION STORE *****************/
+
+
+
+
+
 
 /**************** FUNCIONES PRUEBA ************************/
 void simulaEntrada(int socket){
@@ -589,7 +653,7 @@ void simulaEntrada(int socket){
 	char keyGET[LONGITUD_CLAVE];
 	strcpy(keyGET,parametrosGET[0]);
 
-	ejecutarOperacionGET(keyGET);
+	//ejecutarOperacionGET(keyGET);
 
 	char* linea;
 	linea = readline("SET:" );

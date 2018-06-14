@@ -32,6 +32,7 @@
 #define CLAVE_LIBRE 29
 #define CLAVE_BLOQUEADA 30
 #define CLAVE_INEXISTENTE 31
+#define ERROR_EJECUCION 32
 
 //Protocolo de tamaños
 #define LONGITUD_CLAVE 41

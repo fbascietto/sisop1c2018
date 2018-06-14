@@ -13,7 +13,7 @@ int main(){
 	instancias = list_create();
 	proxima_posicion_instancia = 0;
 
-	claves_bloqueadas = list_create();
+	claves_sin_instancia = list_create();
 
 	FD_ZERO(&fdSocketsEscucha);
 	socketEscucha = escuchar(coordinador_Puerto_Escucha);
@@ -26,6 +26,7 @@ int main(){
 	esperarConexion->socketEscucha = socketEscucha;
 
 	esperarConexiones((void*) esperarConexion);
+
 
 	destroyLoggers();
 	list_destroy(instancias);
