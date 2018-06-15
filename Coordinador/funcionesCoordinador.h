@@ -98,6 +98,7 @@ void recibirMensajeESI(int socket);
 void generarlogDeOperaciones();
 int logueaOperacion(char* operacion, char* key, char* value, int socket);
 bool key_creada(char * key);
+bool existeInstancia(char* nombreInstancia, t_instancia * instancia);
 
 
 

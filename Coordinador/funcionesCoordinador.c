@@ -78,10 +78,20 @@ void *esperarConexiones(void *args) {
 }
 
 int crearInstancia(int nuevoSocket){
-	t_instancia * instancia = malloc(sizeof(t_instancia));
+	t_instancia * instancia;
+	char* nombreInstancia = recibirMensajeArchivo(nuevoSocket);
 
-	instancia->nombre = recibirMensajeArchivo(nuevoSocket);
+	if(existeInstancia(nombreInstancia,instancia)){
+		instancia->socketInstancia = nuevoSocket;
+		free(nombreInstancia);
+		return 1;
+	}
+
+	instancia= malloc(sizeof(t_instancia));
+
+	instancia->nombre =
 	instancia->socketInstancia = nuevoSocket;
+
 	if(enviarInt(nuevoSocket,cantidad_Entradas)<=0){
 		return -1;
 	}
@@ -92,6 +102,21 @@ int crearInstancia(int nuevoSocket){
 	list_add(instancias,instancia);
 	log_trace(logT,"Conexión de %s.", instancia->nombre);
 	return 1;
+}
+
+bool existeInstancia(char* nombreInstancia, t_instancia * instancia){
+	bool encontro = false;
+	void mismo_nombre(void* parametro) {
+			t_instancia* inst = (t_instancia*) parametro;
+			if( strcmp(inst->nombre,nombreInstancia) == 0){
+				instancia = inst;
+				encontro = true;
+			}
+	}
+
+	list_iterate(instancias,mismo_nombre);
+	return encontro;
+
 }
 
 void eliminarInstancia(t_instancia * instancia){
@@ -511,8 +536,11 @@ int ejecutar_operacion_set(int socket){
 
 		switch(codigo){
 			case CLAVE_RESERVADA:
-				ejecutar_operacion_set_instancia(key, valor, instancia);
-				enviarInt(socket, EJECUCION_OK);
+				if(ejecutar_operacion_set_instancia(key, valor, instancia)<=0){
+					return ejecutar_operacion_set(socket);
+				}else{
+					enviarInt(socket, EJECUCION_OK);
+				}
 				break;
 			case CLAVE_NO_RESERVADA:
 				enviarInt(socket, EJECUCION_INVALIDA);
@@ -541,15 +569,18 @@ bool key_creada(char * key){
 int ejecutar_operacion_set_instancia(char key[LONGITUD_CLAVE], char * value, t_instancia * instancia){
 	int socket = instancia->socketInstancia;
 	if(enviarInt(socket,ENVIO_ENTRADA)<=0){
+		instancia->socketInstancia = -1;
 		log_trace(logE,"error de comunicacion con la instancia %s al enviar la clave %s",instancia->nombre, key);
 		return -1;
 	}
 	if(enviarKey(key, socket)<=0){
+		instancia->socketInstancia = -1;
 		log_trace(logE,"error al enviar la clave %s a la instancia %s",key,instancia->nombre);
 		return -1;
 
 	}
 	if(enviarValue(value,socket)){
+		instancia->socketInstancia = -1;
 		log_trace(logE,"error al enviar el valor %s de la clave %s a la instancia %s",value,key,instancia->nombre);
 		return -1;
 	}
@@ -612,11 +643,13 @@ int ejecutar_operacion_store(int socket){
 int ejecutar_operacion_store_instancia(char key[LONGITUD_CLAVE], t_instancia * instancia){
 	int socket = instancia->socketInstancia;
 	if(enviarInt(socket,STORE_ENTRADA)<=0){
+		instancia->socketInstancia = -1;
 		liberar_clave(key);
 		log_trace(logE,"error al ejecutar STORE con instancia %s de la clave %s",instancia->nombre, key);
 		return -1;
 	}else{
 		if(enviarKey(key,socket)<=0){
+			instancia->socketInstancia = -1;
 			log_trace(logE,"error al ejecutar STORE con instancia %s de la clave %s",instancia->nombre, key);
 			return -1;
 		}
