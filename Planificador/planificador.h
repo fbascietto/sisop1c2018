@@ -99,6 +99,7 @@ void* esperarConexionesClientes(void* esperarConexion);
 bool recibirMensajeEsi(int socketCliente);
 
 //funciones de planificacion
+void 	iniciarVariablesGlobales();
 void* planificar(void* args);
 void moverAListos(t_proceso_esi* procesoEsi);
 void ordenarListos();

@@ -94,25 +94,40 @@ void block(char* key_value, int ESI_ID){
 	t_clave* key = obtenerKey(key_value);
 
 	if(key != NULL){
-		if(esi_ejecutando->id == ESI_ID){
-			queue_push(key->colaBloqueados, esi_ejecutando);
+		if(esi_ejecutando != NULL){
+			if(esi_ejecutando->id == ESI_ID){
+				queue_push(key->colaBloqueados, esi_ejecutando);
+				log_info(logPlan, "el esi estaba ejecutando");
+			}
 		}else{
 			t_proceso_esi* esi_a_bloquear = removerEsiSegunID(colaListos->elements, ESI_ID);
 			if(esi_a_bloquear != NULL){
-				sem_wait(&productorConsumidor);
 				queue_push(key->colaBloqueados, esi_a_bloquear);
+			}else{
+				log_info(logPlan, "el esi no estaba ni en ejecucion ni en listos");
 			}
 		}
+		log_info(logPlan, "esi %d enviado a la cola de bloqueados de la key %s", ESI_ID, key_value);
+	} else{
+		log_info(logPlan, "la key ingresada no existe");
 	}
-
 }
 
 void unblock(char* key_value){
 
 	t_clave* key = obtenerKey(key_value);
-	t_proceso_esi* esi_a_desbloquear = queue_pop(key->colaBloqueados);
-	cambiarEstimado(esi_a_desbloquear);
-	moverAListos(esi_a_desbloquear);
+	if(key != NULL){
+		if(queue_size(key->colaBloqueados) > 0){
+			t_proceso_esi* esi_a_desbloquear = queue_pop(key->colaBloqueados);
+			cambiarEstimado(esi_a_desbloquear);
+			moverAListos(esi_a_desbloquear);
+			log_info(logPlan, "esi %d desbloqueado", esi_a_desbloquear->id);
+		} else{
+			log_info(logPlan, "no hay procesos bloqueados");
+		}
+	} else{
+		log_info(logPlan, "la clave no existe");
+	}
 
 }
 

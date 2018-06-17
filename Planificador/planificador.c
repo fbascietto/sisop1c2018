@@ -14,6 +14,7 @@ int main(){
 
 	inicializarColas();
 	inicializarSemaforos();
+	iniciarVariablesGlobales();
 
 	FD_ZERO(&fdSocketsEscucha);
 	socketEscucha = escuchar(planificador_Puerto_Escucha);
@@ -51,6 +52,11 @@ int main(){
 	return 0;
 }
 
+void 	iniciarVariablesGlobales(){
+	keySolicitada = malloc(LONGITUD_CLAVE);
+
+}
+
 void inicializarColas(){
 	listaKeys = list_create();
 	colaListos = queue_create();
@@ -72,21 +78,26 @@ void cargarKeysBloqueadasIniciales(){
 	esiImpostor->rafagaEstimada = ESI_IMPOSTOR;
 	esiImpostor->tiempoEspera = ESI_IMPOSTOR;
 
-	int i;
+	int i=0;
 
-	for(i=0;;i++){
+	while(claves_Ini_Bloqueadas[i] != NULL){
 
-		if(claves_Ini_Bloqueadas[i] == NULL) break;
+		char* clave = claves_Ini_Bloqueadas[i];
 
-		nuevaKey = malloc(sizeof(t_clave*));
+		nuevaKey = malloc(sizeof(t_clave));
 
-		strncpy(nuevaKey->claveValor, claves_Ini_Bloqueadas[i], strlen(claves_Ini_Bloqueadas[i]));
+		if(strlen(clave) > LONGITUD_CLAVE){
+			log_error(logPlan, "la clave %s es demasiado larga", clave);
+			exit_gracefully(1);
+		}
+
+		strncpy(nuevaKey->claveValor, clave, strlen(clave));
 		nuevaKey->colaBloqueados = queue_create();
 		nuevaKey->esi_poseedor = esiImpostor;
-
 		list_add(esiImpostor->clavesTomadas, nuevaKey);
 		list_add(listaKeys, nuevaKey);
 
+		i++;
 	}
 
 
@@ -176,7 +187,7 @@ void * iniciaConsola(){
 					}else{
 						char* key = parametros[1];
 						int ESI_ID = atoi(parametros[2]);
-						if(pausarPlanificacion){
+						if(pausarPlanificacion || queue_is_empty(colaListos)){
 							block(key, ESI_ID);
 						}else{
 							esperarPlanificador();
@@ -200,7 +211,7 @@ void * iniciaConsola(){
 					printf("Demasiados argumentos: desbloquear [clave]\n");
 				}else{
 					char* key = parametros[1];
-					if(pausarPlanificacion){
+					if(pausarPlanificacion || queue_is_empty(colaListos)){
 						unblock(key);
 					}else{
 						esperarPlanificador();
@@ -222,7 +233,7 @@ void * iniciaConsola(){
 				printf("Demasiados argumentos: listar [clave]\n");
 			}else{
 				char* key = parametros[1];
-				if(pausarPlanificacion){
+				if(pausarPlanificacion|| queue_is_empty(colaListos)){
 
 					listBlockedProcesses(key);
 				}else{
@@ -245,7 +256,7 @@ void * iniciaConsola(){
 					printf("Demasiados argumentos: status [clave]\n");
 				}else{
 					char* key = parametros[1];
-					if(pausarPlanificacion){
+					if(pausarPlanificacion || queue_is_empty(colaListos)){
 						getStatus(key);
 					}else{
 						esperarPlanificador();
@@ -267,7 +278,7 @@ void * iniciaConsola(){
 				printf("Demasiados argumentos: kill [id]\n");
 			}else{
 				int ESI_ID = atoi(parametros[1]);
-				if(pausarPlanificacion){
+				if(pausarPlanificacion || queue_is_empty(colaListos)){
 					matarProceso(ESI_ID);
 				}else{
 					esperarPlanificador();
@@ -284,7 +295,7 @@ void * iniciaConsola(){
 			if(parametros[1] != NULL){
 				printf("La funcion no lleva argumentos.");
 			}
-			if(pausarPlanificacion){
+			if(pausarPlanificacion || queue_is_empty(colaListos)){
 				detectarDeadlock();
 			}else{
 				esperarPlanificador();
@@ -326,10 +337,10 @@ void configureLogger(){
 	logPlan = log_create("../Recursos/Logs/Planificador.log","Planificador", true, LogL);
 	 */
 
-	vaciarArchivo("../../Recursos/Logs/Planificador.log");
-	logPlan = log_create("../../Recursos/Logs/Planificador.log","Planificador", true, LogL);
 	/* para ejecutar desde CONSOLA
 	 */
+	vaciarArchivo("../../Recursos/Logs/Planificador.log");
+	logPlan = log_create("../../Recursos/Logs/Planificador.log","Planificador", true, LogL);
 
 
 	log_trace(logPlan, "inicializacion de logs");
@@ -343,7 +354,8 @@ void cargar_configuracion(){
 	infoConfig = config_create("../Recursos/Configuracion/planificador.config");
 	 */
 
-	/* para correr desde CONSOLA	 */
+	/* para correr desde CONSOLA
+	 */
 	infoConfig = config_create("../../Recursos/Configuracion/planificador.config");
 
 
@@ -390,7 +402,12 @@ void cargar_configuracion(){
 
 	if(config_has_property(infoConfig, "CLAVES_INI_BLOQUEADAS")){
 		claves_Ini_Bloqueadas = config_get_array_value(infoConfig, "CLAVES_INI_BLOQUEADAS");
-		log_info(logPlan, "puerto de escucha %d", planificador_Puerto_Escucha);
+		log_info(logPlan, "claves Bloqueadas:");
+		int i = 0;
+		while(claves_Ini_Bloqueadas[i] != NULL){
+			log_info(logPlan, "	%s", claves_Ini_Bloqueadas[i]);
+			i++;
+		}
 	}
 
 }

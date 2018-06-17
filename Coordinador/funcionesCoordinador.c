@@ -403,13 +403,14 @@ int ejecutarOperacionGET(int socket){
 
 	int codigo;
 	if(recibirInt(argsPlanificador->socketPlanificador, &codigo)<=0){
-		log_error(logE,"error al recibir status de la clave %s del planificador",clave);
+		log_error(logE,"error al recibir status de la clave %s del planificador",codigo);
 	}
 	char key[LONGITUD_CLAVE];
 	strcpy(key,clave);
 	list_add(claves_sin_instancia,key);
 	free(clave);
 	switch(codigo){
+		log_info(logI, "recibi %d", codigo);
 		case CLAVE_OTORGADA:
 			if(enviarInt(socket, EJECUCION_OK)<=0){
 				log_error(logE,"error de conexion con ESI en socket %d",socket);
@@ -418,8 +419,8 @@ int ejecutarOperacionGET(int socket){
 			break;
 
 		case CLAVE_BLOQUEADA:
-			if(enviarInt(socket, EN_ESPERA)<=0){
-				log_error("error de conexion con ESI en socket %d",socket);
+			if(enviarInt(socket, CLAVE_BLOQUEADA)<=0){
+				log_error(logE, "error de conexion con ESI en socket %d",socket);
 				return -1;;
 			}
 		break;

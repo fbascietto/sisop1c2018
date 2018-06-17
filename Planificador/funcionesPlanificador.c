@@ -16,8 +16,9 @@ void* escucharCoordinador(void* args){
 				claveObtenida = crearNuevaKey(keyBuscada);
 				asignarKey(claveObtenida, esi_ejecutando);
 				enviarInt(socketCoordinador, CLAVE_OTORGADA);
+				free(keyBuscada);
 			} else{
-				strncpy(keySolicitada, keyBuscada, LONGITUD_CLAVE);
+				strncpy(keySolicitada, keyBuscada, LONGITUD_CLAVE); //keySolicitada se usa para bloquear la clave cuando reciba el mensaje del esi
 				enviarInt(socketCoordinador, CLAVE_BLOQUEADA);
 			}
 			break;
@@ -31,6 +32,7 @@ void* escucharCoordinador(void* args){
 			} else {
 				enviarInt(socketCoordinador, CLAVE_RESERVADA);
 			}
+			free(keyBuscada);
 			break;
 		case STORE_KEY:
 			keyBuscada =recibirMensajeArchivo(socketCoordinador);
@@ -43,6 +45,7 @@ void* escucharCoordinador(void* args){
 				liberarKey(claveObtenida);
 				enviarInt(socketCoordinador, CLAVE_LIBERADA);
 			}
+			free(keyBuscada);
 			break;
 		}
 	}
@@ -81,7 +84,6 @@ void* planificar(void * args){
 
 	while(1){
 
-
 		sem_wait(&productorConsumidor);
 
 		while(!queue_is_empty(colaListos)){
@@ -90,6 +92,7 @@ void* planificar(void * args){
 			actualizarColaListos();
 			ordenarListos(); //sin esta funcion deberia funcionar como FIFO
 			esi_ejecutando = queue_pop(colaListos);
+			log_info(logPlan, "esi %d enviado a ejecutar", esi_ejecutando->id);
 
 			while(replanificar) {
 
@@ -304,7 +307,9 @@ bool recibirMensajeEsi(int socketCliente){
 }
 
 void moverABloqueados(){
-	block(keySolicitada, esi_ejecutando->id);
+	t_proceso_esi* esi = esi_ejecutando;
+	block(keySolicitada, esi->id);
+	esi_ejecutando = NULL;
 }
 
 void finalizarESIEnEjecucion(){
