@@ -19,7 +19,7 @@
 #ifndef PLANIFICADOR_H_
 #define PLANIFICADOR_H_
 
-
+#define ESI_IMPOSTOR -10
 
 //structs
 typedef struct {
@@ -83,6 +83,7 @@ bool encontroDeadlock;
 
 //funciones de colas
 void inicializarColas();
+void cargarKeysBloqueadasIniciales();
 
 //funciones de log y config
 void configureLogger();

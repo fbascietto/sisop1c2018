@@ -356,9 +356,9 @@ void detectarDeadlock(){
 
 		list_add(procesosEnDeadlock, key->esi_poseedor);
 
-		keysAsignadas = obtenerKeysAsignadasDeUnProceso(key->esi_poseedor);
+		//keysAsignadas = obtenerKeysAsignadasDeUnProceso(key->esi_poseedor);
 
-		verificarEsperaCircular(keysAsignadas, procesosEnDeadlock);
+		verificarEsperaCircular(key->esi_poseedor->clavesTomadas, procesosEnDeadlock);
 
 		if(encontroDeadlock){
 			break;
@@ -415,9 +415,9 @@ void verificarEsperaCircularParaUnaKey(t_clave* key, t_list* procesosEnDeadlock)
 
 		proceso = list_get(key->colaBloqueados->elements, i);
 
-		keysAsignadas = obtenerKeysAsignadasDeUnProceso(proceso);
+		//keysAsignadas = obtenerKeysAsignadasDeUnProceso(proceso);
 
-		if(!list_is_empty(keysAsignadas)){
+		if(!list_is_empty(proceso->clavesTomadas)){
 
 			if(!list_is_empty(procesosEnDeadlock)) agregarElementos(procesosEnDeadlock, procesosEnDeadlockAux);
 
@@ -427,7 +427,7 @@ void verificarEsperaCircularParaUnaKey(t_clave* key, t_list* procesosEnDeadlock)
 			keyToCompare = obtenerKeySegunProcesoBloqueado(processToCompare->id);
 
 
-			if(estaLaKey(keysAsignadas, keyToCompare)){
+			if(estaLaKey(proceso->clavesTomadas, keyToCompare)){
 
 				encontroDeadlock = true;
 				list_add(procesosEnDeadlock, proceso);
@@ -436,7 +436,7 @@ void verificarEsperaCircularParaUnaKey(t_clave* key, t_list* procesosEnDeadlock)
 			}else{
 
 				list_add(procesosEnDeadlockAux, proceso);
-				verificarEsperaCircular(keysAsignadas, procesosEnDeadlockAux);
+				verificarEsperaCircular(proceso->clavesTomadas, procesosEnDeadlockAux);
 
 			}
 
@@ -452,23 +452,23 @@ void verificarEsperaCircularParaUnaKey(t_clave* key, t_list* procesosEnDeadlock)
 }
 
 
-t_list* obtenerKeysAsignadasDeUnProceso(t_proceso_esi* proceso){
+// t_list* obtenerKeysAsignadasDeUnProceso(t_proceso_esi* proceso){
 
-	t_list* keysAsignadas = list_create();
-	t_clave* key;
-	int i;
+// 	t_list* keysAsignadas = list_create();
+// 	t_clave* key;
+// 	int i;
 
-	for(i=0; i<list_size(listaKeys); i++){
+// 	for(i=0; i<list_size(listaKeys); i++){
 
-		key = list_get(listaKeys, i);
+// 		key = list_get(listaKeys, i);
 
-		if(coincideID(key->esi_poseedor->id, proceso->id)) list_add(keysAsignadas, key);
+// 		if(coincideID(key->esi_poseedor->id, proceso->id)) list_add(keysAsignadas, key);
 
-	}
+// 	}
 
-	return keysAsignadas;
+// 	return keysAsignadas;
 
-}
+// }
 
 
 bool estaLaKey(t_list* keys, t_clave* key){

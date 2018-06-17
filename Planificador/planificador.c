@@ -55,18 +55,46 @@ void inicializarColas(){
 	listaKeys = list_create();
 	colaListos = queue_create();
 	colaTerminados = queue_create();
+
+	cargarKeysBloqueadasIniciales();
+}
+
+void cargarKeysBloqueadasIniciales(){
+
+	t_clave* nuevaKey;
+
+	t_proceso_esi* esiImpostor = malloc(sizeof(t_proceso_esi*));
+
+	esiImpostor->clavesTomadas = list_create();
+	esiImpostor->fd = ESI_IMPOSTOR;
+	esiImpostor->id = ESI_IMPOSTOR;
+	esiImpostor->rafagaActual = ESI_IMPOSTOR;
+	esiImpostor->rafagaEstimada = ESI_IMPOSTOR;
+	esiImpostor->tiempoEspera = ESI_IMPOSTOR;
+
+	int i;
+
+	for(i=0;;i++){
+
+		if(claves_Ini_Bloqueadas[i] == NULL) break;
+
+		nuevaKey = malloc(sizeof(t_clave*));
+
+		strncpy(nuevaKey->claveValor, claves_Ini_Bloqueadas[i], strlen(claves_Ini_Bloqueadas[i]));
+		nuevaKey->colaBloqueados = queue_create();
+		nuevaKey->esi_poseedor = esiImpostor;
+
+		list_add(esiImpostor->clavesTomadas, nuevaKey);
+		list_add(listaKeys, nuevaKey);
+
+	}
+
+
 }
 
 void inicializarSemaforos(){
 	pausarPlanificacion = false;
-	comandoConsola = false;
-	espera = false;
 	pthread_mutex_init(&pausarPlanificacionSem, NULL);
-	pthread_mutex_init(&iniciarConsolaSem, NULL);
-	pthread_mutex_init(&esperarConsolaSem, NULL);
-	pthread_mutex_lock(&iniciarConsolaSem);
-	pthread_mutex_lock(&esperarConsolaSem);
-	pthread_mutex_unlock(&pausarPlanificacionSem);
 }
 
 void destruirSemaforos(){
@@ -141,13 +169,7 @@ void * iniciaConsola(){
 					}else{
 						char* key = parametros[1];
 						int ESI_ID = atoi(parametros[2]);
-						if(pausarPlanificacion){
-							block(key,ESI_ID);
-						}else{
-							esperarPlanificador();
-							block(key, ESI_ID);
-							continuarPlanificador();
-						}
+						block(key, ESI_ID);
 					}
 				}
 			}
@@ -163,13 +185,7 @@ void * iniciaConsola(){
 					printf("Demasiados argumentos: desbloquear [clave]\n");
 				}else{
 					char* key = parametros[1];
-					if(pausarPlanificacion){
-						unblock(key);
-					}else{
-						esperarPlanificador();
-						unblock(key);
-						continuarPlanificador();
-					}
+					unblock(key);
 				}
 			}
 			free(linea);
@@ -177,20 +193,13 @@ void * iniciaConsola(){
 		} else if(!strncmp(linea, listar, strlen(listar)))
 		{
 			log_trace(logPlan,"Consola recibe ""%s""\n", listar);
-			parametros = string_split(linea, " ");
 			if(parametros[1] == NULL){
 				printf("Faltan argumentos: listar [clave]\n");
 			} else if(parametros[2] != NULL){
 				printf("Demasiados argumentos: listar [clave]\n");
 			}else{
 				char* key = parametros[1];
-				if(pausarPlanificacion){
-					listBlockedProcesses(key);
-				}else{
-					esperarPlanificador();
-					listBlockedProcesses(key);
-					continuarPlanificador();
-				}
+				listBlockedProcesses(key);
 			}
 			free(linea);
 
@@ -205,14 +214,7 @@ void * iniciaConsola(){
 					printf("Demasiados argumentos: status [clave]\n");
 				}else{
 					char* key = parametros[1];
-					if(pausarPlanificacion){
-						getStatus(key);
-					}else{
-
-						esperarPlanificador();
-						getStatus(key);
-						continuarPlanificador();
-					}
+					getStatus(key);
 				}
 			}
 			free(linea);
@@ -227,13 +229,7 @@ void * iniciaConsola(){
 				printf("Demasiados argumentos: kill [id]\n");
 			}else{
 				int ESI_ID = atoi(parametros[1]);
-				if(pausarPlanificacion){
-					matarProceso(ESI_ID);
-				}else{
-					esperarPlanificador();
-					matarProceso(ESI_ID);
-					continuarPlanificador();
-				}
+				matarProceso(ESI_ID);
 			}
 			free(linea);
 
@@ -244,13 +240,7 @@ void * iniciaConsola(){
 			if(parametros[1] != NULL){
 				printf("La funcion no lleva argumentos.");
 			}
-			if(pausarPlanificacion){
-				detectarDeadlock();
-			}else{
-				esperarPlanificador();
-				detectarDeadlock();
-				continuarPlanificador();
-			}
+			detectarDeadlock();
 			free(linea);
 
 		} else if(!strncmp(linea, info, strlen(info)))
@@ -286,10 +276,10 @@ void configureLogger(){
 	logPlan = log_create("../Recursos/Logs/Planificador.log","Planificador", true, LogL);
 	 */
 
-	/* para ejecutar desde CONSOLA
-	 */
 	vaciarArchivo("../../Recursos/Logs/Planificador.log");
 	logPlan = log_create("../../Recursos/Logs/Planificador.log","Planificador", true, LogL);
+	/* para ejecutar desde CONSOLA
+	 */
 
 
 	log_trace(logPlan, "inicializacion de logs");
@@ -303,8 +293,7 @@ void cargar_configuracion(){
 	infoConfig = config_create("../Recursos/Configuracion/planificador.config");
 	 */
 
-	/* para correr desde CONSOLA
-	 */
+	/* para correr desde CONSOLA	 */
 	infoConfig = config_create("../../Recursos/Configuracion/planificador.config");
 
 
