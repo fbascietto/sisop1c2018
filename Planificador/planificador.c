@@ -94,7 +94,14 @@ void cargarKeysBloqueadasIniciales(){
 
 void inicializarSemaforos(){
 	pausarPlanificacion = false;
+	comandoConsola = false;
+	espera = false;
 	pthread_mutex_init(&pausarPlanificacionSem, NULL);
+	pthread_mutex_init(&iniciarConsolaSem, NULL);
+	pthread_mutex_init(&esperarConsolaSem, NULL);
+	pthread_mutex_lock(&iniciarConsolaSem);
+	pthread_mutex_lock(&esperarConsolaSem);
+	pthread_mutex_unlock(&pausarPlanificacionSem);
 }
 
 void destruirSemaforos(){
@@ -169,10 +176,18 @@ void * iniciaConsola(){
 					}else{
 						char* key = parametros[1];
 						int ESI_ID = atoi(parametros[2]);
-						block(key, ESI_ID);
+						if(pausarPlanificacion){
+							block(key, ESI_ID);
+						}else{
+							esperarPlanificador();
+							block(key, ESI_ID);
+							continuarPlanificador();
+						}
 					}
 				}
 			}
+
+			free(linea);
 
 		} else if(!strncmp(linea, desbloquear, strlen(desbloquear)))
 		{
@@ -185,7 +200,14 @@ void * iniciaConsola(){
 					printf("Demasiados argumentos: desbloquear [clave]\n");
 				}else{
 					char* key = parametros[1];
-					unblock(key);
+					if(pausarPlanificacion){
+						unblock(key);
+					}else{
+						esperarPlanificador();
+						unblock(key);
+						continuarPlanificador();
+					}
+
 				}
 			}
 			free(linea);
@@ -193,14 +215,23 @@ void * iniciaConsola(){
 		} else if(!strncmp(linea, listar, strlen(listar)))
 		{
 			log_trace(logPlan,"Consola recibe ""%s""\n", listar);
+			parametros = string_split(linea, " ");
 			if(parametros[1] == NULL){
 				printf("Faltan argumentos: listar [clave]\n");
 			} else if(parametros[2] != NULL){
 				printf("Demasiados argumentos: listar [clave]\n");
 			}else{
 				char* key = parametros[1];
-				listBlockedProcesses(key);
+				if(pausarPlanificacion){
+
+					listBlockedProcesses(key);
+				}else{
+					esperarPlanificador();
+					listBlockedProcesses(key);
+					continuarPlanificador();
+				}
 			}
+
 			free(linea);
 
 		} else if(!strncmp(linea, status, strlen(status)))
@@ -214,9 +245,16 @@ void * iniciaConsola(){
 					printf("Demasiados argumentos: status [clave]\n");
 				}else{
 					char* key = parametros[1];
-					getStatus(key);
+					if(pausarPlanificacion){
+						getStatus(key);
+					}else{
+						esperarPlanificador();
+						getStatus(key);
+						continuarPlanificador();
+					}
 				}
 			}
+
 			free(linea);
 
 		} else if(!strncmp(linea, kill, strlen(kill)))
@@ -229,7 +267,13 @@ void * iniciaConsola(){
 				printf("Demasiados argumentos: kill [id]\n");
 			}else{
 				int ESI_ID = atoi(parametros[1]);
-				matarProceso(ESI_ID);
+				if(pausarPlanificacion){
+					matarProceso(ESI_ID);
+				}else{
+					esperarPlanificador();
+					matarProceso(ESI_ID);
+					continuarPlanificador();
+				}
 			}
 			free(linea);
 
@@ -240,7 +284,13 @@ void * iniciaConsola(){
 			if(parametros[1] != NULL){
 				printf("La funcion no lleva argumentos.");
 			}
-			detectarDeadlock();
+			if(pausarPlanificacion){
+				detectarDeadlock();
+			}else{
+				esperarPlanificador();
+				detectarDeadlock();
+				continuarPlanificador();
+			}
 			free(linea);
 
 		} else if(!strncmp(linea, info, strlen(info)))
