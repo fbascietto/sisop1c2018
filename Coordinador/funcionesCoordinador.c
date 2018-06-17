@@ -89,7 +89,7 @@ int crearInstancia(int nuevoSocket){
 
 	instancia= malloc(sizeof(t_instancia));
 
-	instancia->nombre =
+	instancia->nombre = nombreInstancia;
 	instancia->socketInstancia = nuevoSocket;
 
 	if(enviarInt(nuevoSocket,cantidad_Entradas)<=0){
@@ -164,12 +164,14 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	/* para correr desde ECLIPSE*/
+	/* para correr desde ECLIPSE
 	infoConfig = config_create("../Recursos/Configuracion/coordinador.config");
+	*/
 
 
-	/*para correr desde CONSOLA*/
-	//infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
+	/*para correr desde CONSOLA
+	 */
+	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
 
 	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){
 		coordinador_Puerto_Escucha = config_get_int_value(infoConfig, "PUERTO_ESCUCHA");
@@ -201,20 +203,20 @@ void configureLoggers(){
 	E = LOG_LEVEL_ERROR;
 
 
-	/* para correr desde ECLIPSE*/
+	/* para correr desde ECLIPSE
 	vaciarArchivo("../Recursos/Logs/Coordinador.log");
-	logT = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", false, T);
-	logI = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", false, I);
+	logT = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
+	logI = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
+	*/
 
 
 	/* para correr desde CONSOLA
-
+	 */
 	vaciarArchivo("../../Recursos/Logs/Coordinador.log");
 	logT = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
-	 */
 }
 
 void destroyLoggers(){
@@ -288,6 +290,7 @@ void* atenderESI(void *args){
 
 void recibirMensajeESI(int socket){
 
+	bool finalizar = false;
 	int mensaje;
 	while(1){
 
@@ -306,11 +309,17 @@ void recibirMensajeESI(int socket){
 		case STORE_KEY:
 			ejecutar_operacion_store(socket);
 			break;
-
+		case FINALIZACION_OK:
+			finalizar = true;
+			break;
 		default:
 			log_error(logE,"error de codigo, recibi %d", mensaje);
+			finalizar = true;
 			break;
 
+		}
+		if(finalizar){
+			break;
 		}
 	}
 
@@ -330,9 +339,7 @@ void atenderConsolaPlanificador(void *args){
 
 	while(1){
 
-		//recibirMensajeConsolaPlanificador(argsConsolaPlanificador->socketPlanificador);
-		//TODO
-		sleep(5);
+		recibirMensajeConsolaPlanificador(argsConsolaPlanificador->socketPlanificador);
 	}
 
 }

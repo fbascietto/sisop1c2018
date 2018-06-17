@@ -156,9 +156,7 @@ void correrScript(char* ruta){
 				default:
 					fprintf(stderr, "No pude interpretar <%s>\n", linea);
 					exit(EXIT_FAILURE);
-
 				}
-
 			}
 
 			destruir_operacion(parsed);
@@ -169,7 +167,8 @@ void correrScript(char* ruta){
 
 		}else{
 			if(accion == ABORTAR){
-				//avisarle al coordinador?
+				enviarInt(coordinador_socket, FINALIZACION_OK);
+				ejecucionOK=false;
 				break;
 			}
 		}
@@ -177,9 +176,16 @@ void correrScript(char* ruta){
 
 	if(ejecucionOK){
 		recibirInt(planificador_socket, &accion);
-		if(accion == EJECUTAR_LINEA) enviarInt(planificador_socket, FINALIZACION_OK);
+		if(accion == EJECUTAR_LINEA) {
+			enviarInt(coordinador_socket, FINALIZACION_OK);
+			enviarInt(planificador_socket, FINALIZACION_OK);
+		}
 	}
+
+	log_trace(logE, "Recibi %d", accion);
 	fclose(f1);
+	close(coordinador_socket);
+	close(planificador_socket);
 	free(linea);
 
 }

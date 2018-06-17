@@ -109,20 +109,32 @@ void block(char* key_value, int ESI_ID){
 
 void unblock(char* key_value){
 
-
 	t_clave* key = obtenerKey(key_value);
 	t_proceso_esi* esi_a_desbloquear = queue_pop(key->colaBloqueados);
+	cambiarEstimado(esi_a_desbloquear);
 	moverAListos(esi_a_desbloquear);
 
 }
 
 void pauseScheduler(){
-	pausarPlanificacion = true;
+	pausarPlanificacion=true;
 }
 
+
 void goOn(){
-	pausarPlanificacion = false;
+	pausarPlanificacion=false;
 	pthread_mutex_unlock(&pausarPlanificacionSem);
+}
+
+
+void esperarPlanificador(){
+	comandoConsola=true;
+	pthread_mutex_lock(&iniciarConsolaSem);
+}
+
+void continuarPlanificador(){
+	comandoConsola=false;
+	pthread_mutex_unlock(&esperarConsolaSem);
 }
 
 void getStatus(char* keySearch){
@@ -250,48 +262,70 @@ t_proceso_esi* encontrarEsiSegunID(t_list* procesos, int ID){
 
 void matarProceso(int ESI_ID){
 
+	bool coincideID(void* esi){
+		t_proceso_esi* unEsi = (void*) esi;
+		return unEsi->id == ESI_ID;
+	}
+
+	bool estaElESIBloqueado(void* key){
+		t_clave* clave = (void*) key;
+		return list_any_satisfy(clave->colaBloqueados->elements, coincideID);
+	}
+
+
 	t_proceso_esi* proceso_a_matar;
-
 	proceso_a_matar = esi_ejecutando;
+	bool coincide;
 
-	if(coincideID(proceso_a_matar->id, ESI_ID)){
+	if(proceso_a_matar != NULL){
+		coincide = coincideID(proceso_a_matar);
+		if(coincide){
+			log_trace(logPlan, "el proceso a matar estaba en ejecucion");
+			finalizarESIEnEjecucion();
+		}
+	}
 
-		esi_ejecutando = NULL;
+	if (proceso_a_matar == NULL || !coincide){
 
-	}else{
+		//		t_clave* clave_bloqueando_proceso = obtenerKeySegunProcesoBloqueado(ESI_ID);
+		//		proceso_a_matar = encontrarEsiSegunID(clave_bloqueando_proceso->colaBloqueados->elements, ESI_ID);
 
-		t_clave* clave_bloqueando_proceso = obtenerKeySegunProcesoBloqueado(ESI_ID);
-		proceso_a_matar = encontrarEsiSegunID(clave_bloqueando_proceso->colaBloqueados->elements, ESI_ID);
+		log_trace(logPlan, "el proceso a matar no estaba en ejecucion");
 
-		if(proceso_a_matar != NULL){
+		t_clave* clavePoseedora = list_find(listaKeys, estaElESIBloqueado);
 
-			removerEsiSegunID(clave_bloqueando_proceso->colaBloqueados->elements, proceso_a_matar->id);
+		if(clavePoseedora !=NULL){
+			t_list* esisBloqueados = clavePoseedora->colaBloqueados->elements;
+			proceso_a_matar = list_find(esisBloqueados, coincideID);
+			list_remove_by_condition(esisBloqueados, coincideID);
+			log_trace(logPlan, "el proceso %d a matar estaba bloqueado", proceso_a_matar->id);
+		}
 
-		}else{
+		//		if(proceso_a_matar != NULL){
+		//
+		//			removerEsiSegunID(clave_bloqueando_proceso->colaBloqueados->elements, proceso_a_matar->id);
+		//
+		//		}else{
 
-			proceso_a_matar = encontrarEsiSegunID(colaListos->elements, ESI_ID);
+		else{
+
+			proceso_a_matar = list_remove_by_condition(colaListos->elements, coincideID);
 
 			if(proceso_a_matar != NULL){
-
-				removerEsiSegunID(colaListos->elements, proceso_a_matar->id);
-
-			}else{
-
+				log_trace(logPlan, "el proceso %d a matar estaba en listos", proceso_a_matar->id);
+			}
+			else{
 				printf("No existe el id de proceso %d\n", ESI_ID);
-
 			}
 
 		}
 
 	}
 
-
 	if(proceso_a_matar != NULL){
-
 		enviarInt(proceso_a_matar->fd, ABORTAR);
 		liberarKeys(proceso_a_matar);
 		queue_push(colaTerminados, proceso_a_matar);
-
 	}
 }
 

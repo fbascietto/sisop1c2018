@@ -20,12 +20,6 @@
 #define PLANIFICADOR_H_
 
 
-//semáforos
-bool pausarPlanificacion;
-pthread_mutex_t pausarPlanificacionSem;
-sem_t productorConsumidor;
-void inicializarSemaforos();
-void destruirSemaforos();
 
 //structs
 typedef struct {
@@ -42,6 +36,21 @@ typedef struct {
 	char claveValor[LONGITUD_CLAVE];
 	t_queue* colaBloqueados;
 } t_clave;
+
+//semáforos
+bool pausarPlanificacion;
+bool comandoConsola;
+bool espera;
+pthread_mutex_t pausarPlanificacionSem;
+pthread_mutex_t iniciarConsolaSem;
+pthread_mutex_t esperarConsolaSem;
+sem_t productorConsumidor;
+void inicializarSemaforos();
+void destruirSemaforos();
+void esperarPlanificador();
+void continuarPlanificador();
+void esperar();
+
 
 //archivo de config y logs
 int planificador_Algoritmo;

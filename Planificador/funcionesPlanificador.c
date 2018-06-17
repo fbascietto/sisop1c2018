@@ -64,34 +64,49 @@ bool estaLibre(t_clave* clave){
 	return clave->esi_poseedor == NULL;
 }
 
+void esperar() {
+	if (pausarPlanificacion) {
+		pthread_mutex_lock(&pausarPlanificacionSem);
+	}
+	if (comandoConsola) {
+		pthread_mutex_unlock(&iniciarConsolaSem);
+		pthread_mutex_lock(&esperarConsolaSem);
+	}
+}
+
 void* planificar(void * args){
 
-
-	int socketMejorEsi;
 	bool replanificar = true;
+	pthread_mutex_lock(&pausarPlanificacionSem);
 
 	while(1){
-
-		if(pausarPlanificacion){
-			pthread_mutex_lock(&pausarPlanificacionSem);
-		}
 
 
 		sem_wait(&productorConsumidor);
 
-		socketMejorEsi = enviarMejorEsiAEjecutar();
+		while(!queue_is_empty(colaListos)){
 
-		while(replanificar) {
-			replanificar = recibirMensajeEsi(socketMejorEsi);
-			if(replanificar){
+			esperar();
+			actualizarColaListos();
+			ordenarListos(); //sin esta funcion deberia funcionar como FIFO
+			esi_ejecutando = queue_pop(colaListos);
+
+			while(replanificar) {
+
 				enviarAEjecutar(esi_ejecutando);
+
+				replanificar = recibirMensajeEsi(esi_ejecutando->fd);
+
+				esperar();
+
+				//en caso de que se ejecute kill
+				if(esi_ejecutando == NULL) break;
+
 			}
+
+			replanificar = true;
 		}
-
-		replanificar = true;
-
 	}
-
 }
 
 void ordenarListos(){
@@ -105,11 +120,11 @@ void ordenarListos(){
 // Swap de los esis
 void swap(int x, int y, t_list* unaLista)
 {
-    t_proceso_esi* esiX = list_get(unaLista, x);
-    t_proceso_esi* esiY = list_get(unaLista, y);
+	t_proceso_esi* esiX = list_get(unaLista, x);
+	t_proceso_esi* esiY = list_get(unaLista, y);
 
-    list_replace(unaLista, x, esiY);
-    list_replace(unaLista, y, esiX);
+	list_replace(unaLista, x, esiY);
+	list_replace(unaLista, y, esiX);
 }
 
 /* In this function last element is chosen as pivot,
@@ -118,89 +133,45 @@ void swap(int x, int y, t_list* unaLista)
    and all greater elements to right of pivot */
 int partition(t_list* unaLista, int start, int end)
 {
-    t_proceso_esi* pivot = list_get(unaLista, end);    // choosing pivot element
-    t_proceso_esi* esiAux;
-    int pIndex = start;  // Index of first element
-    int i;
-    for (i=start; i<=end-1; i++)
-    {
-        /* If current element is smaller than or
+	t_proceso_esi* pivot = list_get(unaLista, end);    // choosing pivot element
+	t_proceso_esi* esiAux;
+	int pIndex = start;  // Index of first element
+	int i;
+	for (i=start; i<=end-1; i++)
+	{
+		/* If current element is smaller than or
          equal to pivot then exchange it with element
          at pIndex and increment the pIndex*/
-    	esiAux = list_get(unaLista,i);
-        if (esiAux->rafagaEstimada <= pivot->rafagaEstimada)
-        {
-            swap(pIndex, i, unaLista);
-            pIndex=pIndex+1;
-        }
-    }
-    /*exchange pivot with pIndex at the completion
+		esiAux = list_get(unaLista,i);
+		if (esiAux->rafagaEstimada <= pivot->rafagaEstimada)
+		{
+			swap(pIndex, i, unaLista);
+			pIndex=pIndex+1;
+		}
+	}
+	/*exchange pivot with pIndex at the completion
     of loop*/
-    swap(pIndex, end, unaLista);
-    return pIndex;
+	swap(pIndex, end, unaLista);
+	return pIndex;
 }
 
- /* The main function that implements QuickSort
+/* The main function that implements QuickSort
     A[] --> array to be sorted,
     start  --> Starting index,
     end  --> Ending index */
-void quick(t_list* unaLista, int start, int end)
-{
-    if (start < end)
-    {
-        /* p is pivot index after partitioning*/
-        int p = partition(unaLista, start, end);
-        // Recursively sort elements left of pivot
-        // and elements right of pivot
-        quick(unaLista, start, p-1);
-        quick(unaLista, p+1, end);
-    }
+void quick(t_list* unaLista, int start, int end){
+	if (start < end)
+	{
+		/* p is pivot index after partitioning*/
+		int p = partition(unaLista, start, end);
+		// Recursively sort elements left of pivot
+		// and elements right of pivot
+		quick(unaLista, start, p-1);
+		quick(unaLista, p+1, end);
+	}
 }
 
-////algoritmo quicksort para ordenar listos
-////pendiente testearlo
-//void quick(t_list* unaLista, int limite_izq, int limite_der){
-//
-//	int izq,der;
-//	t_proceso_esi* pivote;
-//
-//	izq= limite_izq;
-//
-//	der = limite_der;
-//
-//	pivote = list_get(unaLista, (izq+der)/2);
-//
-//	t_proceso_esi* esiDer = list_get(unaLista, der);
-//	t_proceso_esi* esiIzq = list_get(unaLista, izq);
-//
-//	do{
-//
-//		while((esiIzq->rafagaEstimada < pivote->rafagaEstimada) && izq<limite_der){
-//			izq++;
-//			esiIzq = list_get(unaLista,izq);
-//		}
-//
-//		while((pivote->rafagaEstimada < esiDer->rafagaEstimada) && der > limite_izq){
-//			der--;
-//			esiDer = list_get(unaLista, der);
-//		}
-//
-//		if(izq <=der){
-//
-//			esiIzq = list_replace(unaLista,izq,list_get(unaLista,der));
-//			list_replace(unaLista,der,esiIzq);
-//
-//			izq++;
-//			der--;
-//
-//		}
-//
-//	}while(izq<=der);
-//
-//	if(limite_izq<der){quick(unaLista,limite_izq,der);}
-//
-//	if(limite_der>izq){quick(unaLista,izq,limite_der);}
-//}
+
 
 
 void actualizarColaListos(){
@@ -256,7 +227,7 @@ void moverAListos(t_proceso_esi* procesoEsi){
 int enviarMejorEsiAEjecutar(){
 	actualizarColaListos();
 	//si la funcion de abajo esta comentada, deberia funcionar como FIFO
-	//ordenarListos();
+	ordenarListos();
 	return enviarAEjecutar(queue_pop(colaListos));
 }
 
@@ -268,14 +239,16 @@ int enviarAEjecutar(t_proceso_esi* ESIMenorRafaga){
 }
 
 bool recibirMensajeEsi(int socketCliente){
+
 	int mensaje;
 	bool iterar = true;
-
 	recibirInt(socketCliente, &mensaje);
-
 	log_trace(logPlan, "recibi %d", mensaje);
+
+
 	switch(mensaje){
 
+	case EJECUCION_OK:;
 	/*
 	 * si la ejecucion fue correcta:
 	 * 		1- se actualiza la rafaga de cpu del esi
@@ -283,22 +256,22 @@ bool recibirMensajeEsi(int socketCliente){
 	 * 		3.0- SOLO SI ES SJF CON DESALOJO
 	 * 		3.1- se chequea si hay algun valor de estimado menor en cuyo caso se reemplaza
 	 */
-	case EJECUCION_OK:;
 	esi_ejecutando ->rafagaActual++;
 	actualizarColaListos();
+
 	if(planificador_Algoritmo == SJF_CON_DESALOJO){
+
 		if(queue_size(colaListos)>0){
+
 			//comentar esta funcion para que funcione como FIFO junto con enviarMejorESIAEjecutar()
-			//ordenarListos();
+			ordenarListos();
 			t_proceso_esi* ESIMenorRafaga = queue_pop(colaListos);
-			if(ESIMenorRafaga == NULL){
-				break; //osea, que no hay elementos en listos
-			}
 			sem_wait(&productorConsumidor);
+
 			if(ESIMenorRafaga->rafagaEstimada < esi_ejecutando->rafagaEstimada){
 				moverAListos(esi_ejecutando);
 				cambiarEstimado(esi_ejecutando);
-				enviarAEjecutar(ESIMenorRafaga);
+				esi_ejecutando = ESIMenorRafaga;
 			} else{
 				sem_post(&productorConsumidor);
 				queue_push(colaListos, ESIMenorRafaga);
@@ -336,11 +309,12 @@ void moverABloqueados(){
 
 void finalizarESIEnEjecucion(){
 	t_proceso_esi* esi_terminado = esi_ejecutando;
+	esi_ejecutando = NULL;
 	//TODO desconexion del fd_set del esi
-	int socketESIFinalizado = (esi_terminado->fd);
+	int socketESIFinalizado = esi_terminado->fd;
 	FD_CLR(socketESIFinalizado, &fdConexiones);
-	close(socketESIFinalizado);
-	queue_push(colaTerminados, esi_terminado);
+	//TODO hacer free
+	//	queue_push(colaTerminados, esi_terminado);
 	liberarKeys(esi_terminado);
 }
 
@@ -370,22 +344,22 @@ void conectarCoordinador(){
 
 	socketCoordinador = 0;
 
-			int a = 3;
+	int a = 3;
 
-			while(1){
+	while(1){
 
-				socketCoordinador = conectarseA(coordinador_IP, coordinador_Puerto);
+		socketCoordinador = conectarseA(coordinador_IP, coordinador_Puerto);
 
-				if(socketCoordinador == 0){
-					sleep(a++);
-				}else{
-					break;
-				}
-			}
+		if(socketCoordinador == 0){
+			sleep(a++);
+		}else{
+			break;
+		}
+	}
 
-			enviarInt(socketCoordinador, PLANIFICADOR);
+	enviarInt(socketCoordinador, PLANIFICADOR);
 
-			log_trace(logPlan, "Conectado con el Coordinador");
+	log_trace(logPlan, "Conectado con el Coordinador");
 }
 
 void* esperarConexionesClientes(void* esperarConexion){
