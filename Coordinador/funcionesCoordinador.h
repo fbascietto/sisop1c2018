@@ -82,7 +82,6 @@ void eliminarInstancia(t_instancia * instancia);
 int enviarKey(char key[LONGITUD_CLAVE], int socket );
 int enviarValue(char * value, int socket);
 int enviarEntradaInstancia(char key[LONGITUD_CLAVE] , char * value, t_instancia * instancia);
-int elegirInstancia(t_instancia * instancia);
 int bloquearKey(char key[LONGITUD_CLAVE]);
 void liberar_clave(char key[LONGITUD_CLAVE]);
 int ejecutarOperacionGET(int socket);
@@ -93,7 +92,7 @@ int ejecutar_operacion_store_instancia(char key[LONGITUD_CLAVE], t_instancia * i
 int contieneClaveInstancia(t_instancia * instancia, char key[LONGITUD_CLAVE]);
 int buscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia * instancia);
 int simularBuscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia* instancia);
-int elegirInstancia(t_instancia * instancia);
+int elegirInstancia(t_instancia * instancia, boolean esSimulacion);
 void recibirMensajeESI(int socket);
 void generarlogDeOperaciones();
 int logueaOperacion(char* operacion, char* key, char* value, int socket);

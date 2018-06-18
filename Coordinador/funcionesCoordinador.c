@@ -358,10 +358,11 @@ void recibirMensajeConsolaPlanificador(int socket){
 	case DONDE_ESTA_LA_CLAVE:
 
 		clave = recibirMensajeArchivo(socket);
-		retorno = simularBuscarInstanciaContenedora(clave, instancia);
+		retorno = buscarInstanciaContenedora(clave,instancia);
 		if(retorno > 0){
 			enviarInt(socket, CLAVE_ENCONTRADA);
 		}else{
+			simularBuscarInstanciaContenedora(clave, instancia);
 			enviarInt(socket, CLAVE_NO_ENCONTRADA);
 		}
 
@@ -437,15 +438,20 @@ int bloquearKey(char key[LONGITUD_CLAVE]){
 	return 1;
 }
 
-int elegirInstancia(t_instancia * instancia){
+int elegirInstancia(t_instancia * instancia, bool esSimulacion){
 
 	if(strcmp(coordinador_Algoritmo,"EL")==0){
-		if(proxima_posicion_instancia  >= list_size(instancias) ){
-			proxima_posicion_instancia = 0;
+		int proximaPosicion = proxima_posicion_instancia;
+		if(proximaPosicion  >= list_size(instancias) ){
+			proximaPosicion = 0;
 		}
-		instancia = list_get(instancias,proxima_posicion_instancia);
+		instancia = list_get(instancias,proximaPosicion);
 		log_trace(logT,"se eligio la instancia %s para el guardado de clave", instancia->nombre);
-		return proxima_posicion_instancia++;
+		proximaPosicion++;
+		if(esSimulacion){
+			proxima_posicion_instancia = proximaPosicion;
+		}
+		return proximaPosicion;
 	}else
 		if(strcmp(coordinador_Algoritmo,"LSU")==0){
 			//TODO
@@ -478,15 +484,7 @@ int buscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia * instancia
 }
 
 int simularBuscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia* instancia){
-
-	/*todo: busca la clave en las instancias. Si no la encuentra, simula guardarla. Siempre almacena
-	 * el valor de la instancia donde esta la clave o donde estaria la clave en la instancia que recibe
-	 * la funcion como parametro y retorna 1 en el caso que haya encontrado la clave, 0 en el caso de que
-	 * haya simulado la distribucion.
-	 */
-
-	return 0;
-
+	return elegirInstancia(instancia, true);
 }
 
 
@@ -529,7 +527,7 @@ int ejecutar_operacion_set(int socket){
 			free(clave);
 			return -1;
 		}
-		if(elegirInstancia(instancia)<=0){
+		if(elegirInstancia(instancia,false)<=0){
 			log_trace(logT,"No se puede almacenar la clave %s en ninguna instancia", key);
 			enviarInt(socket, EJECUCION_INVALIDA);
 			free(valor);
