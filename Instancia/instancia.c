@@ -57,11 +57,14 @@ int main() {
 
 			int instruccion;
 			recibirInt(coordinador_socket,&instruccion);
+			int cantidadEntradas;
 			switch(instruccion){
 				case ENVIO_ENTRADA:
-					if(recibirEntrada(coordinador_socket,archivoDatos)<=0){
+					cantidadEntradas = recibirEntrada(coordinador_socket,archivoDatos);
+					if(cantidadEntradas = recibirEntrada(coordinador_socket,archivoDatos)<=0){
 										//TODO que hace si da error?
 					}
+					enviarInt(coordinador_socket,cantidadEntradas);
 					break;
 				case STORE_ENTRADA:
 					ejecutarStore(coordinador_socket);

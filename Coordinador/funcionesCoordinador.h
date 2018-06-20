@@ -40,6 +40,7 @@ typedef struct {
 	char* nombre;
 	int socketInstancia;
 	t_list * claves;
+	int entradasOcupadas;
 } t_instancia;
 
 
@@ -98,6 +99,7 @@ void generarlogDeOperaciones();
 int logueaOperacion(char* operacion, char* key, char* value, int socket);
 bool key_creada(char * key);
 bool existeInstancia(char* nombreInstancia, t_instancia * instancia);
+int ejecutarAlgoritmoLSU(t_instancia* instancia);
 
 
 

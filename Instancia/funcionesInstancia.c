@@ -165,7 +165,7 @@ int recibirEntrada(int socket, FILE * file){
 		numEntradaActual = calculoCircular();
 	}
 
-	return lenValue;
+	return entradasAOcupar;
 
 }
 /******** FIN OPERACION SET **********/

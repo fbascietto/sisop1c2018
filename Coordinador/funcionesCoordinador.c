@@ -1,5 +1,6 @@
 #include "funcionesCoordinador.h"
 #include <readline/readline.h>
+#include <limits.h>
 
 
 void *esperarConexiones(void *args) {
@@ -454,7 +455,7 @@ int elegirInstancia(t_instancia * instancia, bool esSimulacion){
 		return proximaPosicion;
 	}else
 		if(strcmp(coordinador_Algoritmo,"LSU")==0){
-			//TODO
+			return ejecutarAlgoritmoLSU(instancia);
 		}else
 			if(strcmp(coordinador_Algoritmo,"KE")==0){
 				//TODO
@@ -462,6 +463,20 @@ int elegirInstancia(t_instancia * instancia, bool esSimulacion){
 
 
 	return -1;
+}
+
+int ejecutarAlgoritmoLSU(t_instancia* instancia){
+	int menorCantidadDeEntradas=INT_MAX;
+	t_instancia* instanciaIterada = malloc(sizeof(t_instancia));
+	int i;
+	for (i = 0; i < list_size(instancias); ++i) {
+		instanciaIterada = list_get(instancias,i);
+		if(instanciaIterada->entradasOcupadas < menorCantidadDeEntradas){
+			instancia = instanciaIterada;
+			menorCantidadDeEntradas = instanciaIterada->entradasOcupadas;
+		}
+	}
+	return 1;
 }
 
 int buscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia * instancia){
@@ -545,6 +560,10 @@ int ejecutar_operacion_set(int socket){
 				if(ejecutar_operacion_set_instancia(key, valor, instancia)<=0){
 					return ejecutar_operacion_set(socket);
 				}else{
+					int cantidadEntradasOcupadas;
+					recibirInt(instancia->socketInstancia, &cantidadEntradasOcupadas);
+					list_add(instancia->claves,&key);
+					instancia->entradasOcupadas += cantidadEntradasOcupadas;
 					enviarInt(socket, EJECUCION_OK);
 				}
 				break;
