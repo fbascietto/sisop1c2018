@@ -491,16 +491,25 @@ int elegirInstancia(t_instancia * instancia, char key[LONGITUD_CLAVE], bool esSi
 
 int ejecutarAlgoritmoLSU(t_instancia* instancia){
 	int menorCantidadDeEntradas=INT_MAX;
-	t_instancia* instanciaIterada = malloc(sizeof(t_instancia));
+	t_instancia* instanciaIterada;
 	int i;
-	for (i = 0; i < list_size(instancias); ++i) {
-		instanciaIterada = list_get(instancias,i);
+	t_list* instanciasConectadas = obtenerInstanciasConectadas();
+	for (i = 0; i < list_size(instanciasConectadas); ++i) {
+		instanciaIterada = list_get(instanciasConectadas,i);
 		if(instanciaIterada->entradasOcupadas < menorCantidadDeEntradas){
 			instancia = instanciaIterada;
 			menorCantidadDeEntradas = instanciaIterada->entradasOcupadas;
 		}
 	}
 	return 1;
+}
+
+t_list* obtenerInstanciasConectadas(){
+	bool estaConectado(void* instancia){
+		t_instancia* inst = (t_instancia*) instancia;
+		return inst->socketInstancia != -1;
+	}
+	return list_filter(instancias, estaConectado);
 }
 
 int buscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia * instancia){
