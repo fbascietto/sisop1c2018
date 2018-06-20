@@ -439,7 +439,7 @@ int bloquearKey(char key[LONGITUD_CLAVE]){
 	return 1;
 }
 
-int elegirInstancia(t_instancia * instancia, bool esSimulacion){
+int elegirInstancia(t_instancia * instancia, char key[LONGITUD_CLAVE], bool esSimulacion){
 
 	if(strcmp(coordinador_Algoritmo,"EL")==0){
 		int proximaPosicion = proxima_posicion_instancia;
@@ -458,7 +458,31 @@ int elegirInstancia(t_instancia * instancia, bool esSimulacion){
 			return ejecutarAlgoritmoLSU(instancia);
 		}else
 			if(strcmp(coordinador_Algoritmo,"KE")==0){
-				//TODO
+				bool conectada(void* parametro) {
+						t_instancia* inst = (t_instancia*) parametro;
+
+						return (inst->socketInstancia > 0);
+					}
+				char letra = key[0];
+				t_list * instancias_conectadas = list_filter(instancias,conectada);
+				int q = list_size(instancias_conectadas);
+				if(q<=0){
+					log_trace(logT,"no hay instancias conectadas para almacenar la clave %s", key);
+					return -1;
+				}
+				int q_letras = 26 / q;
+				int resto = 26 % q;
+				int i = 0;
+				for(;i<q;i++){
+					if(letra-26 >= (q_letras*i) && letra-26 < (q_letras*(i+1))){
+						instancia = list_get(instancias_conectadas,i);
+					}else
+					if(resto>0 && q == i){
+						instancia = list_get(instancias_conectadas,i);
+					}
+				}
+				free(instancias_conectadas);
+				return 1;
 			}
 
 
@@ -499,7 +523,7 @@ int buscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia * instancia
 }
 
 int simularBuscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia* instancia){
-	return elegirInstancia(instancia, true);
+	return elegirInstancia(instancia, key, true);
 }
 
 
@@ -542,7 +566,7 @@ int ejecutar_operacion_set(int socket){
 			free(clave);
 			return -1;
 		}
-		if(elegirInstancia(instancia,false)<=0){
+		if(elegirInstancia(instancia,key,false)<=0){
 			log_trace(logT,"No se puede almacenar la clave %s en ninguna instancia", key);
 			enviarInt(socket, EJECUCION_INVALIDA);
 			free(valor);
