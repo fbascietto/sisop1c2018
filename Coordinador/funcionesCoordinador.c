@@ -584,10 +584,8 @@ int ejecutar_operacion_set(int socket){
 				if(ejecutar_operacion_set_instancia(key, valor, instancia)<=0){
 					return ejecutar_operacion_set(socket);
 				}else{
-					int cantidadEntradasOcupadas;
-					recibirInt(instancia->socketInstancia, &cantidadEntradasOcupadas);
 					list_add(instancia->claves,&key);
-					instancia->entradasOcupadas += cantidadEntradasOcupadas;
+					actualizarEntradasOcupadas(instancia);
 					enviarInt(socket, EJECUCION_OK);
 				}
 				break;
@@ -604,6 +602,10 @@ int ejecutar_operacion_set(int socket){
 
 	return 1;
 
+}
+
+void actualizarEntradasOcupadas(t_instancia* instancia){
+	recibirInt(instancia->socketInstancia, &(instancia->entradasOcupadas));
 }
 
 bool key_creada(char * key){
@@ -677,6 +679,7 @@ int ejecutar_operacion_store(int socket){
 				enviarInt(socket, EJECUCION_INVALIDA);
 				break;
 			}
+			actualizarEntradasOcupadas(instancia);
 			enviarInt(socket, EJECUCION_OK);
 			break;
 		case CLAVE_NO_RESERVADA:;

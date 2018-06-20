@@ -132,7 +132,21 @@ int recibirKey(int socket, char key [LONGITUD_CLAVE]){
 		return totalLeido;
 }
 
+int obtenerCantidadEntradasLibres(){
+	bool estaVacia(void* entrada){
+		t_entrada* entradaInst = (void*) entrada;
+		return entradaInst->key == NULL;
+	}
+	return list_count_satisfying(tablaEntradas, estaVacia);
+}
 
+int obtenerCantidadEntradasOcupadas(){
+	bool estaOcupada(void* entrada){
+		t_entrada* entradaInst = (void*) entrada;
+		return entradaInst->key != NULL;
+	}
+	return list_count_satisfying(tablaEntradas, estaOcupada);
+}
 
 
 /********** OPERACION SET ************/
