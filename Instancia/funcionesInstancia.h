@@ -55,6 +55,8 @@ int recibirKey(int socket, char key [LONGITUD_CLAVE]);
 int persistir_clave(char key[LONGITUD_CLAVE]);
 int algoritmoR(char* algoritmo);
 int calculoCircular();
+int obtenerCantidadEntradasOcupadas();
+int obtenerCantidadEntradasLibres();
 
 
 #endif /* FUNCIONESINSTANCIA_H_ */

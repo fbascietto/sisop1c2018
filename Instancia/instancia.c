@@ -64,10 +64,11 @@ int main() {
 					if(cantidadEntradas<=0){
 										//TODO que hace si da error?
 					}
-					enviarInt(coordinador_socket,cantidadEntradas);
+					enviarInt(coordinador_socket,obtenerCantidadEntradasOcupadas());
 					break;
 				case STORE_ENTRADA:
 					ejecutarStore(coordinador_socket);
+					enviarInt(coordinador_socket,obtenerCantidadEntradasOcupadas());
 
 			}
 
