@@ -245,14 +245,18 @@ int persistir_clave(char key[LONGITUD_CLAVE], FILE* archivoDatos){
 
 	char* value = malloc(entradaElegida->size);
 
-	strcpy(value,leer_entrada(entradaElegida, archivoDatos));
+	leer_entrada(entradaElegida, archivoDatos, value);
 
+
+	fprintf(keyStore,"%s", value);
+
+	fclose(keyStore);
 	free(value);
 	free(path_final);
 	return 1;
 }
 
-char* leer_entrada(t_entrada* entrada, FILE* archivoDatos){
+void leer_entrada(t_entrada* entrada, FILE* archivoDatos, char* value){
 
 	int data = open(archivoDatos,O_RDWR);
 	struct stat fileStat;
@@ -273,26 +277,22 @@ char* leer_entrada(t_entrada* entrada, FILE* archivoDatos){
 
 	int bytes_totales_leidos = 0;
 	int bytes_leidos = 0;
-	char * buffer;
-	buffer = malloc((size_t)bytesAleer);
 
 	while(bytes_totales_leidos < bytesAleer){
 
 
 		for (;bytes_leidos<bytesAleer && bytes_totales_leidos< bytesAleer;bytes_totales_leidos++){
-			buffer[bytes_leidos] = map[bytes_totales_leidos];
+			value[bytes_leidos] = map[bytes_totales_leidos];
 			bytes_leidos++;
 		}
 		bytes_leidos=0;
 
 
 	}
-	free(buffer);
 
 	log_trace(logT,"Se leyó con exito el value de la clave %s.", entrada->key);
 	munmap(map,fileStat.st_size);
 
-	return buffer;
 }
 
 /********* FIN OPERACION STORE *********/
