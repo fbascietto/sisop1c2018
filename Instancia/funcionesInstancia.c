@@ -7,13 +7,13 @@
 #include "funcionesInstancia.h"
 
 
-int  almacenarEntrada(char key[LONGITUD_CLAVE], FILE* archivoDatos, void * value){
+int  almacenarEntrada(char key[LONGITUD_CLAVE], int entradaInicial, int largoValue){
 
 	t_entrada * entrada = malloc(sizeof(t_entrada));
 
 	strcpy(entrada->key,key);
-	entrada->entry = escribirEntrada(entrada,archivoDatos, value); /* numero de entrada */
-	entrada->size = strlen(value); /* largo de value */
+	entrada->entry = entradaInicial; /* numero de entrada */
+	entrada->size = largoValue;  /* largo de value */
 
 	list_add(tablaEntradas,entrada);
 
@@ -58,7 +58,7 @@ FILE* inicializarPuntoMontaje(char * path, char * filename){
 }
 
 
-int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, char * escribir){
+int escribirEntrada(FILE* archivoDatos, char * escribir){
 
 	unsigned char* map;
 
@@ -88,9 +88,6 @@ int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, char * escribir){
 	}
 	munmap(map,qEntradas * tamanioEntrada);
 
-
-
-	//free(bloqueArchivo);
 	close(data);
 	return strlen(escribir);
 
@@ -171,13 +168,17 @@ int recibirEntrada(int socket, FILE * file){
 		entradasAOcupar = (lenValue / tamanioEntrada);
 	}
 
+	almacenarEntrada(key, numEntradaActual, lenValue);
+
 	for(int i=0;i<entradasAOcupar;i++){
 		char* segmento;
 		segmento = malloc(tamanioEntrada);
 		segmento = strncpy(segmento,value+(i*tamanioEntrada),tamanioEntrada);
-		almacenarEntrada(key,file, segmento);
-		numEntradaActual = calculoCircular();
+		escribirEntrada(file, segmento);
+
+		numEntradaActual = calcularSiguienteEntrada();
 	}
+
 
 	return entradasAOcupar;
 
@@ -217,17 +218,17 @@ void configureLoggers(char* instName){
 	char* logPath = string_new();
 
 	/* para correr desde ECLIPSE */
-	//string_append(&logPath,"../Recursos/Logs/");
+	string_append(&logPath,"../Recursos/Logs/");
 
 
-	/* para correr desde CONSOLA */
+	/* para correr desde CONSOLA
 	string_append(&logPath,"../../Recursos/Logs/");
-
+*/
 	string_append(&logPath,instName);
 	string_append(&logPath,".log");
 
 
-	vaciarArchivo(logPath);
+	//vaciarArchivo(logPath);
 	logT = log_create(logPath,"Instacia", true, T);
 	logI = log_create(logPath, "Instacia", true, I);
 	logE = log_create(logPath, "Instacia", true, E);
@@ -272,12 +273,12 @@ void cargar_configuracion(){
 	t_config* infoConfig;
 
 	/* SI SE CORRE DESDE ECLIPSE */
-//	infoConfig = config_create("../Recursos/Configuracion/instancia.config");
+	infoConfig = config_create("../Recursos/Configuracion/instancia.config");
 
 
-	/* SI SE CORRE DESDE CONSOLA*/
+	/* SI SE CORRE DESDE CONSOLA
 	infoConfig = config_create("../../Recursos/Configuracion/instancia.config");
-
+*/
 	if(config_has_property(infoConfig, "IP_COORDINADOR")){
 		coordinador_IP = config_get_string_value(infoConfig, "IP_COORDINADOR");
 	}

@@ -34,36 +34,25 @@ int main() {
 		archivoDatos = inicializarPuntoMontaje(punto_Montaje, nombre_Instancia);
 
 		tablaEntradas =  list_create();
-
+		operacionNumero = 0;
 		// TODO: levantar tabla de entradas anterior, de ser necesario
 
-		switch (reemplazo_Algoritmo){
-
-			case CIRCULAR  :
-			  numEntradaActual = calculoCircular();
-			  break;
-			case LRU  :
-			  numEntradaActual = 0; /* calculoLRU(); */
-			  break;
-			case BSU  :
-			  numEntradaActual = 0; /* calculoBSU(); */
-			break;
-			default:
-			  numEntradaActual = reemplazo_Algoritmo;
-			/* Acusar error, exit_gracefully */
-		}
+		calcularSiguienteEntrada()
 
 		while(1){
 
 			int instruccion;
 			recibirInt(coordinador_socket,&instruccion);
+			operacionNumero++;
 			int cantidadEntradas;
 			switch(instruccion){
 				case ENVIO_ENTRADA:
 					cantidadEntradas = recibirEntrada(coordinador_socket,archivoDatos);
+
 					if(cantidadEntradas<=0){
 										//TODO que hace si da error?
 					}
+
 					enviarInt(coordinador_socket,obtenerCantidadEntradasOcupadas());
 					break;
 				case STORE_ENTRADA:
@@ -85,6 +74,23 @@ int main() {
 }
 
 
+void calcularSiguienteEntrada(){
+	switch (reemplazo_Algoritmo){
+
+		case CIRCULAR  :
+		  numEntradaActual = calculoCircular();
+		  break;
+		case LRU  :
+		  numEntradaActual = 0; /* calculoLRU(); */
+		  break;
+		case BSU  :
+		  numEntradaActual = 0; /* calculoBSU(); */
+		break;
+		default:
+		  numEntradaActual = reemplazo_Algoritmo;
+		/* Acusar error, exit_gracefully */
+	}
+}
 
 /*
 
