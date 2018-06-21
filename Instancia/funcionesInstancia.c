@@ -351,7 +351,7 @@ int calculoCircular(int lenValue){
 	void calcularEntradasOcupadas(void* parametro) {
 		t_entrada* entrada = (t_entrada*) parametro;
 
-		entradasOcupadas += entrada->size / tamanioEntrada;
+		entradasOcupadas += (entrada->size / tamanioEntrada);
 
 		if(entrada->size%tamanioEntrada){
 			entradasOcupadas++;

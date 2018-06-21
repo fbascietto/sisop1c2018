@@ -82,11 +82,11 @@ int main() {
 }
 
 
-void calcularSiguienteEntrada(){
+void calcularSiguienteEntrada(int lenValue){
 	switch (reemplazo_Algoritmo){
 
 		case CIRCULAR  :
-		  numEntradaActual = calculoCircular();
+		  numEntradaActual = calculoCircular(lenValue);
 		  break;
 		case LRU  :
 		  numEntradaActual = 0; /* calculoLRU(); */
