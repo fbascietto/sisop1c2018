@@ -365,11 +365,9 @@ int calculoCircular(){
 	if(entradasOcupadas==qEntradas){
 		/* empieza a reemplazar entradas, TODO modificación en la lista buscando espacio en el que entre el nuevo value,
 		 * se tiene que considerar agregar el parámetro del tamaño del nuevo value */
-		size = 0;
-
 	}
 
-	return size;
+	return entradasOcupadas;
 }
 
 void cargar_configuracion(){
