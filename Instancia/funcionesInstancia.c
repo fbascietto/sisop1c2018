@@ -23,7 +23,7 @@ int  almacenarEntrada(char key[LONGITUD_CLAVE], int entradaInicial, int largoVal
 
 }
 
-bool obtenenerEntrada(char key[LONGITUD_CLAVE],t_entrada ** entrada){
+bool obtenerEntrada(char key[LONGITUD_CLAVE],t_entrada ** entrada){
 
 	bool* retorno = false;
 	bool* findByKey(void* parametro) {
@@ -185,6 +185,7 @@ int recibirEntrada(int socket, FILE * file){
 		entradasAOcupar = (lenValue / tamanioEntrada);
 	}
 
+	calcularSiguienteEntrada();
 	almacenarEntrada(key, numEntradaActual, lenValue);
 
 	for(int i=0;i<entradasAOcupar;i++){
@@ -192,8 +193,6 @@ int recibirEntrada(int socket, FILE * file){
 		segmento = malloc(tamanioEntrada);
 		segmento = strncpy(segmento,value+(i*tamanioEntrada),tamanioEntrada);
 		escribirEntrada(file, segmento);
-
-		calcularSiguienteEntrada();
 
 	}
 
@@ -246,7 +245,6 @@ int persistir_clave(char key[LONGITUD_CLAVE], FILE* archivoDatos){
 	char* value = malloc(entradaElegida->size);
 
 	leer_entrada(entradaElegida, archivoDatos, value);
-
 
 	fprintf(keyStore,"%s", value);
 
@@ -346,9 +344,27 @@ int algoritmoR(char* algoritmo){
 }
 
 int calculoCircular(){
+
 	int size = list_size(tablaEntradas);
-	if(size==qEntradas){
-		/* empieza a reemplazar entradas, TODO modificación en la lista*/
+	int entradasOcupadas = 0;
+
+	int calcularEntradasOcupadas(void* parametro) {
+		t_entrada* entrada = (t_entrada*) parametro;
+
+		entradasOcupadas += entrada->size / tamanioEntrada;
+
+		if(entrada->size%tamanioEntrada){
+			entradasOcupadas++;
+		}
+
+		return entradasOcupadas;
+	}
+
+	list_iterate(tablaEntradas,calcularEntradasOcupadas);
+
+	if(entradasOcupadas==qEntradas){
+		/* empieza a reemplazar entradas, TODO modificación en la lista buscando espacio en el que entre el nuevo value,
+		 * se tiene que considerar agregar el parámetro del tamaño del nuevo value */
 		size = 0;
 
 	}

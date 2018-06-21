@@ -63,7 +63,7 @@ void calcularSiguienteEntrada();
 int calculoCircular();
 int obtenerCantidadEntradasOcupadas();
 int obtenerCantidadEntradasLibres();
-bool obtenenerEntrada(char key[LONGITUD_CLAVE],t_entrada ** entrada);
+bool obtenerEntrada(char key[LONGITUD_CLAVE],t_entrada ** entrada);
 
 
 #endif /* FUNCIONESINSTANCIA_H_ */
