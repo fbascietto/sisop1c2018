@@ -348,7 +348,7 @@ int calculoCircular(){
 	int size = list_size(tablaEntradas);
 	int entradasOcupadas = 0;
 
-	int calcularEntradasOcupadas(void* parametro) {
+	void calcularEntradasOcupadas(void* parametro) {
 		t_entrada* entrada = (t_entrada*) parametro;
 
 		entradasOcupadas += entrada->size / tamanioEntrada;
@@ -356,8 +356,6 @@ int calculoCircular(){
 		if(entrada->size%tamanioEntrada){
 			entradasOcupadas++;
 		}
-
-		return entradasOcupadas;
 	}
 
 	list_iterate(tablaEntradas,calcularEntradasOcupadas);
