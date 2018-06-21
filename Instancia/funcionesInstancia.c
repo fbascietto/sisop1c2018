@@ -343,7 +343,7 @@ int algoritmoR(char* algoritmo){
 	return value;
 }
 
-int calculoCircular(){
+int calculoCircular(int lenValue){
 
 	int size = list_size(tablaEntradas);
 	int entradasOcupadas = 0;
@@ -361,8 +361,17 @@ int calculoCircular(){
 	list_iterate(tablaEntradas,calcularEntradasOcupadas);
 
 	if(entradasOcupadas==qEntradas){
-		/* empieza a reemplazar entradas, TODO modificación en la lista buscando espacio en el que entre el nuevo value,
+		/* empieza a reemplazar entradas, modificación en la lista buscando espacio en el que entre el nuevo value,
 		 * se tiene que considerar agregar el parámetro del tamaño del nuevo value */
+		for(int i=0;i<size;i++){
+			t_entrada* ent = list_get(tablaEntradas,i);
+			if(lenValue < ent->size){
+				entradasOcupadas = ent->entry;
+				break;
+			}
+		}
+
+		if(entradasOcupadas == qEntradas){return -1; /*TODO que hacer en este caso?*/}
 	}
 
 	return entradasOcupadas;
