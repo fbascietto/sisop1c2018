@@ -56,6 +56,7 @@ int recibirEntrada(int socket, FILE * file);
 int recibirKey(int socket, char key [LONGITUD_CLAVE]);
 int persistir_clave(char key[LONGITUD_CLAVE]);
 int algoritmoR(char* algoritmo);
+void calcularSiguienteEntrada();
 int calculoCircular();
 int obtenerCantidadEntradasOcupadas();
 int obtenerCantidadEntradasLibres();
