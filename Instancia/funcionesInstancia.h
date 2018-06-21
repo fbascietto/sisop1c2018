@@ -24,6 +24,7 @@ typedef struct {
 	int entry;
 	int size;
 	int ultimaRef;
+
 } t_entrada;
 
 t_list * tablaEntradas;
@@ -59,6 +60,7 @@ int algoritmoR(char* algoritmo);
 int calculoCircular();
 int obtenerCantidadEntradasOcupadas();
 int obtenerCantidadEntradasLibres();
+bool obtenenerEntrada(char key[LONGITUD_CLAVE],t_entrada ** entrada);
 
 
 #endif /* FUNCIONESINSTANCIA_H_ */

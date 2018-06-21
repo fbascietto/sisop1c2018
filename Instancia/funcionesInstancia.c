@@ -7,23 +7,40 @@
 #include "funcionesInstancia.h"
 
 
+
 int  almacenarEntrada(char key[LONGITUD_CLAVE], int entradaInicial, int largoValue){
+	t_entrada * entrada;
+	if(obtenenerEntrada(key,&entrada)){
+		entrada = malloc(sizeof(t_entrada));
+		strcpy(entrada->key,key);
+		list_add(tablaEntradas,entrada);
+	}
 
-	t_entrada * entrada = malloc(sizeof(t_entrada));
-
-	strcpy(entrada->key,key);
 	entrada->entry = entradaInicial; /* numero de entrada */
 	entrada->size = largoValue;  /* largo de value */
 
-	list_add(tablaEntradas,entrada);
-
 	return 1;
+
+}
+
+bool obtenenerEntrada(char key[LONGITUD_CLAVE],t_entrada ** entrada){
+
+	bool retorno = false;
+	bool* findByKey(void* parametro) {
+		t_entrada* entrada = (t_entrada*) parametro;
+		if(strcmp(entrada->key,key) == 0){
+			retorno = true;
+		}
+		return retorno;
+	}
+	*entrada =(t_entrada *) list_find(tablaEntradas,findByKey);
+	return retorno;
 }
 
 void eliminarEntrada(char * key){
 	bool* findByKey(void* parametro) {
 		t_entrada* entrada = (t_entrada*) parametro;
-		return (strcmp(entrada->key,key));
+		return (strcmp(entrada->key,key)==0);
 	}
 
 	t_entrada * entrada =(t_entrada *) list_remove_by_condition(tablaEntradas,findByKey);
@@ -177,6 +194,7 @@ int recibirEntrada(int socket, FILE * file){
 		escribirEntrada(file, segmento);
 
 		numEntradaActual = calcularSiguienteEntrada();
+
 	}
 
 

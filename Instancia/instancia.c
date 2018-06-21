@@ -34,7 +34,9 @@ int main() {
 		archivoDatos = inicializarPuntoMontaje(punto_Montaje, nombre_Instancia);
 
 		tablaEntradas =  list_create();
+
 		operacionNumero = 0;
+
 		// TODO: levantar tabla de entradas anterior, de ser necesario
 
 		calcularSiguienteEntrada()
@@ -43,10 +45,10 @@ int main() {
 
 			int instruccion;
 			recibirInt(coordinador_socket,&instruccion);
-			operacionNumero++;
 			int cantidadEntradas;
 			switch(instruccion){
 				case ENVIO_ENTRADA:
+					operacionNumero++;
 					cantidadEntradas = recibirEntrada(coordinador_socket,archivoDatos);
 
 					if(cantidadEntradas<=0){
@@ -56,8 +58,10 @@ int main() {
 					enviarInt(coordinador_socket,obtenerCantidadEntradasOcupadas());
 					break;
 				case STORE_ENTRADA:
+					operacionNumero++;
 					ejecutarStore(coordinador_socket);
 					enviarInt(coordinador_socket,obtenerCantidadEntradasOcupadas());
+					break;
 
 			}
 
