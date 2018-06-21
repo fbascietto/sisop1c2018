@@ -46,11 +46,13 @@ int operacionNumero;
 
 void eliminarEntrada(char * key);
 int  almacenarEntrada(char key[LONGITUD_CLAVE], int entradaInicial, int largoValue);
+char* leer_entrada(t_entrada* entrada, FILE* archivoDatos);
+int escribirEntrada(FILE* archivoDatos, char * escribir);
 FILE* inicializarPuntoMontaje(char * path, char * filename);
 void cargar_configuracion();
 void configureLoggers(char* name);
 void destroyLoggers();
-int escribirEntrada(FILE* archivoDatos, char * escribir);
+int ejecutarStore(int coordinador_socket, FILE* archivoDatos);
 int recibirValue(int socketConn, char** bloqueArchivo);
 int recibirEntrada(int socket, FILE * file);
 int recibirKey(int socket, char key [LONGITUD_CLAVE]);

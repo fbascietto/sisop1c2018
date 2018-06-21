@@ -28,6 +28,8 @@ int main() {
 		enviarInt(coordinador_socket, INSTANCIA);
 		enviarMensaje(coordinador_socket,nombre_Instancia);
 
+		log_trace(logT,"Conectado a Coordinador OK.\n");
+
 		recibirInt(coordinador_socket, &qEntradas);
 		recibirInt(coordinador_socket, &tamanioEntrada);
 
@@ -37,7 +39,7 @@ int main() {
 		operacionNumero = 0;
 		// TODO: levantar tabla de entradas anterior, de ser necesario
 
-		calcularSiguienteEntrada()
+		calcularSiguienteEntrada();
 
 		while(1){
 
@@ -47,6 +49,7 @@ int main() {
 			int cantidadEntradas;
 			switch(instruccion){
 				case ENVIO_ENTRADA:
+					log_trace(logT,"Se recibe instruccion SET.\n");
 					cantidadEntradas = recibirEntrada(coordinador_socket,archivoDatos);
 
 					if(cantidadEntradas<=0){
@@ -56,7 +59,8 @@ int main() {
 					enviarInt(coordinador_socket,obtenerCantidadEntradasOcupadas());
 					break;
 				case STORE_ENTRADA:
-					ejecutarStore(coordinador_socket);
+					log_trace(logT,"Se recibe instruccion STORE.\n");
+					ejecutarStore(coordinador_socket, archivoDatos);
 					enviarInt(coordinador_socket,obtenerCantidadEntradasOcupadas());
 
 			}

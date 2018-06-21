@@ -202,9 +202,77 @@ int ejecutarStore(int coordinador_socket){
 }
 
 
-int persistir_clave(char key[LONGITUD_CLAVE]){
-	//TODO persisir tipo archivos onda el dump?? SI
+int persistir_clave(char key[LONGITUD_CLAVE], FILE* archivoDatos){
+
+
+	char* path_final = string_new();
+
+	string_append(&path_final, punto_Montaje);
+	string_append(&path_final, key);
+
+	FILE* keyStore = fopen(path_final,"w+");
+	if (keyStore == NULL){
+			log_error(logE, "Fallo al generar el STORE de la key %s.", key);
+			exit(EXIT_FAILURE);
+	}
+
+	bool* findByKey(void* parametro) {
+		t_entrada* entrada = (t_entrada*) parametro;
+		return (strcmp(entrada->key,key));
+	}
+
+	t_entrada* entradaElegida = (t_entrada*) list_find(tablaEntradas,findByKey);
+
+	char* value = malloc(entradaElegida->size);
+
+	strcpy(value,leer_entrada(entradaElegida, archivoDatos));
+
+	free(value);
+	free(path_final);
 	return 1;
+}
+
+char* leer_entrada(t_entrada* entrada, FILE* archivoDatos){
+
+	int data = open(archivoDatos,O_RDWR);
+	struct stat fileStat;
+	if (fstat(data, &fileStat) < 0){
+		log_error(logE,"Error fstat --> %s");
+		exit(EXIT_FAILURE);
+	}
+
+	unsigned char* map = (unsigned char*) mmap(NULL, qEntradas * tamanioEntrada , PROT_READ | PROT_WRITE, MAP_SHARED, data, sizeof(unsigned char)*entrada->entry*tamanioEntrada);
+
+	if (map == MAP_FAILED){
+		close(data);
+		log_error(logE,"Error en el mapeo del archivo.dat.\n");
+		exit(EXIT_FAILURE);
+	   }
+
+	int bytesAleer = entrada->size;
+
+	int bytes_totales_leidos = 0;
+	int bytes_leidos = 0;
+	char * buffer;
+	buffer = malloc((size_t)bytesAleer);
+
+	while(bytes_totales_leidos < bytesAleer){
+
+
+		for (;bytes_leidos<bytesAleer && bytes_totales_leidos< bytesAleer;bytes_totales_leidos++){
+			buffer[bytes_leidos] = map[bytes_totales_leidos];
+			bytes_leidos++;
+		}
+		bytes_leidos=0;
+
+		free(buffer);
+	}
+
+
+	log_trace(logT,"Se leyó con exito el value de la clave %s.", entrada->key);
+	munmap(map,fileStat.st_size);
+
+	return buffer;
 }
 
 /********* FIN OPERACION STORE *********/
@@ -229,12 +297,12 @@ void configureLoggers(char* instName){
 
 
 	//vaciarArchivo(logPath);
-	logT = log_create(logPath,"Instacia", true, T);
-	logI = log_create(logPath, "Instacia", true, I);
-	logE = log_create(logPath, "Instacia", true, E);
+	logT = log_create(logPath,"Instancia", true, T);
+	logI = log_create(logPath, "Instancia", true, I);
+	logE = log_create(logPath, "Instancia", true, E);
 
 
-	 	free(logPath);
+	 free(logPath);
 }
 
 void destroyLoggers(){
