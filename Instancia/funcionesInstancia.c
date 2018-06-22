@@ -7,23 +7,40 @@
 #include "funcionesInstancia.h"
 
 
-int  almacenarEntrada(char key[LONGITUD_CLAVE], FILE* archivoDatos, void * value){
 
-	t_entrada * entrada = malloc(sizeof(t_entrada));
-
-	strcpy(entrada->key,key);
-	entrada->entry = escribirEntrada(entrada,archivoDatos, value); /* numero de entrada */
-	entrada->size = strlen(value); /* largo de value */
-
-	list_add(tablaEntradas,entrada);
+int  almacenarEntrada(char key[LONGITUD_CLAVE], int entradaInicial, int largoValue){
+	t_entrada * entrada;
+	if(obtenenerEntrada(key,&entrada)){
+		entrada = malloc(sizeof(t_entrada));
+		strcpy(entrada->key,key);
+		list_add(tablaEntradas,entrada);
+	}
+	entrada->ultimaRef = operacionNumero;
+	entrada->entry = entradaInicial; /* numero de entrada */
+	entrada->size = largoValue;  /* largo de value */
 
 	return 1;
+
+}
+
+bool obtenerEntrada(char key[LONGITUD_CLAVE],t_entrada ** entrada){
+
+	bool* retorno = false;
+	bool* findByKey(void* parametro) {
+		t_entrada* entrada = (t_entrada*) parametro;
+		if(strcmp(entrada->key,key) == 0){
+			*retorno = true;
+		}
+		return retorno;
+	}
+	*entrada =(t_entrada *) list_find(tablaEntradas,findByKey);
+	return *retorno;
 }
 
 void eliminarEntrada(char * key){
 	bool* findByKey(void* parametro) {
 		t_entrada* entrada = (t_entrada*) parametro;
-		return (strcmp(entrada->key,key));
+		return (strcmp(entrada->key,key)==0);
 	}
 
 	t_entrada * entrada =(t_entrada *) list_remove_by_condition(tablaEntradas,findByKey);
@@ -58,7 +75,7 @@ FILE* inicializarPuntoMontaje(char * path, char * filename){
 }
 
 
-int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, char * escribir){
+int escribirEntrada(FILE* archivoDatos, char * escribir){
 
 	unsigned char* map;
 
@@ -88,9 +105,6 @@ int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, char * escribir){
 	}
 	munmap(map,qEntradas * tamanioEntrada);
 
-
-
-	//free(bloqueArchivo);
 	close(data);
 	return strlen(escribir);
 
@@ -171,13 +185,17 @@ int recibirEntrada(int socket, FILE * file){
 		entradasAOcupar = (lenValue / tamanioEntrada);
 	}
 
+	calcularSiguienteEntrada();
+	almacenarEntrada(key, numEntradaActual, lenValue);
+
 	for(int i=0;i<entradasAOcupar;i++){
 		char* segmento;
 		segmento = malloc(tamanioEntrada);
 		segmento = strncpy(segmento,value+(i*tamanioEntrada),tamanioEntrada);
-		almacenarEntrada(key,file, segmento);
-		numEntradaActual = calculoCircular();
+		escribirEntrada(file, segmento);
+
 	}
+
 
 	return entradasAOcupar;
 
@@ -186,13 +204,13 @@ int recibirEntrada(int socket, FILE * file){
 
 
 /******** OPERACION STORE **********/
-int ejecutarStore(int coordinador_socket){
+int ejecutarStore(int coordinador_socket, FILE* archivoDatos){
 		char key[LONGITUD_CLAVE];
 		if(recibirKey(coordinador_socket,key)<=0){
 			log_trace(logE, "error al recibir clave para persistir");
 			return -1;
 		}else{
-			if(persistir_clave(key)<=0){
+			if(persistir_clave(key, archivoDatos)<=0){
 				log_trace(logE, "error al persistir clave");
 				return -1;
 			}
@@ -201,9 +219,78 @@ int ejecutarStore(int coordinador_socket){
 }
 
 
-int persistir_clave(char key[LONGITUD_CLAVE]){
-	//TODO persisir tipo archivos onda el dump?? SI
+int persistir_clave(char key[LONGITUD_CLAVE], FILE* archivoDatos){
+
+
+	char* path_final = string_new();
+
+	string_append(&path_final, punto_Montaje);
+	string_append(&path_final, key);
+
+	FILE* keyStore = fopen(path_final,"w+");
+	if (keyStore == NULL){
+			log_error(logE, "Fallo al generar el STORE de la key %s.", key);
+			exit(EXIT_FAILURE);
+	}
+
+
+	t_entrada* entradaElegida;
+
+	if(!obtenerEntrada(key,&entradaElegida)){
+		log_error(logE,"No se encontro la clave %s",key);
+	}
+
+	entradaElegida->ultimaRef = operacionNumero;
+
+	char* value = malloc(entradaElegida->size);
+
+	leer_entrada(entradaElegida, archivoDatos, value);
+
+	fprintf(keyStore,"%s", value);
+
+	fclose(keyStore);
+	free(value);
+	free(path_final);
 	return 1;
+}
+
+void leer_entrada(t_entrada* entrada, FILE* archivoDatos, char* value){
+
+	int data = open(archivoDatos,O_RDWR);
+	struct stat fileStat;
+	if (fstat(data, &fileStat) < 0){
+		log_error(logE,"Error fstat --> %s");
+		exit(EXIT_FAILURE);
+	}
+
+	unsigned char* map = (unsigned char*) mmap(NULL, qEntradas * tamanioEntrada , PROT_READ | PROT_WRITE, MAP_SHARED, data, sizeof(unsigned char)*entrada->entry*tamanioEntrada);
+
+	if (map == MAP_FAILED){
+		close(data);
+		log_error(logE,"Error en el mapeo del archivo.dat.\n");
+		exit(EXIT_FAILURE);
+	   }
+
+	int bytesAleer = entrada->size;
+
+	int bytes_totales_leidos = 0;
+	int bytes_leidos = 0;
+
+	while(bytes_totales_leidos < bytesAleer){
+
+
+		for (;bytes_leidos<bytesAleer && bytes_totales_leidos< bytesAleer;bytes_totales_leidos++){
+			value[bytes_leidos] = map[bytes_totales_leidos];
+			bytes_leidos++;
+		}
+		bytes_leidos=0;
+
+
+	}
+
+	log_trace(logT,"Se leyó con exito el value de la clave %s.", entrada->key);
+	munmap(map,fileStat.st_size);
+
 }
 
 /********* FIN OPERACION STORE *********/
@@ -217,23 +304,23 @@ void configureLoggers(char* instName){
 	char* logPath = string_new();
 
 	/* para correr desde ECLIPSE */
-	//string_append(&logPath,"../Recursos/Logs/");
+	string_append(&logPath,"../Recursos/Logs/");
 
 
-	/* para correr desde CONSOLA */
+	/* para correr desde CONSOLA
 	string_append(&logPath,"../../Recursos/Logs/");
-
+*/
 	string_append(&logPath,instName);
 	string_append(&logPath,".log");
 
 
-	vaciarArchivo(logPath);
-	logT = log_create(logPath,"Instacia", true, T);
-	logI = log_create(logPath, "Instacia", true, I);
-	logE = log_create(logPath, "Instacia", true, E);
+	//vaciarArchivo(logPath);
+	logT = log_create(logPath,"Instancia", true, T);
+	logI = log_create(logPath, "Instancia", true, I);
+	logE = log_create(logPath, "Instancia", true, E);
 
 
-	 	free(logPath);
+	 free(logPath);
 }
 
 void destroyLoggers(){
@@ -256,15 +343,38 @@ int algoritmoR(char* algoritmo){
 	return value;
 }
 
-int calculoCircular(){
-	int size = list_size(tablaEntradas);
-	if(size==qEntradas){
-		/* empieza a reemplazar entradas, TODO modificación en la lista*/
-		size = 0;
+int calculoCircular(int lenValue){
 
+	int size = list_size(tablaEntradas);
+	int entradasOcupadas = 0;
+
+	void calcularEntradasOcupadas(void* parametro) {
+		t_entrada* entrada = (t_entrada*) parametro;
+
+		entradasOcupadas += (entrada->size / tamanioEntrada);
+
+		if(entrada->size%tamanioEntrada){
+			entradasOcupadas++;
+		}
 	}
 
-	return size;
+	list_iterate(tablaEntradas,calcularEntradasOcupadas);
+
+	if(entradasOcupadas==qEntradas){
+		/* empieza a reemplazar entradas, modificación en la lista buscando espacio en el que entre el nuevo value,
+		 * se tiene que considerar agregar el parámetro del tamaño del nuevo value */
+		for(int i=0;i<size;i++){
+			t_entrada* ent = list_get(tablaEntradas,i);
+			if(lenValue < ent->size){
+				entradasOcupadas = ent->entry;
+				break;
+			}
+		}
+
+		if(entradasOcupadas == qEntradas){return -1; /*TODO que hacer en este caso?*/}
+	}
+
+	return entradasOcupadas;
 }
 
 void cargar_configuracion(){
@@ -272,12 +382,12 @@ void cargar_configuracion(){
 	t_config* infoConfig;
 
 	/* SI SE CORRE DESDE ECLIPSE */
-//	infoConfig = config_create("../Recursos/Configuracion/instancia.config");
+	infoConfig = config_create("../Recursos/Configuracion/instancia.config");
 
 
-	/* SI SE CORRE DESDE CONSOLA*/
+	/* SI SE CORRE DESDE CONSOLA
 	infoConfig = config_create("../../Recursos/Configuracion/instancia.config");
-
+*/
 	if(config_has_property(infoConfig, "IP_COORDINADOR")){
 		coordinador_IP = config_get_string_value(infoConfig, "IP_COORDINADOR");
 	}

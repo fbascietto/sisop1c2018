@@ -28,6 +28,8 @@ int main() {
 		enviarInt(coordinador_socket, INSTANCIA);
 		enviarMensaje(coordinador_socket,nombre_Instancia);
 
+		log_trace(logT,"Conectado a Coordinador OK.\n");
+
 		recibirInt(coordinador_socket, &qEntradas);
 		recibirInt(coordinador_socket, &tamanioEntrada);
 
@@ -35,23 +37,11 @@ int main() {
 
 		tablaEntradas =  list_create();
 
+		operacionNumero = 0;
+
 		// TODO: levantar tabla de entradas anterior, de ser necesario
 
-		switch (reemplazo_Algoritmo){
-
-			case CIRCULAR  :
-			  numEntradaActual = calculoCircular();
-			  break;
-			case LRU  :
-			  numEntradaActual = 0; /* calculoLRU(); */
-			  break;
-			case BSU  :
-			  numEntradaActual = 0; /* calculoBSU(); */
-			break;
-			default:
-			  numEntradaActual = reemplazo_Algoritmo;
-			/* Acusar error, exit_gracefully */
-		}
+		calcularSiguienteEntrada();
 
 		while(1){
 
@@ -60,15 +50,22 @@ int main() {
 			int cantidadEntradas;
 			switch(instruccion){
 				case ENVIO_ENTRADA:
+					operacionNumero++;
+					log_trace(logT,"Se recibe instruccion SET.\n");
 					cantidadEntradas = recibirEntrada(coordinador_socket,archivoDatos);
+
 					if(cantidadEntradas<=0){
 										//TODO que hace si da error?
 					}
+
 					enviarInt(coordinador_socket,obtenerCantidadEntradasOcupadas());
 					break;
 				case STORE_ENTRADA:
-					ejecutarStore(coordinador_socket);
+					operacionNumero++;
+						log_trace(logT,"Se recibe instruccion STORE.\n");
+					ejecutarStore(coordinador_socket, archivoDatos);
 					enviarInt(coordinador_socket,obtenerCantidadEntradasOcupadas());
+					break;
 
 			}
 
@@ -85,6 +82,23 @@ int main() {
 }
 
 
+void calcularSiguienteEntrada(int lenValue){
+	switch (reemplazo_Algoritmo){
+
+		case CIRCULAR  :
+		  numEntradaActual = calculoCircular(lenValue);
+		  break;
+		case LRU  :
+		  numEntradaActual = 0; /* calculoLRU(); */
+		  break;
+		case BSU  :
+		  numEntradaActual = 0; /* calculoBSU(); */
+		break;
+		default:
+		  numEntradaActual = reemplazo_Algoritmo;
+		/* Acusar error, exit_gracefully */
+	}
+}
 
 /*
 

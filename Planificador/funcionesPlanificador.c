@@ -56,6 +56,7 @@ t_clave* crearNuevaKey(char* clave){
 	strcpy(nuevaKey->claveValor, clave);
 	queue_create(nuevaKey->colaBloqueados);
 	nuevaKey->esi_poseedor = NULL;
+	list_add(listaKeys,nuevaKey);
 	return nuevaKey;
 }
 

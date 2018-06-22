@@ -23,6 +23,8 @@ typedef struct {
 	char key[LONGITUD_CLAVE];
 	int entry;
 	int size;
+	int ultimaRef;
+
 } t_entrada;
 
 t_list * tablaEntradas;
@@ -41,22 +43,27 @@ t_log_level E;
 t_log* logT;
 t_log* logI;
 t_log* logE;
+int operacionNumero;
 
 void eliminarEntrada(char * key);
-int  almacenarEntrada(char key[LONGITUD_CLAVE], FILE* archivoDatos, void * value);
+int  almacenarEntrada(char key[LONGITUD_CLAVE], int entradaInicial, int largoValue);
+char* leer_entrada(t_entrada* entrada, FILE* archivoDatos);
+int escribirEntrada(FILE* archivoDatos, char * escribir);
 FILE* inicializarPuntoMontaje(char * path, char * filename);
 void cargar_configuracion();
 void configureLoggers(char* name);
 void destroyLoggers();
-int escribirEntrada(t_entrada * entrada, FILE* archivoDatos, char * escribir);
+int ejecutarStore(int coordinador_socket, FILE* archivoDatos);
 int recibirValue(int socketConn, char** bloqueArchivo);
 int recibirEntrada(int socket, FILE * file);
 int recibirKey(int socket, char key [LONGITUD_CLAVE]);
-int persistir_clave(char key[LONGITUD_CLAVE]);
+int persistir_clave(char key[LONGITUD_CLAVE], FILE* archivoDatos);
 int algoritmoR(char* algoritmo);
-int calculoCircular();
+void calcularSiguienteEntrada(int lenValue);
+int calculoCircular(int lenValue);
 int obtenerCantidadEntradasOcupadas();
 int obtenerCantidadEntradasLibres();
+bool obtenerEntrada(char key[LONGITUD_CLAVE],t_entrada ** entrada);
 
 
 #endif /* FUNCIONESINSTANCIA_H_ */
