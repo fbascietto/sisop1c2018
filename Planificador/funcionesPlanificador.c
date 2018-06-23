@@ -16,11 +16,11 @@ void* escucharCoordinador(void* args){
 				claveObtenida = crearNuevaKey(keyBuscada);
 				asignarKey(claveObtenida, esi_ejecutando);
 				enviarInt(socketCoordinador, CLAVE_OTORGADA);
-				free(keyBuscada);
 			} else{
 				strncpy(keySolicitada, keyBuscada, LONGITUD_CLAVE); //keySolicitada se usa para bloquear la clave cuando reciba el mensaje del esi
 				enviarInt(socketCoordinador, CLAVE_BLOQUEADA);
 			}
+			free(keyBuscada);
 			break;
 		case SET_KEY:
 			keyBuscada =recibirMensajeArchivo(socketCoordinador);
@@ -54,13 +54,14 @@ void* escucharCoordinador(void* args){
 t_clave* crearNuevaKey(char* clave){
 	t_clave* nuevaKey = malloc(sizeof(t_clave));
 	strcpy(nuevaKey->claveValor, clave);
-	queue_create(nuevaKey->colaBloqueados);
+	nuevaKey->colaBloqueados = queue_create();
 	nuevaKey->esi_poseedor = NULL;
 	list_add(listaKeys,nuevaKey);
 	return nuevaKey;
 }
 
 void asignarKey(t_clave* clave,t_proceso_esi* esi){
+	list_add(esi->clavesTomadas, clave);
 	clave->esi_poseedor = esi;
 }
 
@@ -327,6 +328,7 @@ void finalizarESIEnEjecucion(){
 	//TODO hacer free
 	//	queue_push(colaTerminados, esi_terminado);
 	liberarKeys(esi_terminado);
+	free(esi_terminado);
 }
 
 void conectarConsolaACoordinador(){
