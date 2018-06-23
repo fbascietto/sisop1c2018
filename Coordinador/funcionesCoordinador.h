@@ -101,6 +101,7 @@ bool key_creada(char * key);
 bool existeInstancia(char* nombreInstancia, t_instancia * instancia);
 int ejecutarAlgoritmoLSU(t_instancia* instancia);
 void actualizarEntradasOcupadas(t_instancia *instancia);
+t_list* obtenerInstanciasConectadas();
 
 
 
