@@ -185,7 +185,7 @@ void * iniciaConsola(){
 					}else{
 						char* key = parametros[1];
 						int ESI_ID = atoi(parametros[2]);
-						if(pausarPlanificacion || queue_is_empty(colaListos)){
+						if(pausarPlanificacion){
 							block(key, ESI_ID);
 						}else{
 							esperarPlanificador();
@@ -209,7 +209,7 @@ void * iniciaConsola(){
 					printf("Demasiados argumentos: desbloquear [clave]\n");
 				}else{
 					char* key = parametros[1];
-					if(pausarPlanificacion || queue_is_empty(colaListos)){
+					if(pausarPlanificacion){
 						unblock(key);
 					}else{
 						esperarPlanificador();
@@ -231,7 +231,7 @@ void * iniciaConsola(){
 				printf("Demasiados argumentos: listar [clave]\n");
 			}else{
 				char* key = parametros[1];
-				if(pausarPlanificacion|| queue_is_empty(colaListos)){
+				if(pausarPlanificacion){
 
 					listBlockedProcesses(key);
 				}else{
@@ -254,7 +254,7 @@ void * iniciaConsola(){
 					printf("Demasiados argumentos: status [clave]\n");
 				}else{
 					char* key = parametros[1];
-					if(pausarPlanificacion || queue_is_empty(colaListos)){
+					if(pausarPlanificacion){
 						getStatus(key);
 					}else{
 						esperarPlanificador();
@@ -276,7 +276,7 @@ void * iniciaConsola(){
 				printf("Demasiados argumentos: kill [id]\n");
 			}else{
 				int ESI_ID = atoi(parametros[1]);
-				if(pausarPlanificacion || queue_is_empty(colaListos)){
+				if(pausarPlanificacion){
 					matarProceso(ESI_ID);
 				}else{
 					esperarPlanificador();
@@ -293,7 +293,7 @@ void * iniciaConsola(){
 			if(parametros[1] != NULL){
 				printf("La funcion no lleva argumentos.");
 			}
-			if(pausarPlanificacion || queue_is_empty(colaListos)){
+			if(pausarPlanificacion){
 				detectarDeadlock();
 			}else{
 				esperarPlanificador();

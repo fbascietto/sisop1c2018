@@ -12,11 +12,15 @@ void* escucharCoordinador(void* args){
 		case GET_KEY:
 			keyBuscada =recibirMensajeArchivo(socketCoordinador);
 			claveObtenida = obtenerKey(keyBuscada);
-			if(claveObtenida == NULL || estaLibre(claveObtenida)){
+			if(claveObtenida == NULL){
 				claveObtenida = crearNuevaKey(keyBuscada);
 				asignarKey(claveObtenida, esi_ejecutando);
 				enviarInt(socketCoordinador, CLAVE_OTORGADA);
-			} else{
+			} else if(estaLibre(claveObtenida)){
+				asignarKey(claveObtenida, esi_ejecutando);
+				enviarInt(socketCoordinador, CLAVE_OTORGADA);
+			}
+			else{
 				strncpy(keySolicitada, keyBuscada, LONGITUD_CLAVE); //keySolicitada se usa para bloquear la clave cuando reciba el mensaje del esi
 				enviarInt(socketCoordinador, CLAVE_BLOQUEADA);
 			}
@@ -86,9 +90,8 @@ void* planificar(void * args){
 
 	while(1){
 
-		sem_wait(&productorConsumidor);
-
-		while(!queue_is_empty(colaListos)){
+			sem_wait(&productorConsumidor);
+			while(!queue_is_empty(colaListos)){
 
 			esperar();
 			actualizarColaListos();
