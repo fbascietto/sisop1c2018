@@ -376,13 +376,14 @@ void detectarDeadlock(){
 
 	int i;
 	t_clave* key;
-	t_list* keysAsignadas;
+	t_list* keysFiltradas = list_filter(listaKeys, estaTomada);
 	t_list* procesosEnDeadlock = list_create();
 	encontroDeadlock = false;
+	yaImprimioDeadlock = false;
 
-	for(i=0; i<list_size(listaKeys); i++){
+	for(i=0; i<list_size(keysFiltradas); i++){
 
-		key = list_get(listaKeys, i);
+		key = list_get(keysFiltradas, i);
 
 		list_add(procesosEnDeadlock, key->esi_poseedor);
 
@@ -417,11 +418,11 @@ void verificarEsperaCircular(t_list* keys, t_list* procesosEnDeadlock){
 
 		if(!list_is_empty(key->colaBloqueados->elements)) verificarEsperaCircularParaUnaKey(key, procesosEnDeadlockAux);
 
-		if(encontroDeadlock){
+		if(yaImprimioDeadlock) break;
 
+		if(encontroDeadlock) {
 			imprimirIDs(procesosEnDeadlockAux);
-			break;
-
+			yaImprimioDeadlock = true;
 		}
 
 		list_clean(procesosEnDeadlockAux);
@@ -442,6 +443,7 @@ void verificarEsperaCircularParaUnaKey(t_clave* key, t_list* procesosEnDeadlock)
 	t_list* procesosEnDeadlockAux = list_create();
 
 	for(i=0; i<list_size(key->colaBloqueados->elements); i++){
+
 
 		proceso = list_get(key->colaBloqueados->elements, i);
 

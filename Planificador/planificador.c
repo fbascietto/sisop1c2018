@@ -2,6 +2,7 @@
 
 int main(){
 
+	//testearDeadlock();
 
 	configureLogger();
 	cargar_configuracion();
@@ -416,3 +417,4 @@ void exit_gracefully(int return_nr) {
 	log_destroy(logPlan);
 	exit(return_nr);
 }
+
