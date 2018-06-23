@@ -12,9 +12,9 @@ int main(){
 	int socketEscucha;
 	fd_set fdSocketsEscucha;
 
+	iniciarVariablesGlobales();
 	inicializarColas();
 	inicializarSemaforos();
-	iniciarVariablesGlobales();
 
 	FD_ZERO(&fdSocketsEscucha);
 	socketEscucha = escuchar(planificador_Puerto_Escucha);
@@ -54,7 +54,14 @@ int main(){
 
 void 	iniciarVariablesGlobales(){
 	keySolicitada = malloc(LONGITUD_CLAVE);
+	esiImpostor = malloc(sizeof(t_proceso_esi));
 
+	esiImpostor->clavesTomadas = list_create();
+	esiImpostor->fd = ESI_IMPOSTOR;
+	esiImpostor->id = ESI_IMPOSTOR;
+	esiImpostor->rafagaActual = ESI_IMPOSTOR;
+	esiImpostor->rafagaEstimada = ESI_IMPOSTOR;
+	esiImpostor->tiempoEspera = ESI_IMPOSTOR;
 }
 
 void inicializarColas(){
@@ -69,28 +76,19 @@ void cargarKeysBloqueadasIniciales(){
 
 	t_clave* nuevaKey;
 
-	t_proceso_esi* esiImpostor = malloc(sizeof(t_proceso_esi*));
-
-	esiImpostor->clavesTomadas = list_create();
-	esiImpostor->fd = ESI_IMPOSTOR;
-	esiImpostor->id = ESI_IMPOSTOR;
-	esiImpostor->rafagaActual = ESI_IMPOSTOR;
-	esiImpostor->rafagaEstimada = ESI_IMPOSTOR;
-	esiImpostor->tiempoEspera = ESI_IMPOSTOR;
-
 	int i=0;
 
 	while(claves_Ini_Bloqueadas[i] != NULL){
 
 		char* clave = claves_Ini_Bloqueadas[i];
 
-		nuevaKey = malloc(sizeof(t_clave));
 
 		if(strlen(clave) > LONGITUD_CLAVE){
 			log_error(logPlan, "la clave %s es demasiado larga", clave);
 			exit_gracefully(1);
 		}
 
+		nuevaKey = malloc(sizeof(t_clave));
 		strncpy(nuevaKey->claveValor, clave, strlen(clave));
 		nuevaKey->colaBloqueados = queue_create();
 		nuevaKey->esi_poseedor = esiImpostor;
@@ -333,16 +331,16 @@ void configureLogger(){
 	LogL = LOG_LEVEL_TRACE;
 
 	/* ejecutar desde ECLIPSE
+	 */
 	vaciarArchivo("../Recursos/Logs/Planificador.log");
 	logPlan = log_create("../Recursos/Logs/Planificador.log","Planificador", true, LogL);
-	 */
 
 
 	/* para ejecutar desde CONSOLA
-	 */
 
 	vaciarArchivo("../../Recursos/Logs/Planificador.log");
 	logPlan = log_create("../../Recursos/Logs/Planificador.log","Planificador", true, LogL);
+	 */
 
 	log_trace(logPlan, "inicializacion de logs");
 }
@@ -352,14 +350,14 @@ void cargar_configuracion(){
 	t_config* infoConfig;
 
 	/*	para correr desde ECLIPSE
-	infoConfig = config_create("../Recursos/Configuracion/planificador.config");
 	 */
+	infoConfig = config_create("../Recursos/Configuracion/planificador.config");
 
 
 	/* para correr desde CONSOLA
 
-	 */
 	infoConfig = config_create("../../Recursos/Configuracion/planificador.config");
+	 */
 
 
 	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){

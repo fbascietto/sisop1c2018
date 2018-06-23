@@ -224,15 +224,14 @@ void liberarKeys(t_proceso_esi* esi){
 void liberarKey(void* key){
 
 	t_clave* clave = (t_clave*) key;
-
 	clave->esi_poseedor = NULL;
 
 	if(queue_size(clave->colaBloqueados)>0){
-
 		t_proceso_esi* esi_a_desbloquear = queue_pop(clave->colaBloqueados);
-
-		moverAListos( esi_a_desbloquear);
+		moverAListos(esi_a_desbloquear);
 	}
+
+	log_trace(logPlan, "clave %s liberada", clave->claveValor);
 
 }
 
@@ -276,6 +275,24 @@ t_proceso_esi* encontrarEsiSegunID(t_list* procesos, int ID){
 
 }
 
+void liberarEsiImpostor() {
+	t_proceso_esi* esi;
+	t_clave* clave;
+	int i;
+	for (i = 0; i < list_size(listaKeys); i++) {
+		clave = list_get(listaKeys, i);
+		if(!estaLibre(clave)){
+			esi = clave->esi_poseedor;
+			if (esi->id == ESI_IMPOSTOR) {
+				liberarKeys(esiImpostor);
+				free(esiImpostor);
+				esi=NULL;
+				break;
+			}
+		}
+	}
+}
+
 void matarProceso(int ESI_ID){
 
 	bool coincideID(void* esi){
@@ -286,6 +303,12 @@ void matarProceso(int ESI_ID){
 	bool estaElESIBloqueado(void* key){
 		t_clave* clave = (void*) key;
 		return list_any_satisfy(clave->colaBloqueados->elements, coincideID);
+	}
+
+	if(ESI_ID == ESI_IMPOSTOR){
+		liberarEsiImpostor();
+		log_trace(logPlan, "mataste al impostor");
+		return;
 	}
 
 
@@ -303,9 +326,6 @@ void matarProceso(int ESI_ID){
 
 	if (proceso_a_matar == NULL || !coincide){
 
-		//		t_clave* clave_bloqueando_proceso = obtenerKeySegunProcesoBloqueado(ESI_ID);
-		//		proceso_a_matar = encontrarEsiSegunID(clave_bloqueando_proceso->colaBloqueados->elements, ESI_ID);
-
 		log_trace(logPlan, "el proceso a matar no estaba en ejecucion");
 
 		t_clave* clavePoseedora = list_find(listaKeys, estaElESIBloqueado);
@@ -316,12 +336,6 @@ void matarProceso(int ESI_ID){
 			list_remove_by_condition(esisBloqueados, coincideID);
 			log_trace(logPlan, "el proceso %d a matar estaba bloqueado", proceso_a_matar->id);
 		}
-
-		//		if(proceso_a_matar != NULL){
-		//
-		//			removerEsiSegunID(clave_bloqueando_proceso->colaBloqueados->elements, proceso_a_matar->id);
-		//
-		//		}else{
 
 		else{
 
@@ -423,7 +437,7 @@ void verificarEsperaCircularParaUnaKey(t_clave* key, t_list* procesosEnDeadlock)
 	int i;
 	t_proceso_esi* proceso;
 	t_proceso_esi* processToCompare;
-	t_list* keysAsignadas;
+	//t_list* keysAsignadas;
 	t_clave* keyToCompare;
 	t_list* procesosEnDeadlockAux = list_create();
 

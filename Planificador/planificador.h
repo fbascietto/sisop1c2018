@@ -76,6 +76,7 @@ t_queue* colaTerminados;
 
 //esi en ejecucion
 t_proceso_esi* esi_ejecutando;
+t_proceso_esi* esiImpostor;
 char* keySolicitada;
 
 //auxiliar para funcion de deadlock
@@ -134,6 +135,7 @@ void getStatus(char* keySearch);
 void listBlockedProcesses(char* keySearch);
 void matarProceso(int ESI_ID);
 void detectarDeadlock();
+void liberarEsiImpostor();
 
 
 //funciones auxiliares
