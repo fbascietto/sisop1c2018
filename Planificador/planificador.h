@@ -80,6 +80,7 @@ char* keySolicitada;
 
 //auxiliar para funcion de deadlock
 bool encontroDeadlock;
+bool yaImprimioDeadlock;
 
 //funciones de colas
 void inicializarColas();
@@ -121,6 +122,7 @@ t_clave* obtenerKeySegunProcesoBloqueado(int esiID);
 void asignarKey(t_clave* clave,t_proceso_esi* esi);
 bool estaLibre(t_clave* clave);
 t_clave* crearNuevaKey(char* clave);
+bool estaTomada(t_clave* clave);
 
 
 //funciones consola
@@ -147,6 +149,9 @@ t_list* obtenerKeysAsignadasDeUnProceso(t_proceso_esi* proceso);
 bool estaLaKey(t_list* keys, t_clave* key);
 void imprimirIDs(t_list* procesosEnDeadlock);
 void agregarElementos(t_list* origen, t_list* destino);
+
+//funciones mock
+void testearDeadlock();
 
 
 #endif

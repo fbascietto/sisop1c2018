@@ -68,6 +68,10 @@ bool estaLibre(t_clave* clave){
 	return clave->esi_poseedor == NULL;
 }
 
+bool estaTomada(t_clave* clave){
+	return clave->esi_poseedor != NULL;
+}
+
 void esperar() {
 	if (pausarPlanificacion) {
 		pthread_mutex_lock(&pausarPlanificacionSem);
