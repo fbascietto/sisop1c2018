@@ -82,6 +82,11 @@ void avisarAlPlanificador(int respuesta_del_coordinador, int position_to_reread,
 		enviarInt(planificador_socket, EJECUCION_INVALIDA);
 		break;
 
+	case EJECUCION_INVALIDA:
+
+		enviarInt(planificador_socket, EJECUCION_INVALIDA);
+		break;
+
 	case EJECUCION_OK:
 		enviarInt(planificador_socket, EJECUCION_OK);
 		break;

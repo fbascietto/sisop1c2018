@@ -41,7 +41,7 @@ int main() {
 
 		// TODO: levantar tabla de entradas anterior, de ser necesario
 
-		calcularSiguienteEntrada();
+		calcularSiguienteEntrada(1);
 
 		while(1){
 

@@ -287,6 +287,7 @@ bool recibirMensajeEsi(int socketCliente){
 
 	//TODO:
 	case EJECUCION_INVALIDA:;
+	enviarInt(socketCliente, ABORTAR);
 	finalizarESIEnEjecucion();
 	iterar = false;
 	break;

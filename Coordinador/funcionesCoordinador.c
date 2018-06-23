@@ -108,11 +108,11 @@ int crearInstancia(int nuevoSocket){
 bool existeInstancia(char* nombreInstancia, t_instancia * instancia){
 	bool encontro = false;
 	void mismo_nombre(void* parametro) {
-			t_instancia* inst = (t_instancia*) parametro;
-			if( strcmp(inst->nombre,nombreInstancia) == 0){
-				instancia = inst;
-				encontro = true;
-			}
+		t_instancia* inst = (t_instancia*) parametro;
+		if( strcmp(inst->nombre,nombreInstancia) == 0){
+			instancia = inst;
+			encontro = true;
+		}
 	}
 
 	list_iterate(instancias,mismo_nombre);
@@ -165,14 +165,15 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	/* para correr desde ECLIPSE*/
+	/* para correr desde ECLIPSE
 	infoConfig = config_create("../Recursos/Configuracion/coordinador.config");
+	 */
 
 
 
-	/*para correr desde CONSOLA*/
-
-	//infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
+	/*para correr desde CONSOLA
+	 */
+	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
 
 	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){
 		coordinador_Puerto_Escucha = config_get_int_value(infoConfig, "PUERTO_ESCUCHA");
@@ -204,21 +205,21 @@ void configureLoggers(){
 	E = LOG_LEVEL_ERROR;
 
 
-	/* para correr desde ECLIPSE*/
+	/* para correr desde ECLIPSE
 	vaciarArchivo("../Recursos/Logs/Coordinador.log");
 	logT = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
+	 */
 
 
 
 	/* para correr desde CONSOLA
-
+	 */
 	vaciarArchivo("../../Recursos/Logs/Coordinador.log");
 	logT = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
-	*/
 }
 
 void destroyLoggers(){
@@ -229,27 +230,27 @@ void destroyLoggers(){
 
 void generarlogDeOperaciones(){
 
-		FILE *operaciones;
+	FILE *operaciones;
 
-		int nuevo = 0;
+	int nuevo = 0;
 
-		operaciones = fopen("operaciones.log", "r");
+	operaciones = fopen("operaciones.log", "r");
 
-		if(!operaciones) //archivo no existe, crear
-		{
-			operaciones = fopen("operaciones.log", "w");
-			nuevo = 1;
-			if (operaciones == NULL) printf("Error al generar operaciones.log\n");
+	if(!operaciones) //archivo no existe, crear
+	{
+		operaciones = fopen("operaciones.log", "w");
+		nuevo = 1;
+		if (operaciones == NULL) printf("Error al generar operaciones.log\n");
 
-		} else {
-			freopen("operaciones.log","a",operaciones);
-		}
+	} else {
+		freopen("operaciones.log","a",operaciones);
+	}
 
-		if(nuevo){
-			fprintf(operaciones,"%s%s", "ESI	|", "	OPERACION\n");
-		}
+	if(nuevo){
+		fprintf(operaciones,"%s%s", "ESI	|", "	OPERACION\n");
+	}
 
-		fclose(operaciones);
+	fclose(operaciones);
 }
 
 int logueaOperacion(char* operacion, char* key, char* value, int socket){
@@ -294,6 +295,7 @@ void recibirMensajeESI(int socket){
 
 	bool finalizar = false;
 	int mensaje;
+	int resultado;
 	while(1){
 
 		if(recibirInt(socket, &mensaje)<=0){
@@ -304,15 +306,23 @@ void recibirMensajeESI(int socket){
 		switch(mensaje){
 
 		case GET_KEY:;
-			ejecutarOperacionGET(socket);
-			break;
+		if(ejecutarOperacionGET(socket)<0){
+			finalizar = true;
+			enviarInt(socket, EJECUCION_INVALIDA);
+		}
+		break;
 
 		case SET_KEY:
-			ejecutar_operacion_set(socket);
+			if(ejecutar_operacion_set(socket)<0){
+				finalizar = true;
+				enviarInt(socket, EJECUCION_INVALIDA);
+			}
 			break;
-
 		case STORE_KEY:
-			ejecutar_operacion_store(socket);
+			if(ejecutar_operacion_store(socket)<0){
+				finalizar = true;
+				enviarInt(socket, EJECUCION_INVALIDA);
+			}
 			break;
 		case FINALIZACION_OK:
 			finalizar = true;
@@ -332,7 +342,7 @@ void recibirMensajeESI(int socket){
 void atenderPlanificador(void *args){
 	while(1){
 
-	//	recibirMensajePlanificador(argsPlanificador->socketPlanificador);
+		//	recibirMensajePlanificador(argsPlanificador->socketPlanificador);
 		//TODO
 		sleep(5);
 	}
@@ -415,23 +425,23 @@ int ejecutarOperacionGET(int socket){
 	list_add(claves_sin_instancia,key);
 	free(clave);
 	switch(codigo){
-		log_info(logI, "recibi %d", codigo);
-		case CLAVE_OTORGADA:
-			if(enviarInt(socket, EJECUCION_OK)<=0){
-				log_error(logE,"error de conexion con ESI en socket %d",socket);
-				return -1;
-			}
-			break;
+	log_info(logI, "recibi %d", codigo);
+	case CLAVE_OTORGADA:
+		if(enviarInt(socket, EJECUCION_OK)<=0){
+			log_error(logE,"error de conexion con ESI en socket %d",socket);
+			return -1;
+		}
+		break;
 
-		case CLAVE_BLOQUEADA:
-			if(enviarInt(socket, CLAVE_BLOQUEADA)<=0){
-				log_error(logE, "error de conexion con ESI en socket %d",socket);
-				return -1;;
-			}
+	case CLAVE_BLOQUEADA:
+		if(enviarInt(socket, CLAVE_BLOQUEADA)<=0){
+			log_error(logE, "error de conexion con ESI en socket %d",socket);
+			return -1;;
+		}
 		break;
 	}
 	return 1;
-				//todo: validar mensajes de errores hacia ESI de operacion GET}
+	//todo: validar mensajes de errores hacia ESI de operacion GET}
 }
 
 
@@ -463,10 +473,10 @@ int elegirInstancia(t_instancia ** instancia, char key[LONGITUD_CLAVE], bool esS
 		}else
 			if(strcmp(coordinador_Algoritmo,"KE")==0){
 				bool* conectada(void* parametro) {
-						t_instancia* inst = (t_instancia*) parametro;
+					t_instancia* inst = (t_instancia*) parametro;
 
-						return (inst->socketInstancia > 0);
-					}
+					return (inst->socketInstancia > 0);
+				}
 				char letra = key[0];
 				t_list * instancias_conectadas = list_filter(instancias,conectada);
 				int q = list_size(instancias_conectadas);
@@ -481,9 +491,9 @@ int elegirInstancia(t_instancia ** instancia, char key[LONGITUD_CLAVE], bool esS
 					if(letra-26 >= (q_letras*i) && letra-26 < (q_letras*(i+1))){
 						*instancia = list_get(instancias_conectadas,i);
 					}else
-					if(resto>0 && q == i){
-						*instancia = list_get(instancias_conectadas,i);
-					}
+						if(resto>0 && q == i){
+							*instancia = list_get(instancias_conectadas,i);
+						}
 				}
 				free(instancias_conectadas);
 				return 1;
@@ -510,19 +520,15 @@ int ejecutarAlgoritmoLSU(t_instancia* instancia){
 int buscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia ** instancia){
 	int pos = -1;
 	int encontro = 0;
-	bool* contieneClave(void* parametro) {
+	bool contieneClave(void* parametro) {
 		t_instancia* inst = (t_instancia*) parametro;
 		encontro = contieneClaveInstancia(inst,key);
 		++pos;
-		return encontro;
+		return encontro > 0;
 	}
 
-	instancia = (t_instancia *)list_find(instancias,contieneClave);
-	if(encontro){
-		return pos;
-	}else{
-		return -1;
-	}
+	*instancia = (t_instancia *)list_find(instancias,contieneClave);
+	return encontro;
 
 }
 
@@ -533,7 +539,7 @@ int simularBuscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia* ins
 
 int contieneClaveInstancia(t_instancia * instancia, char key[LONGITUD_CLAVE]){
 
-	bool* contieneClave(void* parametro) {
+	bool contieneClave(void* parametro) {
 		char* clave = (char*) parametro;
 		return (strcmp(clave,key)==0);
 	}
@@ -560,7 +566,7 @@ int ejecutar_operacion_set(int socket){
 	strcpy(key,clave);
 
 
-	if(buscarInstanciaContenedora(key, &instancia)<0){
+	if(buscarInstanciaContenedora(key, &instancia)<=0){
 
 		log_trace(logT,"No se encontro la clave %s en ninguna instancia", key);
 		if(!key_creada(clave)){
@@ -577,33 +583,33 @@ int ejecutar_operacion_set(int socket){
 			free(clave);
 			return -1;
 		}
-		enviarInt(argsPlanificador->socketPlanificador, SET_KEY);
-		enviarMensaje(argsPlanificador->socketPlanificador, clave);
-		int codigo;
-		recibirInt(argsPlanificador->socketPlanificador, &codigo);
-		free(clave);
-
-		switch(codigo){
-			case CLAVE_RESERVADA:
-				if(ejecutar_operacion_set_instancia(key, valor, instancia)<=0){
-					return ejecutar_operacion_set(socket);
-				}else{
-
-					list_add(instancia->claves,&key);
-					actualizarEntradasOcupadas(instancia);
-					enviarInt(socket, EJECUCION_OK);
-				}
-				break;
-			case CLAVE_NO_RESERVADA:
-				enviarInt(socket, EJECUCION_INVALIDA);
-				break;
-			case CLAVE_INEXISTENTE:
-				enviarInt(socket, EJECUCION_INVALIDA);
-				break;
-		}
-		free(valor);
-
 	}
+	enviarInt(argsPlanificador->socketPlanificador, SET_KEY);
+	enviarMensaje(argsPlanificador->socketPlanificador, clave);
+	int codigo;
+	recibirInt(argsPlanificador->socketPlanificador, &codigo);
+	free(clave);
+
+	switch(codigo){
+	case CLAVE_RESERVADA:
+		if(ejecutar_operacion_set_instancia(key, valor, instancia)<=0){
+			return ejecutar_operacion_set(socket);
+		}else{
+
+			list_add(instancia->claves,&key);
+			actualizarEntradasOcupadas(instancia);
+			enviarInt(socket, EJECUCION_OK);
+		}
+		break;
+	case CLAVE_NO_RESERVADA:
+		enviarInt(socket, EJECUCION_INVALIDA);
+		break;
+	case CLAVE_INEXISTENTE:
+		enviarInt(socket, EJECUCION_INVALIDA);
+		break;
+	}
+	free(valor);
+
 
 	return 1;
 
@@ -615,9 +621,9 @@ void actualizarEntradasOcupadas(t_instancia* instancia){
 
 bool key_creada(char * key){
 	bool* igualClave(void* parametro) {
-			char* clave = (char*)parametro;
-			return (strcmp(clave,key)==0);
-		}
+		char* clave = (char*)parametro;
+		return (strcmp(clave,key)==0);
+	}
 
 	return list_any_satisfy(claves_sin_instancia,igualClave);
 }
@@ -665,7 +671,7 @@ int ejecutar_operacion_store(int socket){
 		}else{
 			log_trace(logT,"La clave %s no se encuentra seteada", clave);
 			enviarInt(socket, EJECUCION_INVALIDA);
-
+			return -1;
 		}
 	}
 	enviarInt(argsPlanificador->socketPlanificador, STORE_KEY);
@@ -674,25 +680,25 @@ int ejecutar_operacion_store(int socket){
 	int codigo;
 	recibirInt(argsPlanificador->socketPlanificador, &codigo);
 	switch(codigo){
-		case CLAVE_LIBERADA:
-			if(instancia_encontrada >= 0 ){
-				if(ejecutar_operacion_store_instancia(key, instancia)<=0){
-					enviarInt(socket, ERROR_EJECUCION);
-					return -1;
-				}
-			}else{
-				enviarInt(socket, EJECUCION_INVALIDA);
-				break;
+	case CLAVE_LIBERADA:
+		if(instancia_encontrada >= 0 ){
+			if(ejecutar_operacion_store_instancia(key, instancia)<=0){
+				enviarInt(socket, ERROR_EJECUCION);
+				return -1;
 			}
-			actualizarEntradasOcupadas(instancia);
-			enviarInt(socket, EJECUCION_OK);
-			break;
-		case CLAVE_NO_RESERVADA:;
+		}else{
 			enviarInt(socket, EJECUCION_INVALIDA);
 			break;
-		case CLAVE_INEXISTENTE:;
-			enviarInt(socket, EJECUCION_INVALIDA);
-			break;
+		}
+		actualizarEntradasOcupadas(instancia);
+		enviarInt(socket, EJECUCION_OK);
+		break;
+	case CLAVE_NO_RESERVADA:;
+	enviarInt(socket, EJECUCION_INVALIDA);
+	break;
+	case CLAVE_INEXISTENTE:;
+	enviarInt(socket, EJECUCION_INVALIDA);
+	break;
 	}
 	return 1;
 }

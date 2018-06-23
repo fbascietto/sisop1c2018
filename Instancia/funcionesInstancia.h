@@ -47,7 +47,7 @@ int operacionNumero;
 
 void eliminarEntrada(char * key);
 int  almacenarEntrada(char key[LONGITUD_CLAVE], int entradaInicial, int largoValue);
-char* leer_entrada(t_entrada* entrada, FILE* archivoDatos);
+void leer_entrada(t_entrada* entrada, FILE* archivoDatos, char* value);
 int escribirEntrada(FILE* archivoDatos, char * escribir);
 FILE* inicializarPuntoMontaje(char * path, char * filename);
 void cargar_configuracion();

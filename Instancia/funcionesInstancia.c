@@ -10,13 +10,14 @@
 
 int  almacenarEntrada(char key[LONGITUD_CLAVE], int entradaInicial, int largoValue){
 	t_entrada * entrada;
-	if(obtenenerEntrada(key,&entrada)){
+	if(!obtenerEntrada(key,&entrada)){
 		entrada = malloc(sizeof(t_entrada));
+		entrada->entry = entradaInicial; /* numero de entrada */
 		strcpy(entrada->key,key);
 		list_add(tablaEntradas,entrada);
 	}
 	entrada->ultimaRef = operacionNumero;
-	entrada->entry = entradaInicial; /* numero de entrada */
+
 	entrada->size = largoValue;  /* largo de value */
 
 	return 1;
@@ -25,16 +26,16 @@ int  almacenarEntrada(char key[LONGITUD_CLAVE], int entradaInicial, int largoVal
 
 bool obtenerEntrada(char key[LONGITUD_CLAVE],t_entrada ** entrada){
 
-	bool* retorno = false;
-	bool* findByKey(void* parametro) {
+	bool retorno = false;
+	bool findByKey(void* parametro) {
 		t_entrada* entrada = (t_entrada*) parametro;
 		if(strcmp(entrada->key,key) == 0){
-			*retorno = true;
+			retorno = true;
 		}
 		return retorno;
 	}
 	*entrada =(t_entrada *) list_find(tablaEntradas,findByKey);
-	return *retorno;
+	return retorno;
 }
 
 void eliminarEntrada(char * key){
@@ -185,7 +186,7 @@ int recibirEntrada(int socket, FILE * file){
 		entradasAOcupar = (lenValue / tamanioEntrada);
 	}
 
-	calcularSiguienteEntrada();
+	calcularSiguienteEntrada(lenValue);
 	almacenarEntrada(key, numEntradaActual, lenValue);
 
 	for(int i=0;i<entradasAOcupar;i++){
@@ -303,16 +304,20 @@ void configureLoggers(char* instName){
 
 	char* logPath = string_new();
 
-	/* para correr desde ECLIPSE */
+	/* para correr desde ECLIPSE
 	string_append(&logPath,"../Recursos/Logs/");
+	*/
 
 
 	/* para correr desde CONSOLA
+	 */
 	string_append(&logPath,"../../Recursos/Logs/");
-*/
+
+
 	string_append(&logPath,instName);
 	string_append(&logPath,".log");
 
+	vaciarArchivo(logPath);
 
 	//vaciarArchivo(logPath);
 	logT = log_create(logPath,"Instancia", true, T);
@@ -381,13 +386,15 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	/* SI SE CORRE DESDE ECLIPSE */
+	/* SI SE CORRE DESDE ECLIPSE
 	infoConfig = config_create("../Recursos/Configuracion/instancia.config");
+	 */
 
 
 	/* SI SE CORRE DESDE CONSOLA
+	 */
 	infoConfig = config_create("../../Recursos/Configuracion/instancia.config");
-*/
+
 	if(config_has_property(infoConfig, "IP_COORDINADOR")){
 		coordinador_IP = config_get_string_value(infoConfig, "IP_COORDINADOR");
 	}
