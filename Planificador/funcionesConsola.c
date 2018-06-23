@@ -123,7 +123,8 @@ void unblock(char* key_value){
 			moverAListos(esi_a_desbloquear);
 			log_info(logPlan, "esi %d desbloqueado", esi_a_desbloquear->id);
 		} else{
-			log_info(logPlan, "no hay procesos bloqueados");
+			key->esi_poseedor = NULL;
+			log_info(logPlan, "no hay procesos bloqueados, se libero la clave");
 		}
 	} else{
 		log_info(logPlan, "la clave no existe");
