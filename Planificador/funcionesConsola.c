@@ -403,6 +403,8 @@ void detectarDeadlock(){
 
 	list_destroy(procesosEnDeadlock);
 
+	if(!encontroDeadlock) printf("No hay deadlock.\n");
+
 }
 
 void verificarEsperaCircular(t_list* keys, t_list* procesosEnDeadlock){
