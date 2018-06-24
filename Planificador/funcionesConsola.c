@@ -403,7 +403,7 @@ void detectarDeadlock(){
 
 	list_destroy(procesosEnDeadlock);
 
-	if(!encontroDeadlock) printf("No hay deadlock.\n");
+	if(!encontroDeadlock) log_info(logPlan, "No hay deadlock");
 
 }
 
@@ -531,21 +531,26 @@ void imprimirIDs(t_list* procesosEnDeadlock){
 	int i;
 	t_proceso_esi* proceso;
 
-	printf("Estan en deadlock los procesos: ");
+	char* esis = string_new();
+	string_append(&esis, "Estan en deadlock los procesos: ");
 
 	for(i=0; i<list_size(procesosEnDeadlock); i++){
 
 		proceso = list_get(procesosEnDeadlock, i);
 
-		printf("%d", proceso->id);
+		string_append_with_format(&esis, "%d", proceso->id);
 
 		if(i + 1 != list_size(procesosEnDeadlock)){
-			printf(", ");
+			string_append(&esis, ", ");
 		}else{
-			printf(".\n");
+			string_append(&esis, ".\n");
 		}
 
 	}
+
+	log_info(logPlan, esis);
+
+	free(esis);
 
 }
 

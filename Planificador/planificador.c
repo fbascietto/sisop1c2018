@@ -120,7 +120,7 @@ void destruirSemaforos(){
 
 void * iniciaConsola(){
 
-	log_trace(logPlan,"Se inicializa la consola del planificador. \n");
+	log_trace(logPlan,"Se inicializa la consola del planificador.");
 
 	//comandos de consola
 	char* exit = "exit";
@@ -144,45 +144,48 @@ void * iniciaConsola(){
 			add_history(linea);
 
 		if(!strncmp(linea, exit, strlen(exit))) {
-			log_trace(logPlan,"Consola recibe ""%s""\n", exit);
+			log_trace(logPlan,"Consola recibe ""%s""", exit);
 			parametros = string_split(linea, " ");
 			if(parametros[1] != NULL){
-				printf("La funcion no lleva argumentos.");
+				log_error(logPlan, "La funcion no lleva argumentos.");
+			}else{
+				exit_gracefully(1);
 			}
 			free(linea);
-			exit_gracefully(1);
 		} else if(!strncmp(linea, pausar, strlen(pausar)))
 		{
-			log_trace(logPlan,"Consola recibe ""%s""\n", pausar);
+			log_trace(logPlan,"Consola recibe ""%s""", pausar);
 			parametros = string_split(linea, " ");
 			if(parametros[1] != NULL){
-				printf("La funcion no lleva argumentos.");
+				log_error(logPlan, "La funcion no lleva argumentos.");
+			}else{
+				pauseScheduler();
 			}
-			pauseScheduler();
 			free(linea);
 
 		} else if(!strncmp(linea, continuar, strlen(continuar)))
 		{
-			log_trace(logPlan,"Consola recibe ""%s""\n", continuar);
+			log_trace(logPlan,"Consola recibe ""%s""", continuar);
 			parametros = string_split(linea, " ");
 			if(parametros[1] != NULL){
-				printf("La funcion no lleva argumentos.");
+				log_error(logPlan, "La funcion no lleva argumentos.");
+			}else{
+				goOn();
 			}
-			goOn();
 			free(linea);
 
 		} else if(!strncmp(linea, bloquear, strlen(bloquear)))
 		{
-			log_trace(logPlan,"Consola recibe ""%s""\n", bloquear);
+			log_trace(logPlan,"Consola recibe ""%s""", bloquear);
 			parametros = string_split(linea, " ");
 			if(parametros[1] == NULL){
-				printf("Faltan argumentos: bloquear [clave] [ID]\n");
+				log_error(logPlan, "Faltan argumentos: bloquear [clave] [ID]");
 			}else{
 				if (parametros[2] == NULL){
-					printf("Faltan argumentos: bloquear [clave] [ID]\n");
+					log_error(logPlan, "Faltan argumentos: bloquear [clave] [ID]");
 				}else{
 					if(parametros[3] != NULL){
-						printf("Demasiados argumentos: bloquear [clave] [ID]\n");
+						log_error(logPlan, "Demasiados argumentos: bloquear [clave] [ID]");
 					}else{
 						char* key = parametros[1];
 						int ESI_ID = atoi(parametros[2]);
@@ -201,13 +204,13 @@ void * iniciaConsola(){
 
 		} else if(!strncmp(linea, desbloquear, strlen(desbloquear)))
 		{
-			log_trace(logPlan,"Consola recibe ""%s""\n", desbloquear);
+			log_trace(logPlan,"Consola recibe ""%s""", desbloquear);
 			parametros = string_split(linea, " ");
 			if(parametros[1] == NULL){
-				printf("Faltan argumentos: desbloquear [clave]\n");
+				log_error(logPlan, "Faltan argumentos: desbloquear [clave]");
 			}else{
 				if(parametros[2] != NULL){
-					printf("Demasiados argumentos: desbloquear [clave]\n");
+					log_error(logPlan, "Demasiados argumentos: desbloquear [clave]");
 				}else{
 					char* key = parametros[1];
 					if(pausarPlanificacion || queue_is_empty(colaListos)){
@@ -225,12 +228,12 @@ void * iniciaConsola(){
 
 		} else if(!strncmp(linea, listar, strlen(listar)))
 		{
-			log_trace(logPlan,"Consola recibe ""%s""\n", listar);
+			log_trace(logPlan,"Consola recibe ""%s""", listar);
 			parametros = string_split(linea, " ");
 			if(parametros[1] == NULL){
-				printf("Faltan argumentos: listar [clave]\n");
+				log_error(logPlan, "Faltan argumentos: listar [clave]");
 			} else if(parametros[2] != NULL){
-				printf("Demasiados argumentos: listar [clave]\n");
+				log_error(logPlan, "Demasiados argumentos: listar [clave]");
 			}else{
 				char* key = parametros[1];
 				if(pausarPlanificacion|| queue_is_empty(colaListos)){
@@ -246,13 +249,13 @@ void * iniciaConsola(){
 
 		} else if(!strncmp(linea, status, strlen(status)))
 		{
-			log_trace(logPlan,"Consola recibe ""%s""\n", status);
+			log_trace(logPlan,"Consola recibe ""%s""", status);
 			parametros = string_split(linea, " ");
 			if(parametros[1] == NULL){
-				printf("Faltan argumentos: status [clave]\n");
+				log_error(logPlan, "Faltan argumentos: status [clave]");
 			}else{
 				if(parametros[2] != NULL){
-					printf("Demasiados argumentos: status [clave]\n");
+					log_error(logPlan, "Demasiados argumentos: status [clave]");
 				}else{
 					char* key = parametros[1];
 					if(pausarPlanificacion|| queue_is_empty(colaListos)){
@@ -269,12 +272,12 @@ void * iniciaConsola(){
 
 		} else if(!strncmp(linea, kill, strlen(kill)))
 		{
-			log_trace(logPlan,"Consola recibe ""%s""\n", kill);
+			log_trace(logPlan,"Consola recibe ""%s""", kill);
 			parametros = string_split(linea, " ");
 			if(parametros[1] == NULL){
-				printf("Faltan argumentos: kill [id]\n");
+				log_error(logPlan, "Faltan argumentos: kill [id]");
 			}else if(parametros[2] != NULL){
-				printf("Demasiados argumentos: kill [id]\n");
+				log_error(logPlan, "Demasiados argumentos: kill [id]");
 			}else{
 				int ESI_ID = atoi(parametros[1]);
 				if(pausarPlanificacion|| queue_is_empty(colaListos)){
@@ -289,12 +292,11 @@ void * iniciaConsola(){
 
 		} else if(!strncmp(linea, deadlock, strlen(deadlock)))
 		{
-			log_trace(logPlan,"Consola recibe ""%s""\n", deadlock);
+			log_trace(logPlan,"Consola recibe ""%s""", deadlock);
 			parametros = string_split(linea, " ");
 			if(parametros[1] != NULL){
-				printf("La funcion no lleva argumentos.");
-			}
-			if(pausarPlanificacion|| queue_is_empty(colaListos)){
+				log_error(logPlan, "La funcion no lleva argumentos.");
+			}else if(pausarPlanificacion|| queue_is_empty(colaListos)){
 				detectarDeadlock();
 			}else{
 				esperarPlanificador();
@@ -306,21 +308,28 @@ void * iniciaConsola(){
 		} else if(!strncmp(linea, info, strlen(info)))
 		{
 			log_trace(logPlan,"Consola recibe ""%s""\n", info);
-			printf("Destino-Rusia Planificador: Ayuda\n");
-			printf("Los parámetros se indican con <> \n------\n");
-			printf("pausa - Pausar planificación : El Planificador no le dará nuevas órdenes de ejecución a ningún ESI mientras se encuentre pausado.\n");
-			printf("continuar - Continuar planificación : Reanuda el Planificador.\n");
-			printf("bloquear <clave> <ID>: Se bloqueará el proceso ESI hasta ser desbloqueado, especificado por dicho <ID> en la cola del recurso <clave>..\n");
-			printf("desbloquear <clave>: Se desbloqueara el proceso ESI con el ID especificado. Solo se bloqueará ESIs que fueron bloqueados con la consola. Si un ESI está bloqueado esperando un recurso, no podrá ser desbloqueado de esta forma.\n");
-			printf("listar <recurso>: Lista los procesos encolados esperando al recurso.\n");
-			printf("kill <ID>: finaliza el proceso.\n");
-			printf("deadlock: Analiza los deadlocks que existan en el sistema y a que ESI están asociados.\n");
-			printf("exit - Sale del programa.\n");
+
+			char* help = string_new();
+
+			string_append(&help, "Destino-Rusia Planificador: Ayuda\n");
+			string_append(&help, "Los parámetros se indican con <> \n------\n");
+			string_append(&help, "pausa: Pausar planificación : El Planificador no le dará nuevas órdenes de ejecución a ningún ESI mientras se encuentre pausado.\n");
+			string_append(&help, "continuar: Continuar planificación : Reanuda el Planificador.\n");
+			string_append(&help, "bloquear <clave> <ID>: Se bloqueará el proceso ESI hasta ser desbloqueado, especificado por dicho <ID> en la cola del recurso <clave>..\n");
+			string_append(&help, "desbloquear <clave>: Se desbloqueara el proceso ESI con el ID especificado. Solo se bloqueará ESIs que fueron bloqueados con la consola. Si un ESI está bloqueado esperando un recurso, no podrá ser desbloqueado de esta forma.\n");
+			string_append(&help, "listar <clave>: Lista los procesos encolados esperando a la clave.\n");
+			string_append(&help, "kill <ID>: finaliza el proceso.\n");
+			string_append(&help, "deadlock: Analiza los deadlocks que existan en el sistema y a que ESI están asociados.\n");
+			string_append(&help, "exit: Sale del programa.\n");
+
+			log_info(logPlan, help);
+
+			free(help);
 			free(linea);
 		}
 		else {
-			printf("No se reconoce el comando ""%s""\n",linea);
-			printf("Para más información utilice el comando ""%s"".\n", info);
+			log_error(logPlan, "No se reconoce el comando ""%s"".", linea);
+			log_info(logPlan, "Para más información utilice el comando ""%s"".", info);
 			free(linea);
 		}
 

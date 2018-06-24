@@ -63,6 +63,7 @@ char** claves_Ini_Bloqueadas;
 t_log_level LogL;
 t_log* logPlan;
 
+
 //select y fds
 int fdMaxConexionesActivas;
 fd_set fdConexiones;
