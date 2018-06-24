@@ -40,7 +40,7 @@ typedef struct {
 //semáforos
 bool pausarPlanificacion;
 bool comandoConsola;
-bool espera;
+bool seQuitoUnEsiDeListos;
 pthread_mutex_t pausarPlanificacionSem;
 pthread_mutex_t iniciarConsolaSem;
 pthread_mutex_t esperarConsolaSem;

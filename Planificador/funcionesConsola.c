@@ -102,6 +102,7 @@ void block(char* key_value, int ESI_ID){
 		}else{
 			t_proceso_esi* esi_a_bloquear = removerEsiSegunID(colaListos->elements, ESI_ID);
 			if(esi_a_bloquear != NULL){
+				seQuitoUnEsiDeListos=true;
 				queue_push(key->colaBloqueados, esi_a_bloquear);
 			}else{
 				log_info(logPlan, "el esi no estaba ni en ejecucion ni en listos");
@@ -342,6 +343,7 @@ void matarProceso(int ESI_ID){
 			proceso_a_matar = list_remove_by_condition(colaListos->elements, coincideID);
 
 			if(proceso_a_matar != NULL){
+				seQuitoUnEsiDeListos=true;
 				log_trace(logPlan, "el proceso %d a matar estaba en listos", proceso_a_matar->id);
 			}
 			else{

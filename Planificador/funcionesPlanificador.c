@@ -94,10 +94,16 @@ void* planificar(void * args){
 
 	while(1){
 
-			sem_wait(&productorConsumidor);
-			while(!queue_is_empty(colaListos)){
+		seQuitoUnEsiDeListos = false;
+		sem_wait(&productorConsumidor);
+		esperar();
 
-			esperar();
+		if(seQuitoUnEsiDeListos){
+
+			seQuitoUnEsiDeListos = false;
+
+		}else{
+
 			actualizarColaListos();
 			ordenarListos(); //sin esta funcion deberia funcionar como FIFO
 			esi_ejecutando = queue_pop(colaListos);
@@ -106,16 +112,12 @@ void* planificar(void * args){
 			while(replanificar) {
 
 				enviarAEjecutar(esi_ejecutando);
-
 				replanificar = recibirMensajeEsi(esi_ejecutando->fd);
-
 				esperar();
-
 				//en caso de que se ejecute kill
 				if(esi_ejecutando == NULL) break;
 
-			}
-
+		}
 			replanificar = true;
 		}
 	}

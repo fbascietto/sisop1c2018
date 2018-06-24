@@ -105,7 +105,7 @@ void cargarKeysBloqueadasIniciales(){
 void inicializarSemaforos(){
 	pausarPlanificacion = false;
 	comandoConsola = false;
-	espera = false;
+	seQuitoUnEsiDeListos = false;
 	pthread_mutex_init(&pausarPlanificacionSem, NULL);
 	pthread_mutex_init(&iniciarConsolaSem, NULL);
 	pthread_mutex_init(&esperarConsolaSem, NULL);
@@ -186,7 +186,7 @@ void * iniciaConsola(){
 					}else{
 						char* key = parametros[1];
 						int ESI_ID = atoi(parametros[2]);
-						if(pausarPlanificacion){
+						if(pausarPlanificacion || queue_is_empty(colaListos)){
 							block(key, ESI_ID);
 						}else{
 							esperarPlanificador();
@@ -210,9 +210,10 @@ void * iniciaConsola(){
 					printf("Demasiados argumentos: desbloquear [clave]\n");
 				}else{
 					char* key = parametros[1];
-					if(pausarPlanificacion){
+					if(pausarPlanificacion || queue_is_empty(colaListos)){
 						unblock(key);
-					}else{
+					}
+					else{
 						esperarPlanificador();
 						unblock(key);
 						continuarPlanificador();
@@ -232,8 +233,7 @@ void * iniciaConsola(){
 				printf("Demasiados argumentos: listar [clave]\n");
 			}else{
 				char* key = parametros[1];
-				if(pausarPlanificacion){
-
+				if(pausarPlanificacion|| queue_is_empty(colaListos)){
 					listBlockedProcesses(key);
 				}else{
 					esperarPlanificador();
@@ -255,7 +255,7 @@ void * iniciaConsola(){
 					printf("Demasiados argumentos: status [clave]\n");
 				}else{
 					char* key = parametros[1];
-					if(pausarPlanificacion){
+					if(pausarPlanificacion|| queue_is_empty(colaListos)){
 						getStatus(key);
 					}else{
 						esperarPlanificador();
@@ -277,7 +277,7 @@ void * iniciaConsola(){
 				printf("Demasiados argumentos: kill [id]\n");
 			}else{
 				int ESI_ID = atoi(parametros[1]);
-				if(pausarPlanificacion){
+				if(pausarPlanificacion|| queue_is_empty(colaListos)){
 					matarProceso(ESI_ID);
 				}else{
 					esperarPlanificador();
@@ -294,7 +294,7 @@ void * iniciaConsola(){
 			if(parametros[1] != NULL){
 				printf("La funcion no lleva argumentos.");
 			}
-			if(pausarPlanificacion){
+			if(pausarPlanificacion|| queue_is_empty(colaListos)){
 				detectarDeadlock();
 			}else{
 				esperarPlanificador();
