@@ -17,6 +17,7 @@
 #include <sys/mman.h> /* para el uso de MMAP */
 #include <fcntl.h> /* para el uso de fallocate */
 #include <errno.h>
+#include <limits.h>
 
 
 typedef struct {
@@ -47,17 +48,17 @@ int operacionNumero;
 
 void eliminarEntrada(char * key);
 int  almacenarEntrada(char key[LONGITUD_CLAVE], int entradaInicial, int largoValue);
-void leer_entrada(t_entrada* entrada, FILE* archivoDatos, char* value);
-int escribirEntrada(FILE* archivoDatos, char * escribir);
-FILE* inicializarPuntoMontaje(char * path, char * filename);
+void leer_entrada(t_entrada* entrada, char* value);
+int escribirEntrada(char * escribir);
+void inicializarPuntoMontaje(char * path, char * filename);
 void cargar_configuracion();
 void configureLoggers(char* name);
 void destroyLoggers();
-int ejecutarStore(int coordinador_socket, FILE* archivoDatos);
+int ejecutarStore(int coordinador_socket);
 int recibirValue(int socketConn, char** bloqueArchivo);
-int recibirEntrada(int socket, FILE * file);
+int recibirEntrada(int socket);
 int recibirKey(int socket, char key [LONGITUD_CLAVE]);
-int persistir_clave(char key[LONGITUD_CLAVE], FILE* archivoDatos);
+int persistir_clave(char key[LONGITUD_CLAVE]);
 int algoritmoR(char* algoritmo);
 void calcularSiguienteEntrada(int lenValue);
 int calculoCircular(int lenValue);
@@ -65,5 +66,6 @@ int obtenerCantidadEntradasOcupadas();
 int obtenerCantidadEntradasLibres();
 bool obtenerEntrada(char key[LONGITUD_CLAVE],t_entrada ** entrada);
 
+void close_gracefully();
 
 #endif /* FUNCIONESINSTANCIA_H_ */

@@ -7,6 +7,7 @@
 #include <commons/log.h>
 #include <commons/config.h>
 #include <commons/string.h>
+#include <commons/bitarray.h>
 #include <readline/readline.h> // Para usar readline
 #include "../Recursos/estructuras.h"
 #include "../Recursos/protocolo.h"
