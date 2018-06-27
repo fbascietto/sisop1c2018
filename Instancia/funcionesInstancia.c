@@ -118,10 +118,7 @@ int recibirValue(int socketConn, char** value){
 		if(strcmp(*value,"-1") == 0){
 			return -1;
 		}
-
 		return 1;
-
-
 }
 
 int recibirKey(int socket, char key [LONGITUD_CLAVE]){
@@ -245,7 +242,7 @@ int persistir_clave(char key[LONGITUD_CLAVE], FILE* archivoDatos){
 
 	char* value = malloc(entradaElegida->size);
 
-	leer_entrada(entradaElegida, archivoDatos, value);
+	leer_entrada(entradaElegida, archivoDatos, &value);
 
 	fprintf(keyStore,"%s", value);
 
@@ -255,7 +252,7 @@ int persistir_clave(char key[LONGITUD_CLAVE], FILE* archivoDatos){
 	return 1;
 }
 
-void leer_entrada(t_entrada* entrada, FILE* archivoDatos, char* value){
+void leer_entrada(t_entrada* entrada, FILE* archivoDatos, char** value){
 
 	int data = open(archivoDatos,O_RDWR);
 	struct stat fileStat;
@@ -281,7 +278,7 @@ void leer_entrada(t_entrada* entrada, FILE* archivoDatos, char* value){
 
 
 		for (;bytes_leidos<bytesAleer && bytes_totales_leidos< bytesAleer;bytes_totales_leidos++){
-			value[bytes_leidos] = map[bytes_totales_leidos];
+			*value[bytes_leidos] = map[bytes_totales_leidos];
 			bytes_leidos++;
 		}
 		bytes_leidos=0;
@@ -348,6 +345,36 @@ int algoritmoR(char* algoritmo){
 	return value;
 }
 
+
+int calculoLRU(int lenValue, t_entrada ** entrada){
+
+
+	int menos_usado = INT_MAX;
+
+	void buscarMenosUsado(void* parametro) {
+
+		t_entrada* entrada_aux = (t_entrada*) parametro;
+
+
+		if(menos_usado > (operacionNumero - entrada_aux->ultimaRef)
+				&& (calculoCantidadEntradas(lenValue) <= (calculoCantidadEntradas(entrada_aux->size)))){
+			menos_usado = operacionNumero - entrada_aux->ultimaRef;
+			*entrada = entrada_aux;
+		}
+	}
+
+	list_iterate(tablaEntradas,buscarMenosUsado);
+
+	if(menos_usado == INT_MAX){
+		return -1;
+	}else{
+		return 1;
+	}
+
+
+}
+
+
 int calculoCircular(int lenValue){
 
 	int size = list_size(tablaEntradas);
@@ -380,6 +407,15 @@ int calculoCircular(int lenValue){
 	}
 
 	return entradasOcupadas;
+}
+
+int calculoCantidadEntradas(int length){
+
+	int qEntradas = length / tamanioEntrada;
+	if(length % tamanioEntrada > 0){
+		qEntradas++;
+	}
+	return qEntradas;
 }
 
 void cargar_configuracion(){

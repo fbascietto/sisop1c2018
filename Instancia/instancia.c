@@ -1,22 +1,6 @@
 #include "instancia.h"
-#include <CUnit/Basic.h>
-// #include "cunit_def.h"
 
 int main() {
-/*if ((argc > 1) && (strcmp(argv[1], "-testea") == 0)){
-	printf("corriendo test");
-
-
-	CU_initialize_registry();
-
-	CU_register_suites(suites);
-
-	CU_basic_set_mode(CU_BRM_VERBOSE);
-	CU_basic_run_tests();
-	CU_cleanup_registry();
-
-	return CU_get_error();
-}else {*/
 		int coordinador_socket;
 		FILE* archivoDatos;
 
@@ -89,7 +73,7 @@ void calcularSiguienteEntrada(int lenValue){
 		  numEntradaActual = calculoCircular(lenValue);
 		  break;
 		case LRU  :
-		  numEntradaActual = 0; /* calculoLRU(); */
+		  numEntradaActual = calculoLRU();
 		  break;
 		case BSU  :
 		  numEntradaActual = 0; /* calculoBSU(); */

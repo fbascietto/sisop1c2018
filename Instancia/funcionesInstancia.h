@@ -17,6 +17,7 @@
 #include <sys/mman.h> /* para el uso de MMAP */
 #include <fcntl.h> /* para el uso de fallocate */
 #include <errno.h>
+#include <limits.h>
 
 
 typedef struct {
@@ -46,8 +47,8 @@ t_log* logE;
 int operacionNumero;
 
 void eliminarEntrada(char * key);
-int  almacenarEntrada(char key[LONGITUD_CLAVE], int entradaInicial, int largoValue);
-void leer_entrada(t_entrada* entrada, FILE* archivoDatos, char* value);
+int almacenarEntrada(char key[LONGITUD_CLAVE], int entradaInicial, int largoValue);
+void leer_entrada(t_entrada* entrada, FILE* archivoDatos, char** value);
 int escribirEntrada(FILE* archivoDatos, char * escribir);
 FILE* inicializarPuntoMontaje(char * path, char * filename);
 void cargar_configuracion();
@@ -64,6 +65,7 @@ int calculoCircular(int lenValue);
 int obtenerCantidadEntradasOcupadas();
 int obtenerCantidadEntradasLibres();
 bool obtenerEntrada(char key[LONGITUD_CLAVE],t_entrada ** entrada);
+int calculoCantidadEntradas(int length);
 
 
 #endif /* FUNCIONESINSTANCIA_H_ */

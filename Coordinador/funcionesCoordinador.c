@@ -165,16 +165,16 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	/* para correr desde ECLIPSE
+	/* para correr desde ECLIPSE */
 	infoConfig = config_create("../Recursos/Configuracion/coordinador.config");
-	 */
+
 
 
 
 	/*para correr desde CONSOLA
-	 */
-	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
 
+	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
+*/
 	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){
 		coordinador_Puerto_Escucha = config_get_int_value(infoConfig, "PUERTO_ESCUCHA");
 	}
@@ -205,21 +205,22 @@ void configureLoggers(){
 	E = LOG_LEVEL_ERROR;
 
 
-	/* para correr desde ECLIPSE
+	/* para correr desde ECLIPSE */
 	vaciarArchivo("../Recursos/Logs/Coordinador.log");
 	logT = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
-	 */
+
 
 
 
 	/* para correr desde CONSOLA
-	 */
+
 	vaciarArchivo("../../Recursos/Logs/Coordinador.log");
 	logT = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
+	 */
 }
 
 void destroyLoggers(){
@@ -420,10 +421,14 @@ int ejecutarOperacionGET(int socket){
 	if(recibirInt(argsPlanificador->socketPlanificador, &codigo)<=0){
 		log_error(logE,"error al recibir status de la clave %s del planificador",codigo);
 	}
-	char key[LONGITUD_CLAVE];
-	strcpy(key,clave);
-	list_add(claves_sin_instancia,key);
-	free(clave);
+
+
+	t_instancia * instancia;
+	if(buscarInstanciaContenedora(clave,&instancia)<=0){
+		list_add(claves_sin_instancia,clave);
+	}
+
+
 	switch(codigo){
 	log_info(logI, "recibi %d", codigo);
 	case CLAVE_OTORGADA:
@@ -445,14 +450,12 @@ int ejecutarOperacionGET(int socket){
 }
 
 
-int bloquearKey(char key[LONGITUD_CLAVE]){
-
-
+int bloquearKey(char * key){
 	log_trace(logT, "clave %s bloqueada", key);
 	return 1;
 }
 
-int elegirInstancia(t_instancia ** instancia, char key[LONGITUD_CLAVE], bool esSimulacion){
+int elegirInstancia(t_instancia ** instancia, char * key, bool esSimulacion){
 
 	if(strcmp(coordinador_Algoritmo,"EL")==0){
 		int proximaPosicion = proxima_posicion_instancia;
@@ -472,7 +475,7 @@ int elegirInstancia(t_instancia ** instancia, char key[LONGITUD_CLAVE], bool esS
 			return ejecutarAlgoritmoLSU(*instancia);
 		}else
 			if(strcmp(coordinador_Algoritmo,"KE")==0){
-				bool* conectada(void* parametro) {
+				bool conectada(void* parametro) {
 					t_instancia* inst = (t_instancia*) parametro;
 
 					return (inst->socketInstancia > 0);
@@ -526,7 +529,7 @@ t_list* obtenerInstanciasConectadas(){
 	return list_filter(instancias, estaConectado);
 }
 
-int buscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia ** instancia){
+int buscarInstanciaContenedora(char * key, t_instancia ** instancia){
 	int pos = -1;
 	int encontro = 0;
 	bool contieneClave(void* parametro) {
@@ -541,16 +544,16 @@ int buscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia ** instanci
 
 }
 
-int simularBuscarInstanciaContenedora(char key[LONGITUD_CLAVE], t_instancia* instancia){
+int simularBuscarInstanciaContenedora(char * key, t_instancia* instancia){
 	return elegirInstancia(&instancia, key, true);
 }
 
 
-int contieneClaveInstancia(t_instancia * instancia, char key[LONGITUD_CLAVE]){
+int contieneClaveInstancia(t_instancia * instancia, char * key){
 
 	bool contieneClave(void* parametro) {
-		char* clave = (char*) parametro;
-		return (strcmp(clave,key)==0);
+		char* clave_aux = (char*) parametro;
+		return (strcmp(clave_aux,key)==0);
 	}
 
 	t_list* list = list_filter(instancia->claves,contieneClave);
@@ -565,29 +568,30 @@ int contieneClaveInstancia(t_instancia * instancia, char key[LONGITUD_CLAVE]){
 int ejecutar_operacion_set(int socket){
 	char * clave;
 	char * valor;
-	char key[LONGITUD_CLAVE];
 	t_instancia * instancia;
 
 	clave = recibirMensajeArchivo(socket);
 	valor = recibirMensajeArchivo(socket);
 	logueaOperacion("SET",clave,valor,socket);
 
-	strcpy(key,clave);
 
 
-	if(buscarInstanciaContenedora(key, &instancia)<=0){
 
-		log_trace(logT,"No se encontro la clave %s en ninguna instancia", key);
+	if(buscarInstanciaContenedora(clave, &instancia)<=0){
+
+		log_trace(logT,"No se encontro la clave %s en ninguna instancia", clave);
 		if(!key_creada(clave)){
-			log_trace(logT,"La clave %s no se encuentra creada", key);
+			log_trace(logT,"La clave %s no se encuentra creada", clave);
 			enviarInt(socket, CLAVE_INEXISTENTE);
+			liberar_clave(clave);
 			free(valor);
 			free(clave);
 			return -1;
 		}
-		if(elegirInstancia(&instancia,key,false)<=0){
-			log_trace(logT,"No se puede almacenar la clave %s en ninguna instancia", key);
+		if(elegirInstancia(&instancia,clave,false)<=0){
+			log_trace(logT,"No se puede almacenar la clave %s en ninguna instancia", clave);
 			enviarInt(socket, EJECUCION_INVALIDA);
+			liberar_clave(clave);
 			free(valor);
 			free(clave);
 			return -1;
@@ -597,15 +601,14 @@ int ejecutar_operacion_set(int socket){
 	enviarMensaje(argsPlanificador->socketPlanificador, clave);
 	int codigo;
 	recibirInt(argsPlanificador->socketPlanificador, &codigo);
-	free(clave);
 
 	switch(codigo){
 	case CLAVE_RESERVADA:
-		if(ejecutar_operacion_set_instancia(key, valor, instancia)<=0){
+		if(ejecutar_operacion_set_instancia(clave, valor, instancia)<=0){
 			return ejecutar_operacion_set(socket);
 		}else{
 
-			list_add(instancia->claves,&key);
+			list_add(instancia->claves,clave);
 			actualizarEntradasOcupadas(instancia);
 			enviarInt(socket, EJECUCION_OK);
 		}
@@ -629,7 +632,7 @@ void actualizarEntradasOcupadas(t_instancia* instancia){
 }
 
 bool key_creada(char * key){
-	bool* igualClave(void* parametro) {
+	bool igualClave(void* parametro) {
 		char* clave = (char*)parametro;
 		return (strcmp(clave,key)==0);
 	}
@@ -666,11 +669,11 @@ int ejecutar_operacion_store(int socket){
 	char* clave;
 	clave = recibirMensajeArchivo(socket);
 
-	char key[LONGITUD_CLAVE];
-	strcpy(key,clave);
+
+
 	int instancia_encontrada;
 	logueaOperacion("STORE",clave,"",socket);
-	instancia_encontrada = buscarInstanciaContenedora(key, &instancia);
+	instancia_encontrada = buscarInstanciaContenedora(clave, &instancia);
 	if( instancia_encontrada< 0){
 		if(!key_creada(clave)){
 			log_trace(logT,"La clave %s no se encuentra creada", clave);
@@ -679,19 +682,20 @@ int ejecutar_operacion_store(int socket){
 			return -1;
 		}else{
 			log_trace(logT,"La clave %s no se encuentra seteada", clave);
+			free(clave);
 			enviarInt(socket, EJECUCION_INVALIDA);
 			return -1;
 		}
 	}
 	enviarInt(argsPlanificador->socketPlanificador, STORE_KEY);
 	enviarMensaje(argsPlanificador->socketPlanificador, clave);
-	free(clave);
+
 	int codigo;
 	recibirInt(argsPlanificador->socketPlanificador, &codigo);
 	switch(codigo){
 	case CLAVE_LIBERADA:
 		if(instancia_encontrada >= 0 ){
-			if(ejecutar_operacion_store_instancia(key, instancia)<=0){
+			if(ejecutar_operacion_store_instancia(clave, instancia)<=0){
 				enviarInt(socket, ERROR_EJECUCION);
 				return -1;
 			}
@@ -709,10 +713,11 @@ int ejecutar_operacion_store(int socket){
 	enviarInt(socket, EJECUCION_INVALIDA);
 	break;
 	}
+	free(clave);
 	return 1;
 }
 
-int ejecutar_operacion_store_instancia(char key[LONGITUD_CLAVE], t_instancia * instancia){
+int ejecutar_operacion_store_instancia(char * key, t_instancia * instancia){
 	int socket = instancia->socketInstancia;
 	if(enviarInt(socket,STORE_ENTRADA)<=0){
 		instancia->socketInstancia = -1;
@@ -730,14 +735,15 @@ int ejecutar_operacion_store_instancia(char key[LONGITUD_CLAVE], t_instancia * i
 	return 1;
 }
 
-void liberar_clave(char key[LONGITUD_CLAVE]){
+void liberar_clave(char * key){
 
-	bool* igualClave(void* parametro) {
+	bool igualClave(void* parametro) {
 		char* clave = (char*)parametro;
 		return (strcmp(clave,key)==0);
 	}
 
-	list_remove(claves_sin_instancia,igualClave);
+	char * clave_a_liberar = (char*) list_remove(claves_sin_instancia,igualClave);
+	free(clave_a_liberar);
 	log_trace(logT, "se libero la clave %s", key);
 }
 /*************** FIN OPERACION STORE *****************/
@@ -747,44 +753,6 @@ void liberar_clave(char key[LONGITUD_CLAVE]){
 
 
 
-/**************** FUNCIONES PRUEBA ************************/
-void simulaEntrada(int socket){
-
-	char* lineaGET;
-	lineaGET = readline("GET:" );
-	char** parametrosGET;
-	parametrosGET = string_split(lineaGET, " ");
-
-	char keyGET[LONGITUD_CLAVE];
-	strcpy(keyGET,parametrosGET[0]);
-
-	//ejecutarOperacionGET(keyGET);
-
-	char* linea;
-	linea = readline("SET:" );
-	char** parametros;
-	parametros = string_split(linea, " ");
 
 
-	char key[LONGITUD_CLAVE];
-	strcpy(key,parametros[0]);
-	/*
-	 * parametro 0 = key
-	 * parametro 1 = value
-	 *
-	 * */
-	t_instancia * instancia;
-	int a = buscarInstanciaContenedora(key, &instancia);
-	enviarInt(socket,ENVIO_ENTRADA);
-	enviarKey(key,socket);
-	enviarValue(parametros[1],socket);
 
-	char* otra_linea = readline("STORE:" );
-	char** otros_parametros;
-	otros_parametros = string_split(otra_linea, " ");
-	enviarInt(socket,STORE_ENTRADA);
-	char otra_key[LONGITUD_CLAVE];
-	strcpy(otra_key,otros_parametros[0]);
-	enviarKey(otra_key,socket);
-
-}
