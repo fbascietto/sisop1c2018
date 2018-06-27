@@ -48,7 +48,7 @@ void eliminarEntrada(char * key){
 	free(entrada);
 }
 
-FILE* inicializarPuntoMontaje(char * path, char * filename){
+void inicializarPuntoMontaje(char * path, char * filename){
 	/*creo carpeta de Montaje*/
 	int status = mkdir(path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 	char* nuevoArchivo = string_new();
@@ -71,16 +71,35 @@ FILE* inicializarPuntoMontaje(char * path, char * filename){
 
 	int fd = fileno(instanciaDat);
 	fallocate(fd,0,0,qEntradas*tamanioEntrada); /* se alloca la memoria a mapear */
+	fclose(instanciaDat);
+}
 
-	return instanciaDat;
+int abrirArchivoDatos(char * path, char * filename){
+
+	char* archivoDat = string_new();
+
+	string_append(&archivoDat, path);
+	string_append(&archivoDat, filename);
+	string_append(&archivoDat, ".dat");
+
+	FILE* instanciaDat = fopen(archivoDat,"a+");
+	if (instanciaDat < 0){
+			log_error(logE, "Fallo al abrir el archivo .dat de la instancia.");
+			exit(EXIT_FAILURE);
+	}
+
+	free(archivoDat);
+	int fd = fileno(instanciaDat);
+	return fd;
+
 }
 
 
-int escribirEntrada(FILE* archivoDatos, char * escribir){
+int escribirEntrada(char * escribir){
 
 	unsigned char* map;
 
-	int data = fileno(archivoDatos);
+	int data = abrirArchivoDatos(punto_Montaje, nombre_Instancia);
 
 	map = (unsigned char*) mmap(NULL, qEntradas * tamanioEntrada , PROT_READ | PROT_WRITE, MAP_SHARED, data, sizeof(unsigned char)*numEntradaActual*tamanioEntrada);
 
@@ -162,7 +181,7 @@ int obtenerCantidadEntradasOcupadas(){
 
 
 /********** OPERACION SET ************/
-int recibirEntrada(int socket, FILE * file){
+int recibirEntrada(int socket){
 
 	char key [LONGITUD_CLAVE];
 	char * value;
@@ -190,7 +209,7 @@ int recibirEntrada(int socket, FILE * file){
 		char* segmento;
 		segmento = malloc(tamanioEntrada);
 		segmento = strncpy(segmento,value+(i*tamanioEntrada),tamanioEntrada);
-		escribirEntrada(file, segmento);
+		escribirEntrada(segmento);
 
 	}
 
@@ -202,13 +221,13 @@ int recibirEntrada(int socket, FILE * file){
 
 
 /******** OPERACION STORE **********/
-int ejecutarStore(int coordinador_socket, FILE* archivoDatos){
+int ejecutarStore(int coordinador_socket){
 		char key[LONGITUD_CLAVE];
 		if(recibirKey(coordinador_socket,key)<=0){
 			log_trace(logE, "error al recibir clave para persistir");
 			return -1;
 		}else{
-			if(persistir_clave(key, archivoDatos)<=0){
+			if(persistir_clave(key)<=0){
 				log_trace(logE, "error al persistir clave");
 				return -1;
 			}
@@ -217,7 +236,7 @@ int ejecutarStore(int coordinador_socket, FILE* archivoDatos){
 }
 
 
-int persistir_clave(char key[LONGITUD_CLAVE], FILE* archivoDatos){
+int persistir_clave(char key[LONGITUD_CLAVE]){
 
 
 	char* path_final = string_new();
@@ -242,7 +261,8 @@ int persistir_clave(char key[LONGITUD_CLAVE], FILE* archivoDatos){
 
 	char* value = malloc(entradaElegida->size);
 
-	leer_entrada(entradaElegida, archivoDatos, &value);
+
+	leer_entrada(entradaElegida, value);
 
 	fprintf(keyStore,"%s", value);
 
@@ -252,9 +272,10 @@ int persistir_clave(char key[LONGITUD_CLAVE], FILE* archivoDatos){
 	return 1;
 }
 
-void leer_entrada(t_entrada* entrada, FILE* archivoDatos, char** value){
 
-	int data = open(archivoDatos,O_RDWR);
+void leer_entrada(t_entrada* entrada, char* value){
+
+	int data = abrirArchivoDatos(punto_Montaje,nombre_Instancia);
 	struct stat fileStat;
 	if (fstat(data, &fileStat) < 0){
 		log_error(logE,"Error fstat --> %s");
@@ -278,7 +299,7 @@ void leer_entrada(t_entrada* entrada, FILE* archivoDatos, char** value){
 
 
 		for (;bytes_leidos<bytesAleer && bytes_totales_leidos< bytesAleer;bytes_totales_leidos++){
-			*value[bytes_leidos] = map[bytes_totales_leidos];
+			value[bytes_leidos] = map[bytes_totales_leidos];
 			bytes_leidos++;
 		}
 		bytes_leidos=0;
@@ -301,22 +322,20 @@ void configureLoggers(char* instName){
 
 	char* logPath = string_new();
 
-	/* para correr desde ECLIPSE
+	/* para correr desde ECLIPSE */
 	string_append(&logPath,"../Recursos/Logs/");
-	*/
+
 
 
 	/* para correr desde CONSOLA
-	 */
-	string_append(&logPath,"../../Recursos/Logs/");
 
+	string_append(&logPath,"../../Recursos/Logs/");
+*/
 
 	string_append(&logPath,instName);
 	string_append(&logPath,".log");
 
-	vaciarArchivo(logPath);
 
-	//vaciarArchivo(logPath);
 	logT = log_create(logPath,"Instancia", true, T);
 	logI = log_create(logPath, "Instancia", true, I);
 	logE = log_create(logPath, "Instancia", true, E);
@@ -422,15 +441,15 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	/* SI SE CORRE DESDE ECLIPSE
+	/* SI SE CORRE DESDE ECLIPSE */
 	infoConfig = config_create("../Recursos/Configuracion/instancia.config");
-	 */
+
 
 
 	/* SI SE CORRE DESDE CONSOLA
-	 */
-	infoConfig = config_create("../../Recursos/Configuracion/instancia.config");
 
+	infoConfig = config_create("../../Recursos/Configuracion/instancia.config");
+*/
 	if(config_has_property(infoConfig, "IP_COORDINADOR")){
 		coordinador_IP = config_get_string_value(infoConfig, "IP_COORDINADOR");
 	}
@@ -456,4 +475,9 @@ void cargar_configuracion(){
 	}
 
 }
+
+
+/*** Funciones Bitmap ***/
+
+
 

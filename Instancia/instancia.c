@@ -1,14 +1,20 @@
 #include "instancia.h"
 
 int main() {
+
 		int coordinador_socket;
-		FILE* archivoDatos;
 
 		cargar_configuracion();
 
 		configureLoggers(nombre_Instancia);
 
 		coordinador_socket = conectarseA(coordinador_IP, coordinador_Puerto);
+
+		if(coordinador_socket<=0){
+			log_error(logE,"Error al conectar al Coordinador.\n");
+			exit(1);
+		}
+
 		enviarInt(coordinador_socket, INSTANCIA);
 		enviarMensaje(coordinador_socket,nombre_Instancia);
 
@@ -17,7 +23,7 @@ int main() {
 		recibirInt(coordinador_socket, &qEntradas);
 		recibirInt(coordinador_socket, &tamanioEntrada);
 
-		archivoDatos = inicializarPuntoMontaje(punto_Montaje, nombre_Instancia);
+		inicializarPuntoMontaje(punto_Montaje, nombre_Instancia);
 
 		tablaEntradas =  list_create();
 
@@ -36,7 +42,7 @@ int main() {
 				case ENVIO_ENTRADA:
 					operacionNumero++;
 					log_trace(logT,"Se recibe instruccion SET.\n");
-					cantidadEntradas = recibirEntrada(coordinador_socket,archivoDatos);
+					cantidadEntradas = recibirEntrada(coordinador_socket);
 
 					if(cantidadEntradas<=0){
 										//TODO que hace si da error?
@@ -47,7 +53,7 @@ int main() {
 				case STORE_ENTRADA:
 					operacionNumero++;
 						log_trace(logT,"Se recibe instruccion STORE.\n");
-					ejecutarStore(coordinador_socket, archivoDatos);
+					ejecutarStore(coordinador_socket);
 					enviarInt(coordinador_socket,obtenerCantidadEntradasOcupadas());
 					break;
 
@@ -57,14 +63,20 @@ int main() {
 		}
 
 
-		destroyLoggers();
 
-	//}
-
-
+		close_gracefully();
 	return 0;
 }
 
+void close_gracefully(){
+	list_destroy(tablaEntradas);
+
+	free(coordinador_IP);
+	free(punto_Montaje);
+	free(nombre_Instancia);
+
+	destroyLoggers();
+}
 
 void calcularSiguienteEntrada(int lenValue){
 	switch (reemplazo_Algoritmo){
