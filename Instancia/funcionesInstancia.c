@@ -480,4 +480,147 @@ void cargar_configuracion(){
 /*** Funciones Bitmap ***/
 
 
+t_bitarray* creaAbreBitmap(int tamanioEntrada, char* nombre_Instancia){
+
+	char * ruta;
+	int nuevo = 0;
+	ruta = malloc(sizeof(char)*256);
+	snprintf(ruta, 256, "%s%s%s", "./metadata/bitmap/", nombre_Instancia, ".bin");
+
+	int bloquesEnBits = (tamanioEntrada / (1024*1024)) ;
+
+	if(bloquesEnBits % 8 == 0)
+	{
+		bloquesEnBits = bloquesEnBits/8;
+	}else{
+		bloquesEnBits = bloquesEnBits/8 + 1;
+	}
+
+	FILE* bitmap = fopen(ruta, "rb+");
+	if(!bitmap)
+	{
+		bitmap = fopen(ruta, "wb+");
+		nuevo = 1;
+		if (bitmap == NULL)
+			printf("Error al abrir directorios.dat\n");
+		//exit(1);
+	}
+
+	/* Declara el array de bits en cero si el bitmap no existía antes.
+	 * Este bitmap se asigna a un dominio, en este caso, un nodo.  */
+
+	t_bitarray* t_fs_bitmap;
+
+	if(!nuevo){
+		t_fs_bitmap = leerBitmap(bitmap, tamanioEntrada);
+	}else{
+
+		t_fs_bitmap = crearBitmapVacio(tamanioEntrada);
+
+		fwrite(t_fs_bitmap->bitarray,(size_t) bloquesEnBits,1,bitmap);
+
+	}
+
+	fclose(bitmap);
+	free(ruta);
+	return t_fs_bitmap;
+}
+
+t_bitarray *crearBitmapVacio(int tamanioEntrada) {
+	int cantBloq = tamanioEntrada / (1024*1024);
+	size_t bytes = ROUNDUP(cantBloq, CHAR_BIT);
+	char *bitarray = calloc(bytes, sizeof(char));
+	return bitarray_create_with_mode(bitarray, bytes, LSB_FIRST);
+}
+
+t_bitarray *leerBitmap(FILE* bitmap_file, int tamanioEntrada) {
+
+	int cantBloq = tamanioEntrada / (1024*1024);
+	size_t bitarray_size = ROUNDUP(cantBloq, CHAR_BIT);
+
+	char *bitarray = malloc(bitarray_size);
+
+	size_t read_bytes = fread(bitarray, 1, bitarray_size, bitmap_file);
+
+	if (read_bytes != bitarray_size) {
+		fclose(bitmap_file);
+		free(bitarray);
+		return NULL;
+	}
+
+	return bitarray_create_with_mode(bitarray, bitarray_size, LSB_FIRST);
+}
+
+bool escribirBitMap(int tamanioEntrada, char* nombre_Instancia, t_bitarray* t_fs_bitmap){
+
+	char * ruta;
+	int nuevo = 0;
+	ruta = malloc(sizeof(char)*256);
+	snprintf(ruta, 256, "%s%s%s", "./metadata/bitmap/", nombre_Instancia, ".bin");
+
+	FILE* bitmap = fopen(ruta, "w");
+	int bytes = fwrite(t_fs_bitmap->bitarray, sizeof(char), t_fs_bitmap->size, bitmap);
+	if (bytes != t_fs_bitmap->size) {
+
+		fclose(bitmap);
+		free(ruta);
+		return 0;
+	}
+
+	free(ruta);
+	fclose(bitmap);
+	return 1;
+}
+
+int findFreeBloque(int tamanioEntrada, t_bitarray* t_fs_bitmap){
+
+	int bloques = (tamanioEntrada / (1024*1024));
+	int pos = 0, i = 0;
+	for (i = 0; i < bloques; i++) {
+		if(bitarray_test_bit(t_fs_bitmap, i) == 0){
+			pos = i;
+			break;
+		}
+	}
+	return pos;
+}
+
+int cuentaBloquesLibre(int tamanioEntrada, t_bitarray* t_fs_bitmap){
+
+	int bloques = (tamanioEntrada / (1024*1024)) ;
+
+	int libre = 0;
+	int i = 0;
+	for (; i < bloques; i++) {
+		if(!bitarray_test_bit(t_fs_bitmap, i)){
+			libre++;
+		}
+	}
+	return libre;
+}
+
+int cuentaBloquesUsados(int tamanioEntrada, t_bitarray* t_fs_bitmap){
+
+	int bloques = (tamanioEntrada / (1024*1024)) ;
+
+	int usado = 0;
+	int i = 0;
+		for (; i < bloques; i++) {
+			 if(bitarray_test_bit(t_fs_bitmap, i)){
+					usado++;
+			}
+		}
+	return usado;
+}
+
+t_bitarray *limpiar_bitmap(int tamanioEntrada, char* nombre_Instancia, t_bitarray* bitmap) {
+	memset(bitmap->bitarray, 0, bitmap->size);
+	escribirBitMap(tamanioEntrada, nombre_Instancia, bitmap);
+	return bitmap;
+}
+
+void destruir_bitmap(t_bitarray* bitmap) {
+	free(bitmap->bitarray);
+	bitarray_destroy(bitmap);
+}
 

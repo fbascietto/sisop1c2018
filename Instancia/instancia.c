@@ -52,7 +52,7 @@ int main() {
 					break;
 				case STORE_ENTRADA:
 					operacionNumero++;
-						log_trace(logT,"Se recibe instruccion STORE.\n");
+					log_trace(logT,"Se recibe instruccion STORE.\n");
 					ejecutarStore(coordinador_socket);
 					enviarInt(coordinador_socket,obtenerCantidadEntradasOcupadas());
 					break;

@@ -8,6 +8,7 @@
 #include <commons/log.h>
 #include <commons/config.h>
 #include <commons/string.h>
+#include <commons/bitarray.h>
 #include <readline/readline.h> // Para usar readline
 #include "../Recursos/estructuras.h"
 #include "../Recursos/protocolo.h"
@@ -19,6 +20,8 @@
 #include <errno.h>
 #include <limits.h>
 
+#define ROUNDUP(x,y) ((x - 1) / y + 1)
+#define CANTIDAD_BLOQUES_ARCHIVO(FILE_SIZE, BLOCK_SIZE) ((FILE_SIZE > 0) ? ROUNDUP(FILE_SIZE, BLOCK_SIZE) : 1)
 
 typedef struct {
 	char key[LONGITUD_CLAVE];
@@ -46,6 +49,8 @@ t_log* logI;
 t_log* logE;
 int operacionNumero;
 
+
+
 void eliminarEntrada(char * key);
 
 int  almacenarEntrada(char key[LONGITUD_CLAVE], int entradaInicial, int largoValue);
@@ -67,6 +72,20 @@ int obtenerCantidadEntradasOcupadas();
 int obtenerCantidadEntradasLibres();
 bool obtenerEntrada(char key[LONGITUD_CLAVE],t_entrada ** entrada);
 int calculoCantidadEntradas(int length);
+
+/* Funciones de bitmap */
+
+t_bitarray* creaAbreBitmap(int tamanioEntrada, char* nombre_Instancia);
+t_bitarray *crearBitmapVacio(int tamanioEntrada);
+t_bitarray *leerBitmap(FILE* bitmap_file, int tamanioEntrada);
+int findFreeBloque(int tamanioEntrada, t_bitarray* t_fs_bitmap);
+bool escribirBitMap(int tamanioEntrada, char* nombre_Instancia, t_bitarray* t_fs_bitmap);
+int cuentaBloquesLibre(int tamanioEntrada, t_bitarray* t_fs_bitmap);
+int cuentaBloquesUsados(int tamanioEntrada, t_bitarray* t_fs_bitmap);
+t_bitarray *limpiar_bitmap(int tamanioEntrada, char* nombre_Instancia, t_bitarray* bitmap);
+void destruir_bitmap(t_bitarray* bitmap);
+
+/* Fin funciones de bitmap */
 
 void close_gracefully();
 
