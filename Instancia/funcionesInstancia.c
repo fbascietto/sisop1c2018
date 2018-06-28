@@ -485,9 +485,9 @@ t_bitarray* creaAbreBitmap(int tamanioEntrada, char* nombre_Instancia){
 	char * ruta;
 	int nuevo = 0;
 	ruta = malloc(sizeof(char)*256);
-	snprintf(ruta, 256, "%s%s%s", "./metadata/bitmap/", nombre_Instancia, ".bin");
+	snprintf(ruta, 256, "%s%s%s", "", nombre_Instancia, ".bin");
 
-	int bloquesEnBits = (tamanioEntrada / (1024*1024)) ;
+	int bloquesEnBits = qEntradas; // (tamanioEntrada / (1024*1024)) ;
 
 	if(bloquesEnBits % 8 == 0)
 	{
@@ -527,7 +527,7 @@ t_bitarray* creaAbreBitmap(int tamanioEntrada, char* nombre_Instancia){
 }
 
 t_bitarray *crearBitmapVacio(int tamanioEntrada) {
-	int cantBloq = tamanioEntrada / (1024*1024);
+	int cantBloq = qEntradas; // tamanioEntrada / (1024*1024);
 	size_t bytes = ROUNDUP(cantBloq, CHAR_BIT);
 	char *bitarray = calloc(bytes, sizeof(char));
 	return bitarray_create_with_mode(bitarray, bytes, LSB_FIRST);
@@ -535,7 +535,7 @@ t_bitarray *crearBitmapVacio(int tamanioEntrada) {
 
 t_bitarray *leerBitmap(FILE* bitmap_file, int tamanioEntrada) {
 
-	int cantBloq = tamanioEntrada / (1024*1024);
+	int cantBloq = qEntradas; // tamanioEntrada / (1024*1024);
 	size_t bitarray_size = ROUNDUP(cantBloq, CHAR_BIT);
 
 	char *bitarray = malloc(bitarray_size);
@@ -574,7 +574,7 @@ bool escribirBitMap(int tamanioEntrada, char* nombre_Instancia, t_bitarray* t_fs
 
 int findFreeBloque(int tamanioEntrada, t_bitarray* t_fs_bitmap){
 
-	int bloques = (tamanioEntrada / (1024*1024));
+	int bloques = qEntradas; // (tamanioEntrada / (1024*1024));
 	int pos = 0, i = 0;
 	for (i = 0; i < bloques; i++) {
 		if(bitarray_test_bit(t_fs_bitmap, i) == 0){
@@ -587,7 +587,7 @@ int findFreeBloque(int tamanioEntrada, t_bitarray* t_fs_bitmap){
 
 int cuentaBloquesLibre(int tamanioEntrada, t_bitarray* t_fs_bitmap){
 
-	int bloques = (tamanioEntrada / (1024*1024)) ;
+	int bloques = qEntradas; // (tamanioEntrada / (1024*1024)) ;
 
 	int libre = 0;
 	int i = 0;
@@ -601,7 +601,7 @@ int cuentaBloquesLibre(int tamanioEntrada, t_bitarray* t_fs_bitmap){
 
 int cuentaBloquesUsados(int tamanioEntrada, t_bitarray* t_fs_bitmap){
 
-	int bloques = (tamanioEntrada / (1024*1024)) ;
+	int bloques = qEntradas; // (tamanioEntrada / (1024*1024)) ;
 
 	int usado = 0;
 	int i = 0;
