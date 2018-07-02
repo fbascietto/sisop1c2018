@@ -48,6 +48,7 @@ t_log* logT;
 t_log* logI;
 t_log* logE;
 int operacionNumero;
+t_bitarray* t_inst_bitmap;
 
 
 
@@ -67,7 +68,7 @@ int recibirKey(int socket, char key [LONGITUD_CLAVE]);
 int persistir_clave(char key[LONGITUD_CLAVE]);
 int algoritmoR(char* algoritmo);
 void calcularSiguienteEntrada(int lenValue);
-int calculoCircular(int lenValue);
+int calculoCircular(int lenValue, int entradasOcupadas, int size);
 int obtenerCantidadEntradasOcupadas();
 int obtenerCantidadEntradasLibres();
 bool obtenerEntrada(char key[LONGITUD_CLAVE],t_entrada ** entrada);
@@ -75,14 +76,14 @@ int calculoCantidadEntradas(int length);
 
 /* Funciones de bitmap */
 
-t_bitarray* creaAbreBitmap(int tamanioEntrada, char* nombre_Instancia);
-t_bitarray *crearBitmapVacio(int tamanioEntrada);
-t_bitarray *leerBitmap(FILE* bitmap_file, int tamanioEntrada);
-int findFreeBloque(int tamanioEntrada, t_bitarray* t_fs_bitmap);
-bool escribirBitMap(int tamanioEntrada, char* nombre_Instancia, t_bitarray* t_fs_bitmap);
-int cuentaBloquesLibre(int tamanioEntrada, t_bitarray* t_fs_bitmap);
-int cuentaBloquesUsados(int tamanioEntrada, t_bitarray* t_fs_bitmap);
-t_bitarray *limpiar_bitmap(int tamanioEntrada, char* nombre_Instancia, t_bitarray* bitmap);
+t_bitarray* creaAbreBitmap(char* nombre_Instancia);
+t_bitarray *crearBitmapVacio();
+t_bitarray *leerBitmap(FILE* bitmap_file);
+int findFreeBloque(t_bitarray* t_fs_bitmap);
+bool escribirBitMap(char* nombre_Instancia, t_bitarray* t_fs_bitmap);
+int cuentaBloquesLibre(t_bitarray* t_fs_bitmap);
+int cuentaBloquesUsados(t_bitarray* t_fs_bitmap);
+t_bitarray *limpiar_bitmap(char* nombre_Instancia, t_bitarray* bitmap);
 void destruir_bitmap(t_bitarray* bitmap);
 
 /* Fin funciones de bitmap */

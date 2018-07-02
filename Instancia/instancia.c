@@ -24,10 +24,12 @@ int main() {
 		recibirInt(coordinador_socket, &tamanioEntrada);
 
 		inicializarPuntoMontaje(punto_Montaje, nombre_Instancia);
+		t_inst_bitmap = creaAbreBitmap(nombre_Instancia);
 
 		tablaEntradas =  list_create();
 
 		operacionNumero = 0;
+
 
 		// TODO: levantar tabla de entradas anterior, de ser necesario
 
@@ -79,21 +81,43 @@ void close_gracefully(){
 }
 
 void calcularSiguienteEntrada(int lenValue){
-	switch (reemplazo_Algoritmo){
 
-		case CIRCULAR  :
-		  numEntradaActual = calculoCircular(lenValue);
-		  break;
-		case LRU  :
-		  numEntradaActual = calculoLRU();
-		  break;
-		case BSU  :
-		  numEntradaActual = 0; /* calculoBSU(); */
-		break;
-		default:
-		  numEntradaActual = reemplazo_Algoritmo;
-		/* Acusar error, exit_gracefully */
+	int size = list_size(tablaEntradas);
+	int entradasOcupadas = 0;
+
+	void calcularEntradasOcupadas(void* parametro) {
+		t_entrada* entrada = (t_entrada*) parametro;
+
+		entradasOcupadas += (entrada->size / tamanioEntrada);
+
+		if(entrada->size%tamanioEntrada){
+			entradasOcupadas++;
+		}
 	}
+
+	list_iterate(tablaEntradas,calcularEntradasOcupadas);
+
+	int entradaLibre = findFreeBloque(t_inst_bitmap);
+
+	if(entradasOcupadas==qEntradas){
+
+		switch (reemplazo_Algoritmo){
+
+			case CIRCULAR  :
+			  numEntradaActual = calculoCircular(lenValue, entradasOcupadas, size);
+			  break;
+			case LRU  :
+			  numEntradaActual = calculoLRU();
+			  break;
+			case BSU  :
+			  numEntradaActual = 0; /* calculoBSU(); */
+			break;
+			default:
+			  numEntradaActual = reemplazo_Algoritmo;
+			/* Acusar error, exit_gracefully */
+		}
+
+	} else{numEntradaActual = entradaLibre; }
 }
 
 /*

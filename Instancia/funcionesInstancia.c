@@ -10,6 +10,7 @@
 
 int  almacenarEntrada(char key[LONGITUD_CLAVE], int entradaInicial, int largoValue){
 	t_entrada * entrada;
+
 	if(!obtenerEntrada(key,&entrada)){
 		entrada = malloc(sizeof(t_entrada));
 		entrada->entry = entradaInicial; /* numero de entrada */
@@ -116,6 +117,11 @@ int escribirEntrada(char * escribir){
 	}
 
 	int entradasOcupadas = strlen(escribir)/tamanioEntrada;
+
+	i = numEntradaActual;
+	for(;i < numEntradaActual+entradasOcupadas;i++){
+		bitarray_set_bit(t_inst_bitmap,i);
+	}
 
 	if (strlen(escribir) % tamanioEntrada > 0){
 		log_trace(logT,"Se escribió con exito sobre la entrada %d y con un total de %d entradas.", numEntradaActual, entradasOcupadas + 1);
@@ -394,38 +400,25 @@ int calculoLRU(int lenValue, t_entrada ** entrada){
 }
 
 
-int calculoCircular(int lenValue){
+int calculoCircular(int lenValue, int entradasOcupadas, int size){
 
-	int size = list_size(tablaEntradas);
-	int entradasOcupadas = 0;
 
-	void calcularEntradasOcupadas(void* parametro) {
-		t_entrada* entrada = (t_entrada*) parametro;
+	/* Empieza a reemplazar entradas, modificación en la lista buscando espacio en el que entre el nuevo value,
+	 * se tiene que considerar agregar el parámetro del tamaño del nuevo value */
 
-		entradasOcupadas += (entrada->size / tamanioEntrada);
-
-		if(entrada->size%tamanioEntrada){
-			entradasOcupadas++;
+	for(int i=0;i<size;i++){
+		t_entrada* ent = list_get(tablaEntradas,i);
+		if(lenValue < ent->size){
+			entradasOcupadas = ent->entry;
+			break;
 		}
 	}
 
-	list_iterate(tablaEntradas,calcularEntradasOcupadas);
+	if(entradasOcupadas == qEntradas){return -1; /*TODO que hacer en este caso?*/}
 
-	if(entradasOcupadas==qEntradas){
-		/* empieza a reemplazar entradas, modificación en la lista buscando espacio en el que entre el nuevo value,
-		 * se tiene que considerar agregar el parámetro del tamaño del nuevo value */
-		for(int i=0;i<size;i++){
-			t_entrada* ent = list_get(tablaEntradas,i);
-			if(lenValue < ent->size){
-				entradasOcupadas = ent->entry;
-				break;
-			}
-		}
-
-		if(entradasOcupadas == qEntradas){return -1; /*TODO que hacer en este caso?*/}
-	}
 
 	return entradasOcupadas;
+
 }
 
 int calculoCantidadEntradas(int length){
@@ -480,7 +473,7 @@ void cargar_configuracion(){
 /*** Funciones Bitmap ***/
 
 
-t_bitarray* creaAbreBitmap(int tamanioEntrada, char* nombre_Instancia){
+t_bitarray* creaAbreBitmap(char* nombre_Instancia){
 
 	char * ruta;
 	int nuevo = 0;
@@ -507,12 +500,12 @@ t_bitarray* creaAbreBitmap(int tamanioEntrada, char* nombre_Instancia){
 	}
 
 	/* Declara el array de bits en cero si el bitmap no existía antes.
-	 * Este bitmap se asigna a un dominio, en este caso, un nodo.  */
+	 * Este bitmap se asigna a un dominio, en este caso, una instancia.  */
 
 	t_bitarray* t_fs_bitmap;
 
 	if(!nuevo){
-		t_fs_bitmap = leerBitmap(bitmap, tamanioEntrada);
+		t_fs_bitmap = leerBitmap(bitmap);
 	}else{
 
 		t_fs_bitmap = crearBitmapVacio(tamanioEntrada);
@@ -526,16 +519,16 @@ t_bitarray* creaAbreBitmap(int tamanioEntrada, char* nombre_Instancia){
 	return t_fs_bitmap;
 }
 
-t_bitarray *crearBitmapVacio(int tamanioEntrada) {
-	int cantBloq = qEntradas; // tamanioEntrada / (1024*1024);
+t_bitarray *crearBitmapVacio() {
+	int cantBloq = qEntradas;
 	size_t bytes = ROUNDUP(cantBloq, CHAR_BIT);
 	char *bitarray = calloc(bytes, sizeof(char));
 	return bitarray_create_with_mode(bitarray, bytes, LSB_FIRST);
 }
 
-t_bitarray *leerBitmap(FILE* bitmap_file, int tamanioEntrada) {
+t_bitarray *leerBitmap(FILE* bitmap_file) {
 
-	int cantBloq = qEntradas; // tamanioEntrada / (1024*1024);
+	int cantBloq = qEntradas;
 	size_t bitarray_size = ROUNDUP(cantBloq, CHAR_BIT);
 
 	char *bitarray = malloc(bitarray_size);
@@ -551,12 +544,12 @@ t_bitarray *leerBitmap(FILE* bitmap_file, int tamanioEntrada) {
 	return bitarray_create_with_mode(bitarray, bitarray_size, LSB_FIRST);
 }
 
-bool escribirBitMap(int tamanioEntrada, char* nombre_Instancia, t_bitarray* t_fs_bitmap){
+bool escribirBitMap(char* nombre_Instancia, t_bitarray* t_fs_bitmap){
 
 	char * ruta;
 	int nuevo = 0;
 	ruta = malloc(sizeof(char)*256);
-	snprintf(ruta, 256, "%s%s%s", "./metadata/bitmap/", nombre_Instancia, ".bin");
+	snprintf(ruta, 256, "%s%s", nombre_Instancia, ".bin");
 
 	FILE* bitmap = fopen(ruta, "w");
 	int bytes = fwrite(t_fs_bitmap->bitarray, sizeof(char), t_fs_bitmap->size, bitmap);
@@ -572,9 +565,9 @@ bool escribirBitMap(int tamanioEntrada, char* nombre_Instancia, t_bitarray* t_fs
 	return 1;
 }
 
-int findFreeBloque(int tamanioEntrada, t_bitarray* t_fs_bitmap){
+int findFreeBloque(t_bitarray* t_fs_bitmap){
 
-	int bloques = qEntradas; // (tamanioEntrada / (1024*1024));
+	int bloques = qEntradas;
 	int pos = 0, i = 0;
 	for (i = 0; i < bloques; i++) {
 		if(bitarray_test_bit(t_fs_bitmap, i) == 0){
@@ -585,7 +578,7 @@ int findFreeBloque(int tamanioEntrada, t_bitarray* t_fs_bitmap){
 	return pos;
 }
 
-int cuentaBloquesLibre(int tamanioEntrada, t_bitarray* t_fs_bitmap){
+int cuentaBloquesLibre(t_bitarray* t_fs_bitmap){
 
 	int bloques = qEntradas; // (tamanioEntrada / (1024*1024)) ;
 
@@ -599,7 +592,7 @@ int cuentaBloquesLibre(int tamanioEntrada, t_bitarray* t_fs_bitmap){
 	return libre;
 }
 
-int cuentaBloquesUsados(int tamanioEntrada, t_bitarray* t_fs_bitmap){
+int cuentaBloquesUsados(t_bitarray* t_fs_bitmap){
 
 	int bloques = qEntradas; // (tamanioEntrada / (1024*1024)) ;
 
@@ -613,9 +606,9 @@ int cuentaBloquesUsados(int tamanioEntrada, t_bitarray* t_fs_bitmap){
 	return usado;
 }
 
-t_bitarray *limpiar_bitmap(int tamanioEntrada, char* nombre_Instancia, t_bitarray* bitmap) {
+t_bitarray *limpiar_bitmap(char* nombre_Instancia, t_bitarray* bitmap) {
 	memset(bitmap->bitarray, 0, bitmap->size);
-	escribirBitMap(tamanioEntrada, nombre_Instancia, bitmap);
+	escribirBitMap(nombre_Instancia, bitmap);
 	return bitmap;
 }
 
