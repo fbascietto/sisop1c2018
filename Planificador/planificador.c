@@ -49,6 +49,7 @@ int main(){
 
 	free(esperarConexion);
 	destruirSemaforos();
+	exit_gracefully(0);
 
 	return 0;
 }

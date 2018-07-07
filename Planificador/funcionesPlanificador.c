@@ -111,6 +111,7 @@ void* planificar(void * args){
 
 			while(replanificar) {
 
+
 				enviarAEjecutar(esi_ejecutando);
 				replanificar = recibirMensajeEsi(esi_ejecutando->fd);
 				esperar();
@@ -248,21 +249,24 @@ int enviarMejorEsiAEjecutar(){
 int enviarAEjecutar(t_proceso_esi* ESIMenorRafaga){
 	esi_ejecutando = ESIMenorRafaga;
 	int socketEsiEjectutando = esi_ejecutando->fd;
-	enviarInt(socketEsiEjectutando, EJECUTAR_LINEA);
-	return socketEsiEjectutando;
+	int resultadoEnvio = enviarInt(socketEsiEjectutando, EJECUTAR_LINEA);
+	return resultadoEnvio;
 }
 
 bool recibirMensajeEsi(int socketCliente){
 
 	int mensaje;
 	bool iterar = true;
-	recibirInt(socketCliente, &mensaje);
+	if(recibirInt(socketCliente, &mensaje) <= 0){
+	finalizarESIEnEjecucion();
+		iterar = false;
+		return iterar;
+	}
 	log_trace(logPlan, "recibi %d", mensaje);
 
 
 	switch(mensaje){
 
-	case EJECUCION_OK:;
 	/*
 	 * si la ejecucion fue correcta:
 	 * 		1- se actualiza la rafaga de cpu del esi
@@ -270,6 +274,7 @@ bool recibirMensajeEsi(int socketCliente){
 	 * 		3.0- SOLO SI ES SJF CON DESALOJO
 	 * 		3.1- se chequea si hay algun valor de estimado menor en cuyo caso se reemplaza
 	 */
+	case EJECUCION_OK:;
 	esi_ejecutando ->rafagaActual++;
 	actualizarColaListos();
 
@@ -295,14 +300,12 @@ bool recibirMensajeEsi(int socketCliente){
 	break;
 
 
-	//TODO:
 	case EJECUCION_INVALIDA:;
 	enviarInt(socketCliente, ABORTAR);
 	finalizarESIEnEjecucion();
 	iterar = false;
 	break;
 
-	//TODO
 	case EN_ESPERA:;
 	moverABloqueados();
 	iterar = false;
@@ -310,9 +313,15 @@ bool recibirMensajeEsi(int socketCliente){
 
 
 	case FINALIZACION_OK:;
+	liberarKeys(esi_ejecutando);
 	finalizarESIEnEjecucion();
 	iterar=false;
 	break;
+
+	default:;
+	log_trace(logPlan, "mensaje del ESI %d no reconocido, recibi %d", esi_ejecutando, mensaje);
+	finalizarESIEnEjecucion();
+	iterar = false;
 	}
 
 	return iterar;
@@ -324,16 +333,18 @@ void moverABloqueados(){
 	esi_ejecutando = NULL;
 }
 
+void finalizarESI(t_proceso_esi* esi_terminado) {
+	int socketESIFinalizado = esi_terminado->fd;
+	FD_CLR(socketESIFinalizado, &fdConexiones);
+	close(socketESIFinalizado);
+	queue_push(colaTerminados, esi_terminado);
+	log_trace(logPlan, "ESI %d movido a la cola de terminados", esi_terminado->id);
+}
+
 void finalizarESIEnEjecucion(){
 	t_proceso_esi* esi_terminado = esi_ejecutando;
 	esi_ejecutando = NULL;
-	//TODO desconexion del fd_set del esi
-	int socketESIFinalizado = esi_terminado->fd;
-	FD_CLR(socketESIFinalizado, &fdConexiones);
-	//TODO hacer free
-	//	queue_push(colaTerminados, esi_terminado);
-	liberarKeys(esi_terminado);
-	free(esi_terminado);
+	finalizarESI(esi_terminado);
 }
 
 void conectarConsolaACoordinador(){
