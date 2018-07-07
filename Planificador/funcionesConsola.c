@@ -161,8 +161,11 @@ void getStatus(char* keySearch){
 	t_clave* key = obtenerKey(keySearch);
 
 	keyValue = (key != NULL) ? key->claveValor : NULL;
+	printf("Valor de clave: ""%s"".\n", keyValue == NULL ? "No existe clave": keyValue);
 
 	enviarInt(socketConsolaCoordinador,DONDE_ESTA_LA_CLAVE);
+
+	enviarMensaje(socketConsolaCoordinador,keySearch);
 
 	int busquedaClave;
 
@@ -178,20 +181,21 @@ void getStatus(char* keySearch){
 		mensajeBusqueda = "La clave no fue encontrada, se simula distribucion";
 		break;
 	}
-
-	t_queue* bloqueados = key->colaBloqueados;
-
-	printf("Valor de clave: ""%s"".\n", keyValue);
 	printf("Resultado de la búsqueda: ""%s"".\n", mensajeBusqueda);
 	printf("Instancia: ""%s"".\n", instanciaBusqueda);
-	printf("Listado de esi bloqueados por clave: \n");
-	if(queue_is_empty(bloqueados)){
-		printf("Vacío");
-	}else{
-		int i;
-		for (i = 0; i < list_size(bloqueados->elements); ++i) {
-			t_proceso_esi* esi = list_get(bloqueados->elements,i);
-			printf("ESI id: ""%d"".\n",esi->id);
+
+	if(key != NULL){
+		t_queue* bloqueados = key->colaBloqueados;
+
+		printf("Listado de esi bloqueados por clave: \n");
+		if(queue_is_empty(bloqueados)){
+			printf("Vacío");
+		}else{
+			int i;
+			for (i = 0; i < list_size(bloqueados->elements); ++i) {
+				t_proceso_esi* esi = list_get(bloqueados->elements,i);
+				printf("ESI id: ""%d"".\n",esi->id);
+			}
 		}
 	}
 

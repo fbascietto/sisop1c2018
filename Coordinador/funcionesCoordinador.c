@@ -165,16 +165,17 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	/* para correr desde ECLIPSE */
+	/* para correr desde ECLIPSE
 	infoConfig = config_create("../Recursos/Configuracion/coordinador.config");
+	 */
 
 
 
 
 	/*para correr desde CONSOLA
-
-	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
 */
+	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
+
 	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){
 		coordinador_Puerto_Escucha = config_get_int_value(infoConfig, "PUERTO_ESCUCHA");
 	}
@@ -205,22 +206,23 @@ void configureLoggers(){
 	E = LOG_LEVEL_ERROR;
 
 
-	/* para correr desde ECLIPSE */
+	/* para correr desde ECLIPSE
 	vaciarArchivo("../Recursos/Logs/Coordinador.log");
 	logT = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
+	 */
 
 
 
 
 	/* para correr desde CONSOLA
 
+	 */
 	vaciarArchivo("../../Recursos/Logs/Coordinador.log");
 	logT = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
-	 */
 }
 
 void destroyLoggers(){
@@ -377,7 +379,7 @@ void recibirMensajeConsolaPlanificador(int socket){
 		if(retorno > 0){
 			enviarInt(socket, CLAVE_ENCONTRADA);
 		}else{
-			simularBuscarInstanciaContenedora(clave, instancia);
+			simularBuscarInstanciaContenedora(clave, &instancia);
 			enviarInt(socket, CLAVE_NO_ENCONTRADA);
 		}
 
@@ -466,7 +468,7 @@ int elegirInstancia(t_instancia ** instancia, char * key, bool esSimulacion){
 		t_instancia * instancia_aux = (t_instancia *) *instancia;
 		log_trace(logT,"se eligio la instancia %s para el guardado de clave", instancia_aux->nombre);
 		proximaPosicion++;
-		if(esSimulacion){
+		if(!esSimulacion){
 			proxima_posicion_instancia = proximaPosicion;
 		}
 		return proximaPosicion;
@@ -490,6 +492,7 @@ int elegirInstancia(t_instancia ** instancia, char * key, bool esSimulacion){
 				int q_letras = 26 / q;
 				int resto = 26 % q;
 				int i = 0;
+
 				for(;i<q;i++){
 					if(letra-26 >= (q_letras*i) && letra-26 < (q_letras*(i+1))){
 						*instancia = list_get(instancias_conectadas,i);
@@ -544,8 +547,8 @@ int buscarInstanciaContenedora(char * key, t_instancia ** instancia){
 
 }
 
-int simularBuscarInstanciaContenedora(char * key, t_instancia* instancia){
-	return elegirInstancia(&instancia, key, true);
+int simularBuscarInstanciaContenedora(char * key, t_instancia** instancia){
+	return elegirInstancia(instancia, key, true);
 }
 
 

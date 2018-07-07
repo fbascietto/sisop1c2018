@@ -92,7 +92,7 @@ int ejecutar_operacion_store(int socket);
 int ejecutar_operacion_store_instancia(char * key, t_instancia * instancia);
 int contieneClaveInstancia(t_instancia * instancia, char * key);
 int buscarInstanciaContenedora(char * key, t_instancia ** instancia);
-int simularBuscarInstanciaContenedora(char * key, t_instancia* instancia);
+int simularBuscarInstanciaContenedora(char * key, t_instancia** instancia);
 int elegirInstancia(t_instancia ** instancia,char * key, bool esSimulacion);
 void recibirMensajeESI(int socket);
 void generarlogDeOperaciones();
