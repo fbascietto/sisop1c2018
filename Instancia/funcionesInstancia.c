@@ -332,8 +332,6 @@ void configureLoggers(char* instName){
 	string_append(&logPath,"../Recursos/Logs/");
 	*/
 
-
-
 	/* para correr desde CONSOLA
 */
 	string_append(&logPath,"../../Recursos/Logs/");

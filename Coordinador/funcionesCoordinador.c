@@ -213,11 +213,7 @@ void configureLoggers(){
 	logE = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
 	 */
 
-
-
-
 	/* para correr desde CONSOLA
-
 	 */
 	vaciarArchivo("../../Recursos/Logs/Coordinador.log");
 	logT = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, T);

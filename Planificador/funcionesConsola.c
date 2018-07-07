@@ -312,7 +312,7 @@ void matarProceso(int ESI_ID){
 
 	if(ESI_ID == ESI_IMPOSTOR){
 		liberarEsiImpostor();
-		log_trace(logPlan, "mataste al impostor");
+		log_trace(logPlan, "mataste al impostor, se liberaron las claves iniciales bloqueadas");
 		return;
 	}
 
@@ -325,6 +325,7 @@ void matarProceso(int ESI_ID){
 		coincide = coincideID(proceso_a_matar);
 		if(coincide){
 			log_trace(logPlan, "el proceso a matar estaba en ejecucion");
+			liberarKeys(proceso_a_matar);
 			finalizarESIEnEjecucion();
 		}
 	}
@@ -347,7 +348,7 @@ void matarProceso(int ESI_ID){
 			proceso_a_matar = list_remove_by_condition(colaListos->elements, coincideID);
 
 			if(proceso_a_matar != NULL){
-				seQuitoUnEsiDeListos=true;
+				seQuitoUnEsiDeListos=true; //para los semaforos de planificacion
 				log_trace(logPlan, "el proceso %d a matar estaba en listos", proceso_a_matar->id);
 			}
 			else{
@@ -359,9 +360,9 @@ void matarProceso(int ESI_ID){
 	}
 
 	if(proceso_a_matar != NULL){
-		enviarInt(proceso_a_matar->fd, ABORTAR);
 		liberarKeys(proceso_a_matar);
-		queue_push(colaTerminados, proceso_a_matar);
+		enviarInt(proceso_a_matar->fd, ABORTAR);
+		finalizarESI(proceso_a_matar);
 	}
 }
 
