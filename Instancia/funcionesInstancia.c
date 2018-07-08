@@ -397,24 +397,13 @@ int calculoLRU(int lenValue, t_entrada ** entrada){
 }
 
 
-int calculoCircular(int lenValue, int entradasOcupadas, int size){
+int calculoCircular(int lenValue){
 
+	int n = lenValue/tamanioEntrada;
 
-	/* Empieza a reemplazar entradas, modificación en la lista buscando espacio en el que entre el nuevo value,
-	 * se tiene que considerar agregar el parámetro del tamaño del nuevo value */
+	int bloqueElegido = findNFreeBloques(t_inst_bitmap, n);
 
-	for(int i=0;i<size;i++){
-		t_entrada* ent = list_get(tablaEntradas,i);
-		if(lenValue < ent->size){
-			entradasOcupadas = ent->entry;
-			break;
-		}
-	}
-
-	if(entradasOcupadas == qEntradas){return -1; /*TODO que hacer en este caso?*/}
-
-
-	return entradasOcupadas;
+	return bloqueElegido;
 
 }
 
@@ -572,6 +561,22 @@ int findFreeBloque(t_bitarray* t_fs_bitmap){
 			break;
 		}
 	}
+	return pos;
+}
+
+int findNFreeBloques(t_bitarray* t_fs_bitmap, int n){
+
+	int bloques = qEntradas;
+	int pos = -1, i = 0, j = 0;
+	for (i = 0; i < bloques; i++) {
+		if(bitarray_test_bit(t_fs_bitmap, i) == 0 && j != n){
+			j++;
+		} else if (bitarray_test_bit(t_fs_bitmap, i) == 0 && j == n){
+			pos = i - j;
+			break;
+		}
+	}
+
 	return pos;
 }
 

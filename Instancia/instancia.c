@@ -86,29 +86,17 @@ void close_gracefully(){
 
 void calcularSiguienteEntrada(int lenValue){
 
-	int size = list_size(tablaEntradas);
-	int entradasOcupadas = 0;
+	int n = calculoCantidadEntradas(lenValue);
+	numEntradaActual = findNFreeBloques(t_inst_bitmap, n);
 
-	void calcularEntradasOcupadas(void* parametro) {
-		t_entrada* entrada = (t_entrada*) parametro;
-
-		entradasOcupadas += (entrada->size / tamanioEntrada);
-
-		if(entrada->size%tamanioEntrada){
-			entradasOcupadas++;
-		}
-	}
-
-	list_iterate(tablaEntradas,calcularEntradasOcupadas);
-
-	int entradaLibre = findFreeBloque(t_inst_bitmap);
-
-	if(entradasOcupadas==qEntradas){
+	if(numEntradaActual==-1){
+		// efectuarCompactacion
+	} else {
 
 		switch (reemplazo_Algoritmo){
 
 			case CIRCULAR  :
-			  numEntradaActual = calculoCircular(lenValue, entradasOcupadas, size);
+			  numEntradaActual = calculoCircular(lenValue);
 			  break;
 			case LRU  :
 			  numEntradaActual = calculoLRU();
@@ -120,8 +108,7 @@ void calcularSiguienteEntrada(int lenValue){
 			  numEntradaActual = reemplazo_Algoritmo;
 			/* Acusar error, exit_gracefully */
 		}
-
-	} else{numEntradaActual = entradaLibre; }
+	}
 }
 
 /*

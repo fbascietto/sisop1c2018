@@ -81,6 +81,7 @@ t_bitarray* creaAbreBitmap(char* nombre_Instancia);
 t_bitarray *crearBitmapVacio();
 t_bitarray *leerBitmap(FILE* bitmap_file);
 int findFreeBloque(t_bitarray* t_fs_bitmap);
+int findNFreeBloques(t_bitarray* t_fs_bitmap, int n);
 bool escribirBitMap(char* nombre_Instancia, t_bitarray* t_fs_bitmap);
 int cuentaBloquesLibre(t_bitarray* t_fs_bitmap);
 int cuentaBloquesUsados(t_bitarray* t_fs_bitmap);
