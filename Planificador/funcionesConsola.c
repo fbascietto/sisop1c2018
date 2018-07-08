@@ -154,15 +154,34 @@ void continuarPlanificador(){
 	pthread_mutex_unlock(&esperarConsolaSem);
 }
 
-void getStatus(char* keySearch){
-	char* keyValue;
-	char* mensajeBusqueda;
+/*
+ * Consulta al coordinador el valor de una clave, imprime resultado.
+ */
+void obtenerValor(char* keySearch){
+	enviarInt(socketConsolaCoordinador,OBTENER_VALOR_DE_KEY);
+	enviarMensaje(socketConsolaCoordinador, keySearch);
+	int busquedaClave;
+	char* valor;
 
-	t_clave* key = obtenerKey(keySearch);
+	recibirInt(socketConsolaCoordinador, &busquedaClave);
 
-	keyValue = (key != NULL) ? key->claveValor : NULL;
-	printf("Valor de clave: ""%s"".\n", keyValue == NULL ? "No existe clave": keyValue);
+	switch(busquedaClave){
+		case CLAVE_ENCONTRADA:
+			valor = recibirMensajeArchivo(socketConsolaCoordinador);
+			printf("Valor de clave: ""%s"".\n", valor);
+			break;
+		case CLAVE_NO_ENCONTRADA:
+			printf("Clave no encontrada");
+			break;
+		case CLAVE_CREADA:
+			printf("Clave sin valor");
+	}
+}
 
+/*
+ * Consulta al coordinador la instancia contenedora de una key, imprime resultado
+ */
+void obtenerInstancia(char* keySearch){
 	enviarInt(socketConsolaCoordinador,DONDE_ESTA_LA_CLAVE);
 
 	enviarMensaje(socketConsolaCoordinador,keySearch);
@@ -172,6 +191,7 @@ void getStatus(char* keySearch){
 	recibirInt(socketConsolaCoordinador, &busquedaClave);
 
 	char* instanciaBusqueda = recibirMensajeArchivo(socketConsolaCoordinador);
+	char* mensajeBusqueda;
 
 	switch(busquedaClave){
 	case CLAVE_ENCONTRADA:
@@ -183,6 +203,10 @@ void getStatus(char* keySearch){
 	}
 	printf("Resultado de la búsqueda: ""%s"".\n", mensajeBusqueda);
 	printf("Instancia: ""%s"".\n", instanciaBusqueda);
+}
+
+void obtenerBloqueados(char* keySearch){
+	t_clave* key = obtenerKey(keySearch);
 
 	if(key != NULL){
 		t_queue* bloqueados = key->colaBloqueados;
@@ -198,7 +222,12 @@ void getStatus(char* keySearch){
 			}
 		}
 	}
+}
 
+void getStatus(char* keySearch){
+	obtenerValor(keySearch);
+	obtenerInstancia(keySearch);
+	obtenerBloqueados(keySearch);
 }
 
 void listBlockedProcesses(char* keySearch){

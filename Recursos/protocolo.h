@@ -45,11 +45,14 @@
 //Protocolo de Mensajes Coordinador/Instancia (61-75)
 #define ENVIO_ENTRADA 61
 #define STORE_ENTRADA 62
+#define OBTENER_VALUE 63
 
 //Protocolo Planificador, Coordinador (75-100)
 #define DONDE_ESTA_LA_CLAVE 75
 #define CLAVE_ENCONTRADA 76
 #define CLAVE_NO_ENCONTRADA 77
+#define CLAVE_CREADA 78
+#define OBTENER_VALOR_DE_KEY 79
 
 
 #define CLAVE_OTORGADA 90 //respuesta de GET

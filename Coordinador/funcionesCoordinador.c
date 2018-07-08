@@ -363,30 +363,59 @@ void recibirMensajeConsolaPlanificador(int socket){
 	recibirInt(socket, &mensaje);
 
 	t_instancia* instancia;
-	char* clave;
 	int retorno;
+	char* keyValue;
 
 	switch(mensaje){
 
 	case DONDE_ESTA_LA_CLAVE:
-
-		clave = recibirMensajeArchivo(socket);
-		retorno = buscarInstanciaContenedora(clave,&instancia);
-		if(retorno > 0){
-			enviarInt(socket, CLAVE_ENCONTRADA);
-		}else{
-			simularBuscarInstanciaContenedora(clave, &instancia);
-			enviarInt(socket, CLAVE_NO_ENCONTRADA);
-		}
-
-		enviarMensaje(socket, instancia->nombre);
+		procesarDondeEstaLaClave(socket);
 		break;
 
+	case OBTENER_VALOR_DE_KEY:
+		procesarObtenerValorKey(socket);
+		break;
 	default:
 
 		log_error(logE, "No reconozco ese mensaje %d\n", mensaje);
 
 	}
+}
+
+void procesarObtenerValorKey(int socket){
+	char* clave;
+	int retorno;
+	char* keyValue;
+
+	clave = recibirMensajeArchivo(socket);
+	retorno = obtenerValue(clave, &keyValue);
+	if(retorno == CLAVE_INEXISTENTE){
+		if(key_creada(clave)){
+			enviarInt(socket, CLAVE_CREADA);
+		} else {
+			enviarInt(socket, CLAVE_NO_ENCONTRADA);
+		}
+	} else {
+		enviarInt(socket, CLAVE_ENCONTRADA);
+		enviarMensaje(socket, clave);
+	}
+}
+
+void procesarDondeEstaLaClave(int socket){
+	char* clave;
+	int retorno;
+	t_instancia* instancia;
+
+	clave = recibirMensajeArchivo(socket);
+	retorno = buscarInstanciaContenedora(clave,&instancia);
+	if(retorno > 0){
+		enviarInt(socket, CLAVE_ENCONTRADA);
+	}else{
+		simularBuscarInstanciaContenedora(clave, &instancia);
+		enviarInt(socket, CLAVE_NO_ENCONTRADA);
+	}
+
+	enviarMensaje(socket, instancia->nombre);
 }
 
 void recibirMensajePlanificador(int socket){

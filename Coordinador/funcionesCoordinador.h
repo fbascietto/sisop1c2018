@@ -103,6 +103,8 @@ int ejecutarAlgoritmoLSU(t_instancia* instancia);
 void actualizarEntradasOcupadas(t_instancia *instancia);
 t_list* obtenerInstanciasConectadas();
 int obtenerValue(char * key, char** value);
+void procesarObtenerValorKey(int socket);
+void procesarDondeEstaLaClave(int socket);
 
 
 
