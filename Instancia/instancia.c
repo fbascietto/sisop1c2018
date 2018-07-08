@@ -33,7 +33,7 @@ int main() {
 
 		// TODO: levantar tabla de entradas anterior, de ser necesario
 
-		calcularSiguienteEntrada(1);
+
 
 		while(1){
 
@@ -49,7 +49,6 @@ int main() {
 					if(cantidadEntradas<=0){
 										//TODO que hace si da error?
 					}
-
 					enviarInt(coordinador_socket,obtenerCantidadEntradasOcupadas());
 					break;
 				case STORE_ENTRADA:
@@ -69,7 +68,6 @@ int main() {
 
 		}
 
-
 		close_gracefully();
 	return 0;
 }
@@ -84,30 +82,37 @@ void close_gracefully(){
 	destroyLoggers();
 }
 
-void calcularSiguienteEntrada(int lenValue){
-
+int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada){
+	int pos = 0;
 	int n = calculoCantidadEntradas(lenValue);
-	numEntradaActual = findNFreeBloques(t_inst_bitmap, n);
+	pos = findNFreeBloques(t_inst_bitmap, n);
 
-	if(numEntradaActual==-1){
-		// efectuarCompactacion
-	} else {
+	if(pos==-1){
+		if(cuentaBloquesLibre(t_inst_bitmap)>= n){
+			log_trace(logT,"No hay %d bloques contiguos, es necesario compactar",n);
+			//compactar
+			return 1;
+		}else{
+			log_error(logE,"No hay %d bloques libres, se reemplaza entrada",n);
+			switch (reemplazo_Algoritmo){
 
-		switch (reemplazo_Algoritmo){
-
-			case CIRCULAR  :
-			  numEntradaActual = calculoCircular(lenValue);
-			  break;
-			case LRU  :
-			  numEntradaActual = calculoLRU();
-			  break;
-			case BSU  :
-			  numEntradaActual = 0; /* calculoBSU(); */
-			break;
-			default:
-			  numEntradaActual = reemplazo_Algoritmo;
-			/* Acusar error, exit_gracefully */
+				case CIRCULAR  :
+				  pos = calculoCircular(lenValue, entrada);
+				  break;
+				case LRU  :
+				  pos = calculoLRU(lenValue, entrada);
+				  break;
+				case BSU  :
+				  pos = 0; /* calculoBSU(lenValue,entrada); */
+				  break;
+				default:
+				  pos = reemplazo_Algoritmo;
+						/* Acusar error, exit_gracefully */
+			}
 		}
+	} else {
+		*entrada = malloc(sizeof(t_entrada));
+		(*entrada)->entry = numEntradaActual;
 	}
 }
 

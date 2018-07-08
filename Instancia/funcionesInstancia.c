@@ -368,7 +368,7 @@ int algoritmoR(char* algoritmo){
 }
 
 
-int calculoLRU(int lenValue, t_entrada ** entrada){
+int calculoLRU(int bloques, t_entrada ** entrada){
 
 
 	int menos_usado = INT_MAX;
@@ -377,9 +377,8 @@ int calculoLRU(int lenValue, t_entrada ** entrada){
 
 		t_entrada* entrada_aux = (t_entrada*) parametro;
 
-
 		if(menos_usado > (operacionNumero - entrada_aux->ultimaRef)
-				&& (calculoCantidadEntradas(lenValue) <= (calculoCantidadEntradas(entrada_aux->size)))){
+				&& (bloques <= (calculoCantidadEntradas(entrada_aux->size)))){
 			menos_usado = operacionNumero - entrada_aux->ultimaRef;
 			*entrada = entrada_aux;
 		}
@@ -396,14 +395,42 @@ int calculoLRU(int lenValue, t_entrada ** entrada){
 
 }
 
+int calculoBSU(int bloques, t_entrada ** entrada){
 
-int calculoCircular(int lenValue){
+	int mayor_tamanio= -1;
+	int size = list_size(tablaEntradas);
+	int i;
+	for(i=0;i<size;i++){
+		t_entrada* entrada_aux = list_get(tablaEntradas, i);
+		int bloques_entrada = calculoCantidadEntradas(entrada_aux->size);
+		if(bloques_entrada>mayor_tamanio){
+			if(bloques_entrada >= bloques){
+				mayor_tamanio = bloques_entrada;
+				*entrada = entrada_aux;
+			}
+		}
+	}
+	return mayor_tamanio;
 
-	int n = lenValue/tamanioEntrada;
+}
 
-	int bloqueElegido = findNFreeBloques(t_inst_bitmap, n);
+int calculoCircular(int bloques, t_entrada ** entrada){
+	int posInicial = numEntradaActual;
+	while(1){
+		t_entrada* entrada_aux = list_get(tablaEntradas,numEntradaActual);
+		numEntradaActual++;
+		if(calculoCantidadEntradas(entrada_aux->size) >= bloques){
+			*entrada = entrada_aux;
+			return 1;
+		}
+		if(numEntradaActual > list_size(tablaEntradas)){
+			numEntradaActual = 0;
+		}
+		if(numEntradaActual == posInicial){
+			return -1;
+		}
+	}
 
-	return bloqueElegido;
 
 }
 
@@ -569,12 +596,16 @@ int findNFreeBloques(t_bitarray* t_fs_bitmap, int n){
 	int bloques = qEntradas;
 	int pos = -1, i = 0, j = 0;
 	for (i = 0; i < bloques; i++) {
-		if(bitarray_test_bit(t_fs_bitmap, i) == 0 && j != n){
+		if(bitarray_test_bit(t_fs_bitmap, i) == 0){
 			j++;
-		} else if (bitarray_test_bit(t_fs_bitmap, i) == 0 && j == n){
-			pos = i - j;
-			break;
+			if(j == n){
+				pos = i-j + 1;
+				break;
+			}
+		}else{
+			j = 0;
 		}
+
 	}
 
 	return pos;
