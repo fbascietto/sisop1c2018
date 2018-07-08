@@ -200,13 +200,7 @@ int recibirEntrada(int socket){
 	}
 
 	int lenValue = strlen(value);
-	int entradasAOcupar;
-
-	if(lenValue % tamanioEntrada){
-		entradasAOcupar = (lenValue / tamanioEntrada) +1;
-	} else {
-		entradasAOcupar = (lenValue / tamanioEntrada);
-	}
+	int entradasAOcupar = calculoCantidadEntradas(lenValue);
 
 	calcularSiguienteEntrada(lenValue);
 	almacenarEntrada(key, numEntradaActual, lenValue);
@@ -370,7 +364,6 @@ int algoritmoR(char* algoritmo){
 
 int calculoLRU(int lenValue, t_entrada ** entrada){
 
-
 	int menos_usado = INT_MAX;
 
 	void buscarMenosUsado(void* parametro) {
@@ -399,7 +392,7 @@ int calculoLRU(int lenValue, t_entrada ** entrada){
 
 int calculoCircular(int lenValue){
 
-	int n = lenValue/tamanioEntrada;
+	int n = calculoCantidadEntradas(lenValue);
 
 	int bloqueElegido = findNFreeBloques(t_inst_bitmap, n);
 
