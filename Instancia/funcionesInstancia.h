@@ -41,6 +41,8 @@ int intervalo_dump;
 int qEntradas;
 int tamanioEntrada;
 int numEntradaActual;
+
+
 t_log_level T;
 t_log_level I;
 t_log_level E;
@@ -54,7 +56,7 @@ t_bitarray* t_inst_bitmap;
 
 void eliminarEntrada(char * key);
 
-int  almacenarEntrada(char key[LONGITUD_CLAVE], int entradaInicial, int largoValue);
+int  almacenarEntrada(char key[LONGITUD_CLAVE], t_entrada * entrada, int largoValue);
 void leer_entrada(t_entrada* entrada, char** value);
 int escribirEntrada(char * escribir);
 void inicializarPuntoMontaje(char * path, char * filename);
@@ -67,8 +69,10 @@ int recibirEntrada(int socket);
 int recibirKey(int socket, char key [LONGITUD_CLAVE]);
 int persistir_clave(char key[LONGITUD_CLAVE]);
 int algoritmoR(char* algoritmo);
-void calcularSiguienteEntrada(int lenValue);
-int calculoCircular(int lenValue, int entradasOcupadas, int size);
+int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada);
+int calculoCircular(int bloques, t_entrada ** entrada);
+int calculoBSU(int bloques, t_entrada ** entrada);
+int calculoLRU(int bloques, t_entrada ** entrada);
 int obtenerCantidadEntradasOcupadas();
 int obtenerCantidadEntradasLibres();
 bool obtenerEntrada(char key[LONGITUD_CLAVE],t_entrada ** entrada);

@@ -33,7 +33,7 @@ int main() {
 
 		// TODO: levantar tabla de entradas anterior, de ser necesario
 
-		calcularSiguienteEntrada(1);
+
 
 		while(1){
 
@@ -45,11 +45,9 @@ int main() {
 					operacionNumero++;
 					log_trace(logT,"Se recibe instruccion SET.\n");
 					cantidadEntradas = recibirEntrada(coordinador_socket);
-
 					if(cantidadEntradas<=0){
 										//TODO que hace si da error?
 					}
-
 					enviarInt(coordinador_socket,obtenerCantidadEntradasOcupadas());
 					break;
 				case STORE_ENTRADA:
@@ -69,7 +67,6 @@ int main() {
 
 		}
 
-
 		close_gracefully();
 	return 0;
 }
@@ -84,32 +81,6 @@ void close_gracefully(){
 	destroyLoggers();
 }
 
-void calcularSiguienteEntrada(int lenValue){
-
-	int n = calculoCantidadEntradas(lenValue);
-	numEntradaActual = findNFreeBloques(t_inst_bitmap, n);
-
-	if(numEntradaActual==-1){
-		// efectuarCompactacion
-	} else {
-
-		switch (reemplazo_Algoritmo){
-
-			case CIRCULAR  :
-			  numEntradaActual = calculoCircular(lenValue);
-			  break;
-			case LRU  :
-			  numEntradaActual = calculoLRU();
-			  break;
-			case BSU  :
-			  numEntradaActual = 0; /* calculoBSU(); */
-			break;
-			default:
-			  numEntradaActual = reemplazo_Algoritmo;
-			/* Acusar error, exit_gracefully */
-		}
-	}
-}
 
 /*
 

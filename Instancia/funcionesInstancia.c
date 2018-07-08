@@ -6,14 +6,45 @@
  */
 #include "funcionesInstancia.h"
 
+int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada){
+	int pos = 0;
+	int n = calculoCantidadEntradas(lenValue);
+	pos = findNFreeBloques(t_inst_bitmap, n);
+
+	if(pos==-1){
+		if(cuentaBloquesLibre(t_inst_bitmap)>= n){
+			log_trace(logT,"No hay %d bloques contiguos, es necesario compactar",n);
+			//compactar
+			return 1;
+		}else{
+			log_error(logE,"No hay %d bloques libres, se reemplaza entrada",n);
+			switch (reemplazo_Algoritmo){
+
+				case CIRCULAR  :
+				  pos = calculoCircular(lenValue, entrada);
+				  break;
+				case LRU  :
+				  pos = calculoLRU(lenValue, entrada);
+				  break;
+				case BSU  :
+				  pos = 0; /* calculoBSU(lenValue,entrada); */
+				  break;
+				default:
+				  pos = reemplazo_Algoritmo;
+						/* Acusar error, exit_gracefully */
+			}
+		}
+	} else {
+		*entrada = malloc(sizeof(t_entrada));
+		(*entrada)->entry = numEntradaActual;
+	}
+	return pos;
+}
 
 
-int  almacenarEntrada(char key[LONGITUD_CLAVE], int entradaInicial, int largoValue){
-	t_entrada * entrada;
+int  almacenarEntrada(char key[LONGITUD_CLAVE], t_entrada * entrada, int largoValue){
 
 	if(!obtenerEntrada(key,&entrada)){
-		entrada = malloc(sizeof(t_entrada));
-		entrada->entry = entradaInicial; /* numero de entrada */
 		strcpy(entrada->key,key);
 		list_add(tablaEntradas,entrada);
 	}
@@ -200,25 +231,24 @@ int recibirEntrada(int socket){
 	}
 
 	int lenValue = strlen(value);
-	int entradasAOcupar;
+	int entradasAOcupar = calculoCantidadEntradas(lenValue);
 
-	if(lenValue % tamanioEntrada){
-		entradasAOcupar = (lenValue / tamanioEntrada) +1;
-	} else {
-		entradasAOcupar = (lenValue / tamanioEntrada);
+	t_entrada* entrada;
+
+	int pos = calcularSiguienteEntrada(lenValue, &entrada);
+
+	if(pos<=0){
+		return -1;
 	}
 
-	calcularSiguienteEntrada(lenValue);
-	almacenarEntrada(key, numEntradaActual, lenValue);
+	almacenarEntrada(key, entrada, lenValue);
 
 	for(int i=0;i<entradasAOcupar;i++){
 		char* segmento;
 		segmento = malloc(tamanioEntrada);
 		segmento = strncpy(segmento,value+(i*tamanioEntrada),tamanioEntrada);
 		escribirEntrada(segmento);
-
 	}
-
 
 	return entradasAOcupar;
 
@@ -368,8 +398,7 @@ int algoritmoR(char* algoritmo){
 }
 
 
-int calculoLRU(int lenValue, t_entrada ** entrada){
-
+int calculoLRU(int bloques, t_entrada ** entrada){
 
 	int menos_usado = INT_MAX;
 
@@ -377,9 +406,8 @@ int calculoLRU(int lenValue, t_entrada ** entrada){
 
 		t_entrada* entrada_aux = (t_entrada*) parametro;
 
-
 		if(menos_usado > (operacionNumero - entrada_aux->ultimaRef)
-				&& (calculoCantidadEntradas(lenValue) <= (calculoCantidadEntradas(entrada_aux->size)))){
+				&& (bloques <= (calculoCantidadEntradas(entrada_aux->size)))){
 			menos_usado = operacionNumero - entrada_aux->ultimaRef;
 			*entrada = entrada_aux;
 		}
@@ -396,14 +424,42 @@ int calculoLRU(int lenValue, t_entrada ** entrada){
 
 }
 
+int calculoBSU(int bloques, t_entrada ** entrada){
 
-int calculoCircular(int lenValue){
+	int mayor_tamanio= -1;
+	int size = list_size(tablaEntradas);
+	int i;
+	for(i=0;i<size;i++){
+		t_entrada* entrada_aux = list_get(tablaEntradas, i);
+		int bloques_entrada = calculoCantidadEntradas(entrada_aux->size);
+		if(bloques_entrada>mayor_tamanio){
+			if(bloques_entrada >= bloques){
+				mayor_tamanio = bloques_entrada;
+				*entrada = entrada_aux;
+			}
+		}
+	}
+	return mayor_tamanio;
 
-	int n = lenValue/tamanioEntrada;
 
-	int bloqueElegido = findNFreeBloques(t_inst_bitmap, n);
+}
+int calculoCircular(int bloques, t_entrada ** entrada){
+	int posInicial = numEntradaActual;
+	while(1){
+		t_entrada* entrada_aux = list_get(tablaEntradas,numEntradaActual);
+		numEntradaActual++;
+		if(calculoCantidadEntradas(entrada_aux->size) >= bloques){
+			*entrada = entrada_aux;
+			return 1;
+		}
+		if(numEntradaActual > list_size(tablaEntradas)){
+			numEntradaActual = 0;
+		}
+		if(numEntradaActual == posInicial){
+			return -1;
+		}
+	}
 
-	return bloqueElegido;
 
 }
 
@@ -569,12 +625,16 @@ int findNFreeBloques(t_bitarray* t_fs_bitmap, int n){
 	int bloques = qEntradas;
 	int pos = -1, i = 0, j = 0;
 	for (i = 0; i < bloques; i++) {
-		if(bitarray_test_bit(t_fs_bitmap, i) == 0 && j != n){
+		if(bitarray_test_bit(t_fs_bitmap, i) == 0){
 			j++;
-		} else if (bitarray_test_bit(t_fs_bitmap, i) == 0 && j == n){
-			pos = i - j;
-			break;
+			if(j == n){
+				pos = i-j + 1;
+				break;
+			}
+		}else{
+			j = 0;
 		}
+
 	}
 
 	return pos;
