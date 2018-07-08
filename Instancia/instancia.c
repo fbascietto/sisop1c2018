@@ -45,7 +45,6 @@ int main() {
 					operacionNumero++;
 					log_trace(logT,"Se recibe instruccion SET.\n");
 					cantidadEntradas = recibirEntrada(coordinador_socket);
-
 					if(cantidadEntradas<=0){
 										//TODO que hace si da error?
 					}
@@ -82,39 +81,6 @@ void close_gracefully(){
 	destroyLoggers();
 }
 
-int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada){
-	int pos = 0;
-	int n = calculoCantidadEntradas(lenValue);
-	pos = findNFreeBloques(t_inst_bitmap, n);
-
-	if(pos==-1){
-		if(cuentaBloquesLibre(t_inst_bitmap)>= n){
-			log_trace(logT,"No hay %d bloques contiguos, es necesario compactar",n);
-			//compactar
-			return 1;
-		}else{
-			log_error(logE,"No hay %d bloques libres, se reemplaza entrada",n);
-			switch (reemplazo_Algoritmo){
-
-				case CIRCULAR  :
-				  pos = calculoCircular(lenValue, entrada);
-				  break;
-				case LRU  :
-				  pos = calculoLRU(lenValue, entrada);
-				  break;
-				case BSU  :
-				  pos = 0; /* calculoBSU(lenValue,entrada); */
-				  break;
-				default:
-				  pos = reemplazo_Algoritmo;
-						/* Acusar error, exit_gracefully */
-			}
-		}
-	} else {
-		*entrada = malloc(sizeof(t_entrada));
-		(*entrada)->entry = numEntradaActual;
-	}
-}
 
 /*
 

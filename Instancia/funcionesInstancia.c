@@ -6,14 +6,45 @@
  */
 #include "funcionesInstancia.h"
 
+int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada){
+	int pos = 0;
+	int n = calculoCantidadEntradas(lenValue);
+	pos = findNFreeBloques(t_inst_bitmap, n);
+
+	if(pos==-1){
+		if(cuentaBloquesLibre(t_inst_bitmap)>= n){
+			log_trace(logT,"No hay %d bloques contiguos, es necesario compactar",n);
+			//compactar
+			return 1;
+		}else{
+			log_error(logE,"No hay %d bloques libres, se reemplaza entrada",n);
+			switch (reemplazo_Algoritmo){
+
+				case CIRCULAR  :
+				  pos = calculoCircular(lenValue, entrada);
+				  break;
+				case LRU  :
+				  pos = calculoLRU(lenValue, entrada);
+				  break;
+				case BSU  :
+				  pos = 0; /* calculoBSU(lenValue,entrada); */
+				  break;
+				default:
+				  pos = reemplazo_Algoritmo;
+						/* Acusar error, exit_gracefully */
+			}
+		}
+	} else {
+		*entrada = malloc(sizeof(t_entrada));
+		(*entrada)->entry = numEntradaActual;
+	}
+	return pos;
+}
 
 
-int  almacenarEntrada(char key[LONGITUD_CLAVE], int entradaInicial, int largoValue){
-	t_entrada * entrada;
+int  almacenarEntrada(char key[LONGITUD_CLAVE], t_entrada * entrada, int largoValue){
 
 	if(!obtenerEntrada(key,&entrada)){
-		entrada = malloc(sizeof(t_entrada));
-		entrada->entry = entradaInicial; /* numero de entrada */
 		strcpy(entrada->key,key);
 		list_add(tablaEntradas,entrada);
 	}
@@ -200,25 +231,24 @@ int recibirEntrada(int socket){
 	}
 
 	int lenValue = strlen(value);
-	int entradasAOcupar;
+	int entradasAOcupar = calculoCantidadEntradas(lenValue);
 
-	if(lenValue % tamanioEntrada){
-		entradasAOcupar = (lenValue / tamanioEntrada) +1;
-	} else {
-		entradasAOcupar = (lenValue / tamanioEntrada);
+	t_entrada* entrada;
+
+	int pos = calcularSiguienteEntrada(lenValue, &entrada);
+
+	if(pos<=0){
+		return -1;
 	}
 
-	calcularSiguienteEntrada(lenValue);
-	almacenarEntrada(key, numEntradaActual, lenValue);
+	almacenarEntrada(key, entrada, lenValue);
 
 	for(int i=0;i<entradasAOcupar;i++){
 		char* segmento;
 		segmento = malloc(tamanioEntrada);
 		segmento = strncpy(segmento,value+(i*tamanioEntrada),tamanioEntrada);
 		escribirEntrada(segmento);
-
 	}
-
 
 	return entradasAOcupar;
 
@@ -370,7 +400,6 @@ int algoritmoR(char* algoritmo){
 
 int calculoLRU(int bloques, t_entrada ** entrada){
 
-
 	int menos_usado = INT_MAX;
 
 	void buscarMenosUsado(void* parametro) {
@@ -412,8 +441,8 @@ int calculoBSU(int bloques, t_entrada ** entrada){
 	}
 	return mayor_tamanio;
 
-}
 
+}
 int calculoCircular(int bloques, t_entrada ** entrada){
 	int posInicial = numEntradaActual;
 	while(1){
