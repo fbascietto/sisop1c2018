@@ -748,7 +748,27 @@ void liberar_clave(char * key){
 /*************** FIN OPERACION STORE *****************/
 
 
+int obtenerValue(char * key, char** value){
+	t_instancia * instancia;
+	if(buscarInstanciaContenedora(key, &instancia)<=0){
+		log_error(logE,"La clave %s no seencuentra en ninguna instancia",key);
+		return CLAVE_INEXISTENTE;
+	}
 
+	if(enviarInt(instancia->socketInstancia,OBTENER_VALUE)<=0){
+		log_error(logE, "error de conexion con la instancia %s",instancia->nombre);
+		instancia->socketInstancia = -1;
+	}
+
+	if(enviarMensaje(instancia->socketInstancia,key)<=0){
+		log_error(logE, "error de conexion con la instancia %s",instancia->nombre);
+		instancia->socketInstancia = -1;
+	}
+
+	*value = recibirMensajeArchivo(instancia->socketInstancia);
+
+	return 1;
+}
 
 
 

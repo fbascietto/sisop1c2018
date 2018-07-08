@@ -58,12 +58,16 @@ int main() {
 					ejecutarStore(coordinador_socket);
 					enviarInt(coordinador_socket,obtenerCantidadEntradasOcupadas());
 					break;
+				case OBTENER_VALUE:
+					operacionNumero++;
+					log_trace(logT,"Se recibe solicitud para obener valor de key.\n");
+					entregarValue(coordinador_socket);
+					break;
 
 			}
 
 
 		}
-
 
 
 		close_gracefully();

@@ -102,6 +102,7 @@ bool existeInstancia(char* nombreInstancia, t_instancia * instancia);
 int ejecutarAlgoritmoLSU(t_instancia* instancia);
 void actualizarEntradasOcupadas(t_instancia *instancia);
 t_list* obtenerInstanciasConectadas();
+int obtenerValue(char * key, char** value);
 
 
 

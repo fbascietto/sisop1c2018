@@ -150,7 +150,7 @@ int recibirKey(int socket, char key [LONGITUD_CLAVE]){
 	int size = LONGITUD_CLAVE;
 		char * mensaje = malloc(size);
 
-			int largoLeido = 0, llegoTodo = 0, totalLeido = 0, tamanio = size;
+			int largoLeido = 0, llegoTodo = 0, totalLeido = 0;
 		while(!llegoTodo){
 				largoLeido = recv(socket, mensaje + totalLeido, size, 0);
 
@@ -265,10 +265,8 @@ int persistir_clave(char key[LONGITUD_CLAVE]){
 
 	entradaElegida->ultimaRef = operacionNumero;
 
-	char* value = malloc(entradaElegida->size);
-
-
-	leer_entrada(entradaElegida, value);
+	char * value;
+	leer_entrada(entradaElegida, &value);
 
 	fprintf(keyStore,"%s", value);
 
@@ -279,7 +277,7 @@ int persistir_clave(char key[LONGITUD_CLAVE]){
 }
 
 
-void leer_entrada(t_entrada* entrada, char* value){
+void leer_entrada(t_entrada* entrada, char** value){
 
 	int data = abrirArchivoDatos(punto_Montaje,nombre_Instancia);
 	struct stat fileStat;
@@ -300,12 +298,12 @@ void leer_entrada(t_entrada* entrada, char* value){
 
 	int bytes_totales_leidos = 0;
 	int bytes_leidos = 0;
-
+	value = malloc(entrada->size);
 	while(bytes_totales_leidos < bytesAleer){
 
 
 		for (;bytes_leidos<bytesAleer && bytes_totales_leidos< bytesAleer;bytes_totales_leidos++){
-			value[bytes_leidos] = map[bytes_totales_leidos];
+			*value[bytes_leidos] = map[bytes_totales_leidos];
 			bytes_leidos++;
 		}
 		bytes_leidos=0;
@@ -547,7 +545,6 @@ t_bitarray *leerBitmap(FILE* bitmap_file) {
 bool escribirBitMap(char* nombre_Instancia, t_bitarray* t_fs_bitmap){
 
 	char * ruta;
-	int nuevo = 0;
 	ruta = malloc(sizeof(char)*256);
 	snprintf(ruta, 256, "%s%s", nombre_Instancia, ".bin");
 
@@ -615,5 +612,25 @@ t_bitarray *limpiar_bitmap(char* nombre_Instancia, t_bitarray* bitmap) {
 void destruir_bitmap(t_bitarray* bitmap) {
 	free(bitmap->bitarray);
 	bitarray_destroy(bitmap);
+}
+
+
+int entregarValue(int socket){
+	char * key = recibirMensajeArchivo(socket);
+	t_entrada* entrada;
+	if(obtenerEntrada(key,&entrada)<=0){
+		log_error(logE,"no se encontro entrada con la key %s",key);
+		return CLAVE_INEXISTENTE;
+	}
+	char * value;
+	leer_entrada(entrada, &value);
+
+	if(enviarMensaje(socket,value)<=0){
+		log_error(logE,"error al enviar el valor de la clave %s al coordinador",key);
+		return -1;
+	}
+
+	return 1;
+
 }
 

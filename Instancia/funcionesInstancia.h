@@ -55,7 +55,7 @@ t_bitarray* t_inst_bitmap;
 void eliminarEntrada(char * key);
 
 int  almacenarEntrada(char key[LONGITUD_CLAVE], int entradaInicial, int largoValue);
-void leer_entrada(t_entrada* entrada, char* value);
+void leer_entrada(t_entrada* entrada, char** value);
 int escribirEntrada(char * escribir);
 void inicializarPuntoMontaje(char * path, char * filename);
 void cargar_configuracion();
@@ -73,6 +73,7 @@ int obtenerCantidadEntradasOcupadas();
 int obtenerCantidadEntradasLibres();
 bool obtenerEntrada(char key[LONGITUD_CLAVE],t_entrada ** entrada);
 int calculoCantidadEntradas(int length);
+int entregarValue(int socket);
 
 /* Funciones de bitmap */
 
