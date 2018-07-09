@@ -1,6 +1,6 @@
 #include "funcionesInstancia.h"
 
-int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada){
+int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada, int socket){
 
 	int seleccionarAlgoritmo(){
 		int pos_aux;
@@ -29,8 +29,11 @@ int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada){
 	if(pos==-1){
 		if(cuentaBloquesLibre(t_inst_bitmap)>= n){
 			log_trace(logT,"No hay %d bloques contiguos, es necesario compactar",n);
+			if(enviarInt(socket,COMPACTACION)<=0){
+				log_error(logE,"Error al enviar mensaje de compactacion al coordinador");
+			}
 			if(compactar()){
-				calcularSiguienteEntrada(lenValue,entrada);
+				calcularSiguienteEntrada(lenValue,entrada, socket);
 			}else{
 				log_error(logE,"Error al compactar, se reemplazara entrada");
 				seleccionarAlgoritmo();
@@ -47,7 +50,7 @@ int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada){
 }
 
 
-int  almacenarEntrada(char key[LONGITUD_CLAVE], t_entrada * entrada, int largoValue){
+int  almacenarEntrada(char * key, t_entrada * entrada, int largoValue){
 
 	if(!obtenerEntrada(key,&entrada)){
 		strcpy(entrada->key,key);
@@ -61,12 +64,12 @@ int  almacenarEntrada(char key[LONGITUD_CLAVE], t_entrada * entrada, int largoVa
 
 }
 
-bool obtenerEntrada(char key[LONGITUD_CLAVE],t_entrada ** entrada){
+bool obtenerEntrada(char * key,t_entrada ** entrada){
 
 	bool retorno = false;
 	bool findByKey(void* parametro) {
-		t_entrada* entrada = (t_entrada*) parametro;
-		if(strcmp(entrada->key,key) == 0){
+		t_entrada* entrada_aux = (t_entrada*) parametro;
+		if(strcmp(entrada_aux->key,key) == 0){
 			retorno = true;
 		}
 		return retorno;
@@ -183,7 +186,7 @@ int recibirValue(int socketConn, char** value){
 		return 1;
 }
 
-int recibirKey(int socket, char key [LONGITUD_CLAVE]){
+int recibirKey(int socket, char ** key){
 	int size = LONGITUD_CLAVE;
 		char * mensaje = malloc(size);
 
@@ -201,7 +204,7 @@ int recibirKey(int socket, char key [LONGITUD_CLAVE]){
 				size -= largoLeido;
 				if(size <= 0) llegoTodo = 1;
 			}
-		strcpy(key,mensaje);
+		strcpy(*key,mensaje);
 		free(mensaje);
 		return totalLeido;
 }
@@ -212,10 +215,10 @@ int recibirKey(int socket, char key [LONGITUD_CLAVE]){
 /********** OPERACION SET ************/
 int recibirEntrada(int socket){
 
-	char key [LONGITUD_CLAVE];
+	char * key;
 	char * value;
 	//value = string_new();
-	if(recibirKey(socket,key)<=0){
+	if(recibirKey(socket,&key)<=0){
 		return -1;
 	}
 	if(recibirValue(socket,&value)<=0){
@@ -227,7 +230,7 @@ int recibirEntrada(int socket){
 
 	t_entrada* entrada;
 
-	int pos = calcularSiguienteEntrada(lenValue, &entrada);
+	int pos = calcularSiguienteEntrada(lenValue, &entrada, socket);
 
 	if(pos<=0){
 		return -1;
@@ -246,8 +249,8 @@ int recibirEntrada(int socket){
 
 /******** OPERACION STORE **********/
 int ejecutarStore(int coordinador_socket){
-		char key[LONGITUD_CLAVE];
-		if(recibirKey(coordinador_socket,key)<=0){
+		char * key;
+		if(recibirKey(coordinador_socket,&key)<=0){
 			log_trace(logE, "error al recibir clave para persistir");
 			return -1;
 		}else{
@@ -260,7 +263,7 @@ int ejecutarStore(int coordinador_socket){
 }
 
 
-int persistir_clave(char key[LONGITUD_CLAVE]){
+int persistir_clave(char *key){
 
 
 	char* path_final = string_new();
@@ -613,7 +616,7 @@ void destruir_bitmap(t_bitarray* bitmap) {
 int entregarValue(int socket){
 	char * key = recibirMensajeArchivo(socket);
 	t_entrada* entrada;
-	if(obtenerEntrada(key,&entrada)<=0){
+	if(!obtenerEntrada(key,&entrada)){
 		log_error(logE,"no se encontro entrada con la key %s",key);
 		return CLAVE_INEXISTENTE;
 	}

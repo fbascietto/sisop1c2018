@@ -56,7 +56,7 @@ pthread_mutex_t mx_Dump;
 
 void eliminarEntrada(char * key);
 
-int  almacenarEntrada(char key[LONGITUD_CLAVE], t_entrada * entrada, int largoValue);
+int  almacenarEntrada(char * key, t_entrada * entrada, int largoValue);
 void leer_entrada(t_entrada* entrada, char** value);
 int escribirEntrada(char * escribir, int pos, char * nombre_archivo);
 void inicializarPuntoMontaje(char * path, char * filename);
@@ -66,14 +66,14 @@ void destroyLoggers();
 int ejecutarStore(int coordinador_socket);
 int recibirValue(int socketConn, char** bloqueArchivo);
 int recibirEntrada(int socket);
-int recibirKey(int socket, char key [LONGITUD_CLAVE]);
-int persistir_clave(char key[LONGITUD_CLAVE]);
+int recibirKey(int socket, char** key);
+int persistir_clave(char *key);
 int algoritmoR(char* algoritmo);
-int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada);
+int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada, int socket);
 int calculoCircular(int bloques, t_entrada ** entrada);
 int calculoBSU(int bloques, t_entrada ** entrada);
 int calculoLRU(int bloques, t_entrada ** entrada);
-bool obtenerEntrada(char key[LONGITUD_CLAVE],t_entrada ** entrada);
+bool obtenerEntrada(char *key,t_entrada ** entrada);
 int calculoCantidadEntradas(int length);
 int entregarValue(int socket);
 bool compactar();
