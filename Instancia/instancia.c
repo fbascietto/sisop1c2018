@@ -55,8 +55,8 @@ int main() {
 					if(cantidadEntradas<=0){
 										//TODO que hace si da error?
 					}
+					enviarInt(coordinador_socket,ENTRADAS_OCUPADAS);
 					enviarInt(coordinador_socket,cuentaBloquesUsados(t_inst_bitmap));
-
 					break;
 				case STORE_ENTRADA:
 					operacionNumero++;
@@ -67,6 +67,7 @@ int main() {
 				case OBTENER_VALUE:
 					operacionNumero++;
 					log_trace(logT,"Se recibe solicitud para obener valor de key.\n");
+
 					entregarValue(coordinador_socket);
 					break;
 				case COMPACTACION:

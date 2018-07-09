@@ -104,6 +104,7 @@ t_list* obtenerInstanciasConectadas();
 int obtenerValue(char * key, char** value);
 void procesarObtenerValorKey(int socket);
 void procesarDondeEstaLaClave(int socket);
+void informarCompactacion(t_instancia * instancia);
 
 
 

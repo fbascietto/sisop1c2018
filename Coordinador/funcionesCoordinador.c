@@ -662,7 +662,7 @@ int ejecutar_operacion_set(int socket){
 		}else{
 
 			list_add(instancia->claves,clave);
-			actualizarEntradasOcupadas(instancia);
+
 			enviarInt(socket, EJECUCION_OK);
 		}
 		break;
@@ -693,7 +693,7 @@ bool key_creada(char * key){
 	return list_any_satisfy(claves_sin_instancia,igualClave);
 }
 
-int ejecutar_operacion_set_instancia(char key[LONGITUD_CLAVE], char * value, t_instancia * instancia){
+int ejecutar_operacion_set_instancia(char * key, char * value, t_instancia * instancia){
 	int socket = instancia->socketInstancia;
 	if(enviarInt(socket,ENVIO_ENTRADA)<=0){
 		instancia->socketInstancia = -1;
@@ -711,7 +711,41 @@ int ejecutar_operacion_set_instancia(char key[LONGITUD_CLAVE], char * value, t_i
 		log_trace(logE,"error al enviar el valor %s de la clave %s a la instancia %s",value,key,instancia->nombre);
 		return -1;
 	}
+
+	bool continuar_while = true;
+	while(continuar_while){
+		int retorno;
+		recibirInt(socket, &retorno);
+		switch(retorno){
+			case COMPACTACION:
+				informarCompactacion(instancia);
+				break;
+			case ENTRADAS_OCUPADAS:
+				continuar_while = false;
+				actualizarEntradasOcupadas(instancia);
+				break;
+		}
+	}
+
+
 	return 1;
+}
+
+void informarCompactacion(t_instancia * instancia){
+	bool resto_instancias(void * parametro){
+		t_instancia * instancia_aux = (t_instancia*)parametro;
+		return (instancia->socketInstancia != instancia_aux->socketInstancia && instancia->socketInstancia != -1);
+	}
+
+	t_list * avisar_a = list_filter(instancias,resto_instancias);
+	int size = list_size(avisar_a);
+	int i;
+	for(i = 0; i<size; i++){
+		t_instancia * instancia_actual = (t_instancia *) list_get(avisar_a,i);
+		enviarInt(instancia_actual->socketInstancia, COMPACTACION);
+	}
+
+	free(avisar_a);
 }
 /*************** FIN OPERACION SET ****************/
 
