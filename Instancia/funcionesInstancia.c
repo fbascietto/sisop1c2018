@@ -127,11 +127,11 @@ int abrirArchivoDatos(char * path, char * filename){
 }
 
 
-int escribirEntrada(char * escribir){
+int escribirEntrada(char * escribir, int pos, char * nombre_archivo){
 
 	unsigned char* map;
 
-	int data = abrirArchivoDatos(punto_Montaje, nombre_Instancia);
+	int data = abrirArchivoDatos(punto_Montaje, nombre_archivo);
 
 	map = (unsigned char*) mmap(NULL, qEntradas * tamanioEntrada , PROT_READ | PROT_WRITE, MAP_SHARED, data, sizeof(unsigned char)*numEntradaActual*tamanioEntrada);
 
@@ -149,8 +149,8 @@ int escribirEntrada(char * escribir){
 
 	int entradasOcupadas = strlen(escribir)/tamanioEntrada;
 
-	i = numEntradaActual;
-	for(;i < numEntradaActual+entradasOcupadas;i++){
+	i = pos;
+	for(;i < pos+entradasOcupadas;i++){
 		bitarray_set_bit(t_inst_bitmap,i);
 	}
 
@@ -243,12 +243,9 @@ int recibirEntrada(int socket){
 
 	almacenarEntrada(key, entrada, lenValue);
 
-	for(int i=0;i<entradasAOcupar;i++){
-		char* segmento;
-		segmento = malloc(tamanioEntrada);
-		segmento = strncpy(segmento,value+(i*tamanioEntrada),tamanioEntrada);
-		escribirEntrada(segmento);
-	}
+
+	escribirEntrada(value, pos, nombre_Instancia);
+
 
 	return entradasAOcupar;
 
@@ -694,8 +691,40 @@ int entregarValue(int socket){
 		log_error(logE,"error al enviar el valor de la clave %s al coordinador",key);
 		return -1;
 	}
-
+	free(value);
 	return 1;
 
 }
+
+void compactar(){
+	char * nombre_archivo = string_new();
+	string_append(&nombre_archivo, "compact");
+	inicializarPuntoMontaje(punto_Montaje,nombre_archivo);
+
+	int size = list_size(tablaEntradas);
+	int i;
+	int pos = 0;
+	for(i=0;i<size;i++){
+		t_entrada * entrada = (t_entrada*)list_get(tablaEntradas,i);
+		char * value;
+		leer_entrada(entrada,&value);
+		escribirEntrada(value,pos,nombre_archivo);
+		free(value);
+		entrada->entry=pos;
+		pos += calculoCantidadEntradas(strlen(value));
+	}
+
+	char * punto_montaje = string_from_format("%s%s.dat",punto_Montaje,nombre_Instancia);
+	if(remove(punto_montaje)<0){
+		log_error(logE, "no se pudo realizar compactacion ya que no es posible remover el punto de montaje");
+	}else
+	if(rename(nombre_archivo,punto_montaje)<0){
+		log_error(logE, "no se pudo realizar compactacion ya que no es posible reemplazar el punto de montaje");
+	}
+
+	free(punto_montaje);
+	free(nombre_archivo);
+}
+
+
 

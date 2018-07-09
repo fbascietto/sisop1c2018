@@ -58,7 +58,7 @@ void eliminarEntrada(char * key);
 
 int  almacenarEntrada(char key[LONGITUD_CLAVE], t_entrada * entrada, int largoValue);
 void leer_entrada(t_entrada* entrada, char** value);
-int escribirEntrada(char * escribir);
+escribirEntrada(char * escribir, int pos, char * nombre_archivo);
 void inicializarPuntoMontaje(char * path, char * filename);
 void cargar_configuracion();
 void configureLoggers(char* name);
