@@ -473,18 +473,19 @@ int ejecutarOperacionGET(int socket){
 
 
 	t_instancia * instancia;
-	if(buscarInstanciaContenedora(clave,&instancia)<=0){
-		list_add(claves_sin_instancia,clave);
-	}
-
 
 	switch(codigo){
 	log_info(logI, "recibi %d", codigo);
 	case CLAVE_OTORGADA:
+
 		if(enviarInt(socket, EJECUCION_OK)<=0){
 			log_error(logE,"error de conexion con ESI en socket %d",socket);
 			return -1;
 		}
+		if(buscarInstanciaContenedora(clave,&instancia)<=0){
+				list_add(claves_sin_instancia,clave);
+		}
+
 		break;
 
 	case CLAVE_BLOQUEADA:
