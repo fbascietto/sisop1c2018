@@ -865,7 +865,6 @@ int obtenerValue(char * key, char** value){
 		case CLAVE_INEXISTENTE:
 			log_trace(logT, "la instancia %s no tiene la clave %s",instancia->nombre,key);
 			remover_clave(instancia,key);
-			return -1;
 			break;
 		case CLAVE_ENCONTRADA:
 			*value = recibirMensajeArchivo(instancia->socketInstancia);
@@ -875,9 +874,7 @@ int obtenerValue(char * key, char** value){
 
 	}
 
-
-
-	return 1;
+	return resultado;
 }
 
 
