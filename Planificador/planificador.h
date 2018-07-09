@@ -33,7 +33,7 @@ typedef struct {
 
 typedef struct {
 	t_proceso_esi* esi_poseedor;
-	char claveValor[LONGITUD_CLAVE];
+	char nombre[LONGITUD_CLAVE];
 	t_queue* colaBloqueados;
 } t_clave;
 
@@ -137,7 +137,6 @@ void goOn();
 void getStatus(char* keySearch);
 void obtenerValor(char* keySearch);
 void obtenerInstancia(char* keySearch);
-void obtenerBloqueados(char* keySearch);
 void listBlockedProcesses(char* keySearch);
 void matarProceso(int ESI_ID);
 void detectarDeadlock();

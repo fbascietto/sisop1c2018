@@ -14,7 +14,6 @@ int main(){
 	fd_set fdSocketsEscucha;
 
 	iniciarVariablesGlobales();
-	inicializarColas();
 	inicializarSemaforos();
 
 	FD_ZERO(&fdSocketsEscucha);
@@ -26,6 +25,8 @@ int main(){
 
 	conectarCoordinador();
 	conectarConsolaACoordinador();
+
+	inicializarColas();
 
 	pthread_t threadEscucharConsola;
 	pthread_t threadPlanificar;
@@ -54,7 +55,7 @@ int main(){
 	return 0;
 }
 
-void 	iniciarVariablesGlobales(){
+void iniciarVariablesGlobales(){
 	keySolicitada = malloc(LONGITUD_CLAVE);
 	esiImpostor = malloc(sizeof(t_proceso_esi));
 
@@ -91,11 +92,14 @@ void cargarKeysBloqueadasIniciales(){
 		}
 
 		nuevaKey = malloc(sizeof(t_clave));
-		strncpy(nuevaKey->claveValor, clave, strlen(clave));
+		strncpy(nuevaKey->nombre, clave, strlen(clave));
 		nuevaKey->colaBloqueados = queue_create();
 		nuevaKey->esi_poseedor = esiImpostor;
 		list_add(esiImpostor->clavesTomadas, nuevaKey);
 		list_add(listaKeys, nuevaKey);
+
+		enviarInt(socketCoordinador, CREAR_KEY_INICIALMENTE_BLOQUEADA);
+		enviarMensaje(socketCoordinador, nuevaKey->nombre);
 
 		i++;
 	}
@@ -342,16 +346,16 @@ void configureLogger(){
 	LogL = LOG_LEVEL_TRACE;
 
 	/* ejecutar desde ECLIPSE
-	 */
 	vaciarArchivo("../Recursos/Logs/Planificador.log");
 	logPlan = log_create("../Recursos/Logs/Planificador.log","Planificador", true, LogL);
+	 */
 
 
 
 	/* para ejecutar desde CONSOLA
+	 */
 	vaciarArchivo("../../Recursos/Logs/Planificador.log");
 	logPlan = log_create("../../Recursos/Logs/Planificador.log","Planificador", true, LogL);
-	 */
 
 	log_trace(logPlan, "inicializacion de logs");
 }
@@ -361,14 +365,14 @@ void cargar_configuracion(){
 	t_config* infoConfig;
 
 	/*	para correr desde ECLIPSE
-	 */
 	infoConfig = config_create("../Recursos/Configuracion/planificador.config");
+	 */
 
 
 
 	/* para correr desde CONSOLA
-	infoConfig = config_create("../../Recursos/Configuracion/planificador.config");
 	 */
+	infoConfig = config_create("../../Recursos/Configuracion/planificador.config");
 
 
 	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){
@@ -413,12 +417,23 @@ void cargar_configuracion(){
 
 	if(config_has_property(infoConfig, "CLAVES_INI_BLOQUEADAS")){
 		claves_Ini_Bloqueadas = config_get_array_value(infoConfig, "CLAVES_INI_BLOQUEADAS");
-		log_info(logPlan, "claves Bloqueadas:");
+		char* msj = string_new();
+		string_append(&msj, "claves inicialmente bloqueadas: ");
 		int i = 0;
 		while(claves_Ini_Bloqueadas[i] != NULL){
-			log_info(logPlan, "	%s", claves_Ini_Bloqueadas[i]);
+			string_append_with_format(&msj, "%s", claves_Ini_Bloqueadas[i]);
 			i++;
+			if(claves_Ini_Bloqueadas[i] != NULL){
+				string_append(&msj, ", ");
+			}else{
+				string_append(&msj, ".");
+			}
+
 		}
+
+		log_info(logPlan, msj);
+		free(msj);
+
 	}
 
 }
