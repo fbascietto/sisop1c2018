@@ -173,7 +173,7 @@ void cargar_configuracion(){
 
 
 	/*para correr desde CONSOLA
-*/
+	 */
 	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
 
 	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){
@@ -341,7 +341,8 @@ void recibirMensajeESI(int socket){
 void atenderPlanificador(void *args){
 	while(1){
 
-		recibirMensajePlanificador(argsPlanificador->socketPlanificador);
+		//recibirMensajePlanificador(argsPlanificador->socketPlanificador);
+		sleep(5);
 
 	}
 
@@ -374,6 +375,16 @@ void recibirMensajeConsolaPlanificador(int socket){
 	case OBTENER_VALOR_DE_KEY:
 		procesarObtenerValorKey(socket);
 		break;
+
+	case CREAR_KEY_INICIALMENTE_BLOQUEADA:;
+
+		char* keyName = recibirMensajeArchivo(socket);
+		list_add(claves_sin_instancia, keyName);
+
+		log_trace(logT, "Se crea nueva clave inicialmente bloqueada: %s", keyName);
+
+		break;
+
 	default:
 
 		log_error(logE, "No reconozco ese mensaje %d\n", mensaje);
@@ -430,16 +441,16 @@ void recibirMensajePlanificador(int socket){
 
 	case CREAR_KEY_INICIALMENTE_BLOQUEADA:;
 
-		char* keyName = recibirMensajeArchivo(socket);
-		list_add(claves_sin_instancia, keyName);
+	char* keyName = recibirMensajeArchivo(socket);
+	list_add(claves_sin_instancia, keyName);
 
-		log_trace(logT, "Se crea nueva clave inicialmente bloqueada: %s", keyName);
+	log_trace(logT, "Se crea nueva clave inicialmente bloqueada: %s", keyName);
 
-		break;
+	break;
 
 	default:
 
-		log_error(logE, "No reconozco ese mensaje\n");
+		log_error(logE, "No reconozco ese mensaje: %d", mensaje);
 
 	}
 

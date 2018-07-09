@@ -98,8 +98,8 @@ void cargarKeysBloqueadasIniciales(){
 		list_add(esiImpostor->clavesTomadas, nuevaKey);
 		list_add(listaKeys, nuevaKey);
 
-		enviarInt(socketCoordinador, CREAR_KEY_INICIALMENTE_BLOQUEADA);
-		enviarMensaje(socketCoordinador, nuevaKey->nombre);
+		enviarInt(socketConsolaCoordinador, CREAR_KEY_INICIALMENTE_BLOQUEADA);
+		enviarMensaje(socketConsolaCoordinador, nuevaKey->nombre);
 
 		i++;
 	}
