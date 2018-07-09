@@ -54,7 +54,7 @@ t_clave* obtenerKey(char* key_value){
 
 		keyEncontrada = list_get(listaKeys, i);
 
-		if(coincideValor(keyEncontrada->claveValor, key_value)){
+		if(coincideValor(keyEncontrada->nombre, key_value)){
 			return keyEncontrada;
 		}
 
@@ -154,15 +154,42 @@ void continuarPlanificador(){
 	pthread_mutex_unlock(&esperarConsolaSem);
 }
 
-void getStatus(char* keySearch){
-	char* keyValue;
-	char* mensajeBusqueda;
+/*
+ * Consulta al coordinador el valor de una clave, imprime resultado.
+ */
+void obtenerValor(char* keySearch){
+	enviarInt(socketConsolaCoordinador,OBTENER_VALOR_DE_KEY);
+	enviarMensaje(socketConsolaCoordinador, keySearch);
+	int busquedaClave;
+	char* valor;
 
-	t_clave* key = obtenerKey(keySearch);
+	recibirInt(socketConsolaCoordinador, &busquedaClave);
 
-	keyValue = (key != NULL) ? key->claveValor : NULL;
-	printf("Valor de clave: ""%s"".\n", keyValue == NULL ? "No existe clave": keyValue);
+	char* msj = string_new();
 
+	switch(busquedaClave){
+	case CLAVE_ENCONTRADA:
+		valor = recibirMensajeArchivo(socketConsolaCoordinador);
+		string_append_with_format(&msj, "Valor de la clave: %s", valor);
+		break;
+	case CLAVE_NO_ENCONTRADA:
+		string_append(&msj, "Clave no existente.");
+		break;
+	case CLAVE_CREADA:
+		string_append(&msj, "Clave sin valor.");
+		break;
+	}
+
+	log_info(logPlan, msj);
+
+	free(msj);
+
+}
+
+/*
+ * Consulta al coordinador la instancia contenedora de una key, imprime resultado
+ */
+void obtenerInstancia(char* keySearch){
 	enviarInt(socketConsolaCoordinador,DONDE_ESTA_LA_CLAVE);
 
 	enviarMensaje(socketConsolaCoordinador,keySearch);
@@ -171,54 +198,81 @@ void getStatus(char* keySearch){
 
 	recibirInt(socketConsolaCoordinador, &busquedaClave);
 
-	char* instanciaBusqueda = recibirMensajeArchivo(socketConsolaCoordinador);
+	char* msj = string_new();
+	char* msj2 = string_new();
+
+	string_append(&msj, "Resultado de la búsqueda: ");
 
 	switch(busquedaClave){
 	case CLAVE_ENCONTRADA:
-		mensajeBusqueda = "La clave fue encontrada";
+		string_append(&msj, "La clave fue encontrada.");
+		string_append(&msj2, "La clave esta en: ");
 		break;
 	case CLAVE_NO_ENCONTRADA:
-		mensajeBusqueda = "La clave no fue encontrada, se simula distribucion";
+		string_append(&msj, "La clave no fue encontrada, se simula distribucion.");
+		string_append(&msj2, "La clave se guardaria en: ");
 		break;
 	}
-	printf("Resultado de la búsqueda: ""%s"".\n", mensajeBusqueda);
-	printf("Instancia: ""%s"".\n", instanciaBusqueda);
+	log_info(logPlan, msj);
+
+	char* instanciaBusqueda = recibirMensajeArchivo(socketConsolaCoordinador);
+
+	string_append(&msj2, instanciaBusqueda);
+	log_info(logPlan, msj2);
+
+	free(msj);
+	free(msj2);
+	free(instanciaBusqueda);
+
+
+}
+
+void getStatus(char* keySearch){
+	obtenerValor(keySearch);
+	obtenerInstancia(keySearch);
+	listBlockedProcesses(keySearch);
+}
+
+void listBlockedProcesses(char* keySearch){
+
+	t_clave* key = obtenerKey(keySearch);
+	char* msj = string_new();
+
+	if(key == NULL){
+
+		string_append_with_format(&msj, "No se encontro la key con nombre: %s", keySearch);
+		log_info(logPlan, msj);
+		free(msj);
+		return;
+
+	}
 
 	if(key != NULL){
 		t_queue* bloqueados = key->colaBloqueados;
 
-		printf("Listado de esi bloqueados por clave: \n");
 		if(queue_is_empty(bloqueados)){
-			printf("Vacío");
+			string_append_with_format(&msj, "No hay bloqueados por la clave %s.", keySearch);
 		}else{
+			string_append_with_format(&msj, "Listado de esis bloqueados por %s: ", keySearch);
+
 			int i;
 			for (i = 0; i < list_size(bloqueados->elements); ++i) {
 				t_proceso_esi* esi = list_get(bloqueados->elements,i);
-				printf("ESI id: ""%d"".\n",esi->id);
+				string_append_with_format(&msj, "ESI %d", esi->id);
+				if(i + 1 < list_size(bloqueados->elements)){
+					string_append(&msj, ", ");
+				}else{
+					string_append(&msj, ".");
+				}
 			}
 		}
+
+		log_info(logPlan, msj);
+
 	}
 
-}
+	free(msj);
 
-void listBlockedProcesses(char* keySearch){
-	void printEsi(void* procesoEsi){
-		t_proceso_esi* esi = (t_proceso_esi*) procesoEsi;
-		printf("ESI ID: ""%d"".\n", esi->id);
-	}
-
-	t_clave* key = obtenerKey(keySearch);
-
-	if(key==NULL){
-		printf("No se encontró el recurso con key: ""%s"".\n", keySearch);
-
-	} else if (queue_is_empty(key->colaBloqueados)){
-		printf("La lista de bloqueados está vacía.\n");
-
-	} else {
-		printf("La lista de bloqueados para la clave especificada es:\n");
-		list_iterate(key->colaBloqueados->elements, printEsi);
-	}
 }
 
 
@@ -236,7 +290,7 @@ void liberarKey(void* key){
 		moverAListos(esi_a_desbloquear);
 	}
 
-	log_trace(logPlan, "clave %s liberada", clave->claveValor);
+	log_trace(logPlan, "clave %s liberada", clave->nombre);
 
 }
 
@@ -521,7 +575,7 @@ bool estaLaKey(t_list* keys, t_clave* key){
 
 		keyEncontrada = list_get(keys, i);
 
-		if(coincideValor(key->claveValor, keyEncontrada->claveValor)) return true;
+		if(coincideValor(key->nombre, keyEncontrada->nombre)) return true;
 
 	}
 

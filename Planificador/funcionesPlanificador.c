@@ -57,7 +57,7 @@ void* escucharCoordinador(void* args){
 
 t_clave* crearNuevaKey(char* clave){
 	t_clave* nuevaKey = malloc(sizeof(t_clave));
-	strcpy(nuevaKey->claveValor, clave);
+	strcpy(nuevaKey->nombre, clave);
 	nuevaKey->colaBloqueados = queue_create();
 	nuevaKey->esi_poseedor = NULL;
 	list_add(listaKeys,nuevaKey);

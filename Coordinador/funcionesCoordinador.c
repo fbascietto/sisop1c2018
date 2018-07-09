@@ -341,9 +341,8 @@ void recibirMensajeESI(int socket){
 void atenderPlanificador(void *args){
 	while(1){
 
-		//	recibirMensajePlanificador(argsPlanificador->socketPlanificador);
-		//TODO
-		sleep(5);
+		recibirMensajePlanificador(argsPlanificador->socketPlanificador);
+
 	}
 
 }
@@ -363,30 +362,62 @@ void recibirMensajeConsolaPlanificador(int socket){
 	recibirInt(socket, &mensaje);
 
 	t_instancia* instancia;
-	char* clave;
 	int retorno;
+	char* keyValue;
 
 	switch(mensaje){
 
 	case DONDE_ESTA_LA_CLAVE:
-
-		clave = recibirMensajeArchivo(socket);
-		retorno = buscarInstanciaContenedora(clave,&instancia);
-		if(retorno > 0){
-			enviarInt(socket, CLAVE_ENCONTRADA);
-		}else{
-			simularBuscarInstanciaContenedora(clave, &instancia);
-			enviarInt(socket, CLAVE_NO_ENCONTRADA);
-		}
-
-		enviarMensaje(socket, instancia->nombre);
+		procesarDondeEstaLaClave(socket);
 		break;
 
+	case OBTENER_VALOR_DE_KEY:
+		procesarObtenerValorKey(socket);
+		break;
 	default:
 
 		log_error(logE, "No reconozco ese mensaje %d\n", mensaje);
 
 	}
+}
+
+void procesarObtenerValorKey(int socket){
+	char* clave;
+	int retorno;
+	char* keyValue;
+
+	clave = recibirMensajeArchivo(socket);
+	retorno = obtenerValue(clave, &keyValue);
+	if(retorno == CLAVE_INEXISTENTE){
+		if(key_creada(clave)){
+			enviarInt(socket, CLAVE_CREADA);
+		} else {
+			enviarInt(socket, CLAVE_NO_ENCONTRADA);
+		}
+	} else {
+		enviarInt(socket, CLAVE_ENCONTRADA);
+		enviarMensaje(socket, keyValue);
+		free(keyValue);
+	}
+
+	free(clave);
+}
+
+void procesarDondeEstaLaClave(int socket){
+	char* clave;
+	int retorno;
+	t_instancia* instancia;
+
+	clave = recibirMensajeArchivo(socket);
+	retorno = buscarInstanciaContenedora(clave,&instancia);
+	if(retorno > 0){
+		enviarInt(socket, CLAVE_ENCONTRADA);
+	}else{
+		simularBuscarInstanciaContenedora(clave, &instancia);
+		enviarInt(socket, CLAVE_NO_ENCONTRADA);
+	}
+
+	enviarMensaje(socket, instancia->nombre);
 }
 
 void recibirMensajePlanificador(int socket){
@@ -395,8 +426,16 @@ void recibirMensajePlanificador(int socket){
 
 	recibirInt(socket, &mensaje);
 
-	//TODO: Implementar los mensajes necesarios
 	switch(mensaje){
+
+	case CREAR_KEY_INICIALMENTE_BLOQUEADA:;
+
+		char* keyName = recibirMensajeArchivo(socket);
+		list_add(claves_sin_instancia, keyName);
+
+		log_trace(logT, "Se crea nueva clave inicialmente bloqueada: %s", keyName);
+
+		break;
 
 	default:
 
@@ -544,7 +583,10 @@ int buscarInstanciaContenedora(char * key, t_instancia ** instancia){
 }
 
 int simularBuscarInstanciaContenedora(char * key, t_instancia** instancia){
-	return elegirInstancia(instancia, key, true);
+	log_trace(logT, "Comienza simulacion");
+	int retorno = elegirInstancia(instancia, key, true);
+	log_trace(logT, "Termina simulacion");
+	return retorno;
 }
 
 
@@ -751,7 +793,7 @@ void liberar_clave(char * key){
 int obtenerValue(char * key, char** value){
 	t_instancia * instancia;
 	if(buscarInstanciaContenedora(key, &instancia)<=0){
-		log_error(logE,"La clave %s no seencuentra en ninguna instancia",key);
+		log_error(logE,"La clave %s no se encuentra en ninguna instancia",key);
 		return CLAVE_INEXISTENTE;
 	}
 
