@@ -1,9 +1,3 @@
-/*
- * funcionesInstancia.c
- *
- *  Created on: Apr 27, 2018
- *      Author: utnso
- */
 #include "funcionesInstancia.h"
 
 int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada){
@@ -275,16 +269,17 @@ int persistir_clave(char key[LONGITUD_CLAVE]){
 	string_append(&path_final, key);
 
 	FILE* keyStore = fopen(path_final,"w+");
+
 	if (keyStore == NULL){
 			log_error(logE, "Fallo al generar el STORE de la key %s.", key);
-			exit(EXIT_FAILURE);
+			return -1;
 	}
-
 
 	t_entrada* entradaElegida;
 
 	if(!obtenerEntrada(key,&entradaElegida)){
 		log_error(logE,"No se encontro la clave %s",key);
+		return -1;
 	}
 
 	entradaElegida->ultimaRef = operacionNumero;
@@ -341,6 +336,7 @@ void leer_entrada(t_entrada* entrada, char** value){
 }
 
 /********* FIN OPERACION STORE *********/
+
 
 void configureLoggers(char* instName){
 
@@ -507,8 +503,7 @@ void cargar_configuracion(){
 }
 
 
-/*** Funciones Bitmap ***/
-
+/* ********** FUNCIONES BITMAP ********** */
 
 t_bitarray* creaAbreBitmap(char* nombre_Instancia){
 
@@ -540,26 +535,6 @@ t_bitarray *crearBitmapVacio() {
 	return bitarray_create_with_mode(bitarray, bytes, LSB_FIRST);
 }
 
-
-bool escribirBitMap(char* nombre_Instancia, t_bitarray* t_fs_bitmap){
-
-	char * ruta;
-	ruta = malloc(sizeof(char)*256);
-	snprintf(ruta, 256, "%s%s", nombre_Instancia, ".bin");
-
-	FILE* bitmap = fopen(ruta, "w");
-	int bytes = fwrite(t_fs_bitmap->bitarray, sizeof(char), t_fs_bitmap->size, bitmap);
-	if (bytes != t_fs_bitmap->size) {
-
-		fclose(bitmap);
-		free(ruta);
-		return 0;
-	}
-
-	free(ruta);
-	fclose(bitmap);
-	return 1;
-}
 
 int findFreeBloque(t_bitarray* t_fs_bitmap){
 
@@ -631,7 +606,9 @@ void destruir_bitmap(t_bitarray* bitmap) {
 	free(bitmap->bitarray);
 	bitarray_destroy(bitmap);
 }
+/* ******** FIN FUNCIONES BITMAP ******** */
 
+/* ******** PARA STATUS ******** */
 
 int entregarValue(int socket){
 	char * key = recibirMensajeArchivo(socket);
@@ -640,6 +617,7 @@ int entregarValue(int socket){
 		log_error(logE,"no se encontro entrada con la key %s",key);
 		return CLAVE_INEXISTENTE;
 	}
+	entrada->ultimaRef = operacionNumero;
 	char * value;
 	leer_entrada(entrada, &value);
 
@@ -652,7 +630,13 @@ int entregarValue(int socket){
 
 }
 
+
+/* ******** FIN STATUS ******** */
+
+/* ******** COMPACTACION Y DUMP ******** */
+
 bool compactar(){
+
 	bool ejecucion_ok = true;
 	char * nombre_archivo = string_new();
 	string_append(&nombre_archivo, "compact");
@@ -690,5 +674,36 @@ bool compactar(){
 	return ejecucion_ok;
 }
 
+void dump(){
 
+	int size;
+	int i,e;
+	t_entrada* actual;
 
+	while(1){
+
+		sleep(intervalo_dump*1000);
+
+		pthread_mutex_lock(&mx_Dump);
+
+		log_trace(logT,"Orden de efectuar DUMP recibida.");
+
+		size = list_size(tablaEntradas);
+		e = 0;
+
+		for(i = 0;i<size;i++){
+			actual = list_get(tablaEntradas,i);
+
+			if(persistir_clave(actual->key)<0){
+				log_error(logE,"Error al efectuar DUMP de la key %s.",actual->key);
+				e++;
+			}
+		}
+
+		log_trace(logT,"Dump completado. Se generaron %d archivos. Errores: %d.",i-e,e);
+
+		pthread_mutex_unlock(&mx_Dump);
+	}
+}
+
+/* ******** FIN COMPACT Y DUMP ******** */

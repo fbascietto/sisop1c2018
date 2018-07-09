@@ -5,8 +5,8 @@ int main() {
 		int coordinador_socket;
 
 		cargar_configuracion();
-
 		configureLoggers(nombre_Instancia);
+		pthread_mutex_init(&mx_Dump, NULL);
 
 		coordinador_socket = conectarseA(coordinador_IP, coordinador_Puerto);
 
@@ -30,15 +30,20 @@ int main() {
 
 		operacionNumero = 0;
 
+		pthread_t threadDump;
+		if(pthread_create(&threadDump,NULL,dump, NULL)){
+			log_error(logE,"Error generando thread para Dump");
+		}
 
 		// TODO: levantar tabla de entradas anterior, de ser necesario
 
-
-
 		while(1){
-
 			int instruccion;
+
 			recibirInt(coordinador_socket,&instruccion);
+
+			pthread_mutex_lock(&mx_Dump);
+
 			int cantidadEntradas;
 			switch(instruccion){
 				case ENVIO_ENTRADA:
@@ -62,12 +67,15 @@ int main() {
 					log_trace(logT,"Se recibe solicitud para obener valor de key.\n");
 					entregarValue(coordinador_socket);
 					break;
-
+				case COMPACTACION:
+					log_trace(logT,"Se recibe orden de compactar.\n");
+					compactar();
+					break;
 			}
 
-
+			pthread_mutex_unlock(&mx_Dump);
 		}
-
+		pthread_join(threadDump, NULL);
 		close_gracefully();
 	return 0;
 }
@@ -78,6 +86,7 @@ void close_gracefully(){
 	free(coordinador_IP);
 	free(punto_Montaje);
 	free(nombre_Instancia);
+	pthread_mutex_destroy(&mx_Dump);
 
 	destroyLoggers();
 }
