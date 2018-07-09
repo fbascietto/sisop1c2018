@@ -854,7 +854,28 @@ int obtenerValue(char * key, char** value){
 		instancia->socketInstancia = -1;
 	}
 
-	*value = recibirMensajeArchivo(instancia->socketInstancia);
+	int resultado;
+
+	if(recibirInt(instancia->socketInstancia, &resultado)<=0){
+		log_error(logE, "error al recibir el valor de la clave %s en la instancia %s",key,instancia->nombre);
+		return -1;
+	}
+
+	switch(resultado){
+		case CLAVE_INEXISTENTE:
+			log_trace(logT, "la instancia %s no tiene la clave %s",instancia->nombre,key);
+			remover_clave(instancia,key);
+			return -1;
+			break;
+		case CLAVE_ENCONTRADA:
+			*value = recibirMensajeArchivo(instancia->socketInstancia);
+
+			log_trace(logT, "se recibio el valor %s para la clave %s", *value,key);
+			break;
+
+	}
+
+
 
 	return 1;
 }

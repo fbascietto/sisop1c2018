@@ -697,12 +697,15 @@ int entregarValue(int socket){
 	t_entrada* entrada;
 	if(!obtenerEntrada(key,&entrada)){
 		log_error(logE,"no se encontro entrada con la key %s",key);
-		return CLAVE_INEXISTENTE;
+		return enviarInt(socket, CLAVE_INEXISTENTE);
 	}
 	entrada->ultimaRef = operacionNumero;
 	char * value;
 	leer_entrada(entrada, &value);
-
+	if(enviarInt(socket,CLAVE_ENCONTRADA)<=0){
+			log_error(logE,"error al enviar el valor de la clave %s al coordinador",key);
+			return -1;
+	}
 	if(enviarMensaje(socket,value)<=0){
 		log_error(logE,"error al enviar el valor de la clave %s al coordinador",key);
 		return -1;
