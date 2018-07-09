@@ -16,6 +16,7 @@
 #include "../Biblioteca/biblio_sockets.h"
 #include <commons/collections/list.h>
 #include <sys/stat.h> /* contiene las constantes para MKDIR */
+#include <dirent.h>
 #include <sys/mman.h> /* para el uso de MMAP */
 #include <fcntl.h> /* para el uso de fallocate */
 #include <errno.h>
@@ -60,6 +61,8 @@ int  almacenarEntrada(char * key, t_entrada * entrada, int largoValue);
 void leer_entrada(t_entrada* entrada, char** value);
 int escribirEntrada(char * escribir, int pos, char * nombre_archivo);
 void inicializarPuntoMontaje(char * path, char * filename);
+int reviewPuntoMontaje();
+int archivoAentrada(char* filename);
 void cargar_configuracion();
 void configureLoggers(char* name);
 void destroyLoggers();
@@ -78,6 +81,8 @@ int calculoCantidadEntradas(int length);
 int entregarValue(int socket);
 bool compactar();
 void dump();
+
+
 
 /* Funciones de bitmap */
 

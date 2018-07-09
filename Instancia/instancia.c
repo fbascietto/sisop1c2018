@@ -35,7 +35,9 @@ int main() {
 			log_error(logE,"Error generando thread para Dump");
 		}
 
-		// TODO: levantar tabla de entradas anterior, de ser necesario
+		int check = reviewPuntoMontaje();
+
+		log_trace("Se inicializó la Instancia, se encontraron %d entradas de una ejecución anterior.", check);
 
 		while(1){
 			int instruccion;

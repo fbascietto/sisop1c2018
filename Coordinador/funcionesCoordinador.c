@@ -34,6 +34,7 @@ void *esperarConexiones(void *args) {
 			case ESI:
 				// printf("ESI.\n");
 				log_trace(logT,"Conexion de ESI.");
+
 				//envia al esi su nro de socket para enviarle al planificador
 				enviarInt(nuevoSocket, nuevoSocket);
 				pthread_t threadAtencionESI;
@@ -67,7 +68,6 @@ void *esperarConexiones(void *args) {
 			case INSTANCIA:
 				crearInstancia(nuevoSocket);
 				/* borrar simulaEntrada(nuevoSocket);*/
-
 				break;
 
 			default:
@@ -294,13 +294,14 @@ void recibirMensajeESI(int socket){
 
 	bool finalizar = false;
 	int mensaje;
-	int resultado;
 	while(1){
 
 		if(recibirInt(socket, &mensaje)<=0){
 			log_trace(logT, "ESI socket %d desconectado", socket);
 			break;
 		}
+
+		sleep(retardo); // Según enunciado, a cada instrucción de ESI se le aplica un retardo para "simular el paso en el tiempo en la ejecución"
 
 		switch(mensaje){
 

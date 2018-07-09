@@ -26,7 +26,7 @@ int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada, int socket){
 	int n = calculoCantidadEntradas(lenValue);
 	pos = findNFreeBloques(t_inst_bitmap, n);
 
-	if(pos==-1){
+	if(pos==-1 || socket == 0){
 		if(cuentaBloquesLibre(t_inst_bitmap)>= n){
 			log_trace(logT,"No hay %d bloques contiguos, es necesario compactar",n);
 			if(enviarInt(socket,COMPACTACION)<=0){
@@ -113,6 +113,85 @@ void inicializarPuntoMontaje(char * path, char * filename){
 	int fd = fileno(instanciaDat);
 	fallocate(fd,0,0,qEntradas*tamanioEntrada); /* se alloca la memoria a mapear */
 	fclose(instanciaDat);
+}
+
+int archivoAentrada(char* filename){
+
+	FILE* arch;
+	t_entrada* entrada;
+	char* filePath = string_new();
+	char* value = string_new();
+
+	string_append(&filePath, punto_Montaje);
+	string_append(&filePath, filename);
+
+	arch = fopen(filePath,"r");
+
+	char * line = NULL;
+	size_t len = 0;
+
+	while(!feof(arch)){
+		getline(&line,&len,arch);
+		string_append(&value, line);
+	}
+
+	int lenValue = strlen(value);
+
+	int pos = calcularSiguienteEntrada(lenValue, &entrada, 0);
+
+	if(pos<=0){
+		return -1;
+	}
+
+	almacenarEntrada(filename,pos,lenValue);
+	escribirEntrada(value, pos, nombre_Instancia);
+
+	fclose(arch);
+	free(line);
+	free(filePath);
+	free(value);
+
+	return 1;
+
+}
+
+int reviewPuntoMontaje(){
+
+	size_t count = 0;
+	struct dirent *res;
+	struct stat sb;
+	const char *path = punto_Montaje;
+
+	char* instancia = string_new();
+
+	string_append(&instancia, nombre_Instancia);
+	string_append(&instancia, ".dat");
+
+	if (stat(path, &sb) == 0 && S_ISDIR(sb.st_mode)){
+		DIR *folder = opendir (path);
+
+		if (access (path, F_OK) != -1 ){
+			if (folder){
+				while ((res = readdir(folder))){
+					if (strcmp( res->d_name, "." ) && strcmp( res->d_name, ".." ) && strcmp(res->d_name, instancia)){
+						archivoAentrada(res->d_name);
+						count++;
+					}
+				}
+				closedir ( folder );
+			}else{
+				log_error(logE, "Error al acceder al punto de montaje.");
+				exit(EXIT_FAILURE);
+			}
+		}
+
+	}else{
+		printf("La ruta %s no puede ser abierta o no es un directorio.\n", path);
+		exit( EXIT_FAILURE);
+	}
+
+	free(instancia);
+	return count-1;
 }
 
 int abrirArchivoDatos(char * path, char * filename){
