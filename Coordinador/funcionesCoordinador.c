@@ -878,6 +878,16 @@ int obtenerValue(char * key, char** value){
 }
 
 
+void remover_clave(t_instancia* instancia, char * key){
+	bool igualA(void * parametro){
+		char* clave_actual = (char*) parametro;
+		return(strcmp(key,clave_actual)==0);
+	}
+
+	char * clave_borrar = list_remove_by_condition(instancia->claves, igualA);
+	free(clave_borrar);
+}
+
 
 
 
