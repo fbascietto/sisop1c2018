@@ -58,7 +58,7 @@ void eliminarEntrada(char * key);
 
 int  almacenarEntrada(char key[LONGITUD_CLAVE], t_entrada * entrada, int largoValue);
 void leer_entrada(t_entrada* entrada, char** value);
-escribirEntrada(char * escribir, int pos, char * nombre_archivo);
+int escribirEntrada(char * escribir, int pos, char * nombre_archivo);
 void inicializarPuntoMontaje(char * path, char * filename);
 void cargar_configuracion();
 void configureLoggers(char* name);
@@ -73,17 +73,15 @@ int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada);
 int calculoCircular(int bloques, t_entrada ** entrada);
 int calculoBSU(int bloques, t_entrada ** entrada);
 int calculoLRU(int bloques, t_entrada ** entrada);
-int obtenerCantidadEntradasOcupadas();
-int obtenerCantidadEntradasLibres();
 bool obtenerEntrada(char key[LONGITUD_CLAVE],t_entrada ** entrada);
 int calculoCantidadEntradas(int length);
 int entregarValue(int socket);
+bool compactar();
 
 /* Funciones de bitmap */
 
 t_bitarray* creaAbreBitmap(char* nombre_Instancia);
 t_bitarray *crearBitmapVacio();
-t_bitarray *leerBitmap(FILE* bitmap_file);
 int findFreeBloque(t_bitarray* t_fs_bitmap);
 int findNFreeBloques(t_bitarray* t_fs_bitmap, int n);
 bool escribirBitMap(char* nombre_Instancia, t_bitarray* t_fs_bitmap);

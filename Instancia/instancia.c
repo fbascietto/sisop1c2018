@@ -48,13 +48,14 @@ int main() {
 					if(cantidadEntradas<=0){
 										//TODO que hace si da error?
 					}
-					enviarInt(coordinador_socket,obtenerCantidadEntradasOcupadas());
+					enviarInt(coordinador_socket,cuentaBloquesUsados(t_inst_bitmap));
+
 					break;
 				case STORE_ENTRADA:
 					operacionNumero++;
 					log_trace(logT,"Se recibe instruccion STORE.\n");
 					ejecutarStore(coordinador_socket);
-					enviarInt(coordinador_socket,obtenerCantidadEntradasOcupadas());
+					enviarInt(coordinador_socket,cuentaBloquesUsados(t_inst_bitmap));
 					break;
 				case OBTENER_VALUE:
 					operacionNumero++;

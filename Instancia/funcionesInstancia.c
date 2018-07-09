@@ -7,6 +7,27 @@
 #include "funcionesInstancia.h"
 
 int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada){
+
+	int seleccionarAlgoritmo(){
+		int pos_aux;
+		switch (reemplazo_Algoritmo){
+			case CIRCULAR  :
+			  pos_aux = calculoCircular(lenValue, entrada);
+			  break;
+			case LRU  :
+			  pos_aux = calculoLRU(lenValue, entrada);
+			  break;
+			case BSU  :
+			  pos_aux = calculoBSU(lenValue,entrada);
+			  break;
+			default:
+			  pos_aux = reemplazo_Algoritmo;
+					close_gracefully();
+					exit(1);
+		}
+		return pos_aux;
+	}
+
 	int pos = 0;
 	int n = calculoCantidadEntradas(lenValue);
 	pos = findNFreeBloques(t_inst_bitmap, n);
@@ -14,25 +35,15 @@ int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada){
 	if(pos==-1){
 		if(cuentaBloquesLibre(t_inst_bitmap)>= n){
 			log_trace(logT,"No hay %d bloques contiguos, es necesario compactar",n);
-			//compactar
-			return 1;
+			if(compactar()){
+				calcularSiguienteEntrada(lenValue,entrada);
+			}else{
+				log_error(logE,"Error al compactar, se reemplazara entrada");
+				seleccionarAlgoritmo();
+			}
 		}else{
 			log_error(logE,"No hay %d bloques libres, se reemplaza entrada",n);
-			switch (reemplazo_Algoritmo){
-
-				case CIRCULAR  :
-				  pos = calculoCircular(lenValue, entrada);
-				  break;
-				case LRU  :
-				  pos = calculoLRU(lenValue, entrada);
-				  break;
-				case BSU  :
-				  pos = 0; /* calculoBSU(lenValue,entrada); */
-				  break;
-				default:
-				  pos = reemplazo_Algoritmo;
-						/* Acusar error, exit_gracefully */
-			}
+			seleccionarAlgoritmo();
 		}
 	} else {
 		*entrada = malloc(sizeof(t_entrada));
@@ -101,6 +112,7 @@ void inicializarPuntoMontaje(char * path, char * filename){
 			exit(EXIT_FAILURE);
 	}
 
+	free(nuevoArchivo);
 	int fd = fileno(instanciaDat);
 	fallocate(fd,0,0,qEntradas*tamanioEntrada); /* se alloca la memoria a mapear */
 	fclose(instanciaDat);
@@ -200,21 +212,7 @@ int recibirKey(int socket, char key [LONGITUD_CLAVE]){
 		return totalLeido;
 }
 
-int obtenerCantidadEntradasLibres(){
-	bool estaVacia(void* entrada){
-		t_entrada* entradaInst = (void*) entrada;
-		return entradaInst->key == NULL;
-	}
-	return list_count_satisfying(tablaEntradas, estaVacia);
-}
 
-int obtenerCantidadEntradasOcupadas(){
-	bool estaOcupada(void* entrada){
-		t_entrada* entradaInst = (void*) entrada;
-		return entradaInst->key != NULL;
-	}
-	return list_count_satisfying(tablaEntradas, estaOcupada);
-}
 
 
 /********** OPERACION SET ************/
@@ -243,9 +241,8 @@ int recibirEntrada(int socket){
 
 	almacenarEntrada(key, entrada, lenValue);
 
-
 	escribirEntrada(value, pos, nombre_Instancia);
-
+	free(value);
 
 	return entradasAOcupar;
 
@@ -515,10 +512,9 @@ void cargar_configuracion(){
 
 t_bitarray* creaAbreBitmap(char* nombre_Instancia){
 
-	char * ruta;
+
 	int nuevo = 0;
-	ruta = malloc(sizeof(char)*256);
-	snprintf(ruta, 256, "%s%s%s", "", nombre_Instancia, ".bin");
+
 
 	int bloquesEnBits = qEntradas; // (tamanioEntrada / (1024*1024)) ;
 
@@ -529,33 +525,11 @@ t_bitarray* creaAbreBitmap(char* nombre_Instancia){
 		bloquesEnBits = bloquesEnBits/8 + 1;
 	}
 
-	FILE* bitmap = fopen(ruta, "rb+");
-	if(!bitmap)
-	{
-		bitmap = fopen(ruta, "wb+");
-		nuevo = 1;
-		if (bitmap == NULL)
-			printf("Error al abrir directorios.dat\n");
-		//exit(1);
-	}
-
-	/* Declara el array de bits en cero si el bitmap no existía antes.
-	 * Este bitmap se asigna a un dominio, en este caso, una instancia.  */
 
 	t_bitarray* t_fs_bitmap;
 
-	if(!nuevo){
-		t_fs_bitmap = leerBitmap(bitmap);
-	}else{
+	t_fs_bitmap = crearBitmapVacio(tamanioEntrada);
 
-		t_fs_bitmap = crearBitmapVacio(tamanioEntrada);
-
-		fwrite(t_fs_bitmap->bitarray,(size_t) bloquesEnBits,1,bitmap);
-
-	}
-
-	fclose(bitmap);
-	free(ruta);
 	return t_fs_bitmap;
 }
 
@@ -566,23 +540,6 @@ t_bitarray *crearBitmapVacio() {
 	return bitarray_create_with_mode(bitarray, bytes, LSB_FIRST);
 }
 
-t_bitarray *leerBitmap(FILE* bitmap_file) {
-
-	int cantBloq = qEntradas;
-	size_t bitarray_size = ROUNDUP(cantBloq, CHAR_BIT);
-
-	char *bitarray = malloc(bitarray_size);
-
-	size_t read_bytes = fread(bitarray, 1, bitarray_size, bitmap_file);
-
-	if (read_bytes != bitarray_size) {
-		fclose(bitmap_file);
-		free(bitarray);
-		return NULL;
-	}
-
-	return bitarray_create_with_mode(bitarray, bitarray_size, LSB_FIRST);
-}
 
 bool escribirBitMap(char* nombre_Instancia, t_bitarray* t_fs_bitmap){
 
@@ -667,7 +624,6 @@ int cuentaBloquesUsados(t_bitarray* t_fs_bitmap){
 
 t_bitarray *limpiar_bitmap(char* nombre_Instancia, t_bitarray* bitmap) {
 	memset(bitmap->bitarray, 0, bitmap->size);
-	escribirBitMap(nombre_Instancia, bitmap);
 	return bitmap;
 }
 
@@ -696,7 +652,8 @@ int entregarValue(int socket){
 
 }
 
-void compactar(){
+bool compactar(){
+	bool ejecucion_ok = true;
 	char * nombre_archivo = string_new();
 	string_append(&nombre_archivo, "compact");
 	inicializarPuntoMontaje(punto_Montaje,nombre_archivo);
@@ -715,15 +672,22 @@ void compactar(){
 	}
 
 	char * punto_montaje = string_from_format("%s%s.dat",punto_Montaje,nombre_Instancia);
-	if(remove(punto_montaje)<0){
-		log_error(logE, "no se pudo realizar compactacion ya que no es posible remover el punto de montaje");
-	}else
+
 	if(rename(nombre_archivo,punto_montaje)<0){
+		ejecucion_ok = false;
 		log_error(logE, "no se pudo realizar compactacion ya que no es posible reemplazar el punto de montaje");
+	}else{
+		limpiar_bitmap(nombre_Instancia,t_inst_bitmap);
+		int a;
+		for(a=0;a<pos;a++){
+			bitarray_set_bit(t_inst_bitmap,a);
+		}
 	}
 
 	free(punto_montaje);
 	free(nombre_archivo);
+
+	return ejecucion_ok;
 }
 
 
