@@ -16,7 +16,5 @@
 #include "funcionesCoordinador.h"
 
 
-//para equitative load, posicion del puntero en la lista
-
 
 #endif /* COORDINADOR_H_ */

@@ -46,6 +46,9 @@
 #define ENVIO_ENTRADA 61
 #define STORE_ENTRADA 62
 #define OBTENER_VALUE 63
+#define COMPACTACION 64
+#define EFECTUAR_DUMP 65
+
 
 //Protocolo Planificador, Coordinador (75-100)
 #define DONDE_ESTA_LA_CLAVE 75

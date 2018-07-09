@@ -10,6 +10,7 @@
 #include <commons/string.h>
 #include <commons/bitarray.h>
 #include <readline/readline.h> // Para usar readline
+#include <pthread.h> // para el uso de threads
 #include "../Recursos/estructuras.h"
 #include "../Recursos/protocolo.h"
 #include "../Biblioteca/biblio_sockets.h"
@@ -51,8 +52,7 @@ t_log* logI;
 t_log* logE;
 int operacionNumero;
 t_bitarray* t_inst_bitmap;
-
-
+pthread_mutex_t mx_Dump;
 
 void eliminarEntrada(char * key);
 
@@ -77,6 +77,7 @@ bool obtenerEntrada(char key[LONGITUD_CLAVE],t_entrada ** entrada);
 int calculoCantidadEntradas(int length);
 int entregarValue(int socket);
 bool compactar();
+int dump();
 
 /* Funciones de bitmap */
 

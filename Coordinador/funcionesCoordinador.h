@@ -43,7 +43,6 @@ typedef struct {
 	int entradasOcupadas;
 } t_instancia;
 
-
 int coordinador_Puerto_Escucha;
 char* coordinador_Algoritmo;
 int cantidad_Entradas;
