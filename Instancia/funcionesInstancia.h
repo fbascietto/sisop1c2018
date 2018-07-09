@@ -77,7 +77,7 @@ bool obtenerEntrada(char key[LONGITUD_CLAVE],t_entrada ** entrada);
 int calculoCantidadEntradas(int length);
 int entregarValue(int socket);
 bool compactar();
-int dump();
+void dump();
 
 /* Funciones de bitmap */
 
@@ -85,7 +85,6 @@ t_bitarray* creaAbreBitmap(char* nombre_Instancia);
 t_bitarray *crearBitmapVacio();
 int findFreeBloque(t_bitarray* t_fs_bitmap);
 int findNFreeBloques(t_bitarray* t_fs_bitmap, int n);
-bool escribirBitMap(char* nombre_Instancia, t_bitarray* t_fs_bitmap);
 int cuentaBloquesLibre(t_bitarray* t_fs_bitmap);
 int cuentaBloquesUsados(t_bitarray* t_fs_bitmap);
 t_bitarray *limpiar_bitmap(char* nombre_Instancia, t_bitarray* bitmap);

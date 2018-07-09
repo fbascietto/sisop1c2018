@@ -160,8 +160,6 @@ int escribirEntrada(char * escribir, int pos, char * nombre_archivo){
 		bitarray_set_bit(t_inst_bitmap,i);
 	}
 
-	escribirBitMap(nombre_Instancia, t_inst_bitmap);
-
 	if (strlen(escribir) % tamanioEntrada > 0){
 		log_trace(logT,"Se escribió con exito sobre la entrada %d y con un total de %d entradas.", numEntradaActual, entradasOcupadas + 1);
 
@@ -537,26 +535,6 @@ t_bitarray *crearBitmapVacio() {
 	return bitarray_create_with_mode(bitarray, bytes, LSB_FIRST);
 }
 
-
-bool escribirBitMap(char* nombre_Instancia, t_bitarray* t_fs_bitmap){
-
-	char * ruta;
-	ruta = malloc(sizeof(char)*256);
-	snprintf(ruta, 256, "%s%s", nombre_Instancia, ".bin");
-
-	FILE* bitmap = fopen(ruta, "w");
-	int bytes = fwrite(t_fs_bitmap->bitarray, sizeof(char), t_fs_bitmap->size, bitmap);
-	if (bytes != t_fs_bitmap->size) {
-
-		fclose(bitmap);
-		free(ruta);
-		return 0;
-	}
-
-	free(ruta);
-	fclose(bitmap);
-	return 1;
-}
 
 int findFreeBloque(t_bitarray* t_fs_bitmap){
 

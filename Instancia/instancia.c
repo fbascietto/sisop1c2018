@@ -3,7 +3,6 @@
 int main() {
 
 		int coordinador_socket;
-		pthread_t threadDump;
 
 		cargar_configuracion();
 		configureLoggers(nombre_Instancia);
@@ -76,8 +75,7 @@ int main() {
 
 			pthread_mutex_unlock(&mx_Dump);
 		}
-
-		pthread_join(threadDump);
+		pthread_join(threadDump, NULL);
 		close_gracefully();
 	return 0;
 }
