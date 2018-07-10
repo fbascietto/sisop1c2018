@@ -79,8 +79,18 @@ int crearInstancia(int nuevoSocket){
 	t_instancia * instancia;
 	char* nombreInstancia = recibirMensajeArchivo(nuevoSocket);
 
+	if(enviarInt(nuevoSocket,cantidad_Entradas)<=0){
+			return -1;
+		}
+		if(enviarInt(nuevoSocket,tamanio_Entrada)<=0){
+			return -1;
+		}
+
+
+
 	if(existeInstancia(nombreInstancia,instancia)){
 		instancia->socketInstancia = nuevoSocket;
+		enviarClavesAGuardar(instancia);
 		free(nombreInstancia);
 		return 1;
 	}
@@ -90,16 +100,22 @@ int crearInstancia(int nuevoSocket){
 	instancia->nombre = nombreInstancia;
 	instancia->socketInstancia = nuevoSocket;
 
-	if(enviarInt(nuevoSocket,cantidad_Entradas)<=0){
-		return -1;
-	}
-	if(enviarInt(nuevoSocket,tamanio_Entrada)<=0){
-		return -1;
-	}
+
 	instancia->claves = list_create();
 	list_add(instancias,instancia);
+	enviarInt(instancia->socketInstancia, FIN);
 	log_trace(logT,"Conexión de %s.", instancia->nombre);
 	return 1;
+}
+
+void enviarClavesAGuardar(t_instancia * instancia){
+	int size = list_size(instancia->claves);
+	int i;
+	for(i=0;i<size;i++){
+		enviarInt(instancia->socketInstancia, MANTENER_KEY);
+		enviarMensaje(instancia->socketInstancia, (char*)list_get(instancia,i));
+	}
+	enviarInt(instancia->socketInstancia, FIN);
 }
 
 bool existeInstancia(char* nombreInstancia, t_instancia * instancia){

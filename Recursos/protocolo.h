@@ -49,6 +49,8 @@
 #define COMPACTACION 64
 #define EFECTUAR_DUMP 65
 #define ENTRADAS_OCUPADAS 66
+#define MANTENER_KEY 67
+#define FIN 68
 
 
 //Protocolo Planificador, Coordinador (75-100)

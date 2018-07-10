@@ -792,3 +792,26 @@ void dump(){
 }
 
 /* ******** FIN COMPACT Y DUMP ******** */
+
+
+t_list * recibirClavesAMantener(int coordinador_socket){
+	bool finalizar = false;
+	t_list* list = list_create();
+	while(!finalizar){
+		int status;
+		recibirInt(coordinador_socket,&status);
+		switch(status){
+			case MANTENER_KEY:
+				list_add(list,recibirMensajeArchivo(coordinador_socket));
+				break;
+			case FIN:
+				finalizar = true;
+				break;
+		}
+	}
+
+	return list;
+
+
+}
+

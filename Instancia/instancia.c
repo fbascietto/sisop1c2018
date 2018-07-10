@@ -23,6 +23,9 @@ int main() {
 		recibirInt(coordinador_socket, &qEntradas);
 		recibirInt(coordinador_socket, &tamanioEntrada);
 
+		t_list * list = recibirClavesAMantener(coordinador_socket);
+		//TODO cuando se levantan los archivos de las claves, si esta en esta lista eliminarlo;
+
 		inicializarPuntoMontaje(punto_Montaje, nombre_Instancia);
 		t_inst_bitmap = creaAbreBitmap(nombre_Instancia);
 
@@ -36,9 +39,10 @@ int main() {
 		}
 
 		int check = reviewPuntoMontaje();
+		//TODO: si no me equivoco no se esta levantando las entradas creadas ni escribiendo en el bitmap ni mmap;
 
 		log_trace("Se inicializó la Instancia, se encontraron %d entradas de una ejecución anterior.", check);
-
+		list_destroy(list);
 		while(1){
 			int instruccion;
 

@@ -105,6 +105,8 @@ int obtenerValue(char * key, char** value);
 void procesarObtenerValorKey(int socket);
 void procesarDondeEstaLaClave(int socket);
 void informarCompactacion(t_instancia * instancia);
+void remover_clave(t_instancia* instancia, char * key);
+void enviarClavesAGuardar(t_instancia * instancia);
 
 
 

@@ -81,6 +81,7 @@ int calculoCantidadEntradas(int length);
 int entregarValue(int socket);
 bool compactar();
 void dump();
+t_list* recibirClavesAMantener(int coordinador_socket);
 
 
 
