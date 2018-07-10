@@ -52,9 +52,6 @@ void *esperarConexiones(void *args) {
 			case PLANIFICADOR:;
 			pthread_t threadAtencionPlanificador;
 			argsPlanificador->socketPlanificador = nuevoSocket;
-			if(pthread_create(&threadAtencionPlanificador,NULL,atenderPlanificador, NULL)){
-				log_error(logE,"Error generando thread para Planificador");
-			}
 			break;
 
 			case CONSOLA_PLANIFICADOR:;
@@ -301,7 +298,7 @@ void recibirMensajeESI(int socket){
 			break;
 		}
 
-		sleep(retardo); // Según enunciado, a cada instrucción de ESI se le aplica un retardo para "simular el paso en el tiempo en la ejecución"
+		usleep(retardo); // Según enunciado, a cada instrucción de ESI se le aplica un retardo para "simular el paso en el tiempo en la ejecución"
 
 		switch(mensaje){
 

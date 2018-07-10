@@ -26,9 +26,10 @@ typedef struct {
 	int id;
 	int fd;
 	t_list* clavesTomadas;
-	int rafagaEstimada;
+	float rafagaEstimada;
 	int rafagaActual;
 	int tiempoEspera;
+	int ordenLlegada;
 } t_proceso_esi;
 
 typedef struct {
@@ -57,6 +58,7 @@ int planificador_Algoritmo;
 char* planificador;
 char* coordinador_IP;
 int estimacion_inicial;
+float alfa;
 int coordinador_Puerto;
 int planificador_Puerto_Escucha;
 char** claves_Ini_Bloqueadas;
@@ -76,6 +78,7 @@ t_queue* colaListos;
 t_queue* colaTerminados;
 
 //esi en ejecucion
+unsigned int ordenDeLlegada;
 t_proceso_esi* esi_ejecutando;
 t_proceso_esi* esiImpostor;
 char* keySolicitada;
@@ -109,12 +112,14 @@ void ordenarListos();
 void quick(t_list* unaLista, int limite_izq, int limite_der);
 void actualizarColaListos();
 void cambiarEstimado(void* unEsi);
-int promedioExponencial(t_proceso_esi* unEsi);
-int estimacionHRRN(t_proceso_esi* unEsi);
+float promedioExponencial(t_proceso_esi* unEsi);
+float estimacionHRRN(t_proceso_esi* unEsi);
 int enviarMejorEsiAEjecutar();
 int enviarAEjecutar(t_proceso_esi* ESIMenorRafaga);
 void finalizarESIEnEjecucion();
 void moverABloqueados();
+void mostrarColaListos();
+void agregarEspera(void* esi);
 
 //funciones de keys
 void liberarKeys(t_proceso_esi* esi);

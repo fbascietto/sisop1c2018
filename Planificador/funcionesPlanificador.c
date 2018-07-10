@@ -87,6 +87,7 @@ void esperar() {
 	}
 }
 
+//todo <--- no sacarlo, nunca encuentro esta funcion entre todas
 void* planificar(void * args){
 
 	bool replanificar = true;
@@ -107,6 +108,7 @@ void* planificar(void * args){
 			actualizarColaListos();
 			ordenarListos(); //sin esta funcion deberia funcionar como FIFO
 			esi_ejecutando = queue_pop(colaListos);
+			esi_ejecutando->rafagaActual=0;
 			log_info(logPlan, "esi %d enviado a ejecutar", esi_ejecutando->id);
 
 			while(replanificar) {
@@ -127,10 +129,20 @@ void* planificar(void * args){
 void ordenarListos(){
 
 	t_list* unaLista = colaListos->elements;
-
 	quick(unaLista, 0, queue_size(colaListos)-1);
 
+	mostrarColaListos();
 }
+
+
+void mostrarColaListos(){
+	log_trace(logPlan, "cola de listos de arriba a abajo");
+	for(int i=0; i<queue_size(colaListos); i++){
+		t_proceso_esi* esi = list_get(colaListos->elements, i);
+		log_trace(logPlan, "ESI %d con rafagaEstimada %f", esi->id, esi->rafagaEstimada);
+	}
+}
+
 
 // Swap de los esis
 void swap(int x, int y, t_list* unaLista)
@@ -146,22 +158,24 @@ void swap(int x, int y, t_list* unaLista)
    then elements are arranged such that,all elements
    smaller than pivot are arranged to left of pivot
    and all greater elements to right of pivot */
-int partition(t_list* unaLista, int start, int end)
-{
+int partition(t_list* unaLista, int start, int end){
 	t_proceso_esi* pivot = list_get(unaLista, end);    // choosing pivot element
 	t_proceso_esi* esiAux;
 	int pIndex = start;  // Index of first element
 	int i;
-	for (i=start; i<=end-1; i++)
-	{
+	for (i=start; i<=end-1; i++){
 		/* If current element is smaller than or
          equal to pivot then exchange it with element
          at pIndex and increment the pIndex*/
 		esiAux = list_get(unaLista,i);
-		if (esiAux->rafagaEstimada <= pivot->rafagaEstimada)
-		{
+		if (esiAux->rafagaEstimada < pivot->rafagaEstimada){
 			swap(pIndex, i, unaLista);
 			pIndex=pIndex+1;
+		}else if(esiAux->rafagaEstimada == pivot->rafagaEstimada){
+			if(esiAux->ordenLlegada < pivot->ordenLlegada){
+				swap(pIndex, i, unaLista);
+				pIndex=pIndex+1;
+			}
 		}
 	}
 	/*exchange pivot with pIndex at the completion
@@ -175,8 +189,7 @@ int partition(t_list* unaLista, int start, int end)
     start  --> Starting index,
     end  --> Ending index */
 void quick(t_list* unaLista, int start, int end){
-	if (start < end)
-	{
+	if (start < end){
 		/* p is pivot index after partitioning*/
 		int p = partition(unaLista, start, end);
 		// Recursively sort elements left of pivot
@@ -191,10 +204,16 @@ void quick(t_list* unaLista, int start, int end){
 
 void actualizarColaListos(){
 	if(planificador_Algoritmo == HRRN){
+		list_iterate(colaListos->elements, agregarEspera);
 		list_iterate(colaListos->elements, cambiarEstimado);
 	}
 }
 
+
+void agregarEspera(void* esi){
+	t_proceso_esi* unEsi = (t_proceso_esi*) esi;
+	unEsi->tiempoEspera++;
+}
 
 void cambiarEstimado(void* esi){
 	t_proceso_esi* unEsi = (t_proceso_esi*) esi;
@@ -212,13 +231,18 @@ void cambiarEstimado(void* esi){
 }
 
 
-int promedioExponencial(t_proceso_esi* unEsi){
-	return (unEsi->rafagaActual * estimacion_inicial) + (unEsi->rafagaEstimada * (1 - estimacion_inicial));
+float promedioExponencial(t_proceso_esi* unEsi){
+	float actual = unEsi->rafagaActual * alfa;
+	float estimado = unEsi->rafagaEstimada * (1.0 - alfa);
+	log_info(logPlan, "esi %d", unEsi->id);
+	log_info(logPlan, "valor actual %f", actual);
+	log_info(logPlan, "valor estimado %f", estimado);
+	return actual + estimado;
 }
 
-int estimacionHRRN(t_proceso_esi* unEsi){
-	int promedio = promedioExponencial(unEsi);
-	return (promedio + unEsi ->tiempoEspera + 1) / promedio;
+float estimacionHRRN(t_proceso_esi* unEsi){
+	float promedio = promedioExponencial(unEsi);
+	return (promedio + unEsi->tiempoEspera) / promedio;
 }
 
 t_proceso_esi* recibirNuevoESI(int idESI, int fd){
@@ -233,17 +257,11 @@ t_proceso_esi* recibirNuevoESI(int idESI, int fd){
 }
 
 void moverAListos(t_proceso_esi* procesoEsi){
+	procesoEsi->tiempoEspera=0;
+	procesoEsi->ordenLlegada = ordenDeLlegada++;
 	queue_push(colaListos,procesoEsi);
 	log_trace(logPlan, "ESI %d agregado a la cola de listos!", procesoEsi->id);
 	sem_post(&productorConsumidor);
-}
-
-/*Se asume que a esta funcion se llama cuando al menos hay un elemento*/
-int enviarMejorEsiAEjecutar(){
-	actualizarColaListos();
-	//si la funcion de abajo esta comentada, deberia funcionar como FIFO
-	ordenarListos();
-	return enviarAEjecutar(queue_pop(colaListos));
 }
 
 int enviarAEjecutar(t_proceso_esi* ESIMenorRafaga){
@@ -262,7 +280,7 @@ bool recibirMensajeEsi(int socketCliente){
 		iterar = false;
 		return iterar;
 	}
-	log_trace(logPlan, "recibi %d", mensaje);
+	log_trace(logPlan, "recibi del esi en ejecucion el mensaje %d", mensaje);
 
 
 	switch(mensaje){
@@ -285,15 +303,17 @@ bool recibirMensajeEsi(int socketCliente){
 			//comentar esta funcion para que funcione como FIFO junto con enviarMejorESIAEjecutar()
 			ordenarListos();
 			t_proceso_esi* ESIMenorRafaga = queue_pop(colaListos);
+			log_trace(logPlan,"veo si el ESI %d tiene menor rafaga que el esi %d", ESIMenorRafaga->id, esi_ejecutando->id);
 			sem_wait(&productorConsumidor);
 
 			if(ESIMenorRafaga->rafagaEstimada < esi_ejecutando->rafagaEstimada){
-				moverAListos(esi_ejecutando);
 				cambiarEstimado(esi_ejecutando);
+				moverAListos(esi_ejecutando);
 				esi_ejecutando = ESIMenorRafaga;
+				esi_ejecutando->rafagaActual=0;
 			} else{
 				sem_post(&productorConsumidor);
-				queue_push(colaListos, ESIMenorRafaga);
+				queue_push(colaListos, ESIMenorRafaga); //es lo mismo donde se agregue porque despues se ordena la lista mas adelante
 			}
 		}
 	}
@@ -407,7 +427,6 @@ void* esperarConexionesClientes(void* esperarConexion){
 		case ESI:
 
 			log_trace(logPlan, "Recibi un nuevo ESI!");
-			//TODO: chequear que la conexion fue correcta
 
 			int idESI;
 			recibirInt(conexionNueva, &idESI);

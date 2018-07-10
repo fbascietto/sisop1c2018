@@ -48,6 +48,7 @@
 #define OBTENER_VALUE 63
 #define COMPACTACION 64
 #define EFECTUAR_DUMP 65
+#define ENTRADAS_OCUPADAS 66
 
 
 //Protocolo Planificador, Coordinador (75-100)

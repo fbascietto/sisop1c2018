@@ -56,6 +56,7 @@ int main(){
 }
 
 void iniciarVariablesGlobales(){
+	ordenDeLlegada = 0;
 	keySolicitada = malloc(LONGITUD_CLAVE);
 	esiImpostor = malloc(sizeof(t_proceso_esi));
 
@@ -99,7 +100,7 @@ void cargarKeysBloqueadasIniciales(){
 		list_add(listaKeys, nuevaKey);
 
 		enviarInt(socketConsolaCoordinador, CREAR_KEY_INICIALMENTE_BLOQUEADA);
-		enviarMensaje(socketConsolaCoordinador, nuevaKey->nombre);
+		enviarMensaje(socketConsolaCoordinador, clave);
 
 		i++;
 	}
@@ -393,7 +394,7 @@ void cargar_configuracion(){
 			planificador_Algoritmo = HRRN;
 		}else{
 			log_error(logPlan, "ALGORITMO NO RECONOCIDO, SE SETEO %s", planificador);
-			exit(0);
+			exit_gracefully(0);
 
 		}
 		log_info(logPlan, "algoritmo seleccionado %s", planificador);
@@ -401,8 +402,16 @@ void cargar_configuracion(){
 	}
 
 	if(config_has_property(infoConfig, "ESTIMACION_INICIAL")){
-		estimacion_inicial = config_get_int_value(infoConfig, "ESTIMACION_INICIAL") / 100;
+		estimacion_inicial = config_get_int_value(infoConfig, "ESTIMACION_INICIAL");
 		log_info(logPlan, "estimacion inicial %d", estimacion_inicial);
+	}
+
+	if(config_has_property(infoConfig, "ALFA")){
+		alfa = config_get_int_value(infoConfig, "ALFA") / 100.0;
+		if(alfa > 1 || alfa < 0){
+			log_error(logPlan, "Ingresar un valor entre 0 y 100");
+		}
+		log_info(logPlan, "alfa %f", alfa);
 	}
 
 	if(config_has_property(infoConfig, "IP_COORDINADOR")){
