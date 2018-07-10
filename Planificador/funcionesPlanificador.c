@@ -275,14 +275,15 @@ bool recibirMensajeEsi(int socketCliente){
 
 	int mensaje;
 	bool iterar = true;
+
 	if(recibirInt(socketCliente, &mensaje) <= 0){
 	finalizarESIEnEjecucion();
 		iterar = false;
 		return iterar;
 	}
+
 	log_trace(logPlan, "recibi del esi en ejecucion el mensaje %d", mensaje);
-
-
+	esi_ejecutando->rafagaActual++;
 	switch(mensaje){
 
 	/*
@@ -293,7 +294,6 @@ bool recibirMensajeEsi(int socketCliente){
 	 * 		3.1- se chequea si hay algun valor de estimado menor en cuyo caso se reemplaza
 	 */
 	case EJECUCION_OK:;
-	esi_ejecutando ->rafagaActual++;
 	actualizarColaListos();
 
 	if(planificador_Algoritmo == SJF_CON_DESALOJO){
