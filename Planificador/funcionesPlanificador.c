@@ -73,7 +73,8 @@ bool estaLibre(t_clave* clave){
 	return clave->esi_poseedor == NULL;
 }
 
-bool estaTomada(t_clave* clave){
+bool estaTomada(void* key){
+	t_clave* clave = (t_clave*) key;
 	return clave->esi_poseedor != NULL;
 }
 

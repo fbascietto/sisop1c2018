@@ -444,17 +444,21 @@ void detectarDeadlock(){
 
 		key = list_get(keysFiltradas, i);
 
-		list_add(procesosEnDeadlock, key->esi_poseedor);
+		if(key->esi_poseedor->id != ESI_IMPOSTOR){
 
-		//keysAsignadas = obtenerKeysAsignadasDeUnProceso(key->esi_poseedor);
+			list_add(procesosEnDeadlock, key->esi_poseedor);
 
-		verificarEsperaCircular(key->esi_poseedor->clavesTomadas, procesosEnDeadlock);
+			//keysAsignadas = obtenerKeysAsignadasDeUnProceso(key->esi_poseedor);
 
-		if(encontroDeadlock){
-			break;
+			verificarEsperaCircular(key->esi_poseedor->clavesTomadas, procesosEnDeadlock);
+
+			if(encontroDeadlock){
+				break;
+			}
+
+			list_clean(procesosEnDeadlock);
+
 		}
-
-		list_clean(procesosEnDeadlock);
 
 	}
 

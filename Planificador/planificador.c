@@ -93,7 +93,8 @@ void cargarKeysBloqueadasIniciales(){
 		}
 
 		nuevaKey = malloc(sizeof(t_clave));
-		strncpy(nuevaKey->nombre, clave, tamanioClave);
+		convertirABarra0(nuevaKey->nombre, LONGITUD_CLAVE);
+		strncpy(nuevaKey->nombre, clave, strlen(clave));
 		nuevaKey->colaBloqueados = queue_create();
 		nuevaKey->esi_poseedor = esiImpostor;
 		list_add(esiImpostor->clavesTomadas, nuevaKey);
@@ -107,6 +108,20 @@ void cargarKeysBloqueadasIniciales(){
 
 
 }
+
+void convertirABarra0(char* aConvertir, int longitud){
+
+	int i;
+
+	for(i=0; i<longitud; i++){
+
+		aConvertir[i] = '\0';
+
+	}
+
+
+}
+
 
 void inicializarSemaforos(){
 	pausarPlanificacion = false;
