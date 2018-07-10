@@ -22,6 +22,7 @@ int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada, int socket){
 		return pos_aux;
 	}
 
+	entrada = NULL;
 	int pos = 0;
 	int n = calculoCantidadEntradas(lenValue);
 	pos = findNFreeBloques(t_inst_bitmap, n);
@@ -155,7 +156,7 @@ int archivoAentrada(char* filename){
 
 }
 
-int reviewPuntoMontaje(){
+int reviewPuntoMontaje(t_list * whitelist){
 
 	size_t count = 0;
 	struct dirent *res;
@@ -173,7 +174,12 @@ int reviewPuntoMontaje(){
 		if (access (path, F_OK) != -1 ){
 			if (folder){
 				while ((res = readdir(folder))){
-					if (strcmp( res->d_name, "." ) && strcmp( res->d_name, ".." ) && strcmp(res->d_name, instancia)){
+
+					bool _esKey(void *key) {
+						return strcmp((char *)key,res->d_name);
+					}
+
+					if (strcmp( res->d_name, "." ) && strcmp( res->d_name, ".." ) && strcmp(res->d_name, instancia) && list_any_satisfy(whitelist,_esKey)){
 						archivoAentrada(res->d_name);
 						count++;
 					}
@@ -215,13 +221,13 @@ int abrirArchivoDatos(char * path, char * filename){
 }
 
 
-int escribirEntrada(char * escribir, int pos, char * nombre_archivo){
+void escribirEntrada(char * escribir, int pos, char * nombre_archivo){
 
 	unsigned char* map;
 
 	int data = abrirArchivoDatos(punto_Montaje, nombre_archivo);
 
-	map = (unsigned char*) mmap(NULL, qEntradas * tamanioEntrada , PROT_READ | PROT_WRITE, MAP_SHARED, data, sizeof(unsigned char)*numEntradaActual*tamanioEntrada);
+	map = (unsigned char*) mmap(NULL, qEntradas * tamanioEntrada , PROT_READ | PROT_WRITE, MAP_SHARED, data, 0); // sizeof(unsigned char)*numEntradaActual*tamanioEntrada
 
 	if (map == MAP_FAILED){
 		close(data);
@@ -229,29 +235,26 @@ int escribirEntrada(char * escribir, int pos, char * nombre_archivo){
 		exit(EXIT_FAILURE);
 	   }
 
-	int i = 0;
+	int lenValue = strlen(escribir);
+	int exactPos = pos*tamanioEntrada;
+	memcpy(map[pos],escribir,lenValue);
 
-	for (;i<strlen(escribir);i++){
-			map[i]=escribir[i];
-	}
+	int entradasOcupadas = calculoCantidadEntradas(lenValue);
 
-	int entradasOcupadas = strlen(escribir)/tamanioEntrada;
-
-	i = pos;
+	int i = pos;
 	for(;i < pos+entradasOcupadas;i++){
 		bitarray_set_bit(t_inst_bitmap,i);
 	}
 
 	if (strlen(escribir) % tamanioEntrada > 0){
-		log_trace(logT,"Se escribió con exito sobre la entrada %d y con un total de %d entradas.", numEntradaActual, entradasOcupadas + 1);
+		log_trace(logT,"Se escribió con exito sobre la entrada %d y con un total de %d entradas.", pos, entradasOcupadas + 1);
 
 	} else {
-		log_trace(logT,"Se escribió con exito sobre la entrada %d y con un total de %d entradas.", numEntradaActual, entradasOcupadas);
+		log_trace(logT,"Se escribió con exito sobre la entrada %d y con un total de %d entradas.", pos, entradasOcupadas);
 	}
 	munmap(map,qEntradas * tamanioEntrada);
 
 	close(data);
-	return strlen(escribir);
 
 }
 
@@ -316,8 +319,8 @@ int recibirEntrada(int socket){
 	}
 
 	almacenarEntrada(key, entrada, lenValue);
+	escribirEntrada(value, entrada->entry, nombre_Instancia);
 
-	escribirEntrada(value, pos, nombre_Instancia);
 	free(value);
 
 	return entradasAOcupar;

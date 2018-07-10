@@ -1,4 +1,3 @@
-
 #ifndef FUNCIONESINSTANCIA_H_
 #define FUNCIONESINSTANCIA_H_
 
@@ -59,9 +58,9 @@ void eliminarEntrada(char * key);
 
 int  almacenarEntrada(char * key, t_entrada * entrada, int largoValue);
 void leer_entrada(t_entrada* entrada, char** value);
-int escribirEntrada(char * escribir, int pos, char * nombre_archivo);
+void escribirEntrada(char * escribir, int pos, char * nombre_archivo);
 void inicializarPuntoMontaje(char * path, char * filename);
-int reviewPuntoMontaje();
+int reviewPuntoMontaje(t_list * whitelist);
 int archivoAentrada(char* filename);
 void cargar_configuracion();
 void configureLoggers(char* name);
@@ -82,8 +81,6 @@ int entregarValue(int socket);
 bool compactar();
 void dump();
 t_list* recibirClavesAMantener(int coordinador_socket);
-
-
 
 /* Funciones de bitmap */
 

@@ -314,7 +314,7 @@ void recibirMensajeESI(int socket){
 			break;
 		}
 
-		usleep(retardo); // Según enunciado, a cada instrucción de ESI se le aplica un retardo para "simular el paso en el tiempo en la ejecución"
+		usleep(retardo*1000); // Según enunciado, a cada instrucción de ESI se le aplica un retardo para "simular el paso en el tiempo en la ejecución"
 
 		switch(mensaje){
 
