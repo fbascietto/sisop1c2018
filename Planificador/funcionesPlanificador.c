@@ -242,7 +242,8 @@ float promedioExponencial(t_proceso_esi* unEsi){
 
 float estimacionHRRN(t_proceso_esi* unEsi){
 	float promedio = promedioExponencial(unEsi);
-	return (promedio + unEsi->tiempoEspera) / promedio;
+	log_info(logPlan, "tiempo de espera %d", unEsi->tiempoEspera);
+	return (promedio + unEsi->tiempoEspera) / unEsi-> tiempoEspera;
 }
 
 t_proceso_esi* recibirNuevoESI(int idESI, int fd){
