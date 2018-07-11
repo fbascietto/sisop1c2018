@@ -61,11 +61,11 @@ void iniciarVariablesGlobales(){
 	esiImpostor = malloc(sizeof(t_proceso_esi));
 
 	esiImpostor->clavesTomadas = list_create();
-	esiImpostor->fd = ESI_IMPOSTOR;
-	esiImpostor->id = ESI_IMPOSTOR;
-	esiImpostor->rafagaActual = ESI_IMPOSTOR;
-	esiImpostor->rafagaEstimada = ESI_IMPOSTOR;
-	esiImpostor->tiempoEspera = ESI_IMPOSTOR;
+	esiImpostor->fd = BLOQUEO_SISTEMA;
+	esiImpostor->id = BLOQUEO_SISTEMA;
+	esiImpostor->rafagaActual = BLOQUEO_SISTEMA;
+	esiImpostor->rafagaEstimada = BLOQUEO_SISTEMA;
+	esiImpostor->tiempoEspera = BLOQUEO_SISTEMA;
 }
 
 void inicializarColas(){
@@ -362,16 +362,16 @@ void configureLogger(){
 	LogL = LOG_LEVEL_TRACE;
 
 	/* ejecutar desde ECLIPSE
-	 */
 	vaciarArchivo("../Recursos/Logs/Planificador.log");
 	logPlan = log_create("../Recursos/Logs/Planificador.log","Planificador", true, LogL);
+	 */
 
 
 
 	/* para ejecutar desde CONSOLA
+	 */
 	vaciarArchivo("../../Recursos/Logs/Planificador.log");
 	logPlan = log_create("../../Recursos/Logs/Planificador.log","Planificador", true, LogL);
-	 */
 
 	log_trace(logPlan, "inicializacion de logs");
 }
@@ -381,19 +381,19 @@ void cargar_configuracion(){
 	t_config* infoConfig;
 
 	/*	para correr desde ECLIPSE
-	 */
 	infoConfig = config_create("../Recursos/Configuracion/planificador.config");
+	 */
 
 
 
 	/* para correr desde CONSOLA
-	infoConfig = config_create("../../Recursos/Configuracion/planificador.config");
 	 */
+	infoConfig = config_create("../../Recursos/Configuracion/planificador.config");
 
 
 	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){
 		planificador_Puerto_Escucha = config_get_int_value(infoConfig, "PUERTO_ESCUCHA");
-		log_info(logPlan, "puerto que escucha %d", planificador_Puerto_Escucha);
+		log_debug(logPlan, "puerto que escucha %d", planificador_Puerto_Escucha);
 	}
 
 	if(config_has_property(infoConfig, "ALGORITMO")){
@@ -412,13 +412,13 @@ void cargar_configuracion(){
 			exit_gracefully(0);
 
 		}
-		log_info(logPlan, "algoritmo seleccionado %s", planificador);
+		log_debug(logPlan, "algoritmo seleccionado %s", planificador);
 
 	}
 
 	if(config_has_property(infoConfig, "ESTIMACION_INICIAL")){
 		estimacion_inicial = config_get_int_value(infoConfig, "ESTIMACION_INICIAL");
-		log_info(logPlan, "estimacion inicial %d", estimacion_inicial);
+		log_debug(logPlan, "estimacion inicial %d", estimacion_inicial);
 	}
 
 	if(config_has_property(infoConfig, "ALFA")){
@@ -426,17 +426,17 @@ void cargar_configuracion(){
 		if(alfa > 1 || alfa < 0){
 			log_error(logPlan, "Ingresar un valor entre 0 y 100");
 		}
-		log_info(logPlan, "alfa %f", alfa);
+		log_debug(logPlan, "alfa %f", alfa);
 	}
 
 	if(config_has_property(infoConfig, "IP_COORDINADOR")){
 		coordinador_IP = config_get_string_value(infoConfig, "IP_COORDINADOR");
-		log_info(logPlan, "IP del coordinador %s", coordinador_IP);
+		log_debug(logPlan, "IP del coordinador %s", coordinador_IP);
 	}
 
 	if(config_has_property(infoConfig, "PUERTO_COORDINADOR")){
 		coordinador_Puerto = config_get_int_value(infoConfig, "PUERTO_COORDINADOR");
-		log_info(logPlan, "puerto del coordinador %d", coordinador_Puerto);
+		log_debug(logPlan, "puerto del coordinador %d", coordinador_Puerto);
 	}
 
 	if(config_has_property(infoConfig, "CLAVES_INI_BLOQUEADAS")){
@@ -455,7 +455,7 @@ void cargar_configuracion(){
 
 		}
 
-		log_info(logPlan, msj);
+		log_warning(logPlan, msj);
 		free(msj);
 
 	}

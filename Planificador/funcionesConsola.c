@@ -37,6 +37,7 @@ bool coincideCola(t_queue* procesos, int idProceso){
 
 	}
 
+
 	return false;
 
 }
@@ -93,21 +94,46 @@ void block(char* key_value, int ESI_ID){
 
 	t_clave* key = obtenerKey(key_value);
 
+	bool coincideID(void* esi){
+		t_proceso_esi* unEsi = (void*) esi;
+		return unEsi->id == ESI_ID;
+	}
+
+	bool estaElESIBloqueado(void* key){
+		t_clave* clave = (void*) key;
+		return list_any_satisfy(clave->colaBloqueados->elements, coincideID);
+	}
+
+
+
 	if(key != NULL){
+
 		if(esi_ejecutando != NULL){
+
 			if(esi_ejecutando->id == ESI_ID){
 				queue_push(key->colaBloqueados, esi_ejecutando);
 			}
-		}else{
+
+		}
+		else{
 			t_proceso_esi* esi_a_bloquear = removerEsiSegunID(colaListos->elements, ESI_ID);
+
 			if(esi_a_bloquear != NULL){
 				seQuitoUnEsiDeListos=true;
 				queue_push(key->colaBloqueados, esi_a_bloquear);
+				log_debug(logPlan, "esi %d enviado a la cola de bloqueados de la key %s", ESI_ID, key_value);
+
 			}
+			else{
+				t_clave* clavePoseedora = list_find(listaKeys, estaElESIBloqueado);
+				if(clavePoseedora !=NULL) log_warning(logPlan, "el proceso %d a matar esta ya bloqueado por el proceso %d", ESI_ID, clavePoseedora->esi_poseedor->id);
+			}
+
 		}
-		log_info(logPlan, "esi %d enviado a la cola de bloqueados de la key %s", ESI_ID, key_value);
-	} else{
-		log_info(logPlan, "la key ingresada no existe");
+
+	}
+	else{
+		log_warning(logPlan, "la key ingresada no existe");
 	}
 }
 
@@ -119,13 +145,13 @@ void unblock(char* key_value){
 			t_proceso_esi* esi_a_desbloquear = queue_pop(key->colaBloqueados);
 			cambiarEstimado(esi_a_desbloquear);
 			moverAListos(esi_a_desbloquear);
-			log_info(logPlan, "esi %d desbloqueado", esi_a_desbloquear->id);
+			log_debug(logPlan, "esi %d desbloqueado", esi_a_desbloquear->id);
 		} else{
 			key->esi_poseedor = NULL;
-			log_info(logPlan, "no hay procesos bloqueados, se libero la clave");
+			log_debug(logPlan, "no hay procesos bloqueados, se libero la clave");
 		}
 	} else{
-		log_info(logPlan, "la clave no existe");
+		log_warning(logPlan, "la clave no existe");
 	}
 
 }
@@ -177,7 +203,7 @@ void obtenerValor(char* keySearch){
 		break;
 	}
 
-	log_info(logPlan, msj);
+	log_debug(logPlan, msj);
 
 	free(msj);
 
@@ -215,7 +241,7 @@ void obtenerInstancia(char* keySearch){
 	char* instanciaBusqueda = recibirMensajeArchivo(socketConsolaCoordinador);
 
 	string_append(&msj2, instanciaBusqueda);
-	log_info(logPlan, msj2);
+	log_debug(logPlan, msj2);
 
 	free(msj);
 	free(msj2);
@@ -238,7 +264,7 @@ void listBlockedProcesses(char* keySearch){
 	if(key == NULL){
 
 		string_append_with_format(&msj, "No se encontro la key con nombre: %s", keySearch);
-		log_info(logPlan, msj);
+		log_warning(logPlan, msj);
 		free(msj);
 		return;
 
@@ -264,7 +290,7 @@ void listBlockedProcesses(char* keySearch){
 			}
 		}
 
-		log_info(logPlan, msj);
+		log_debug(logPlan, msj);
 
 	}
 
@@ -332,7 +358,7 @@ t_proceso_esi* encontrarEsiSegunID(t_list* procesos, int ID){
 
 }
 
-void liberarEsiImpostor() {
+void quitarBloqueoSistema() {
 	t_proceso_esi* esi;
 	t_clave* clave;
 	int i;
@@ -340,7 +366,7 @@ void liberarEsiImpostor() {
 		clave = list_get(listaKeys, i);
 		if(!estaLibre(clave)){
 			esi = clave->esi_poseedor;
-			if (esi->id == ESI_IMPOSTOR) {
+			if (esi->id == BLOQUEO_SISTEMA) {
 				liberarKeys(esiImpostor);
 				free(esiImpostor);
 				esi=NULL;
@@ -362,9 +388,9 @@ void matarProceso(int ESI_ID){
 		return list_any_satisfy(clave->colaBloqueados->elements, coincideID);
 	}
 
-	if(ESI_ID == ESI_IMPOSTOR){
-		liberarEsiImpostor();
-		log_trace(logPlan, "mataste al impostor, se liberaron las claves iniciales bloqueadas");
+	if(ESI_ID == BLOQUEO_SISTEMA){
+		quitarBloqueoSistema();
+		log_trace(logPlan, "se liberaron las claves iniciales bloqueadas");
 		return;
 	}
 
@@ -384,8 +410,6 @@ void matarProceso(int ESI_ID){
 
 	if (proceso_a_matar == NULL || !coincide){
 
-		log_trace(logPlan, "el proceso a matar no estaba en ejecucion");
-
 		t_clave* clavePoseedora = list_find(listaKeys, estaElESIBloqueado);
 
 		if(clavePoseedora !=NULL){
@@ -404,7 +428,7 @@ void matarProceso(int ESI_ID){
 				log_trace(logPlan, "el proceso %d a matar estaba en listos", proceso_a_matar->id);
 			}
 			else{
-				printf("No existe el id de proceso %d\n", ESI_ID);
+				log_warning("No existe el id de proceso %d\n", ESI_ID);
 			}
 
 		}
@@ -444,7 +468,7 @@ void detectarDeadlock(){
 
 		key = list_get(keysFiltradas, i);
 
-		if(key->esi_poseedor->id != ESI_IMPOSTOR){
+		if(key->esi_poseedor->id != BLOQUEO_SISTEMA){
 
 			list_add(procesosEnDeadlock, key->esi_poseedor);
 
