@@ -26,7 +26,7 @@ int main() {
 		t_list * whitelist = recibirClavesAMantener(coordinador_socket);
 
 		inicializarPuntoMontaje(punto_Montaje, nombre_Instancia);
-		t_inst_bitmap = creaAbreBitmap(nombre_Instancia);
+		t_inst_bitmap = crearBitmapVacio();
 
 		tablaEntradas =  list_create();
 
@@ -41,6 +41,7 @@ int main() {
 
 		log_trace(logT,"Se inicializó la Instancia, se encontraron %d entradas de una ejecución anterior.", check);
 		list_destroy(whitelist);
+
 		while(1){
 			int instruccion;
 
@@ -95,15 +96,3 @@ void close_gracefully(){
 
 	destroyLoggers();
 }
-
-
-/*
-
-char* coordinador_IP;
-int coordinador_Puerto;
-char* reemplazo_Algoritmo;
-char* punto_Montaje;
-char* nombre_Instancia;
-int intervalo_dump;
-
-*/

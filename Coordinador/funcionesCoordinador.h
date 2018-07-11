@@ -11,7 +11,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <pthread.h> // para el uso de threads
+#include <pthread.h>
+#include <unistd.h>
 #include <commons/log.h>
 #include <commons/config.h>
 #include <commons/string.h>

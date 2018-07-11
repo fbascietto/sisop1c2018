@@ -14,4 +14,6 @@
 #include "../Biblioteca/biblio_sockets.h"
 #include "funcionesInstancia.h"
 
+void close_gracefully();
+
 #endif /* INSTANCIA_H_ */

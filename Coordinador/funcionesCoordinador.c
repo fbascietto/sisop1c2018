@@ -76,6 +76,7 @@ void *esperarConexiones(void *args) {
 }
 
 int crearInstancia(int nuevoSocket){
+
 	t_instancia * instancia;
 	char* nombreInstancia = recibirMensajeArchivo(nuevoSocket);
 
@@ -178,17 +179,14 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	/* para correr desde ECLIPSE	 */
+	/* para correr desde ECLIPSE*/
 	infoConfig = config_create("../Recursos/Configuracion/coordinador.config");
-
-
-
 
 
 	/*para correr desde CONSOLA
 
-	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
-*/
+	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");*/
+
 	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){
 		coordinador_Puerto_Escucha = config_get_int_value(infoConfig, "PUERTO_ESCUCHA");
 	}
@@ -219,8 +217,8 @@ void configureLoggers(){
 	E = LOG_LEVEL_ERROR;
 
 
-	/* para correr desde ECLIPSE*/
-	vaciarArchivo("../Recursos/Logs/Coordinador.log");
+	/* para correr desde ECLIPSE
+	vaciarArchivo("../Recursos/Logs/Coordinador.log");*/
 	logT = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
@@ -233,6 +231,7 @@ void configureLoggers(){
 	logI = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
 	 */
+
 }
 
 void destroyLoggers(){
@@ -285,7 +284,7 @@ int logueaOperacion(char* operacion, char* key, char* value, int socket){
 	string_append(&linea, " ");
 	string_append(&linea, value);
 
-	fprintf(operaciones,"%s", linea);
+	fprintf(operaciones,"%s\n", linea);
 
 	free(linea);
 	free(ESIindx); /*???*/
@@ -309,6 +308,7 @@ void recibirMensajeESI(int socket){
 	bool finalizar = false;
 	int mensaje;
 	while(1){
+
 
 		if(recibirInt(socket, &mensaje)<=0){
 			log_trace(logT, "ESI socket %d desconectado", socket);
@@ -376,10 +376,6 @@ void recibirMensajeConsolaPlanificador(int socket){
 	int mensaje;
 
 	recibirInt(socket, &mensaje);
-
-	t_instancia* instancia;
-	int retorno;
-	char* keyValue;
 
 	switch(mensaje){
 
