@@ -48,7 +48,7 @@ int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada, int socket){
 }
 
 
-int almacenarEntrada(char * key, t_entrada * entrada, int largoValue){
+int  almacenarEntrada(char * key, t_entrada * entrada, int largoValue){
 
 	if(!obtenerEntrada(key,&entrada)){
 		strcpy(entrada->key,key);
@@ -254,6 +254,7 @@ void escribirEntrada(char * escribir, int pos, char * nombre_archivo){
 		map[exactPos+b] = escribir[b];
 	}
 
+
 	int entradasOcupadas = calculoCantidadEntradas(lenValue);
 
 	int i = pos;
@@ -383,18 +384,19 @@ int persistir_clave(char *key){
 
 	entradaElegida->ultimaRef = operacionNumero;
 
-	char * value = leer_entrada(entradaElegida);
+	char * value;
+	leer_entrada(entradaElegida, &value);
 
 	fprintf(keyStore,"%s", value);
 
 	fclose(keyStore);
-	//free(value);
+	free(value);
 	free(path_final);
 	return 1;
 }
 
 
-char* leer_entrada(t_entrada* entrada){
+void leer_entrada(t_entrada* entrada, char** value){
 
 	int data = abrirArchivoDatos(punto_Montaje,nombre_Instancia);
 	struct stat fileStat;
@@ -403,7 +405,7 @@ char* leer_entrada(t_entrada* entrada){
 		exit(EXIT_FAILURE);
 	}
 
-	unsigned char* map = (unsigned char*) mmap(NULL, qEntradas * tamanioEntrada , PROT_READ | PROT_WRITE, MAP_SHARED, data, 0);
+	unsigned char* map = (unsigned char*) mmap(NULL, qEntradas * tamanioEntrada , PROT_READ | PROT_WRITE, MAP_SHARED, data, sizeof(unsigned char)*entrada->entry*tamanioEntrada);
 
 	if (map == MAP_FAILED){
 		close(data);
@@ -412,18 +414,24 @@ char* leer_entrada(t_entrada* entrada){
 	   }
 
 	int bytesAleer = entrada->size;
-	int b = 0;
-	int exactPos = entrada->entry*tamanioEntrada;
-	char* value = malloc(entrada->size);
 
-	for(b=0;b<bytesAleer;b++){
-		value[b] = map[exactPos+b];
+	int bytes_totales_leidos = 0;
+	int bytes_leidos = 0;
+	value = malloc(entrada->size);
+	while(bytes_totales_leidos < bytesAleer){
+
+
+		for (;bytes_leidos<bytesAleer && bytes_totales_leidos< bytesAleer;bytes_totales_leidos++){
+			*value[bytes_leidos] = map[bytes_totales_leidos];
+			bytes_leidos++;
+		}
+		bytes_leidos=0;
+
+
 	}
-	value[entrada->size] = '\0';
 
 	log_trace(logT,"Se leyó con exito el value de la clave %s.", entrada->key);
 	munmap(map,fileStat.st_size);
-	return value;
 
 }
 
@@ -438,13 +446,14 @@ void configureLoggers(char* instName){
 
 	char* logPath = string_new();
 
-	/* para correr desde ECLIPSE
+	/* para correr desde ECLIPSE*/
 	string_append(&logPath,"../Recursos/Logs/");
-	*/
 
 	/* para correr desde CONSOLA
 	 */
 	string_append(&logPath,"../../Recursos/Logs/");
+
+
 
 
 	string_append(&logPath,instName);
@@ -558,15 +567,24 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	/* SI SE CORRE DESDE ECLIPSE
+	/* SI SE CORRE DESDE ECLIPSE*/
 	infoConfig = config_create("../Recursos/Configuracion/instancia.config");
+<<<<<<< Updated upstream
 	*/
 
 	/* SI SE CORRE DESDE CONSOLA
 	 */
 	infoConfig = config_create("../../Recursos/Configuracion/instancia.config");
+=======
+>>>>>>> Stashed changes
 
 
+
+
+	/* SI SE CORRE DESDE CONSOLA
+
+	infoConfig = config_create("../../Recursos/Configuracion/instancia.config");
+*/
 	if(config_has_property(infoConfig, "IP_COORDINADOR")){
 		coordinador_IP = config_get_string_value(infoConfig, "IP_COORDINADOR");
 	}
@@ -595,6 +613,29 @@ void cargar_configuracion(){
 
 
 /* ********** FUNCIONES BITMAP ********** */
+
+t_bitarray* creaAbreBitmap(char* nombre_Instancia){
+
+
+	int nuevo = 0;
+
+
+	int bloquesEnBits = qEntradas; // (tamanioEntrada / (1024*1024)) ;
+
+	if(bloquesEnBits % 8 == 0)
+	{
+		bloquesEnBits = bloquesEnBits/8;
+	}else{
+		bloquesEnBits = bloquesEnBits/8 + 1;
+	}
+
+
+	t_bitarray* t_fs_bitmap;
+
+	t_fs_bitmap = crearBitmapVacio(tamanioEntrada);
+
+	return t_fs_bitmap;
+}
 
 t_bitarray *crearBitmapVacio() {
 	int cantBloq = qEntradas;
@@ -686,7 +727,8 @@ int entregarValue(int socket){
 		return enviarInt(socket, CLAVE_INEXISTENTE);
 	}
 	entrada->ultimaRef = operacionNumero;
-	char * value = leer_entrada(entrada);
+	char * value;
+	leer_entrada(entrada, &value);
 	if(enviarInt(socket,CLAVE_ENCONTRADA)<=0){
 			log_error(logE,"error al enviar el valor de la clave %s al coordinador",key);
 			return -1;
@@ -717,7 +759,8 @@ bool compactar(){
 	int pos = 0;
 	for(i=0;i<size;i++){
 		t_entrada * entrada = (t_entrada*)list_get(tablaEntradas,i);
-		char * value = leer_entrada(entrada);
+		char * value;
+		leer_entrada(entrada,&value);
 		escribirEntrada(value,pos,nombre_archivo);
 		free(value);
 		entrada->entry=pos;
@@ -751,7 +794,7 @@ void dump(){
 
 	while(1){
 
-		sleep(intervalo_dump);
+		sleep(intervalo_dump*1000);
 
 		pthread_mutex_lock(&mx_Dump);
 
