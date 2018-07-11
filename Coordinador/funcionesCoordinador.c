@@ -179,15 +179,15 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	/* para correr desde ECLIPSE
+	/* para correr desde ECLIPSE */
 	infoConfig = config_create("../Recursos/Configuracion/coordinador.config");
-	 */
+
 
 
 	/*para correr desde CONSOLA
-	*/
-	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
 
+	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
+	*/
 	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){
 		coordinador_Puerto_Escucha = config_get_int_value(infoConfig, "PUERTO_ESCUCHA");
 	}
@@ -218,22 +218,22 @@ void configureLoggers(){
 	E = LOG_LEVEL_ERROR;
 
 
-	/* para correr desde ECLIPSE
+	/* para correr desde ECLIPSE*/
 	vaciarArchivo("../Recursos/Logs/Coordinador.log");
 	logT = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
-	*/
+
 
 
 	/* para correr desde CONSOLA
-	 */
+
 
 	vaciarArchivo("../../Recursos/Logs/Coordinador.log");
 	logT = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
-
+	*/
 }
 
 void destroyLoggers(){
