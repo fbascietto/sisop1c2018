@@ -31,7 +31,9 @@ void* escucharCoordinador(void* args){
 			claveObtenida = obtenerKey(keyBuscada);
 			if(claveObtenida == NULL){
 				enviarInt(socketCoordinador, CLAVE_INEXISTENTE);
-			} else if(claveObtenida->esi_poseedor->id != esi_ejecutando->id){
+			}else if(claveObtenida->esi_poseedor == NULL){
+				enviarInt(socketCoordinador, CLAVE_NO_RESERVADA);
+			}else if(claveObtenida->esi_poseedor->id != esi_ejecutando->id){
 				enviarInt(socketCoordinador, CLAVE_NO_RESERVADA);
 			} else {
 				enviarInt(socketCoordinador, CLAVE_RESERVADA);
@@ -43,7 +45,9 @@ void* escucharCoordinador(void* args){
 			claveObtenida = obtenerKey(keyBuscada);
 			if(claveObtenida == NULL){
 				enviarInt(socketCoordinador, CLAVE_INEXISTENTE);
-			} else if(claveObtenida->esi_poseedor->id != esi_ejecutando->id){
+			} else if(claveObtenida->esi_poseedor == NULL){
+				enviarInt(socketCoordinador, CLAVE_NO_RESERVADA);
+			}else if(claveObtenida->esi_poseedor->id != esi_ejecutando->id){
 				enviarInt(socketCoordinador, CLAVE_NO_RESERVADA);
 			} else {
 				liberarKey(claveObtenida);
