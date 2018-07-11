@@ -86,6 +86,10 @@ void esperar() {
 		pthread_mutex_unlock(&iniciarConsolaSem);
 		pthread_mutex_lock(&esperarConsolaSem);
 	}
+	if(conexionEsi){
+		pthread_mutex_unlock(&nuevoEsiSem);
+		pthread_mutex_lock(&esperarNuevoEsiSem);
+	}
 }
 
 //todo <--- no sacarlo, nunca encuentro esta funcion entre todas
@@ -93,6 +97,7 @@ void* planificar(void * args){
 
 	bool replanificar = true;
 	pthread_mutex_lock(&pausarPlanificacionSem);
+	pthread_mutex_lock(&nuevoEsiSem);
 
 	while(1){
 
@@ -121,7 +126,7 @@ void* planificar(void * args){
 				//en caso de que se ejecute kill
 				if(esi_ejecutando == NULL) break;
 
-		}
+			}
 			replanificar = true;
 		}
 	}
@@ -137,10 +142,10 @@ void ordenarListos(){
 
 
 void mostrarColaListos(){
-	log_trace(logPlan, "cola de listos de arriba a abajo");
+	log_warning(logPlan, "cola de listos de arriba a abajo");
 	for(int i=0; i<queue_size(colaListos); i++){
 		t_proceso_esi* esi = list_get(colaListos->elements, i);
-		log_trace(logPlan, "ESI %d con rafagaEstimada %f", esi->id, esi->rafagaEstimada);
+		log_debug(logPlan, "ESI %d con rafagaEstimada %f", esi->id, esi->rafagaEstimada);
 	}
 }
 
@@ -153,6 +158,17 @@ void swap(int x, int y, t_list* unaLista)
 
 	list_replace(unaLista, x, esiY);
 	list_replace(unaLista, y, esiX);
+}
+
+bool mejorEstimado(t_proceso_esi* esiA, t_proceso_esi* esiB){
+	switch(planificador_Algoritmo){
+	case HRRN:;
+	return (esiA->rafagaEstimada > esiB->rafagaEstimada) || ((esiA->rafagaEstimada == esiB->rafagaEstimada) && (esiA->ordenLlegada < esiB->ordenLlegada));
+	break;
+	default:;
+	return (esiA->rafagaEstimada < esiB->rafagaEstimada) || ((esiA->rafagaEstimada == esiB->rafagaEstimada) && (esiA->ordenLlegada < esiB->ordenLlegada));
+	break;
+	}
 }
 
 /* In this function last element is chosen as pivot,
@@ -169,14 +185,9 @@ int partition(t_list* unaLista, int start, int end){
          equal to pivot then exchange it with element
          at pIndex and increment the pIndex*/
 		esiAux = list_get(unaLista,i);
-		if (esiAux->rafagaEstimada < pivot->rafagaEstimada){
+		if (mejorEstimado(esiAux, pivot)){
 			swap(pIndex, i, unaLista);
 			pIndex=pIndex+1;
-		}else if(esiAux->rafagaEstimada == pivot->rafagaEstimada){
-			if(esiAux->ordenLlegada < pivot->ordenLlegada){
-				swap(pIndex, i, unaLista);
-				pIndex=pIndex+1;
-			}
 		}
 	}
 	/*exchange pivot with pIndex at the completion
@@ -235,16 +246,12 @@ void cambiarEstimado(void* esi){
 float promedioExponencial(t_proceso_esi* unEsi){
 	float actual = unEsi->rafagaActual * alfa;
 	float estimado = unEsi->rafagaEstimada * (1.0 - alfa);
-	log_info(logPlan, "esi %d", unEsi->id);
-	log_info(logPlan, "valor actual %f", actual);
-	log_info(logPlan, "valor estimado %f", estimado);
 	return actual + estimado;
 }
 
 float estimacionHRRN(t_proceso_esi* unEsi){
 	float promedio = promedioExponencial(unEsi);
-	log_info(logPlan, "tiempo de espera %d", unEsi->tiempoEspera);
-	return (promedio + unEsi->tiempoEspera) / unEsi-> tiempoEspera;
+	return 1.0 + (unEsi->tiempoEspera / promedio);
 }
 
 t_proceso_esi* recibirNuevoESI(int idESI, int fd){
@@ -279,7 +286,7 @@ bool recibirMensajeEsi(int socketCliente){
 	bool iterar = true;
 
 	if(recibirInt(socketCliente, &mensaje) <= 0){
-	finalizarESIEnEjecucion();
+		finalizarESIEnEjecucion();
 		iterar = false;
 		return iterar;
 	}
@@ -305,10 +312,11 @@ bool recibirMensajeEsi(int socketCliente){
 			//comentar esta funcion para que funcione como FIFO junto con enviarMejorESIAEjecutar()
 			ordenarListos();
 			t_proceso_esi* ESIMenorRafaga = queue_pop(colaListos);
-			log_trace(logPlan,"veo si el ESI %d tiene menor rafaga que el esi %d", ESIMenorRafaga->id, esi_ejecutando->id);
 			sem_wait(&productorConsumidor);
 
 			if(ESIMenorRafaga->rafagaEstimada < (esi_ejecutando->rafagaEstimada - esi_ejecutando->rafagaActual)){
+				log_warning(logPlan,"el ESI %d tiene menor rafaga que el esi %d, que esta en ejecucion", ESIMenorRafaga->id, esi_ejecutando->id);
+				log_warning(logPlan,"intercambiando esis");
 				cambiarEstimado(esi_ejecutando);
 				moverAListos(esi_ejecutando);
 				esi_ejecutando = ESIMenorRafaga;
@@ -341,7 +349,7 @@ bool recibirMensajeEsi(int socketCliente){
 	break;
 
 	default:;
-	log_trace(logPlan, "mensaje del ESI %d no reconocido, recibi %d", esi_ejecutando, mensaje);
+	log_error(logPlan, "mensaje del ESI %d no reconocido, recibi %d. Abortando ESI", esi_ejecutando, mensaje);
 	finalizarESIEnEjecucion();
 	iterar = false;
 	}
@@ -360,7 +368,7 @@ void finalizarESI(t_proceso_esi* esi_terminado) {
 	FD_CLR(socketESIFinalizado, &fdConexiones);
 	close(socketESIFinalizado);
 	queue_push(colaTerminados, esi_terminado);
-	log_trace(logPlan, "ESI %d movido a la cola de terminados", esi_terminado->id);
+	log_info(logPlan, "ESI %d movido a la cola de terminados", esi_terminado->id);
 }
 
 void finalizarESIEnEjecucion(){
@@ -388,7 +396,7 @@ void conectarConsolaACoordinador(){
 
 	enviarInt(socketConsolaCoordinador, CONSOLA_PLANIFICADOR);
 
-	log_trace(logPlan, "Conectado consola con el Coordinador");
+	log_info(logPlan, "Conectado consola con el Coordinador");
 }
 
 void conectarCoordinador(){
@@ -410,7 +418,7 @@ void conectarCoordinador(){
 
 	enviarInt(socketCoordinador, PLANIFICADOR);
 
-	log_trace(logPlan, "Conectado con el Coordinador");
+	log_info(logPlan, "Conectado con el Coordinador");
 }
 
 void* esperarConexionesClientes(void* esperarConexion){
@@ -428,15 +436,23 @@ void* esperarConexionesClientes(void* esperarConexion){
 
 		case ESI:
 
-			log_trace(logPlan, "Recibi un nuevo ESI!");
+			log_warning(logPlan, "Recibi un nuevo ESI!");
 
 			int idESI;
 			recibirInt(conexionNueva, &idESI);
-			log_trace(logPlan, "ID del ESI %d", idESI);
+			log_debug(logPlan, "ID del ESI %d", idESI);
 
 			t_proceso_esi* nuevoESI = recibirNuevoESI(idESI, conexionNueva);
-			log_trace(logPlan, "ESI creado!");
-			moverAListos(nuevoESI);
+			log_debug(logPlan, "ESI creado!");
+
+			if(pausarPlanificacion || queue_is_empty(colaListos)){
+				moverAListos(nuevoESI);
+			}else{
+				conexionEsi=true;
+				pthread_mutex_lock(&nuevoEsiSem);
+				moverAListos(nuevoESI);
+				pthread_mutex_unlock(&esperarNuevoEsiSem);
+			}
 
 			//mutex con la funcion planificar()
 

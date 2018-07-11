@@ -58,14 +58,13 @@ int main(){
 void iniciarVariablesGlobales(){
 	ordenDeLlegada = 0;
 	keySolicitada = malloc(LONGITUD_CLAVE);
-	esiImpostor = malloc(sizeof(t_proceso_esi));
-
-	esiImpostor->clavesTomadas = list_create();
-	esiImpostor->fd = BLOQUEO_SISTEMA;
-	esiImpostor->id = BLOQUEO_SISTEMA;
-	esiImpostor->rafagaActual = BLOQUEO_SISTEMA;
-	esiImpostor->rafagaEstimada = BLOQUEO_SISTEMA;
-	esiImpostor->tiempoEspera = BLOQUEO_SISTEMA;
+	esiBloqueoSistema = malloc(sizeof(t_proceso_esi));
+	esiBloqueoSistema->clavesTomadas = list_create();
+	esiBloqueoSistema->fd = BLOQUEO_SISTEMA;
+	esiBloqueoSistema->id = BLOQUEO_SISTEMA;
+	esiBloqueoSistema->rafagaActual = BLOQUEO_SISTEMA;
+	esiBloqueoSistema->rafagaEstimada = BLOQUEO_SISTEMA;
+	esiBloqueoSistema->tiempoEspera = BLOQUEO_SISTEMA;
 }
 
 void inicializarColas(){
@@ -89,15 +88,14 @@ void cargarKeysBloqueadasIniciales(){
 
 		if(tamanioClave > LONGITUD_CLAVE){
 			log_error(logPlan, "la clave %s es demasiado larga", clave);
-			exit_gracefully(1);
+			exit_gracefully(-1);
 		}
-
 		nuevaKey = malloc(sizeof(t_clave));
 		convertirABarra0(nuevaKey->nombre, LONGITUD_CLAVE);
 		strncpy(nuevaKey->nombre, clave, strlen(clave));
 		nuevaKey->colaBloqueados = queue_create();
-		nuevaKey->esi_poseedor = esiImpostor;
-		list_add(esiImpostor->clavesTomadas, nuevaKey);
+		nuevaKey->esi_poseedor = esiBloqueoSistema;
+		list_add(esiBloqueoSistema->clavesTomadas, nuevaKey);
 		list_add(listaKeys, nuevaKey);
 
 		enviarInt(socketConsolaCoordinador, CREAR_KEY_INICIALMENTE_BLOQUEADA);
@@ -127,9 +125,12 @@ void inicializarSemaforos(){
 	pausarPlanificacion = false;
 	comandoConsola = false;
 	seQuitoUnEsiDeListos = false;
+	conexionEsi = false;
 	pthread_mutex_init(&pausarPlanificacionSem, NULL);
 	pthread_mutex_init(&iniciarConsolaSem, NULL);
 	pthread_mutex_init(&esperarConsolaSem, NULL);
+	pthread_mutex_init(&nuevoEsiSem, NULL);
+	pthread_mutex_init(&esperarNuevoEsiSem, NULL);
 	pthread_mutex_lock(&iniciarConsolaSem);
 	pthread_mutex_lock(&esperarConsolaSem);
 	pthread_mutex_unlock(&pausarPlanificacionSem);
@@ -137,6 +138,8 @@ void inicializarSemaforos(){
 
 void destruirSemaforos(){
 	pthread_mutex_destroy(&pausarPlanificacionSem);
+	pthread_mutex_destroy(&iniciarConsolaSem);
+	pthread_mutex_destroy(&esperarConsolaSem);
 }
 
 void * iniciaConsola(){
@@ -170,7 +173,7 @@ void * iniciaConsola(){
 			if(parametros[1] != NULL){
 				log_error(logPlan, "La funcion no lleva argumentos.");
 			}else{
-				exit_gracefully(1);
+				exit_gracefully(0);
 			}
 			free(linea);
 		} else if(!strncmp(linea, pausar, strlen(pausar)))
@@ -409,7 +412,7 @@ void cargar_configuracion(){
 			planificador_Algoritmo = HRRN;
 		}else{
 			log_error(logPlan, "ALGORITMO NO RECONOCIDO, SE SETEO %s", planificador);
-			exit_gracefully(0);
+			exit(-1);
 
 		}
 		log_debug(logPlan, "algoritmo seleccionado %s", planificador);
@@ -425,6 +428,7 @@ void cargar_configuracion(){
 		alfa = config_get_int_value(infoConfig, "ALFA") / 100.0;
 		if(alfa > 1 || alfa < 0){
 			log_error(logPlan, "Ingresar un valor entre 0 y 100");
+			exit(-1);
 		}
 		log_debug(logPlan, "alfa %f", alfa);
 	}
@@ -463,7 +467,26 @@ void cargar_configuracion(){
 }
 
 void exit_gracefully(int return_nr) {
-	log_destroy(logPlan);
+	sem_destroy(&productorConsumidor);
+	quitarBloqueoSistema();
+	free(keySolicitada);
+	queue_destroy_and_destroy_elements(colaListos, eliminarEsi);
+	queue_destroy_and_destroy_elements(colaTerminados, eliminarEsi);
+	list_destroy_and_destroy_elements(listaKeys, eliminarKey);
+	log_info(logPlan, "planificador finalizado");
 	exit(return_nr);
+}
+
+void eliminarEsi(void* elemento){
+	t_proceso_esi* esi = (t_proceso_esi*) elemento;
+	list_clean(esi->clavesTomadas);
+	free(esi);
+}
+
+void eliminarKey(void* elemento){
+	t_clave* key = (t_clave*) elemento;
+	queue_clean(key->colaBloqueados);
+	key->esi_poseedor=NULL;
+	free(key);
 }
 

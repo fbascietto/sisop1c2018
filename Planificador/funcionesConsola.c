@@ -367,9 +367,28 @@ void quitarBloqueoSistema() {
 		if(!estaLibre(clave)){
 			esi = clave->esi_poseedor;
 			if (esi->id == BLOQUEO_SISTEMA) {
-				liberarKeys(esiImpostor);
-				free(esiImpostor);
-				esi=NULL;
+//				liberarKeys(esiBloqueoSistema);
+
+				for(int j=0; j<list_size(esi->clavesTomadas); j++){
+
+				t_clave* clave = list_get(esi->clavesTomadas, j);
+				clave->esi_poseedor = NULL;
+
+				if(queue_size(clave->colaBloqueados)>0){
+					t_proceso_esi* esi_a_desbloquear = queue_pop(clave->colaBloqueados);
+					cambiarEstimado(esi_a_desbloquear);
+					moverAListos(esi_a_desbloquear);
+				}
+
+				char* claveID = malloc(LONGITUD_CLAVE);
+				strcpy(claveID, clave->nombre);
+				log_trace(logPlan, "clave %s liberada", claveID);
+				free(claveID);
+				}
+
+				list_destroy(esiBloqueoSistema->clavesTomadas);
+				free(esiBloqueoSistema);
+				clave->esi_poseedor=NULL;
 				break;
 			}
 		}

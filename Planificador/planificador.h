@@ -42,9 +42,12 @@ typedef struct {
 bool pausarPlanificacion;
 bool comandoConsola;
 bool seQuitoUnEsiDeListos;
+bool conexionEsi;
 pthread_mutex_t pausarPlanificacionSem;
 pthread_mutex_t iniciarConsolaSem;
 pthread_mutex_t esperarConsolaSem;
+pthread_mutex_t nuevoEsiSem;
+pthread_mutex_t esperarNuevoEsiSem;
 sem_t productorConsumidor;
 void inicializarSemaforos();
 void destruirSemaforos();
@@ -80,7 +83,7 @@ t_queue* colaTerminados;
 //esi en ejecucion
 unsigned int ordenDeLlegada;
 t_proceso_esi* esi_ejecutando;
-t_proceso_esi* esiImpostor;
+t_proceso_esi* esiBloqueoSistema;
 char* keySolicitada;
 
 //auxiliar para funcion de deadlock
@@ -160,6 +163,8 @@ bool estaLaKey(t_list* keys, t_clave* key);
 void imprimirIDs(t_list* procesosEnDeadlock);
 void agregarElementos(t_list* origen, t_list* destino);
 void convertirABarra0(char*, int);
+void eliminarEsi(void* elemento);
+void eliminarKey(void* elemento);
 
 //funciones mock
 void testearDeadlock();
