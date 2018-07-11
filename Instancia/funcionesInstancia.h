@@ -66,7 +66,7 @@ t_list* recibirClavesAMantener(int coordinador_socket);
 
 /** Funciones de manejo de Entradas **/
 int  almacenarEntrada(char * key, t_entrada * entrada, int largoValue);
-char* leer_entrada(t_entrada* entrada);
+void leer_entrada(t_entrada* entrada, char** value);
 void escribirEntrada(char * escribir, int pos, char * nombre_archivo);
 void eliminarEntrada(char * key);
 int recibirEntrada(int socket);

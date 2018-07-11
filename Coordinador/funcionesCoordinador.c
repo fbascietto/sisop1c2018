@@ -184,8 +184,8 @@ void cargar_configuracion(){
 
 
 
-	/*para correr desde CONSOLA
 
+	/*para correr desde CONSOLA
 	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
 	*/
 	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){
@@ -224,10 +224,7 @@ void configureLoggers(){
 	logI = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
 
-
-
 	/* para correr desde CONSOLA
-
 
 	vaciarArchivo("../../Recursos/Logs/Coordinador.log");
 	logT = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, T);

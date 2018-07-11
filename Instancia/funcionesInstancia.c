@@ -43,6 +43,8 @@ int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada, int socket){
 			log_error(logE,"No hay %d bloques libres, se reemplaza entrada",n);
 			seleccionarAlgoritmo();
 		}
+	}else{
+
 	}
 	return pos;
 }
@@ -50,16 +52,15 @@ int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada, int socket){
 
 int  almacenarEntrada(char * key, t_entrada * entrada, int largoValue){
 
-	if(!obtenerEntrada(key,&entrada)){
+
 		strcpy(entrada->key,key);
-		list_add(tablaEntradas,entrada);
-	} else{
+
 		int i;
 		int entradas_ocupadas = calculoCantidadEntradas(entrada->size);
 		for(i=0;i<entradas_ocupadas;i++){
 			bitarray_clean_bit(t_inst_bitmap,entrada->entry+i);
+
 		}
-	}
 
 	entrada->ultimaRef = operacionNumero;
 
@@ -154,9 +155,11 @@ int archivoAentrada(char* filename){
 	}else if(entrada == NULL){
 		entrada = malloc(sizeof(t_entrada));
 		entrada->entry = pos;
+		list_add(tablaEntradas,entrada);
 	}
 
 	almacenarEntrada(filename,entrada,lenValue);
+
 	escribirEntrada(value, pos, nombre_Instancia);
 
 	fclose(arch);
@@ -322,15 +325,18 @@ int recibirEntrada(int socket){
 	int entradasAOcupar = calculoCantidadEntradas(lenValue);
 
 	t_entrada* entrada = NULL;
+	if(!obtenerEntrada(key,&entrada)){
+		int pos = calcularSiguienteEntrada(lenValue, &entrada, socket);
 
-	int pos = calcularSiguienteEntrada(lenValue, &entrada, socket);
-
-	if(pos<0 && entrada == NULL){
-		return -1;
-	}else if(entrada == NULL){
-		entrada = malloc(sizeof(t_entrada));
-		entrada->entry = pos;
+			if(pos<0 && entrada == NULL){
+				return -1;
+			}else if(entrada == NULL){
+				entrada = malloc(sizeof(t_entrada));
+				entrada->entry = pos;
+				list_add(tablaEntradas,entrada);
+			}
 	}
+
 
 
 	almacenarEntrada(key, entrada, lenValue);
@@ -390,7 +396,9 @@ int persistir_clave(char *key){
 	fprintf(keyStore,"%s", value);
 
 	fclose(keyStore);
-	free(value);
+
+	// free(value);
+
 	free(path_final);
 	return 1;
 }
@@ -415,20 +423,14 @@ void leer_entrada(t_entrada* entrada, char** value){
 
 	int bytesAleer = entrada->size;
 
-	int bytes_totales_leidos = 0;
-	int bytes_leidos = 0;
-	value = malloc(entrada->size);
-	while(bytes_totales_leidos < bytesAleer){
+	int b = 0;
+	int exactPos = entrada->entry*tamanioEntrada;
+	*value = malloc(entrada->size);
 
-
-		for (;bytes_leidos<bytesAleer && bytes_totales_leidos< bytesAleer;bytes_totales_leidos++){
-			*value[bytes_leidos] = map[bytes_totales_leidos];
-			bytes_leidos++;
-		}
-		bytes_leidos=0;
-
-
+	for(b=0;b<bytesAleer;b++){
+		(*value)[b] = map[exactPos+b];
 	}
+	(*value)[entrada->size] = '\0';
 
 	log_trace(logT,"Se leyó con exito el value de la clave %s.", entrada->key);
 	munmap(map,fileStat.st_size);
@@ -448,11 +450,10 @@ void configureLoggers(char* instName){
 
 	/* para correr desde ECLIPSE*/
 	string_append(&logPath,"../Recursos/Logs/");
-
 	/* para correr desde CONSOLA
-	 */
-	string_append(&logPath,"../../Recursos/Logs/");
 
+	string_append(&logPath,"../../Recursos/Logs/");
+ */
 
 
 
@@ -569,16 +570,6 @@ void cargar_configuracion(){
 
 	/* SI SE CORRE DESDE ECLIPSE*/
 	infoConfig = config_create("../Recursos/Configuracion/instancia.config");
-<<<<<<< Updated upstream
-	*/
-
-	/* SI SE CORRE DESDE CONSOLA
-	 */
-	infoConfig = config_create("../../Recursos/Configuracion/instancia.config");
-=======
->>>>>>> Stashed changes
-
-
 
 
 	/* SI SE CORRE DESDE CONSOLA
@@ -728,7 +719,8 @@ int entregarValue(int socket){
 	}
 	entrada->ultimaRef = operacionNumero;
 	char * value;
-	leer_entrada(entrada, &value);
+
+	leer_entrada(entrada,&value);
 	if(enviarInt(socket,CLAVE_ENCONTRADA)<=0){
 			log_error(logE,"error al enviar el valor de la clave %s al coordinador",key);
 			return -1;

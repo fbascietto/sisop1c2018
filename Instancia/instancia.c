@@ -1,5 +1,6 @@
 #include "instancia.h"
 
+
 int main() {
 
 		int coordinador_socket;
