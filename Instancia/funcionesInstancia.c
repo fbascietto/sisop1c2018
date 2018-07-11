@@ -383,18 +383,19 @@ int persistir_clave(char *key){
 
 	entradaElegida->ultimaRef = operacionNumero;
 
-	char * value = leer_entrada(entradaElegida);
+	char * value;
+	leer_entrada(entradaElegida,&value);
 
 	fprintf(keyStore,"%s", value);
 
 	fclose(keyStore);
-	//free(value);
+	// free(value);
 	free(path_final);
 	return 1;
 }
 
 
-char* leer_entrada(t_entrada* entrada){
+void leer_entrada(t_entrada* entrada, char** value){
 
 	int data = abrirArchivoDatos(punto_Montaje,nombre_Instancia);
 	struct stat fileStat;
@@ -414,16 +415,16 @@ char* leer_entrada(t_entrada* entrada){
 	int bytesAleer = entrada->size;
 	int b = 0;
 	int exactPos = entrada->entry*tamanioEntrada;
-	char* value = malloc(entrada->size);
+	*value = malloc(entrada->size);
 
 	for(b=0;b<bytesAleer;b++){
-		value[b] = map[exactPos+b];
+		(*value)[b] = map[exactPos+b];
 	}
-	value[entrada->size] = '\0';
+	(*value)[entrada->size] = '\0';
 
 	log_trace(logT,"Se leyó con exito el value de la clave %s.", entrada->key);
 	munmap(map,fileStat.st_size);
-	return value;
+
 
 }
 
@@ -438,14 +439,14 @@ void configureLoggers(char* instName){
 
 	char* logPath = string_new();
 
-	/* para correr desde ECLIPSE
+	/* para correr desde ECLIPSE*/
 	string_append(&logPath,"../Recursos/Logs/");
-	*/
+
 
 	/* para correr desde CONSOLA
-	 */
-	string_append(&logPath,"../../Recursos/Logs/");
 
+	string_append(&logPath,"../../Recursos/Logs/");
+ */
 
 	string_append(&logPath,instName);
 	string_append(&logPath,".log");
@@ -558,14 +559,14 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	/* SI SE CORRE DESDE ECLIPSE
+	/* SI SE CORRE DESDE ECLIPSE*/
 	infoConfig = config_create("../Recursos/Configuracion/instancia.config");
-	*/
+
 
 	/* SI SE CORRE DESDE CONSOLA
-	 */
-	infoConfig = config_create("../../Recursos/Configuracion/instancia.config");
 
+	infoConfig = config_create("../../Recursos/Configuracion/instancia.config");
+*/
 
 	if(config_has_property(infoConfig, "IP_COORDINADOR")){
 		coordinador_IP = config_get_string_value(infoConfig, "IP_COORDINADOR");
@@ -686,7 +687,8 @@ int entregarValue(int socket){
 		return enviarInt(socket, CLAVE_INEXISTENTE);
 	}
 	entrada->ultimaRef = operacionNumero;
-	char * value = leer_entrada(entrada);
+	char * value;
+	leer_entrada(entrada,&value);
 	if(enviarInt(socket,CLAVE_ENCONTRADA)<=0){
 			log_error(logE,"error al enviar el valor de la clave %s al coordinador",key);
 			return -1;
@@ -717,7 +719,8 @@ bool compactar(){
 	int pos = 0;
 	for(i=0;i<size;i++){
 		t_entrada * entrada = (t_entrada*)list_get(tablaEntradas,i);
-		char * value = leer_entrada(entrada);
+		char * value ;
+		leer_entrada(entrada, &value);
 		escribirEntrada(value,pos,nombre_archivo);
 		free(value);
 		entrada->entry=pos;
