@@ -840,7 +840,7 @@ void liberar_clave(char * key){
 		return (strcmp(clave,key)==0);
 	}
 
-	char * clave_a_liberar = (char*) list_remove(claves_sin_instancia,igualClave);
+	char * clave_a_liberar = (char*) list_remove_by_condition(claves_sin_instancia,igualClave);
 	free(clave_a_liberar);
 	log_trace(logT, "se libero la clave %s", key);
 }
