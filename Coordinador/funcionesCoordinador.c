@@ -841,7 +841,9 @@ void liberar_clave(char * key){
 	}
 
 	char * clave_a_liberar = (char*) list_remove_by_condition(claves_sin_instancia,igualClave);
-	free(clave_a_liberar);
+	if (clave_a_liberar != NULL){
+		free(clave_a_liberar);
+	}
 	log_trace(logT, "se libero la clave %s", key);
 }
 /*************** FIN OPERACION STORE *****************/
