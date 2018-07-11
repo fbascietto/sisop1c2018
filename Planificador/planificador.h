@@ -19,7 +19,7 @@
 #ifndef PLANIFICADOR_H_
 #define PLANIFICADOR_H_
 
-#define ESI_IMPOSTOR -10
+#define BLOQUEO_SISTEMA -10
 
 //structs
 typedef struct {
@@ -145,7 +145,7 @@ void obtenerInstancia(char* keySearch);
 void listBlockedProcesses(char* keySearch);
 void matarProceso(int ESI_ID);
 void detectarDeadlock();
-void liberarEsiImpostor();
+void quitarBloqueoSistema();
 
 
 //funciones auxiliares

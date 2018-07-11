@@ -308,7 +308,7 @@ bool recibirMensajeEsi(int socketCliente){
 			log_trace(logPlan,"veo si el ESI %d tiene menor rafaga que el esi %d", ESIMenorRafaga->id, esi_ejecutando->id);
 			sem_wait(&productorConsumidor);
 
-			if(ESIMenorRafaga->rafagaEstimada < esi_ejecutando->rafagaEstimada){
+			if(ESIMenorRafaga->rafagaEstimada < (esi_ejecutando->rafagaEstimada - esi_ejecutando->rafagaActual)){
 				cambiarEstimado(esi_ejecutando);
 				moverAListos(esi_ejecutando);
 				esi_ejecutando = ESIMenorRafaga;
