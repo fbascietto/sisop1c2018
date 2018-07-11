@@ -53,7 +53,14 @@ int almacenarEntrada(char * key, t_entrada * entrada, int largoValue){
 	if(!obtenerEntrada(key,&entrada)){
 		strcpy(entrada->key,key);
 		list_add(tablaEntradas,entrada);
+	} else{
+		int i;
+		int entradas_ocupadas = calculoCantidadEntradas(strlen(entrada->size));
+		for(i=0;i<entradas_ocupadas;i++){
+			bitarray_clean_bit(t_inst_bitmap,entrada->entry+i);
+		}
 	}
+
 	entrada->ultimaRef = operacionNumero;
 
 	entrada->size = largoValue;  /* largo de value */
