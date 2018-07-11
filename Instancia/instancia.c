@@ -32,14 +32,14 @@ int main() {
 
 		operacionNumero = 0;
 
-		pthread_t threadDump;
+		/*pthread_t threadDump;
 		if(pthread_create(&threadDump,NULL,dump, NULL)){
 			log_error(logE,"Error generando thread para Dump");
-		}
+		}*/
 
 		int check = reviewPuntoMontaje(whitelist);
 
-		log_trace("Se inicializó la Instancia, se encontraron %d entradas de una ejecución anterior.", check);
+		log_trace(logT,"Se inicializó la Instancia, se encontraron %d entradas de una ejecución anterior.", check);
 		list_destroy(whitelist);
 		while(1){
 			int instruccion;
@@ -80,7 +80,7 @@ int main() {
 
 			pthread_mutex_unlock(&mx_Dump);
 		}
-		pthread_join(threadDump, NULL);
+		//pthread_join(threadDump, NULL);
 		close_gracefully();
 	return 0;
 }

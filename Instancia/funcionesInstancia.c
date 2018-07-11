@@ -22,7 +22,7 @@ int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada, int socket){
 		return pos_aux;
 	}
 
-	entrada = NULL;
+	*entrada = NULL;
 	int pos = 0;
 	int n = calculoCantidadEntradas(lenValue);
 	pos = findNFreeBloques(t_inst_bitmap, n);
@@ -43,9 +43,6 @@ int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada, int socket){
 			log_error(logE,"No hay %d bloques libres, se reemplaza entrada",n);
 			seleccionarAlgoritmo();
 		}
-	} else {
-		*entrada = malloc(sizeof(t_entrada));
-		(*entrada)->entry = numEntradaActual;
 	}
 	return pos;
 }
@@ -75,7 +72,12 @@ bool obtenerEntrada(char * key,t_entrada ** entrada){
 		}
 		return retorno;
 	}
-	*entrada =(t_entrada *) list_find(tablaEntradas,findByKey);
+
+	t_entrada	*otra_entrada =(t_entrada *) list_find(tablaEntradas,findByKey);
+	if(retorno){
+		*entrada = otra_entrada;
+	}
+
 	return retorno;
 }
 
@@ -119,7 +121,7 @@ void inicializarPuntoMontaje(char * path, char * filename){
 int archivoAentrada(char* filename){
 
 	FILE* arch;
-	t_entrada* entrada;
+	t_entrada* entrada = NULL;
 	char* filePath = string_new();
 	char* value = string_new();
 
@@ -140,11 +142,14 @@ int archivoAentrada(char* filename){
 
 	int pos = calcularSiguienteEntrada(lenValue, &entrada, 0);
 
-	if(pos<=0){
+	if(pos<0 && entrada == NULL ){
 		return -1;
+	}else if(entrada == NULL){
+		entrada = malloc(sizeof(t_entrada));
+		entrada->entry = pos;
 	}
 
-	almacenarEntrada(filename,pos,lenValue);
+	almacenarEntrada(filename,entrada,lenValue);
 	escribirEntrada(value, pos, nombre_Instancia);
 
 	fclose(arch);
@@ -197,7 +202,7 @@ int reviewPuntoMontaje(t_list * whitelist){
 	}
 
 	free(instancia);
-	return count-1;
+	return count;
 }
 
 int abrirArchivoDatos(char * path, char * filename){
@@ -237,7 +242,11 @@ void escribirEntrada(char * escribir, int pos, char * nombre_archivo){
 
 	int lenValue = strlen(escribir);
 	int exactPos = pos*tamanioEntrada;
-	memcpy(map[pos],escribir,lenValue);
+	int b;
+	for(b=0;b<lenValue;b++){
+		map[exactPos+b] = escribir[b];
+	}
+
 
 	int entradasOcupadas = calculoCantidadEntradas(lenValue);
 
@@ -246,12 +255,9 @@ void escribirEntrada(char * escribir, int pos, char * nombre_archivo){
 		bitarray_set_bit(t_inst_bitmap,i);
 	}
 
-	if (strlen(escribir) % tamanioEntrada > 0){
-		log_trace(logT,"Se escribió con exito sobre la entrada %d y con un total de %d entradas.", pos, entradasOcupadas + 1);
 
-	} else {
 		log_trace(logT,"Se escribió con exito sobre la entrada %d y con un total de %d entradas.", pos, entradasOcupadas);
-	}
+
 	munmap(map,qEntradas * tamanioEntrada);
 
 	close(data);
@@ -270,11 +276,11 @@ int recibirValue(int socketConn, char** value){
 
 int recibirKey(int socket, char ** key){
 	int size = LONGITUD_CLAVE;
-		char * mensaje = malloc(size);
+		*key = malloc(size);
 
 			int largoLeido = 0, llegoTodo = 0, totalLeido = 0;
 		while(!llegoTodo){
-				largoLeido = recv(socket, mensaje + totalLeido, size, 0);
+				largoLeido = recv(socket, *key + totalLeido, size, 0);
 
 				//toda esta fumada es para cuando algun cliente se desconecta.
 				if(largoLeido == -1){
@@ -286,8 +292,6 @@ int recibirKey(int socket, char ** key){
 				size -= largoLeido;
 				if(size <= 0) llegoTodo = 1;
 			}
-		strcpy(*key,mensaje);
-		free(mensaje);
 		return totalLeido;
 }
 
@@ -310,13 +314,17 @@ int recibirEntrada(int socket){
 	int lenValue = strlen(value);
 	int entradasAOcupar = calculoCantidadEntradas(lenValue);
 
-	t_entrada* entrada;
+	t_entrada* entrada = NULL;
 
 	int pos = calcularSiguienteEntrada(lenValue, &entrada, socket);
 
-	if(pos<=0){
+	if(pos<0 && entrada == NULL){
 		return -1;
+	}else if(entrada == NULL){
+		entrada = malloc(sizeof(t_entrada));
+		entrada->entry = pos;
 	}
+
 
 	almacenarEntrada(key, entrada, lenValue);
 	escribirEntrada(value, entrada->entry, nombre_Instancia);
@@ -431,13 +439,13 @@ void configureLoggers(char* instName){
 
 	char* logPath = string_new();
 
-	/* para correr desde ECLIPSE
+	/* para correr desde ECLIPSE*/
 	string_append(&logPath,"../Recursos/Logs/");
-	*/
+
 
 	/* para correr desde CONSOLA
-*/
-	string_append(&logPath,"../../Recursos/Logs/");
+
+	string_append(&logPath,"../../Recursos/Logs/");*/
 
 
 	string_append(&logPath,instName);
@@ -551,16 +559,16 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	/* SI SE CORRE DESDE ECLIPSE
+	/* SI SE CORRE DESDE ECLIPSE*/
 	infoConfig = config_create("../Recursos/Configuracion/instancia.config");
-	 */
+
 
 
 
 	/* SI SE CORRE DESDE CONSOLA
-*/
-	infoConfig = config_create("../../Recursos/Configuracion/instancia.config");
 
+	infoConfig = config_create("../../Recursos/Configuracion/instancia.config");
+*/
 	if(config_has_property(infoConfig, "IP_COORDINADOR")){
 		coordinador_IP = config_get_string_value(infoConfig, "IP_COORDINADOR");
 	}
