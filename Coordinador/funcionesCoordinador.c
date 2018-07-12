@@ -50,7 +50,6 @@ void *esperarConexiones(void *args) {
 				break;
 
 			case PLANIFICADOR:;
-			pthread_t threadAtencionPlanificador;
 			argsPlanificador->socketPlanificador = nuevoSocket;
 			break;
 
@@ -135,7 +134,7 @@ bool existeInstancia(char* nombreInstancia, t_instancia ** instancia){
 }
 
 void eliminarInstancia(t_instancia * instancia){
-	bool* mismo_nombre(void* parametro) {
+	bool mismo_nombre(void* parametro) {
 		t_instancia* inst = (t_instancia*) parametro;
 		return strcmp(inst->nombre,instancia->nombre) == 0;
 	}
@@ -184,7 +183,7 @@ void cargar_configuracion(){
 
 	/*para correr desde CONSOLA
 	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
-	*/
+*/
 	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){
 		coordinador_Puerto_Escucha = config_get_int_value(infoConfig, "PUERTO_ESCUCHA");
 	}
@@ -227,7 +226,7 @@ void configureLoggers(){
 	logT = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
-	*/
+*/
 }
 
 void destroyLoggers(){

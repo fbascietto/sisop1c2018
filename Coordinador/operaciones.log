@@ -1,2 +1,160 @@
 ESI	|	OPERACION
-ESI10	|	GET lalala:sadk ESI10	|	GET un:get ESI10	|	GET otro:get ESI10	|	GET tu:vieja ESI10	|	GET damela:copa ESI10	|	GET dame:atuhermana ESI10	|	GET lalala:sadk1 ESI10	|	GET un:get1 ESI10	|	GET otro:ge1t ESI10	|	GET tu:vieja1 ESI10	|	GET damela:c1opa ESI10	|	GET dame:atu1hermana ESI10	|	GET lalala:sadk2 ESI10	|	GET un:get12 ESI10	|	GET otro:get2 ESI10	|	GET tu:vieja2 ESI10	|	GET damela:c2opa ESI10	|	GET dame:atu2hermana ESI10	|	GET lalala:sadk3 ESI10	|	GET un:get3 ESI10	|	GET otro:ge3t ESI10	|	GET tu:vieja3 ESI10	|	GET damela:c3opa ESI10	|	GET dame:atu3hermana ESI10	|	GET lalala:sadk4 ESI10	|	GET un:get4 ESI10	|	GET otro:ge4t ESI10	|	GET tu:vieja4 ESI10	|	GET damela:c4opa ESI10	|	GET dame:atu4hermana ESI10	|	GET lalala:sadk5 ESI10	|	GET un:get5 ESI10	|	GET otro:ge5t ESI10	|	GET tu:vieja5 ESI10	|	GET damela:c5opa ESI10	|	GET dame:atu5hermana ESI7	|	GET lalala:sadk ESI7	|	GET un:get ESI7	|	GET otro:get ESI7	|	GET tu:vieja ESI7	|	GET damela:copa ESI7	|	GET dame:atuhermana ESI7	|	GET lalala:sadk1 ESI7	|	GET un:get1 ESI7	|	GET otro:ge1t ESI7	|	GET tu:vieja1 ESI7	|	GET damela:c1opa ESI7	|	GET dame:atu1hermana ESI7	|	GET lalala:sadk2 ESI7	|	GET un:get12 ESI7	|	GET otro:get2 ESI7	|	GET tu:vieja2 ESI7	|	GET damela:c2opa ESI7	|	GET dame:atu2hermana ESI7	|	GET lalala:sadk3 ESI7	|	GET un:get3 ESI7	|	GET otro:ge3t ESI7	|	GET tu:vieja3 ESI7	|	GET damela:c3opa ESI7	|	GET dame:atu3hermana ESI7	|	GET lalala:sadk4 ESI7	|	GET un:get4 ESI7	|	GET otro:ge4t ESI7	|	GET tu:vieja4 ESI7	|	GET damela:c4opa ESI7	|	GET dame:atu4hermana ESI7	|	GET lalala:sadk5 ESI7	|	GET un:get5 ESI7	|	GET otro:ge5t ESI7	|	GET tu:vieja5 ESI7	|	GET damela:c5opa ESI7	|	GET dame:atu5hermana ESI11	|	GET lalala:sadk ESI9	|	GET lalala:sadk ESI10	|	GET lalala:sadk ESI9	|	GET lalala:sadk ESI10	|	GET lalala:sadk ESI11	|	GET deportes:futbol:messi ESI11	|	GET deportes:futbol:messi ESI11	|	GET deportes:futbol:messi ESI11	|	GET deportes:futbol:menem ESI11	|	SET deportes:futbol:menem Lionel MenemESI11	|	GET deportes:futbol:menem ESI11	|	SET deportes:futbol:menem Lionel MenemESI11	|	GET deportes:futbol:menem ESI11	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:basquet:ginobili ESI10	|	SET deportes:basquet:ginobili Emanuel GinobiliESI10	|	GET prueba ESI10	|	SET prueba unoESI10	|	GET lalala ESI10	|	SET lalala dosESI10	|	GET prueba ESI10	|	SET prueba unoESI10	|	GET lalala ESI10	|	SET lalala dosESI10	|	GET prueba ESI10	|	SET prueba unoESI10	|	GET lalala ESI10	|	SET lalala dosESI10	|	GET prueba ESI10	|	SET prueba unoESI10	|	GET lalala ESI10	|	SET lalala dosESI10	|	STORE prueba ESI10	|	GET prueba ESI10	|	SET prueba unoESI10	|	GET lalala ESI10	|	SET lalala dosESI11	|	GET prueba ESI11	|	GET prueba ESI10	|	GET prueba ESI10	|	GET lalala ESI10	|	STORE prueba ESI10	|	STORE lalala ESI10	|	GET prueba ESI10	|	GET lalala ESI10	|	STORE prueba ESI10	|	GET prueba ESI10	|	GET lalala ESI10	|	STORE prueba ESI10	|	GET prueba ESI10	|	GET lalala ESI10	|	SET lalala leleleESI10	|	GET prueba ESI10	|	GET lalala ESI10	|	SET lalala leleleESI10	|	GET prueba ESI10	|	GET lalala ESI10	|	SET lalala leleleESI10	|	SET prueba prROBaESI10	|	GET prueba ESI10	|	GET lalala ESI10	|	SET lalala leleleESI10	|	SET prueba prROBaESI10	|	GET prueba ESI10	|	GET lalala ESI10	|	SET lalala leleleESI10	|	SET prueba prROBaESI11	|	GET prueba ESI11	|	GET prueba ESI10	|	GET prueba ESI10	|	GET lalala ESI10	|	SET lalala leleleESI10	|	SET prueba prROBaESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:basquet:ginobili ESI10	|	SET deportes:basquet:ginobili Emanuel GinobiliESI10	|	STORE deportes:basquet:ginobili ESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:basquet:ginobili ESI10	|	SET deportes:basquet:ginobili Emanuel GinobiliESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:basquet:ginobili ESI10	|	SET deportes:basquet:ginobili Emanuel GinobiliESI10	|	GET deportes:futbol:menem ESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:basquet:ginobili ESI10	|	SET deportes:basquet:ginobili Emanuel GinobiliESI10	|	STORE deportes:basquet:ginobili ESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:basquet:ginobili ESI10	|	SET deportes:basquet:ginobili Emanuel GinobiliESI10	|	STORE deportes:basquet:ginobili ESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:basquet:ginobili ESI10	|	SET deportes:basquet:ginobili Emanuel GinobiliESI10	|	STORE deportes:basquet:ginobili ESI9	|	GET deportes:futbol:menem ESI9	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:basquet:ginobili ESI10	|	SET deportes:basquet:ginobili Emanuel GinobiliESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:basquet:ginobili ESI10	|	SET deportes:basquet:ginobili Emanuel GinobiliESI10	|	STORE deportes:basquet:ginobili ESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:basquet:ginobili ESI10	|	SET deportes:basquet:ginobili Emanuel GinobiliESI10	|	STORE deportes:basquet:ginobili ESI10	|	GET futbol:messi ESI10	|	SET futbol:messi TraemeLaCopa
+ESI10	|	GET lalala:sadk ESI10	|	GET un:get ESI10	|	GET otro:get ESI10	|	GET tu:vieja ESI10	|	GET damela:copa ESI10	|	GET dame:atuhermana ESI10	|	GET lalala:sadk1 ESI10	|	GET un:get1 ESI10	|	GET otro:ge1t ESI10	|	GET tu:vieja1 ESI10	|	GET damela:c1opa ESI10	|	GET dame:atu1hermana ESI10	|	GET lalala:sadk2 ESI10	|	GET un:get12 ESI10	|	GET otro:get2 ESI10	|	GET tu:vieja2 ESI10	|	GET damela:c2opa ESI10	|	GET dame:atu2hermana ESI10	|	GET lalala:sadk3 ESI10	|	GET un:get3 ESI10	|	GET otro:ge3t ESI10	|	GET tu:vieja3 ESI10	|	GET damela:c3opa ESI10	|	GET dame:atu3hermana ESI10	|	GET lalala:sadk4 ESI10	|	GET un:get4 ESI10	|	GET otro:ge4t ESI10	|	GET tu:vieja4 ESI10	|	GET damela:c4opa ESI10	|	GET dame:atu4hermana ESI10	|	GET lalala:sadk5 ESI10	|	GET un:get5 ESI10	|	GET otro:ge5t ESI10	|	GET tu:vieja5 ESI10	|	GET damela:c5opa ESI10	|	GET dame:atu5hermana ESI7	|	GET lalala:sadk ESI7	|	GET un:get ESI7	|	GET otro:get ESI7	|	GET tu:vieja ESI7	|	GET damela:copa ESI7	|	GET dame:atuhermana ESI7	|	GET lalala:sadk1 ESI7	|	GET un:get1 ESI7	|	GET otro:ge1t ESI7	|	GET tu:vieja1 ESI7	|	GET damela:c1opa ESI7	|	GET dame:atu1hermana ESI7	|	GET lalala:sadk2 ESI7	|	GET un:get12 ESI7	|	GET otro:get2 ESI7	|	GET tu:vieja2 ESI7	|	GET damela:c2opa ESI7	|	GET dame:atu2hermana ESI7	|	GET lalala:sadk3 ESI7	|	GET un:get3 ESI7	|	GET otro:ge3t ESI7	|	GET tu:vieja3 ESI7	|	GET damela:c3opa ESI7	|	GET dame:atu3hermana ESI7	|	GET lalala:sadk4 ESI7	|	GET un:get4 ESI7	|	GET otro:ge4t ESI7	|	GET tu:vieja4 ESI7	|	GET damela:c4opa ESI7	|	GET dame:atu4hermana ESI7	|	GET lalala:sadk5 ESI7	|	GET un:get5 ESI7	|	GET otro:ge5t ESI7	|	GET tu:vieja5 ESI7	|	GET damela:c5opa ESI7	|	GET dame:atu5hermana ESI11	|	GET lalala:sadk ESI9	|	GET lalala:sadk ESI10	|	GET lalala:sadk ESI9	|	GET lalala:sadk ESI10	|	GET lalala:sadk ESI11	|	GET deportes:futbol:messi ESI11	|	GET deportes:futbol:messi ESI11	|	GET deportes:futbol:messi ESI11	|	GET deportes:futbol:menem ESI11	|	SET deportes:futbol:menem Lionel MenemESI11	|	GET deportes:futbol:menem ESI11	|	SET deportes:futbol:menem Lionel MenemESI11	|	GET deportes:futbol:menem ESI11	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:basquet:ginobili ESI10	|	SET deportes:basquet:ginobili Emanuel GinobiliESI10	|	GET prueba ESI10	|	SET prueba unoESI10	|	GET lalala ESI10	|	SET lalala dosESI10	|	GET prueba ESI10	|	SET prueba unoESI10	|	GET lalala ESI10	|	SET lalala dosESI10	|	GET prueba ESI10	|	SET prueba unoESI10	|	GET lalala ESI10	|	SET lalala dosESI10	|	GET prueba ESI10	|	SET prueba unoESI10	|	GET lalala ESI10	|	SET lalala dosESI10	|	STORE prueba ESI10	|	GET prueba ESI10	|	SET prueba unoESI10	|	GET lalala ESI10	|	SET lalala dosESI11	|	GET prueba ESI11	|	GET prueba ESI10	|	GET prueba ESI10	|	GET lalala ESI10	|	STORE prueba ESI10	|	STORE lalala ESI10	|	GET prueba ESI10	|	GET lalala ESI10	|	STORE prueba ESI10	|	GET prueba ESI10	|	GET lalala ESI10	|	STORE prueba ESI10	|	GET prueba ESI10	|	GET lalala ESI10	|	SET lalala leleleESI10	|	GET prueba ESI10	|	GET lalala ESI10	|	SET lalala leleleESI10	|	GET prueba ESI10	|	GET lalala ESI10	|	SET lalala leleleESI10	|	SET prueba prROBaESI10	|	GET prueba ESI10	|	GET lalala ESI10	|	SET lalala leleleESI10	|	SET prueba prROBaESI10	|	GET prueba ESI10	|	GET lalala ESI10	|	SET lalala leleleESI10	|	SET prueba prROBaESI11	|	GET prueba ESI11	|	GET prueba ESI10	|	GET prueba ESI10	|	GET lalala ESI10	|	SET lalala leleleESI10	|	SET prueba prROBaESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:basquet:ginobili ESI10	|	SET deportes:basquet:ginobili Emanuel GinobiliESI10	|	STORE deportes:basquet:ginobili ESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:basquet:ginobili ESI10	|	SET deportes:basquet:ginobili Emanuel GinobiliESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:basquet:ginobili ESI10	|	SET deportes:basquet:ginobili Emanuel GinobiliESI10	|	GET deportes:futbol:menem ESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:basquet:ginobili ESI10	|	SET deportes:basquet:ginobili Emanuel GinobiliESI10	|	STORE deportes:basquet:ginobili ESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:basquet:ginobili ESI10	|	SET deportes:basquet:ginobili Emanuel GinobiliESI10	|	STORE deportes:basquet:ginobili ESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:basquet:ginobili ESI10	|	SET deportes:basquet:ginobili Emanuel GinobiliESI10	|	STORE deportes:basquet:ginobili ESI9	|	GET deportes:futbol:menem ESI9	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:basquet:ginobili ESI10	|	SET deportes:basquet:ginobili Emanuel GinobiliESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:basquet:ginobili ESI10	|	SET deportes:basquet:ginobili Emanuel GinobiliESI10	|	STORE deportes:basquet:ginobili ESI10	|	GET deportes:futbol:menem ESI10	|	SET deportes:futbol:menem Lionel MenemESI10	|	GET deportes:basquet:ginobili ESI10	|	SET deportes:basquet:ginobili Emanuel GinobiliESI10	|	STORE deportes:basquet:ginobili ESI10	|	GET futbol:messi ESI10	|	SET futbol:messi TraemeLaCopaESI10	|	GET e3:sony:juegos 
+ESI10	|	GET e3:microsoft:juegos 
+ESI10	|	SET e3:sony:juegos TLOU2
+ESI10	|	SET e3:sony:juegos Spiderman
+ESI10	|	SET e3:sony:juegos GhostOfTsushima
+ESI10	|	SET e3:sony:juegos DeathStranding
+ESI10	|	SET e3:sony:juegos ResidenEvil2Remake
+ESI10	|	SET e3:sony:juegos Destiny2DLCForsaken
+ESI10	|	SET e3:microsoft:juegos DLCCuphead
+ESI10	|	SET e3:microsoft:juegos ForzaHorizon4
+ESI10	|	SET e3:microsoft:juegos Gears5
+ESI10	|	SET e3:microsoft:juegos MetroExodus
+ESI10	|	SET e3:microsoft:juegos Fallout76
+ESI10	|	SET e3:microsoft:juegos TheDivision2
+ESI10	|	SET e3:microsoft:juegos DyingLight2
+ESI10	|	SET e3:microsoft:juegos Crackdown3
+ESI10	|	SET e3:microsoft:juegos HaloInfinite
+ESI10	|	SET e3:microsoft:juegos KingdomHearts3
+ESI10	|	STORE e3:microsoft:juegos 
+ESI10	|	STORE e3:sony:juegos 
+ESI10	|	GET e3:sony:juegos 
+ESI10	|	GET e3:microsoft:juegos 
+ESI10	|	SET e3:sony:juegos TLOU2
+ESI10	|	SET e3:sony:juegos Spiderman
+ESI10	|	SET e3:sony:juegos GhostOfTsushima
+ESI10	|	SET e3:sony:juegos DeathStranding
+ESI10	|	SET e3:sony:juegos ResidenEvil2Remake
+ESI10	|	SET e3:sony:juegos Destiny2DLCForsaken
+ESI10	|	SET e3:microsoft:juegos DLCCuphead
+ESI10	|	SET e3:microsoft:juegos ForzaHorizon4
+ESI10	|	SET e3:microsoft:juegos Gears5
+ESI10	|	SET e3:microsoft:juegos MetroExodus
+ESI10	|	SET e3:microsoft:juegos Fallout76
+ESI10	|	SET e3:microsoft:juegos TheDivision2
+ESI10	|	SET e3:microsoft:juegos DyingLight2
+ESI10	|	SET e3:microsoft:juegos Crackdown3
+ESI10	|	SET e3:microsoft:juegos HaloInfinite
+ESI10	|	SET e3:microsoft:juegos KingdomHearts3
+ESI10	|	STORE e3:microsoft:juegos 
+ESI10	|	STORE e3:sony:juegos 
+ESI10	|	GET e3:sony:juegos 
+ESI10	|	GET e3:microsoft:juegos 
+ESI10	|	SET e3:sony:juegos TLOU2
+ESI10	|	SET e3:sony:juegos Spiderman
+ESI10	|	SET e3:sony:juegos GhostOfTsushima
+ESI10	|	SET e3:sony:juegos DeathStranding
+ESI10	|	SET e3:sony:juegos ResidenEvil2Remake
+ESI10	|	SET e3:sony:juegos Destiny2DLCForsaken
+ESI10	|	SET e3:microsoft:juegos DLCCuphead
+ESI10	|	SET e3:microsoft:juegos ForzaHorizon4
+ESI10	|	SET e3:microsoft:juegos Gears5
+ESI10	|	SET e3:microsoft:juegos MetroExodus
+ESI10	|	SET e3:microsoft:juegos Fallout76
+ESI10	|	SET e3:microsoft:juegos TheDivision2
+ESI10	|	SET e3:microsoft:juegos DyingLight2
+ESI10	|	SET e3:microsoft:juegos Crackdown3
+ESI10	|	SET e3:microsoft:juegos HaloInfinite
+ESI10	|	SET e3:microsoft:juegos KingdomHearts3
+ESI10	|	STORE e3:microsoft:juegos 
+ESI11	|	GET e3:sony:juegos 
+ESI11	|	GET e3:microsoft:juegos 
+ESI11	|	SET e3:sony:juegos TLOU2
+ESI11	|	SET e3:sony:juegos Spiderman
+ESI11	|	SET e3:sony:juegos GhostOfTsushima
+ESI11	|	SET e3:sony:juegos DeathStranding
+ESI11	|	SET e3:sony:juegos ResidenEvil2Remake
+ESI11	|	SET e3:sony:juegos Destiny2DLCForsaken
+ESI11	|	SET e3:microsoft:juegos DLCCuphead
+ESI11	|	SET e3:microsoft:juegos ForzaHorizon4
+ESI11	|	SET e3:microsoft:juegos Gears5
+ESI11	|	SET e3:microsoft:juegos MetroExodus
+ESI11	|	SET e3:microsoft:juegos Fallout76
+ESI11	|	SET e3:microsoft:juegos TheDivision2
+ESI11	|	SET e3:microsoft:juegos DyingLight2
+ESI11	|	SET e3:microsoft:juegos Crackdown3
+ESI11	|	SET e3:microsoft:juegos HaloInfinite
+ESI11	|	SET e3:microsoft:juegos KingdomHearts3
+ESI11	|	STORE e3:microsoft:juegos 
+ESI11	|	STORE e3:sony:juegos 
+ESI13	|	GET e3:sony:juegos 
+ESI13	|	GET e3:microsoft:juegos 
+ESI13	|	SET e3:sony:juegos TLOU2
+ESI13	|	SET e3:sony:juegos Spiderman
+ESI13	|	SET e3:sony:juegos GhostOfTsushima
+ESI13	|	SET e3:sony:juegos DeathStranding
+ESI13	|	SET e3:sony:juegos ResidenEvil2Remake
+ESI13	|	SET e3:sony:juegos Destiny2DLCForsaken
+ESI13	|	SET e3:microsoft:juegos DLCCuphead
+ESI13	|	SET e3:microsoft:juegos ForzaHorizon4
+ESI13	|	SET e3:microsoft:juegos Gears5
+ESI13	|	SET e3:microsoft:juegos MetroExodus
+ESI13	|	SET e3:microsoft:juegos Fallout76
+ESI13	|	SET e3:microsoft:juegos TheDivision2
+ESI13	|	SET e3:microsoft:juegos DyingLight2
+ESI13	|	SET e3:microsoft:juegos Crackdown3
+ESI13	|	SET e3:microsoft:juegos HaloInfinite
+ESI13	|	SET e3:microsoft:juegos KingdomHearts3
+ESI13	|	STORE e3:microsoft:juegos 
+ESI13	|	STORE e3:sony:juegos 
+ESI15	|	GET e3:sony:juegos 
+ESI15	|	GET e3:microsoft:juegos 
+ESI15	|	SET e3:sony:juegos TLOU2
+ESI15	|	SET e3:sony:juegos Spiderman
+ESI15	|	SET e3:sony:juegos GhostOfTsushima
+ESI15	|	SET e3:sony:juegos DeathStranding
+ESI15	|	SET e3:sony:juegos ResidenEvil2Remake
+ESI15	|	SET e3:sony:juegos Destiny2DLCForsaken
+ESI15	|	SET e3:microsoft:juegos DLCCuphead
+ESI15	|	SET e3:microsoft:juegos ForzaHorizon4
+ESI15	|	SET e3:microsoft:juegos Gears5
+ESI15	|	SET e3:microsoft:juegos MetroExodus
+ESI15	|	SET e3:microsoft:juegos Fallout76
+ESI15	|	SET e3:microsoft:juegos TheDivision2
+ESI15	|	SET e3:microsoft:juegos DyingLight2
+ESI15	|	SET e3:microsoft:juegos Crackdown3
+ESI15	|	SET e3:microsoft:juegos HaloInfinite
+ESI15	|	SET e3:microsoft:juegos KingdomHearts3
+ESI15	|	STORE e3:microsoft:juegos 
+ESI15	|	STORE e3:sony:juegos 
+ESI17	|	GET e3:sony:juegos 
+ESI17	|	GET e3:microsoft:juegos 
+ESI17	|	SET e3:sony:juegos TLOU2
+ESI17	|	SET e3:sony:juegos Spiderman
+ESI17	|	SET e3:sony:juegos GhostOfTsushima
+ESI17	|	SET e3:sony:juegos DeathStranding
+ESI17	|	SET e3:sony:juegos ResidenEvil2Remake
+ESI17	|	SET e3:sony:juegos Destiny2DLCForsaken
+ESI17	|	SET e3:microsoft:juegos DLCCuphead
+ESI17	|	SET e3:microsoft:juegos ForzaHorizon4
+ESI17	|	SET e3:microsoft:juegos Gears5
+ESI17	|	SET e3:microsoft:juegos MetroExodus
+ESI17	|	SET e3:microsoft:juegos Fallout76
+ESI17	|	SET e3:microsoft:juegos TheDivision2
+ESI17	|	SET e3:microsoft:juegos DyingLight2
+ESI17	|	SET e3:microsoft:juegos Crackdown3
+ESI17	|	SET e3:microsoft:juegos HaloInfinite
+ESI17	|	SET e3:microsoft:juegos KingdomHearts3
+ESI17	|	STORE e3:microsoft:juegos 
+ESI17	|	STORE e3:sony:juegos 
+ESI19	|	GET e3:sony:juegos 
+ESI19	|	GET e3:microsoft:juegos 
+ESI19	|	SET e3:sony:juegos TLOU2
+ESI19	|	SET e3:sony:juegos Spiderman
+ESI19	|	SET e3:sony:juegos GhostOfTsushima
+ESI19	|	SET e3:sony:juegos DeathStranding
+ESI19	|	SET e3:sony:juegos ResidenEvil2Remake
+ESI19	|	SET e3:sony:juegos Destiny2DLCForsaken
+ESI19	|	SET e3:microsoft:juegos DLCCuphead
+ESI19	|	SET e3:microsoft:juegos ForzaHorizon4
+ESI19	|	SET e3:microsoft:juegos Gears5
+ESI19	|	SET e3:microsoft:juegos MetroExodus
+ESI19	|	SET e3:microsoft:juegos Fallout76
+ESI19	|	SET e3:microsoft:juegos TheDivision2
+ESI19	|	SET e3:microsoft:juegos DyingLight2
+ESI19	|	SET e3:microsoft:juegos Crackdown3
+ESI19	|	SET e3:microsoft:juegos HaloInfinite
+ESI19	|	SET e3:microsoft:juegos KingdomHearts3
+ESI19	|	STORE e3:microsoft:juegos 
+ESI19	|	STORE e3:sony:juegos 

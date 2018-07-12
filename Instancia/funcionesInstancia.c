@@ -16,8 +16,8 @@ int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada, int socket){
 			  break;
 			default:
 			  pos_aux = reemplazo_Algoritmo;
-					close_gracefully();
-					exit(1);
+			  close_gracefully();
+			  exit(1);
 		}
 		return pos_aux;
 	}
@@ -28,20 +28,37 @@ int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada, int socket){
 	pos = findNFreeBloques(t_inst_bitmap, n);
 
 	if(pos==-1 && socket!=0){
-		if(cuentaBloquesLibre(t_inst_bitmap)>= n){
+		int bloques_libres = cuentaBloquesLibre(t_inst_bitmap);
+		if(bloques_libres>= n){
 			log_trace(logT,"No hay %d bloques contiguos, es necesario compactar",n);
 			if(enviarInt(socket,COMPACTACION)<=0){
 				log_error(logE,"Error al enviar mensaje de compactacion al coordinador");
 			}
 			if(compactar()){
-				calcularSiguienteEntrada(lenValue,entrada, socket);
+				return findNFreeBloques(t_inst_bitmap, n);
 			}else{
-				log_error(logE,"Error al compactar, se reemplazara entrada");
-				seleccionarAlgoritmo();
+				return -1;
 			}
 		}else{
-			log_error(logE,"No hay %d bloques libres, se reemplaza entrada",n);
-			seleccionarAlgoritmo();
+			log_error(logE,"No hay %d bloques libres, se buscara reemplar entrada",n);
+			int resultado = seleccionarAlgoritmo();
+
+			if(n == 1){
+				return -1;
+			}
+			if(bloques_libres+resultado>=n){
+				eliminarEntrada((*entrada)->key);
+				if(enviarInt(socket,COMPACTACION)<=0){
+					log_error(logE,"Error al enviar mensaje de compactacion al coordinador");
+				}
+				if(compactar()){
+					return findNFreeBloques(t_inst_bitmap, n);
+				}else{
+					return -1;
+				}
+			}else{
+
+			}
 		}
 	}
 	return pos;
@@ -89,6 +106,11 @@ void eliminarEntrada(char * key){
 	}
 
 	t_entrada * entrada =(t_entrada *) list_remove_by_condition(tablaEntradas,findByKey);
+	int bloques = calculoCantidadEntradas(entrada->size);
+	int i;
+	for(i=0;i<bloques;i++){
+		bitarray_clean_bit(t_inst_bitmap,entrada->entry+i);
+	}
 	free(entrada);
 }
 
@@ -419,12 +441,7 @@ void leer_entrada(t_entrada* entrada, char** value){
 	int exactPos = entrada->entry*tamanioEntrada;
 	*value = malloc(entrada->size);
 
-	int b = 0;
-	for(b=0;b< entrada->size;b++){
-		(*value)[b] = map[exactPos+b];
-	}
-
-	/* memcpy(*value,map+exactPos,entrada->size); */
+	 memcpy(*value,map+exactPos,entrada->size);
 	log_trace(logT,"Se leyó con exito el value de la clave %s.", entrada->key);
 	munmap(map,fileStat.st_size);
 
@@ -492,7 +509,7 @@ int calculoLRU(int bloques, t_entrada ** entrada){
 		t_entrada* entrada_aux = (t_entrada*) parametro;
 
 		if(menos_usado > (operacionNumero - entrada_aux->ultimaRef)
-				&& (bloques <= (calculoCantidadEntradas(entrada_aux->size)))){
+				&& (1 == (calculoCantidadEntradas(entrada_aux->size)))){
 			menos_usado = operacionNumero - entrada_aux->ultimaRef;
 			*entrada = entrada_aux;
 		}
@@ -517,7 +534,7 @@ int calculoBSU(int bloques, t_entrada ** entrada){
 	for(i=0;i<size;i++){
 		t_entrada* entrada_aux = list_get(tablaEntradas, i);
 		int bloques_entrada = calculoCantidadEntradas(entrada_aux->size);
-		if(bloques_entrada>mayor_tamanio){
+		if(entrada_aux->size>mayor_tamanio && bloques_entrada == 1){
 			if(bloques_entrada >= bloques){
 				mayor_tamanio = bloques_entrada;
 				*entrada = entrada_aux;
@@ -533,7 +550,7 @@ int calculoCircular(int bloques, t_entrada ** entrada){
 	while(1){
 		t_entrada* entrada_aux = list_get(tablaEntradas,numEntradaActual);
 		numEntradaActual++;
-		if(calculoCantidadEntradas(entrada_aux->size) >= bloques){
+		if(calculoCantidadEntradas(entrada_aux->size) == 1){
 			*entrada = entrada_aux;
 			return 1;
 		}
@@ -599,10 +616,6 @@ void cargar_configuracion(){
 /* ********** FUNCIONES BITMAP ********** */
 
 t_bitarray* creaAbreBitmap(char* nombre_Instancia){
-
-
-	int nuevo = 0;
-
 
 	int bloquesEnBits = qEntradas; // (tamanioEntrada / (1024*1024)) ;
 
