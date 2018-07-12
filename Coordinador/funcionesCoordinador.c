@@ -313,7 +313,9 @@ void* atenderESI(void *args){
 	t_argumentos_thESI* nuevoESI = (t_argumentos_thESI*) args;
 	log_trace(logT, "id de socket %d", nuevoESI->socketESI);
 	recibirMensajeESI(nuevoESI->socketESI);
-	return &(nuevoESI->socketESI);
+	int retorno = nuevoESI->socketESI;
+	free(nuevoESI);
+	return (void*)retorno;
 }
 
 void recibirMensajeESI(int socket){
@@ -514,11 +516,14 @@ int ejecutarOperacionGET(int socket){
 		}
 		if(buscarInstanciaContenedora(clave,&instancia)<=0){
 				list_add(claves_sin_instancia,clave);
+		}else{
+			free(clave);
 		}
 
 		break;
 
 	case CLAVE_BLOQUEADA:
+		free(clave);
 		if(enviarInt(socket, CLAVE_BLOQUEADA)<=0){
 			log_error(logE, "error de conexion con ESI en socket %d",socket);
 			return -1;;
@@ -642,7 +647,7 @@ int contieneClaveInstancia(t_instancia * instancia, char * key){
 
 	t_list* list = list_filter(instancia->claves,contieneClave);
 	int size = list_size(list);
-	free(list);
+	list_destroy(list);
 	return size;
 }
 /**************** FIN OPERACION GET ***************/
@@ -935,9 +940,6 @@ void escucharConsola(){
 	while(1) {
 		linea = readline("DR-Coordinador:" );
 
-		if(linea)
-			add_history(linea);
-
 		if(!strncmp(linea, "exit", 4)) {
 			log_trace(logT,"Se finaliza el Coordinador a pedido.");
 			free(linea);
@@ -951,6 +953,7 @@ void escucharConsola(){
 			printf("El Coordinador sólo acepta ""exit"" o ""clear"".\n");
 		}
 
+		free(linea);
 	}
 }
 
@@ -962,11 +965,27 @@ void * cls(){
 
 void exit_gracefully(){
 
+	void liberarClaves(void * clave){
+				free(clave);
+	}
+
+	list_destroy_and_destroy_elements(claves_sin_instancia,liberarClaves);
+
+	void liberarInstancias(void* parametro){
+		t_instancia * inst = (t_instancia *) parametro;
+		free(inst->nombre);
+		list_destroy_and_destroy_elements(inst->claves,liberarClaves);
+		free(inst);
+
+	}
+
+	free(argsPlanificador);
+	free(coordinador_Algoritmo);
+	free(argsConsolaPlanificador);
 	destroyLoggers();
-	list_destroy(instancias);
+	list_destroy_and_destroy_elements(instancias,liberarInstancias);
 	pthread_mutex_destroy(&mx_logOp);
 
 }
-
 
 
