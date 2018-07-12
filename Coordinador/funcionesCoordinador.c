@@ -43,10 +43,10 @@ void *esperarConexiones(void *args) {
 				if(pthread_create(&threadAtencionESI,NULL, atenderESI, (void*) nuevoESI)){
 					log_error(logE,"Error generando thread para ESI");
 				}
-				/*
+
 				if(pthread_join(threadAtencionESI, NULL)){
 					log_error(logE,"Error uniendo thread para ESI");
-				}*/
+				}
 				break;
 
 			case PLANIFICADOR:;
@@ -58,6 +58,10 @@ void *esperarConexiones(void *args) {
 			argsConsolaPlanificador->socketPlanificador = nuevoSocket;
 			if(pthread_create(&threadAtencionConsolaPlanificador,NULL,atenderConsolaPlanificador, NULL)){
 				log_error(logE,"Error generando thread para Planificador");
+			}
+
+			if(pthread_join(threadAtencionConsolaPlanificador, NULL)){
+				log_error(logE,"Error uniendo thread para CONSOLA_PLANIFICADOR");
 			}
 			break;
 
@@ -85,8 +89,6 @@ int crearInstancia(int nuevoSocket){
 		if(enviarInt(nuevoSocket,tamanio_Entrada)<=0){
 			return -1;
 		}
-
-
 
 	if(existeInstancia(nombreInstancia,&instancia)){
 		instancia->socketInstancia = nuevoSocket;
@@ -179,12 +181,12 @@ void cargar_configuracion(){
 	t_config* infoConfig;
 
 	/* para correr desde ECLIPSE
-	 */
-	infoConfig = config_create("../Recursos/Configuracion/coordinador.config");
 
-	/*para correr desde CONSOLA
+	infoConfig = config_create("../Recursos/Configuracion/coordinador.config");
+ */
+	/*para correr desde CONSOLA */
 	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
-	 */
+
 
 	/* para correr desde la VM Server
 	infoConfig = config_create("coordinador.config");
@@ -196,7 +198,7 @@ void cargar_configuracion(){
 	}
 
 	if(config_has_property(infoConfig, "ALGORITMO")){
-		coordinador_Algoritmo = config_get_string_value(infoConfig, "ALGORITMO");
+		coordinador_Algoritmo = string_from_format("%s",config_get_string_value(infoConfig, "ALGORITMO"));
 	}
 
 	if(config_has_property(infoConfig, "CANTIDAD_ENTRADAS")){
@@ -211,6 +213,7 @@ void cargar_configuracion(){
 		retardo = config_get_int_value(infoConfig, "RETARDO");
 	}
 
+	config_destroy(infoConfig);
 }
 
 
@@ -222,16 +225,16 @@ void configureLoggers(){
 
 
 	/* para correr desde ECLIPSE
-	 */
+
 	vaciarArchivo("../Recursos/Logs/Coordinador.log");
 	logT = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
 
-
+ */
 	/* para correr desde CONSOLA
-	*/
-	vaciarArchivo("../../Recursos/Logs/Coordinador.log");
+
+	vaciarArchivo("../../Recursos/Logs/Coordinador.log");*/
 	logT = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
@@ -923,7 +926,48 @@ void remover_clave(t_instancia* instancia, char * key){
 	free(clave_borrar);
 }
 
+/***** La mini consola mágica del Coordinador *****/
 
+
+void escucharConsola(){
+
+	char* linea;
+
+	while(1) {
+		linea = readline("DR-Coordinador:" );
+
+		if(linea)
+			add_history(linea);
+
+		if(!strncmp(linea, "exit", 4)) {
+			log_trace(logT,"Se finaliza el Coordinador a pedido.");
+			free(linea);
+			exit_gracefully();
+			exit(1);
+			break;
+		} else if(!strncmp(linea, "clear", 4)) {
+				cls();
+		} else {
+			printf("No se reconoce el comando %s\n",linea);
+			printf("El Coordinador sólo acepta ""exit"" o ""clear"".\n");
+		}
+
+	}
+}
+
+void * cls(){
+	return system("clear");
+}
+
+/***** Fin mini consola Mágica del Coordinador ******/
+
+void exit_gracefully(){
+
+	destroyLoggers();
+	list_destroy(instancias);
+	pthread_mutex_destroy(&mx_logOp);
+
+}
 
 
 

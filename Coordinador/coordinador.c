@@ -15,6 +15,11 @@ int main(){
 
 	claves_sin_instancia = list_create();
 
+	pthread_t threadEscucharConsola;
+	if(pthread_create(&threadEscucharConsola,NULL,escucharConsola,NULL)<0){
+		log_error(logE,"Error en consola coordinador.");
+	}
+
 	FD_ZERO(&fdSocketsEscucha);
 	socketEscucha = escuchar(coordinador_Puerto_Escucha);
 
@@ -27,9 +32,5 @@ int main(){
 
 	esperarConexiones((void*) esperarConexion);
 
-
-	destroyLoggers();
-	list_destroy(instancias);
-	pthread_mutex_destroy(&mx_logOp);
 	return 0;
 }

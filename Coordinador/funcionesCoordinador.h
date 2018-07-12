@@ -64,7 +64,6 @@ pthread_mutex_t mx_logOp;
 
 int proxima_posicion_instancia;
 t_list * instancias;
-
 t_list * claves_sin_instancia;
 
 void *esperarConexiones(void *args);
@@ -108,8 +107,11 @@ void procesarDondeEstaLaClave(int socket);
 void informarCompactacion(t_instancia * instancia);
 void remover_clave(t_instancia* instancia, char * key);
 void enviarClavesAGuardar(t_instancia * instancia);
+void exit_gracefully();
 
-
+/***** mini consola del Coordinador *****/
+void escucharConsola();
+void * cls();
 
 //funciones a borrar
 void simulaEntrada(int socket);
