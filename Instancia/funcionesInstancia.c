@@ -52,22 +52,17 @@ int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada, int socket){
 
 int  almacenarEntrada(char * key, t_entrada * entrada, int largoValue){
 
+	strcpy(entrada->key,key);
+	entrada->size = largoValue;
 
-		strcpy(entrada->key,key);
-
-		int i;
-		int entradas_ocupadas = calculoCantidadEntradas(entrada->size);
-		for(i=0;i<entradas_ocupadas;i++){
-			bitarray_clean_bit(t_inst_bitmap,entrada->entry+i);
-
-		}
-
+	int i;
+	int entradas_ocupadas = calculoCantidadEntradas(entrada->size);
+	for(i=0;i<entradas_ocupadas;i++){
+		bitarray_clean_bit(t_inst_bitmap,entrada->entry+i);
+	}
 	entrada->ultimaRef = operacionNumero;
 
-	entrada->size = largoValue;  /* largo de value */
-
 	return 1;
-
 }
 
 bool obtenerEntrada(char * key,t_entrada ** entrada){
@@ -191,7 +186,7 @@ int reviewPuntoMontaje(t_list * whitelist){
 				while ((res = readdir(folder))){
 
 					bool _esKey(void *key) {
-						return strcmp((char *)key,res->d_name);
+						return strcmp((char *)key,res->d_name)==0;
 					}
 
 					if (strcmp( res->d_name, "." ) && strcmp( res->d_name, ".." ) && strcmp(res->d_name, instancia) && list_any_satisfy(whitelist,_esKey)){
@@ -253,10 +248,13 @@ void escribirEntrada(char * escribir, int pos, char * nombre_archivo){
 	int lenValue = strlen(escribir);
 	int exactPos = pos*tamanioEntrada;
 	int b;
-	for(b=0;b<lenValue;b++){
+
+	/*for(b=0;b<lenValue;b++){
 		map[exactPos+b] = escribir[b];
 	}
+	*/
 
+	memcpy(map+exactPos,escribir,lenValue);
 
 	int entradasOcupadas = calculoCantidadEntradas(lenValue);
 
@@ -266,7 +264,7 @@ void escribirEntrada(char * escribir, int pos, char * nombre_archivo){
 	}
 
 
-		log_trace(logT,"Se escribió con exito sobre la entrada %d y con un total de %d entradas.", pos, entradasOcupadas);
+	log_trace(logT,"Se escribió con exito sobre la entrada %d y con un total de %d entradas.", pos, entradasOcupadas);
 
 	munmap(map,qEntradas * tamanioEntrada);
 
@@ -337,8 +335,6 @@ int recibirEntrada(int socket){
 			}
 	}
 
-
-
 	almacenarEntrada(key, entrada, lenValue);
 	escribirEntrada(value, entrada->entry, nombre_Instancia);
 
@@ -397,7 +393,7 @@ int persistir_clave(char *key){
 
 	fclose(keyStore);
 
-	// free(value);
+	free(value);
 
 	free(path_final);
 	return 1;
@@ -413,7 +409,7 @@ void leer_entrada(t_entrada* entrada, char** value){
 		exit(EXIT_FAILURE);
 	}
 
-	unsigned char* map = (unsigned char*) mmap(NULL, qEntradas * tamanioEntrada , PROT_READ | PROT_WRITE, MAP_SHARED, data, sizeof(unsigned char)*entrada->entry*tamanioEntrada);
+	unsigned char* map = (unsigned char*) mmap(NULL, qEntradas * tamanioEntrada , PROT_READ | PROT_WRITE, MAP_SHARED, data, 0);
 
 	if (map == MAP_FAILED){
 		close(data);
@@ -421,17 +417,19 @@ void leer_entrada(t_entrada* entrada, char** value){
 		exit(EXIT_FAILURE);
 	   }
 
-	int bytesAleer = entrada->size;
 
-	int b = 0;
 	int exactPos = entrada->entry*tamanioEntrada;
 	*value = malloc(entrada->size+1);
 
-	for(b=0;b<bytesAleer;b++){
+	int b = 0;
+
+
+
+	for(b=0;b< entrada->entry;b++){
 		(*value)[b] = map[exactPos+b];
 	}
-	(*value)[entrada->size] = '\0';
 
+//	memcpy(*value,map+exactPos,entrada->size);
 	log_trace(logT,"Se leyó con exito el value de la clave %s.", entrada->key);
 	munmap(map,fileStat.st_size);
 
