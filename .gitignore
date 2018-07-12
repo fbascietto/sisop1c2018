@@ -55,7 +55,6 @@ dkms.conf
 *.o
 *.so
 *.d
-*.mk
 *.a
 Release
 Debug
