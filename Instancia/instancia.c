@@ -114,7 +114,7 @@ void close_gracefully(){
 	void liberarEntrada(void * parametro){
 		free(parametro);
 	}
-
+	destruir_bitmap(t_inst_bitmap);
 	list_destroy_and_destroy_elements(tablaEntradas,liberarEntrada);
 
 	free(coordinador_IP);

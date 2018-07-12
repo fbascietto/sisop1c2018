@@ -237,16 +237,14 @@ int abrirArchivoDatos(char * path, char * filename){
 	string_append(&archivoDat, path);
 	string_append(&archivoDat, filename);
 	string_append(&archivoDat, ".dat");
-
-	FILE* instanciaDat = fopen(archivoDat,"a+");
+	int instanciaDat = open(archivoDat,O_RDWR,O_APPEND);
 	if (instanciaDat < 0){
 			log_error(logE, "Fallo al abrir el archivo .dat de la instancia.");
-			exit(EXIT_FAILURE);
 	}
 
 	free(archivoDat);
-	int fd = fileno(instanciaDat);
-	return fd;
+
+	return instanciaDat;
 
 }
 
@@ -267,7 +265,7 @@ void escribirEntrada(char * escribir, int pos, char * nombre_archivo){
 
 	int lenValue = strlen(escribir)+1;
 	int exactPos = pos*tamanioEntrada;
-	int b;
+
 
 	/*for(b=0;b<lenValue;b++){
 		map[exactPos+b] = escribir[b];
@@ -448,6 +446,7 @@ void leer_entrada(t_entrada* entrada, char** value){
 	 memcpy(*value,map+exactPos,entrada->size);
 	log_trace(logT,"Se leyó con exito el value de la clave %s.", entrada->key);
 	munmap(map,fileStat.st_size);
+	close(data);
 
 }
 
