@@ -14,6 +14,7 @@
 #include "../Recursos/estructuras.h"
 #include "../Recursos/protocolo.h"
 #include "../Biblioteca/biblio_sockets.h"
+#include "../Biblioteca/file_cleaner.h"
 #include <commons/collections/list.h>
 #include <sys/stat.h> /* contiene las constantes para MKDIR */
 #include <dirent.h>

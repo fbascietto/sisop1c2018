@@ -462,13 +462,12 @@ void configureLoggers(char* instName){
 	char* logPath = string_new();
 
 	/* para correr desde ECLIPSE
-
 	string_append(&logPath,"../Recursos/Logs/");
  */
-	/* para correr desde CONSOLA */
+
+	/* para correr desde CONSOLA
+ */
 	string_append(&logPath,"../../Recursos/Logs/");
-
-
 
 	/* para correr en la VM Server
 	string_append(&logPath,"");
@@ -587,10 +586,11 @@ void cargar_configuracion(){
 	t_config* infoConfig;
 
 	/* SI SE CORRE DESDE ECLIPSE
-
 	infoConfig = config_create("../Recursos/Configuracion/instancia.config");
 */
-	/* SI SE CORRE DESDE CONSOLA*/
+
+	/* SI SE CORRE DESDE CONSOLA
+*/
 	infoConfig = config_create("../../Recursos/Configuracion/instancia.config");
 
 

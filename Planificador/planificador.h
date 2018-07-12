@@ -14,6 +14,7 @@
 #include "../Recursos/estructuras.h"
 #include "../Recursos/protocolo.h"
 #include "../Biblioteca/biblio_sockets.h"
+#include "../Biblioteca/file_cleaner.h"
 #include <semaphore.h>
 
 #ifndef PLANIFICADOR_H_
@@ -89,6 +90,7 @@ char* keySolicitada;
 //auxiliar para funcion de deadlock
 bool encontroDeadlock;
 bool yaImprimioDeadlock;
+t_list* deadlocks;
 
 //funciones de colas
 void inicializarColas();
@@ -143,6 +145,7 @@ void unblock(char*);
 void pauseScheduler();
 void goOn();
 void getStatus(char* keySearch);
+void mostarEsiPoseedor(char* keySearch);
 void obtenerValor(char* keySearch);
 void obtenerInstancia(char* keySearch);
 void listBlockedProcesses(char* keySearch);
@@ -165,6 +168,7 @@ void agregarElementos(t_list* origen, t_list* destino);
 void convertirABarra0(char*, int);
 void eliminarEsi(void* elemento);
 void eliminarKey(void* elemento);
+bool procesoYaDetectado(int id, t_list* deadlocks);
 
 //funciones mock
 void testearDeadlock();

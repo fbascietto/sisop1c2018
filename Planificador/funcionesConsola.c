@@ -236,7 +236,7 @@ void obtenerInstancia(char* keySearch){
 		string_append(&msj2, "La clave se guardaria en: ");
 		break;
 	}
-	log_info(logPlan, msj);
+	log_debug(logPlan, msj);
 
 	char* instanciaBusqueda = recibirMensajeArchivo(socketConsolaCoordinador);
 
@@ -251,9 +251,39 @@ void obtenerInstancia(char* keySearch){
 }
 
 void getStatus(char* keySearch){
+	mostarEsiPoseedor(keySearch);
 	obtenerValor(keySearch);
 	obtenerInstancia(keySearch);
 	listBlockedProcesses(keySearch);
+}
+
+void mostarEsiPoseedor(char* keySearch){
+
+	t_clave* key = obtenerKey(keySearch);
+	char* msj = string_new();
+
+	if(key != NULL){
+
+		if(key->esi_poseedor == NULL){
+
+			string_append_with_format(&msj, "La clave no esta asignada a ningun proceso.");
+
+		}else if(key->esi_poseedor->id == BLOQUEO_SISTEMA){
+
+			string_append_with_format(&msj, "La clave esta bloqueada por el sistema.");
+
+		}else{
+
+			string_append_with_format(&msj, "La clave esta asignada al ESI %d", key->esi_poseedor->id);
+
+		}
+
+		log_debug(logPlan, msj);
+
+	}
+
+	free(msj);
+
 }
 
 void listBlockedProcesses(char* keySearch){
@@ -367,23 +397,23 @@ void quitarBloqueoSistema() {
 		if(!estaLibre(clave)){
 			esi = clave->esi_poseedor;
 			if (esi->id == BLOQUEO_SISTEMA) {
-//				liberarKeys(esiBloqueoSistema);
+				//				liberarKeys(esiBloqueoSistema);
 
 				for(int j=0; j<list_size(esi->clavesTomadas); j++){
 
-				t_clave* clave = list_get(esi->clavesTomadas, j);
-				clave->esi_poseedor = NULL;
+					t_clave* clave = list_get(esi->clavesTomadas, j);
+					clave->esi_poseedor = NULL;
 
-				if(queue_size(clave->colaBloqueados)>0){
-					t_proceso_esi* esi_a_desbloquear = queue_pop(clave->colaBloqueados);
-					cambiarEstimado(esi_a_desbloquear);
-					moverAListos(esi_a_desbloquear);
-				}
+					if(queue_size(clave->colaBloqueados)>0){
+						t_proceso_esi* esi_a_desbloquear = queue_pop(clave->colaBloqueados);
+						cambiarEstimado(esi_a_desbloquear);
+						moverAListos(esi_a_desbloquear);
+					}
 
-				char* claveID = malloc(LONGITUD_CLAVE);
-				strcpy(claveID, clave->nombre);
-				log_trace(logPlan, "clave %s liberada", claveID);
-				free(claveID);
+					char* claveID = malloc(LONGITUD_CLAVE);
+					strcpy(claveID, clave->nombre);
+					log_trace(logPlan, "clave %s liberada", claveID);
+					free(claveID);
 				}
 
 				list_destroy(esiBloqueoSistema->clavesTomadas);
@@ -473,21 +503,54 @@ void agregarElementos(t_list* origen, t_list* destino){
 
 }
 
+bool procesoYaDetectado(int id, t_list* deadlocks){
+
+	int i;
+	t_list* deadlock;
+	t_proceso_esi* proceso;
+
+	for(i=0; i<list_size(deadlocks); i++){
+
+		deadlock = list_get(deadlocks, i);
+
+		int j;
+
+		for(j=0; j<list_size(deadlock); j++){
+
+			proceso = list_get(deadlock, j);
+
+			if(coincideID(id, proceso->id)) return true;
+
+		}
+
+	}
+
+	return false;
+
+}
+
 
 void detectarDeadlock(){
 
 	int i;
 	t_clave* key;
 	t_list* keysFiltradas = list_filter(listaKeys, estaTomada);
-	t_list* procesosEnDeadlock = list_create();
-	encontroDeadlock = false;
-	yaImprimioDeadlock = false;
 
 	for(i=0; i<list_size(keysFiltradas); i++){
 
+		encontroDeadlock = false;
+		yaImprimioDeadlock = false;
+
+		t_list* procesosEnDeadlock = list_create();
 		key = list_get(keysFiltradas, i);
 
 		if(key->esi_poseedor->id != BLOQUEO_SISTEMA){
+
+			if(!list_is_empty(deadlocks)){
+
+				if(procesoYaDetectado(key->esi_poseedor->id, deadlocks)) continue;
+
+			}
 
 			list_add(procesosEnDeadlock, key->esi_poseedor);
 
@@ -495,19 +558,14 @@ void detectarDeadlock(){
 
 			verificarEsperaCircular(key->esi_poseedor->clavesTomadas, procesosEnDeadlock);
 
-			if(encontroDeadlock){
-				break;
-			}
-
-			list_clean(procesosEnDeadlock);
-
 		}
 
 	}
 
-	list_destroy(procesosEnDeadlock);
+	if(list_is_empty(deadlocks)) log_info(logPlan, "No hay deadlock");
 
-	if(!encontroDeadlock) log_info(logPlan, "No hay deadlock");
+	list_clean(deadlocks);
+
 
 }
 
@@ -531,6 +589,9 @@ void verificarEsperaCircular(t_list* keys, t_list* procesosEnDeadlock){
 		if(encontroDeadlock) {
 			imprimirIDs(procesosEnDeadlockAux);
 			yaImprimioDeadlock = true;
+			t_list* deadlockPosta = list_create();
+			agregarElementos(procesosEnDeadlockAux, deadlockPosta);
+			list_add(deadlocks, deadlockPosta);
 		}
 
 		list_clean(procesosEnDeadlockAux);
@@ -647,12 +708,12 @@ void imprimirIDs(t_list* procesosEnDeadlock){
 		if(i + 1 != list_size(procesosEnDeadlock)){
 			string_append(&esis, ", ");
 		}else{
-			string_append(&esis, ".\n");
+			string_append(&esis, ".");
 		}
 
 	}
 
-	log_info(logPlan, esis);
+	log_warning(logPlan, esis);
 
 	free(esis);
 

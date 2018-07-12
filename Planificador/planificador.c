@@ -69,6 +69,7 @@ void iniciarVariablesGlobales(){
 
 void inicializarColas(){
 	listaKeys = list_create();
+	deadlocks = list_create();
 	colaListos = queue_create();
 	colaTerminados = queue_create();
 
@@ -391,7 +392,7 @@ void cargar_configuracion(){
 
 	/*	para correr desde ECLIPSE
 	infoConfig = config_create("../Recursos/Configuracion/planificador.config");
-	 */
+ */
 
 	/* para correr desde CONSOLA
 	 */
@@ -482,7 +483,9 @@ void exit_gracefully(int return_nr) {
 	queue_destroy_and_destroy_elements(colaListos, eliminarEsi);
 	queue_destroy_and_destroy_elements(colaTerminados, eliminarEsi);
 	list_destroy_and_destroy_elements(listaKeys, eliminarKey);
+	list_destroy(deadlocks);
 	log_info(logPlan, "planificador finalizado");
+	log_destroy(logPlan);
 	exit(return_nr);
 }
 
