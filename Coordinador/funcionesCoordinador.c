@@ -43,10 +43,10 @@ void *esperarConexiones(void *args) {
 				if(pthread_create(&threadAtencionESI,NULL, atenderESI, (void*) nuevoESI)){
 					log_error(logE,"Error generando thread para ESI");
 				}
-
+/*
 				if(pthread_join(threadAtencionESI, NULL)){
 					log_error(logE,"Error uniendo thread para ESI");
-				}
+				}*/
 				break;
 
 			case PLANIFICADOR:;
@@ -59,10 +59,10 @@ void *esperarConexiones(void *args) {
 			if(pthread_create(&threadAtencionConsolaPlanificador,NULL,atenderConsolaPlanificador, NULL)){
 				log_error(logE,"Error generando thread para Planificador");
 			}
-
+/*
 			if(pthread_join(threadAtencionConsolaPlanificador, NULL)){
 				log_error(logE,"Error uniendo thread para CONSOLA_PLANIFICADOR");
-			}
+			}*/
 			break;
 
 			case INSTANCIA:
