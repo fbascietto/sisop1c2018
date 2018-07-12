@@ -91,7 +91,7 @@ bool obtenerEntrada(char * key,t_entrada ** entrada){
 		return retorno;
 	}
 
-	t_entrada	*otra_entrada =(t_entrada *) list_find(tablaEntradas,findByKey);
+	t_entrada *otra_entrada =(t_entrada *) list_find(tablaEntradas,findByKey);
 	if(retorno){
 		*entrada = otra_entrada;
 	}
@@ -343,7 +343,8 @@ int recibirEntrada(int socket){
 	int entradasAOcupar = calculoCantidadEntradas(lenValue);
 
 	t_entrada* entrada = NULL;
-	if(!obtenerEntrada(key,&entrada)){
+	bool encontro = obtenerEntrada(key,&entrada);
+	if(!encontro){
 		int pos = calcularSiguienteEntrada(lenValue, &entrada, socket);
 
 			if(pos<0 && entrada == NULL){
@@ -358,6 +359,7 @@ int recibirEntrada(int socket){
 	almacenarEntrada(key, entrada, lenValue);
 	escribirEntrada(value, entrada->entry, nombre_Instancia);
 
+	free(key);
 	free(value);
 
 	return entradasAOcupar;
@@ -374,10 +376,12 @@ int ejecutarStore(int coordinador_socket){
 			return -1;
 		}else{
 			if(persistir_clave(key)<=0){
+				free(key);
 				log_trace(logE, "error al persistir clave");
 				return -1;
 			}
 		}
+		free(key);
 		return 1;
 }
 
@@ -459,12 +463,12 @@ void configureLoggers(char* instName){
 	char* logPath = string_new();
 
 	/* para correr desde ECLIPSE
-	 */
-	string_append(&logPath,"../Recursos/Logs/");
 
-	/* para correr desde CONSOLA
-	string_append(&logPath,"../../Recursos/Logs/");
+	string_append(&logPath,"../Recursos/Logs/");
  */
+	/* para correr desde CONSOLA */
+	string_append(&logPath,"../../Recursos/Logs/");
+
 
 
 	/* para correr en la VM Server
@@ -584,19 +588,21 @@ void cargar_configuracion(){
 	t_config* infoConfig;
 
 	/* SI SE CORRE DESDE ECLIPSE
-	*/
-	infoConfig = config_create("../Recursos/Configuracion/instancia.config");
 
-	/* SI SE CORRE DESDE CONSOLA
-	infoConfig = config_create("../../Recursos/Configuracion/instancia.config");
+	infoConfig = config_create("../Recursos/Configuracion/instancia.config");
 */
+	/* SI SE CORRE DESDE CONSOLA*/
+	infoConfig = config_create("../../Recursos/Configuracion/instancia.config");
+
 
 	/* SI SE CORRE EN LA VM SERVER
 	infoConfig = config_create("instancia.config");
 	 */
 
 	if(config_has_property(infoConfig, "IP_COORDINADOR")){
-		coordinador_IP = config_get_string_value(infoConfig, "IP_COORDINADOR");
+		coordinador_IP = string_from_format("%s",config_get_string_value(infoConfig, "IP_COORDINADOR"));
+
+
 	}
 
 	if(config_has_property(infoConfig, "PUERTO_COORDINADOR")){
@@ -604,21 +610,27 @@ void cargar_configuracion(){
 	}
 
 	if(config_has_property(infoConfig, "ALGORITMO")){
+
 		reemplazo_Algoritmo = algoritmoR(config_get_string_value(infoConfig, "ALGORITMO"));
+
 	}
 
 	if(config_has_property(infoConfig, "PUNTO_MONTAJE")){
-		punto_Montaje = config_get_string_value(infoConfig, "PUNTO_MONTAJE");
+		punto_Montaje = string_from_format("%s",config_get_string_value(infoConfig, "PUNTO_MONTAJE"));
 	}
 
 	if(config_has_property(infoConfig, "NOMBRE")){
-		nombre_Instancia = config_get_string_value(infoConfig, "NOMBRE");
+		nombre_Instancia = string_from_format("%s",config_get_string_value(infoConfig, "NOMBRE"));
+
+
 	}
 
 	if(config_has_property(infoConfig, "INTERVALO_DUMP")){
 		intervalo_dump = config_get_int_value(infoConfig, "INTERVALO_DUMP");
+
 	}
 
+	config_destroy(infoConfig);
 }
 
 

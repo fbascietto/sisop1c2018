@@ -42,11 +42,14 @@ int main() {
 
 		log_trace(logT,"Se inicializó la Instancia, se encontraron %d entradas de una ejecución anterior.", check);
 		list_destroy(whitelist);
-
-		while(1){
+		bool mantenerLoop = true;
+		while(mantenerLoop){
 			int instruccion;
 
-			recibirInt(coordinador_socket,&instruccion);
+			if(recibirInt(coordinador_socket,&instruccion)<=0){
+				log_error(logE,"coordinador desconectado");
+				break;
+			}
 
 			pthread_mutex_lock(&mx_Dump);
 
@@ -57,22 +60,42 @@ int main() {
 					log_trace(logT,"Se recibe instruccion SET.\n");
 					cantidadEntradas = recibirEntrada(coordinador_socket);
 					if(cantidadEntradas<=0){
-										//TODO que hace si da error?
+						log_error(logE,"coordinador desconectado");
+						mantenerLoop = false;
+						break;
 					}
-					enviarInt(coordinador_socket,ENTRADAS_OCUPADAS);
-					enviarInt(coordinador_socket,cuentaBloquesUsados(t_inst_bitmap));
+					if(enviarInt(coordinador_socket,ENTRADAS_OCUPADAS)<=0){
+						log_error(logE,"coordinador desconectado");
+						mantenerLoop = false;
+						break;
+
+					}
+					if(enviarInt(coordinador_socket,cuentaBloquesUsados(t_inst_bitmap))<=0){
+						log_error(logE,"coordinador desconectado");
+						mantenerLoop = false;
+						break;
+					};
 					break;
 				case STORE_ENTRADA:
 					operacionNumero++;
 					log_trace(logT,"Se recibe instruccion STORE.\n");
 					ejecutarStore(coordinador_socket);
-					enviarInt(coordinador_socket,cuentaBloquesUsados(t_inst_bitmap));
+					if(enviarInt(coordinador_socket,cuentaBloquesUsados(t_inst_bitmap))<=0){
+						log_error(logE,"coordinador desconectado");
+						mantenerLoop = false;
+						break;
+
+					}
 					break;
 				case OBTENER_VALUE:
 					operacionNumero++;
 					log_trace(logT,"Se recibe solicitud para obener valor de key.\n");
 
-					entregarValue(coordinador_socket);
+					if(entregarValue(coordinador_socket)<=0){
+						log_error(logE,"coordinador desconectado");
+						mantenerLoop = false;
+						break;
+					}
 					break;
 				case COMPACTACION:
 					log_trace(logT,"Se recibe orden de compactar.\n");
@@ -88,7 +111,11 @@ int main() {
 }
 
 void close_gracefully(){
-	list_destroy(tablaEntradas);
+	void liberarEntrada(void * parametro){
+		free(parametro);
+	}
+
+	list_destroy_and_destroy_elements(tablaEntradas,liberarEntrada);
 
 	free(coordinador_IP);
 	free(punto_Montaje);
