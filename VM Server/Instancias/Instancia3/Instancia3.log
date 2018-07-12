@@ -1,0 +1,336 @@
+[TRACE] 10:46:55:880 Instancia/(15555:15555): Conectado a Coordinador OK.
+
+[TRACE] 10:46:55:881 Instancia/(15555:15555): Se inicializó la Instancia, se encontraron 0 entradas de una ejecución anterior.
+[TRACE] 10:54:49:324 Instancia/(15555:15555): Se recibe instruccion SET.
+
+[TRACE] 10:54:49:324 Instancia/(15555:15555): Se escribió con exito sobre la entrada 0 y con un total de 1 entradas.
+[TRACE] 10:54:49:605 Instancia/(15555:15555): Se recibe instruccion SET.
+
+[TRACE] 10:54:49:644 Instancia/(15555:15555): Se escribió con exito sobre la entrada 0 y con un total de 1 entradas.
+[TRACE] 10:54:49:884 Instancia/(15555:15555): Se recibe instruccion SET.
+
+[TRACE] 10:54:49:925 Instancia/(15555:15555): Se escribió con exito sobre la entrada 0 y con un total de 1 entradas.
+[TRACE] 10:54:50:164 Instancia/(15555:15555): Se recibe instruccion SET.
+
+[TRACE] 10:54:50:205 Instancia/(15555:15555): Se escribió con exito sobre la entrada 0 y con un total de 1 entradas.
+[TRACE] 10:54:50:444 Instancia/(15555:15555): Se recibe instruccion SET.
+
+[TRACE] 10:54:50:484 Instancia/(15555:15555): Se escribió con exito sobre la entrada 0 y con un total de 1 entradas.
+[TRACE] 10:54:50:724 Instancia/(15555:15555): Se recibe instruccion SET.
+
+[TRACE] 10:54:50:764 Instancia/(15555:15555): Se escribió con exito sobre la entrada 0 y con un total de 1 entradas.
+[TRACE] 10:54:51:4 Instancia/(15555:15555): Se recibe instruccion SET.
+
+[TRACE] 10:54:51:44 Instancia/(15555:15555): Se escribió con exito sobre la entrada 0 y con un total de 1 entradas.
+[TRACE] 10:54:51:284 Instancia/(15555:15555): Se recibe instruccion SET.
+
+[TRACE] 10:54:51:324 Instancia/(15555:15555): Se escribió con exito sobre la entrada 0 y con un total de 1 entradas.
+[TRACE] 10:54:51:565 Instancia/(15555:15555): Se recibe instruccion SET.
+
+[TRACE] 10:54:51:604 Instancia/(15555:15555): Se escribió con exito sobre la entrada 0 y con un total de 1 entradas.
+[TRACE] 10:54:51:844 Instancia/(15555:15555): Se recibe instruccion SET.
+
+[TRACE] 10:54:51:884 Instancia/(15555:15555): Se escribió con exito sobre la entrada 0 y con un total de 1 entradas.
+[TRACE] 10:54:52:125 Instancia/(15555:15555): Se recibe instruccion STORE.
+
+[TRACE] 10:54:52:164 Instancia/(15555:15555): Se leyó con exito el value de la clave e3:microsoft:juegos.
+[TRACE] 10:54:55:644 Instancia/(15555:15555): Se recibe instruccion SET.
+
+[TRACE] 10:54:55:684 Instancia/(15555:15555): Se escribió con exito sobre la entrada 1 y con un total de 1 entradas.
+[TRACE] 10:54:56:484 Instancia/(15555:15555): Se recibe instruccion SET.
+
+[TRACE] 10:54:56:524 Instancia/(15555:15555): Se escribió con exito sobre la entrada 2 y con un total de 1 entradas.
+[TRACE] 10:54:57:324 Instancia/(15555:15555): Se recibe instruccion SET.
+
+[TRACE] 10:54:57:364 Instancia/(15555:15555): Se escribió con exito sobre la entrada 3 y con un total de 1 entradas.
+[TRACE] 10:54:58:445 Instancia/(15555:15555): Se recibe instruccion STORE.
+
+[TRACE] 10:54:58:489 Instancia/(15555:15555): Se leyó con exito el value de la clave postre:ingrediente3.
+[TRACE] 10:54:59:296 Instancia/(15555:15555): Se recibe instruccion STORE.
+
+[TRACE] 10:54:59:336 Instancia/(15555:15555): Se leyó con exito el value de la clave postre:ingrediente6.
+[TRACE] 10:55:00:138 Instancia/(15555:15555): Se recibe instruccion STORE.
+
+[TRACE] 10:55:00:180 Instancia/(15555:15555): Se leyó con exito el value de la clave postre:ingrediente9.
+[TRACE] 10:55:04:348 Instancia/(15555:15555): Se recibe instruccion SET.
+
+[TRACE] 10:55:04:388 Instancia/(15555:15555): Se escribió con exito sobre la entrada 4 y con un total de 1 entradas.
+[TRACE] 10:55:05:189 Instancia/(15555:15555): Se recibe instruccion SET.
+
+[TRACE] 10:55:05:228 Instancia/(15555:15555): Se escribió con exito sobre la entrada 5 y con un total de 1 entradas.
+[TRACE] 10:55:06:28 Instancia/(15555:15555): Se recibe instruccion SET.
+
+[TRACE] 10:55:06:68 Instancia/(15555:15555): Se escribió con exito sobre la entrada 6 y con un total de 1 entradas.
+[TRACE] 10:55:06:868 Instancia/(15555:15555): Se recibe instruccion SET.
+
+[TRACE] 10:55:06:908 Instancia/(15555:15555): Se escribió con exito sobre la entrada 7 y con un total de 1 entradas.
+[TRACE] 10:55:07:712 Instancia/(15555:15555): Se recibe instruccion SET.
+
+[TRACE] 10:55:07:752 Instancia/(15555:15555): Se escribió con exito sobre la entrada 8 y con un total de 1 entradas.
+[TRACE] 10:55:29:155 Instancia/(15555:15555): Se recibe instruccion SET.
+
+[TRACE] 10:55:41:614 Instancia/(16632:16632): Conectado a Coordinador OK.
+
+[TRACE] 10:55:41:614 Instancia/(16632:16632): Se inicializó la Instancia, se encontraron 0 entradas de una ejecución anterior.
+[TRACE] 11:08:34:614 Instancia/(16861:16861): Conectado a Coordinador OK.
+
+[TRACE] 11:08:34:614 Instancia/(16861:16861): Se inicializó la Instancia, se encontraron 0 entradas de una ejecución anterior.
+[TRACE] 11:09:01:797 Instancia/(16861:16861): Se recibe instruccion SET.
+
+[TRACE] 11:09:01:797 Instancia/(16861:16861): Se escribió con exito sobre la entrada 0 y con un total de 1 entradas.
+[TRACE] 11:09:02:648 Instancia/(16861:16861): Se recibe instruccion SET.
+
+[TRACE] 11:09:02:688 Instancia/(16861:16861): Se escribió con exito sobre la entrada 1 y con un total de 1 entradas.
+[TRACE] 11:09:03:488 Instancia/(16861:16861): Se recibe instruccion SET.
+
+[TRACE] 11:09:03:528 Instancia/(16861:16861): Se escribió con exito sobre la entrada 2 y con un total de 1 entradas.
+[TRACE] 11:09:04:328 Instancia/(16861:16861): Se recibe instruccion SET.
+
+[TRACE] 11:09:04:368 Instancia/(16861:16861): Se escribió con exito sobre la entrada 3 y con un total de 1 entradas.
+[TRACE] 11:09:05:168 Instancia/(16861:16861): Se recibe instruccion SET.
+
+[TRACE] 11:09:05:208 Instancia/(16861:16861): Se escribió con exito sobre la entrada 4 y con un total de 1 entradas.
+[TRACE] 11:09:18:20 Instancia/(16861:16861): Se recibe instruccion SET.
+
+[TRACE] 11:09:18:60 Instancia/(16861:16861): Se escribió con exito sobre la entrada 5 y con un total de 1 entradas.
+[TRACE] 11:09:18:861 Instancia/(16861:16861): Se recibe instruccion SET.
+
+[TRACE] 11:09:18:900 Instancia/(16861:16861): Se escribió con exito sobre la entrada 6 y con un total de 1 entradas.
+[TRACE] 11:09:19:420 Instancia/(16861:16861): Se recibe instruccion STORE.
+
+[TRACE] 11:09:19:460 Instancia/(16861:16861): Se leyó con exito el value de la clave platoprincipal:ingrediente2.
+[TRACE] 11:09:20:260 Instancia/(16861:16861): Se recibe instruccion STORE.
+
+[TRACE] 11:09:20:300 Instancia/(16861:16861): Se leyó con exito el value de la clave platoprincipal:ingrediente5.
+[TRACE] 11:09:28:300 Instancia/(16861:16861): Se recibe instruccion SET.
+
+[TRACE] 11:09:28:340 Instancia/(16861:16861): Se escribió con exito sobre la entrada 7 y con un total de 2 entradas.
+[TRACE] 11:09:29:140 Instancia/(16861:16861): Se recibe instruccion SET.
+
+[TRACE] 11:09:29:180 Instancia/(16861:16861): Se escribió con exito sobre la entrada 9 y con un total de 2 entradas.
+[TRACE] 11:09:29:980 Instancia/(16861:16861): Se recibe instruccion SET.
+
+[TRACE] 11:09:30:20 Instancia/(16861:16861): Se escribió con exito sobre la entrada 11 y con un total de 2 entradas.
+[TRACE] 11:09:30:820 Instancia/(16861:16861): Se recibe instruccion SET.
+
+[TRACE] 11:09:30:860 Instancia/(16861:16861): Se escribió con exito sobre la entrada 13 y con un total de 1 entradas.
+[TRACE] 11:09:31:660 Instancia/(16861:16861): Se recibe instruccion SET.
+
+[TRACE] 11:09:31:700 Instancia/(16861:16861): Se escribió con exito sobre la entrada 14 y con un total de 1 entradas.
+[TRACE] 11:09:32:500 Instancia/(16861:16861): Se recibe instruccion SET.
+
+[TRACE] 11:09:32:541 Instancia/(16861:16861): Se escribió con exito sobre la entrada 15 y con un total de 1 entradas.
+[TRACE] 11:09:33:340 Instancia/(16861:16861): Se recibe instruccion SET.
+
+[TRACE] 11:09:33:380 Instancia/(16861:16861): Se escribió con exito sobre la entrada 16 y con un total de 1 entradas.
+[TRACE] 11:09:34:180 Instancia/(16861:16861): Se recibe instruccion SET.
+
+[TRACE] 11:09:34:220 Instancia/(16861:16861): Se escribió con exito sobre la entrada 17 y con un total de 1 entradas.
+[TRACE] 11:09:35:20 Instancia/(16861:16861): Se recibe instruccion SET.
+
+[TRACE] 11:09:35:60 Instancia/(16861:16861): Se escribió con exito sobre la entrada 18 y con un total de 1 entradas.
+[TRACE] 11:09:35:860 Instancia/(16861:16861): Se recibe instruccion SET.
+
+[TRACE] 11:09:35:900 Instancia/(16861:16861): Se escribió con exito sobre la entrada 19 y con un total de 2 entradas.
+[TRACE] 11:09:36:705 Instancia/(16861:16861): Se recibe instruccion STORE.
+
+[TRACE] 11:09:36:744 Instancia/(16861:16861): Se leyó con exito el value de la clave sandwich:bondiola:completo.
+[TRACE] 11:09:37:544 Instancia/(16861:16861): Se recibe instruccion STORE.
+
+[TRACE] 11:09:37:588 Instancia/(16861:16861): Se leyó con exito el value de la clave sandwich:lomo:completo.
+[TRACE] 11:09:38:388 Instancia/(16861:16861): Se recibe instruccion STORE.
+
+[TRACE] 11:09:38:428 Instancia/(16861:16861): Se leyó con exito el value de la clave sandwich:vacio:completo.
+[TRACE] 11:09:39:228 Instancia/(16861:16861): Se recibe instruccion STORE.
+
+[TRACE] 11:09:39:268 Instancia/(16861:16861): Se leyó con exito el value de la clave parrilla:chinchulines.
+[TRACE] 11:09:40:68 Instancia/(16861:16861): Se recibe instruccion STORE.
+
+[TRACE] 11:09:40:108 Instancia/(16861:16861): Se leyó con exito el value de la clave parrilla:vacio.
+[TRACE] 11:09:40:908 Instancia/(16861:16861): Se recibe instruccion STORE.
+
+[TRACE] 11:09:40:948 Instancia/(16861:16861): Se leyó con exito el value de la clave parrilla:matambre:simple.
+[TRACE] 11:09:41:748 Instancia/(16861:16861): Se recibe instruccion STORE.
+
+[TRACE] 11:09:41:788 Instancia/(16861:16861): Se leyó con exito el value de la clave parrilla:molleja.
+[TRACE] 11:09:42:740 Instancia/(16861:16861): Se recibe instruccion STORE.
+
+[TRACE] 11:09:42:780 Instancia/(16861:16861): Se leyó con exito el value de la clave cocina:batatasfritas.
+[TRACE] 11:09:43:302 Instancia/(16861:16861): Se recibe instruccion STORE.
+
+[TRACE] 11:17:29:505 Instancia/(16918:16918): Conectado a Coordinador OK.
+
+[TRACE] 11:17:29:505 Instancia/(16918:16918): Se inicializó la Instancia, se encontraron 0 entradas de una ejecución anterior.
+[TRACE] 11:17:36:720 Instancia/(16918:16918): Se recibe instruccion SET.
+
+[TRACE] 11:17:36:720 Instancia/(16918:16918): Se escribió con exito sobre la entrada 0 y con un total de 1 entradas.
+[TRACE] 11:17:38:124 Instancia/(16918:16918): Se recibe instruccion STORE.
+
+[TRACE] 11:17:38:164 Instancia/(16918:16918): Se leyó con exito el value de la clave platoprincipal:ingrediente3.
+[TRACE] 11:17:57:284 Instancia/(16918:16918): Se recibe instruccion SET.
+
+[TRACE] 11:17:57:324 Instancia/(16918:16918): Se escribió con exito sobre la entrada 1 y con un total de 1 entradas.
+[TRACE] 11:17:58:124 Instancia/(16918:16918): Se recibe instruccion SET.
+
+[TRACE] 11:17:58:164 Instancia/(16918:16918): Se escribió con exito sobre la entrada 2 y con un total de 1 entradas.
+[TRACE] 11:17:58:969 Instancia/(16918:16918): Se recibe instruccion SET.
+
+[TRACE] 11:17:59:8 Instancia/(16918:16918): Se escribió con exito sobre la entrada 3 y con un total de 1 entradas.
+[TRACE] 11:17:59:808 Instancia/(16918:16918): Se recibe instruccion SET.
+
+[TRACE] 11:17:59:848 Instancia/(16918:16918): Se escribió con exito sobre la entrada 4 y con un total de 1 entradas.
+[TRACE] 11:18:00:648 Instancia/(16918:16918): Se recibe instruccion SET.
+
+[TRACE] 11:18:00:688 Instancia/(16918:16918): Se escribió con exito sobre la entrada 5 y con un total de 1 entradas.
+[TRACE] 11:18:01:492 Instancia/(16918:16918): Se recibe instruccion SET.
+
+[TRACE] 11:18:01:528 Instancia/(16918:16918): Se escribió con exito sobre la entrada 6 y con un total de 1 entradas.
+[TRACE] 11:18:02:329 Instancia/(16918:16918): Se recibe instruccion SET.
+
+[TRACE] 11:18:02:368 Instancia/(16918:16918): Se escribió con exito sobre la entrada 7 y con un total de 2 entradas.
+[TRACE] 11:18:03:168 Instancia/(16918:16918): Se recibe instruccion SET.
+
+[TRACE] 11:18:03:208 Instancia/(16918:16918): Se escribió con exito sobre la entrada 9 y con un total de 1 entradas.
+[TRACE] 11:18:04:8 Instancia/(16918:16918): Se recibe instruccion SET.
+
+[TRACE] 11:18:04:48 Instancia/(16918:16918): Se escribió con exito sobre la entrada 10 y con un total de 1 entradas.
+[TRACE] 11:18:04:848 Instancia/(16918:16918): Se recibe instruccion SET.
+
+[TRACE] 11:18:04:888 Instancia/(16918:16918): Se escribió con exito sobre la entrada 11 y con un total de 1 entradas.
+[TRACE] 11:18:05:688 Instancia/(16918:16918): Se recibe instruccion STORE.
+
+[TRACE] 11:18:05:728 Instancia/(16918:16918): Se leyó con exito el value de la clave sandwich:bondiola:simple.
+[TRACE] 11:18:06:528 Instancia/(16918:16918): Se recibe instruccion STORE.
+
+[TRACE] 11:18:06:576 Instancia/(16918:16918): Se leyó con exito el value de la clave sandwich:lomo:simple.
+[TRACE] 11:18:07:380 Instancia/(16918:16918): Se recibe instruccion STORE.
+
+[TRACE] 11:18:07:420 Instancia/(16918:16918): Se leyó con exito el value de la clave sandwich:vacio:simple.
+[TRACE] 11:18:08:225 Instancia/(16918:16918): Se recibe instruccion STORE.
+
+[TRACE] 11:18:08:268 Instancia/(16918:16918): Se leyó con exito el value de la clave sandwich:choripan.
+[TRACE] 11:18:09:69 Instancia/(16918:16918): Se recibe instruccion STORE.
+
+[TRACE] 11:18:09:108 Instancia/(16918:16918): Se leyó con exito el value de la clave parrilla:rinion.
+[TRACE] 11:18:09:909 Instancia/(16918:16918): Se recibe instruccion STORE.
+
+[TRACE] 11:18:09:952 Instancia/(16918:16918): Se leyó con exito el value de la clave parrilla:entrania.
+[TRACE] 11:18:10:752 Instancia/(16918:16918): Se recibe instruccion STORE.
+
+[TRACE] 11:18:10:796 Instancia/(16918:16918): Se leyó con exito el value de la clave parrilla:matambre:alapizza.
+[TRACE] 11:18:11:599 Instancia/(16918:16918): Se recibe instruccion STORE.
+
+[TRACE] 11:18:11:636 Instancia/(16918:16918): Se leyó con exito el value de la clave parrilla:pareja.
+[TRACE] 11:18:12:444 Instancia/(16918:16918): Se recibe instruccion STORE.
+
+[TRACE] 11:18:12:484 Instancia/(16918:16918): Se leyó con exito el value de la clave cocina:tallarines.
+[TRACE] 11:18:13:288 Instancia/(16918:16918): Se recibe instruccion STORE.
+
+[TRACE] 11:18:13:336 Instancia/(16918:16918): Se leyó con exito el value de la clave cocina:suprema.
+[TRACE] 12:07:44:226 Instancia/(16918:16918): Se recibe instruccion STORE.
+
+[TRACE] 12:08:14:988 Instancia/(17919:17919): Conectado a Coordinador OK.
+
+[TRACE] 12:08:14:988 Instancia/(17919:17919): Se inicializó la Instancia, se encontraron 0 entradas de una ejecución anterior.
+[TRACE] 12:08:43:986 Instancia/(17919:17919): Se recibe instruccion SET.
+
+[TRACE] 12:08:43:986 Instancia/(17919:17919): Se escribió con exito sobre la entrada 0 y con un total de 1 entradas.
+[TRACE] 12:08:44:826 Instancia/(17919:17919): Se recibe instruccion SET.
+
+[TRACE] 12:08:44:866 Instancia/(17919:17919): Se escribió con exito sobre la entrada 1 y con un total de 1 entradas.
+[TRACE] 12:08:45:666 Instancia/(17919:17919): Se recibe instruccion SET.
+
+[TRACE] 12:08:45:706 Instancia/(17919:17919): Se escribió con exito sobre la entrada 2 y con un total de 1 entradas.
+[TRACE] 12:08:46:506 Instancia/(17919:17919): Se recibe instruccion SET.
+
+[TRACE] 12:08:46:547 Instancia/(17919:17919): Se escribió con exito sobre la entrada 3 y con un total de 1 entradas.
+[TRACE] 12:08:47:347 Instancia/(17919:17919): Se recibe instruccion SET.
+
+[TRACE] 12:08:47:386 Instancia/(17919:17919): Se escribió con exito sobre la entrada 4 y con un total de 1 entradas.
+[TRACE] 12:09:10:922 Instancia/(17919:17919): Se recibe instruccion SET.
+
+[TRACE] 12:09:10:962 Instancia/(17919:17919): Se escribió con exito sobre la entrada 5 y con un total de 1 entradas.
+[TRACE] 12:09:11:762 Instancia/(17919:17919): Se recibe instruccion SET.
+
+[TRACE] 12:09:11:802 Instancia/(17919:17919): Se escribió con exito sobre la entrada 6 y con un total de 1 entradas.
+[TRACE] 12:09:12:322 Instancia/(17919:17919): Se recibe instruccion STORE.
+
+[TRACE] 12:09:12:362 Instancia/(17919:17919): Se leyó con exito el value de la clave platoprincipal:ingrediente2.
+[TRACE] 12:09:13:162 Instancia/(17919:17919): Se recibe instruccion STORE.
+
+[TRACE] 12:09:13:202 Instancia/(17919:17919): Se leyó con exito el value de la clave platoprincipal:ingrediente5.
+[TRACE] 12:09:21:206 Instancia/(17919:17919): Se recibe instruccion SET.
+
+[TRACE] 12:09:21:246 Instancia/(17919:17919): Se escribió con exito sobre la entrada 7 y con un total de 2 entradas.
+[TRACE] 12:09:22:46 Instancia/(17919:17919): Se recibe instruccion SET.
+
+[TRACE] 12:09:22:86 Instancia/(17919:17919): Se escribió con exito sobre la entrada 9 y con un total de 2 entradas.
+[TRACE] 12:09:22:886 Instancia/(17919:17919): Se recibe instruccion SET.
+
+[TRACE] 12:09:22:926 Instancia/(17919:17919): Se escribió con exito sobre la entrada 11 y con un total de 2 entradas.
+[TRACE] 12:09:23:726 Instancia/(17919:17919): Se recibe instruccion SET.
+
+[TRACE] 12:09:23:766 Instancia/(17919:17919): Se escribió con exito sobre la entrada 13 y con un total de 1 entradas.
+[TRACE] 12:09:24:566 Instancia/(17919:17919): Se recibe instruccion SET.
+
+[TRACE] 12:09:24:606 Instancia/(17919:17919): Se escribió con exito sobre la entrada 14 y con un total de 1 entradas.
+[TRACE] 12:09:25:406 Instancia/(17919:17919): Se recibe instruccion SET.
+
+[TRACE] 12:09:25:446 Instancia/(17919:17919): Se escribió con exito sobre la entrada 15 y con un total de 1 entradas.
+[TRACE] 12:09:26:246 Instancia/(17919:17919): Se recibe instruccion SET.
+
+[TRACE] 12:09:26:286 Instancia/(17919:17919): Se escribió con exito sobre la entrada 16 y con un total de 1 entradas.
+[TRACE] 12:09:27:86 Instancia/(17919:17919): Se recibe instruccion SET.
+
+[TRACE] 12:09:27:127 Instancia/(17919:17919): Se escribió con exito sobre la entrada 17 y con un total de 1 entradas.
+[TRACE] 12:09:27:926 Instancia/(17919:17919): Se recibe instruccion SET.
+
+[TRACE] 12:09:27:966 Instancia/(17919:17919): Se escribió con exito sobre la entrada 18 y con un total de 1 entradas.
+[TRACE] 12:09:28:766 Instancia/(17919:17919): Se recibe instruccion SET.
+
+[TRACE] 12:09:28:806 Instancia/(17919:17919): Se escribió con exito sobre la entrada 19 y con un total de 2 entradas.
+[TRACE] 12:09:29:611 Instancia/(17919:17919): Se recibe instruccion STORE.
+
+[TRACE] 12:09:29:650 Instancia/(17919:17919): Se leyó con exito el value de la clave sandwich:bondiola:completo.
+[TRACE] 12:09:30:451 Instancia/(17919:17919): Se recibe instruccion STORE.
+
+[TRACE] 12:09:30:490 Instancia/(17919:17919): Se leyó con exito el value de la clave sandwich:lomo:completo.
+[TRACE] 12:09:31:290 Instancia/(17919:17919): Se recibe instruccion STORE.
+
+[TRACE] 12:09:31:330 Instancia/(17919:17919): Se leyó con exito el value de la clave sandwich:vacio:completo.
+[TRACE] 12:09:32:130 Instancia/(17919:17919): Se recibe instruccion STORE.
+
+[TRACE] 12:09:32:171 Instancia/(17919:17919): Se leyó con exito el value de la clave parrilla:chinchulines.
+[TRACE] 12:09:32:975 Instancia/(17919:17919): Se recibe instruccion STORE.
+
+[TRACE] 12:09:33:14 Instancia/(17919:17919): Se leyó con exito el value de la clave parrilla:vacio.
+[TRACE] 12:09:33:822 Instancia/(17919:17919): Se recibe instruccion STORE.
+
+[TRACE] 12:09:33:867 Instancia/(17919:17919): Se leyó con exito el value de la clave parrilla:matambre:simple.
+[TRACE] 12:09:34:674 Instancia/(17919:17919): Se recibe instruccion STORE.
+
+[TRACE] 12:09:34:714 Instancia/(17919:17919): Se leyó con exito el value de la clave parrilla:molleja.
+[TRACE] 12:09:35:515 Instancia/(17919:17919): Se recibe instruccion STORE.
+
+[TRACE] 12:09:35:554 Instancia/(17919:17919): Se leyó con exito el value de la clave cocina:batatasfritas.
+[TRACE] 12:09:36:354 Instancia/(17919:17919): Se recibe instruccion STORE.
+
+[TRACE] 12:09:36:394 Instancia/(17919:17919): Se leyó con exito el value de la clave cocina:nioquis.
+[TRACE] 12:09:37:194 Instancia/(17919:17919): Se recibe instruccion STORE.
+
+[TRACE] 12:09:37:234 Instancia/(17919:17919): Se leyó con exito el value de la clave cocina:milanesa:pollo.
+[TRACE] 12:10:20:626 Instancia/(17919:17919): Se recibe instruccion SET.
+
+[TRACE] 12:10:20:666 Instancia/(17919:17919): Se escribió con exito sobre la entrada 21 y con un total de 1 entradas.
+[TRACE] 12:10:21:466 Instancia/(17919:17919): Se recibe instruccion SET.
+
+[TRACE] 12:10:21:506 Instancia/(17919:17919): Se escribió con exito sobre la entrada 22 y con un total de 1 entradas.
+[TRACE] 12:10:22:306 Instancia/(17919:17919): Se recibe instruccion SET.
+
+[TRACE] 12:10:22:347 Instancia/(17919:17919): Se escribió con exito sobre la entrada 23 y con un total de 1 entradas.
+[TRACE] 12:10:23:427 Instancia/(17919:17919): Se recibe instruccion STORE.
+
+[TRACE] 12:10:23:466 Instancia/(17919:17919): Se leyó con exito el value de la clave postre:ingrediente3.
+[TRACE] 12:10:24:266 Instancia/(17919:17919): Se recibe instruccion STORE.
+
+[TRACE] 12:10:24:311 Instancia/(17919:17919): Se leyó con exito el value de la clave postre:ingrediente6.

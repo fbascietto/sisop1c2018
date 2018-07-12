@@ -1,0 +1,739 @@
+ESI	|	OPERACION
+ESI11	|	GET nofunciona ESI11	|	GET planificador:de:mierda ESI11	|	GET memory:leaks ESI12	|	GET nofunciona ESI12	|	GET planificador:de:mierda ESI12	|	GET memory:leaks ESI11	|	GET nofunciona ESI11	|	GET planificador:de:mierda ESI11	|	GET memory:leaks ESI12	|	GET nofunciona ESI12	|	GET planificador:de:mierda ESI12	|	GET memory:leaks ESI12	|	SET nofunciona nadaESI11	|	GET nofunciona ESI11	|	GET planificador:de:mierda ESI11	|	GET memory:leaks ESI11	|	SET nofunciona nadaESI11	|	GET nofunciona ESI11	|	GET planificador:de:mierda ESI11	|	GET memory:leaks ESI11	|	SET nofunciona nadaESI11	|	GET nofunciona ESI11	|	GET planificador:de:mierda ESI11	|	GET memory:leaks ESI11	|	SET nofunciona nadaESI11	|	GET nofunciona ESI11	|	GET planificador:de:mierda ESI11	|	GET memory:leaks ESI11	|	SET nofunciona nadaESI11	|	GET nofunciona ESI11	|	GET planificador:de:mierda ESI11	|	GET memory:leaks ESI12	|	GET nofunciona ESI12	|	GET planificador:de:mierda ESI12	|	GET memory:leaks ESI13	|	GET nofunciona ESI13	|	GET planificador:de:mierda ESI13	|	GET memory:leaks ESI11	|	GET nofunciona ESI11	|	GET planificador:de:mierda ESI11	|	GET memory:leaks ESI12	|	GET nofunciona ESI12	|	GET planificador:de:mierda ESI12	|	GET memory:leaks ESI12	|	GET key1 ESI13	|	GET pruebebeba ESI13	|	GET soylomax ESI13	|	GET gana:croacia ESI13	|	GET aguante:las:rusas ESI13	|	GET te:pruebo:todos ESI13	|	GET barra:cero ESI13	|	GET key2 ESI13	|	GET key4 ESI14	|	GET key1 ESI12	|	GET key1 ESI11	|	GET nofunciona ESI11	|	GET planificador:de:mierda ESI11	|	GET memory:leaks ESI11	|	GET key1 ESI12	|	GET pruebebeba ESI12	|	GET soylomax ESI12	|	GET gana:croacia ESI12	|	GET aguante:las:rusas ESI12	|	GET te:pruebo:todos ESI12	|	GET barra:cero ESI12	|	GET key2 ESI13	|	GET key1 ESI11	|	GET key1 ESI13	|	GET key1 ESI13	|	GET key2 ESI12	|	GET key2 ESI12	|	GET key4 ESI11	|	GET nofunciona ESI11	|	GET planificador:de:mierda ESI11	|	GET memory:leaks ESI11	|	GET key1 ESI12	|	GET pruebebeba ESI12	|	GET soylomax ESI12	|	GET gana:croacia ESI12	|	GET aguante:las:rusas ESI12	|	GET te:pruebo:todos ESI12	|	GET barra:cero ESI12	|	GET key2 ESI13	|	GET key1 ESI12	|	GET key2 ESI12	|	GET key4 ESI11	|	GET key1 ESI13	|	GET key1 ESI13	|	GET key2 ESI11	|	GET nofunciona ESI11	|	GET planificador:de:mierda ESI11	|	GET memory:leaks ESI11	|	GET key1 ESI12	|	GET pruebebeba ESI12	|	GET soylomax ESI12	|	GET gana:croacia ESI12	|	GET aguante:las:rusas ESI12	|	GET te:pruebo:todos ESI12	|	GET barra:cero ESI12	|	GET key2 ESI13	|	GET key1 ESI13	|	GET key1 ESI13	|	GET key2 ESI11	|	GET key1 ESI12	|	GET key2 ESI12	|	GET key4 ESI11	|	GET nofunciona ESI11	|	GET planificador:de:mierda ESI11	|	GET memory:leaks ESI11	|	GET key1 ESI12	|	GET pruebebeba ESI12	|	GET soylomax ESI12	|	GET gana:croacia ESI12	|	GET aguante:las:rusas ESI12	|	GET te:pruebo:todos ESI12	|	GET barra:cero ESI12	|	GET key2 ESI13	|	GET key1 ESI11	|	GET key1 ESI12	|	GET key2 ESI12	|	GET key4 ESI13	|	GET key1 ESI13	|	GET key2 ESI11	|	GET nofunciona ESI11	|	GET planificador:de:mierda ESI11	|	GET memory:leaks ESI11	|	GET key1 ESI12	|	GET pruebebeba ESI12	|	GET soylomax ESI12	|	GET gana:croacia ESI12	|	GET aguante:las:rusas ESI12	|	GET te:pruebo:todos ESI12	|	GET barra:cero ESI12	|	GET key2 ESI13	|	GET key1 ESI11	|	GET key1 ESI13	|	GET key1 ESI13	|	GET key2 ESI12	|	GET key2 ESI12	|	GET key4 ESI14	|	GET nofunciona ESI14	|	GET planificador:de:mierda ESI14	|	GET memory:leaks ESI14	|	GET key1 ESI15	|	GET pruebebeba ESI15	|	GET soylomax ESI15	|	GET gana:croacia ESI15	|	GET aguante:las:rusas ESI15	|	GET te:pruebo:todos ESI15	|	GET barra:cero ESI15	|	GET key2 ESI15	|	GET key4 ESI16	|	GET key1 ESI16	|	GET key2 ESI11	|	GET nofunciona 
+ESI11	|	GET planificador:de:mierda 
+ESI11	|	GET memory:leaks 
+ESI11	|	GET key1 
+ESI12	|	GET pruebebeba 
+ESI12	|	GET soylomax 
+ESI12	|	GET gana:croacia 
+ESI12	|	GET aguante:las:rusas 
+ESI12	|	GET te:pruebo:todos 
+ESI12	|	GET barra:cero 
+ESI12	|	GET key2 
+ESI12	|	GET key4 
+ESI13	|	GET key1 
+ESI13	|	GET key2 
+ESI14	|	GET nofunciona 
+ESI14	|	GET planificador:de:mierda 
+ESI14	|	GET memory:leaks 
+ESI14	|	GET key1 
+ESI14	|	SET nofunciona unachota
+ESI15	|	GET nofunciona 
+ESI15	|	GET planificador:de:mierda 
+ESI15	|	GET memory:leaks 
+ESI15	|	GET key1 
+ESI15	|	SET nofunciona unachota
+ESI11	|	GET nofunciona 
+ESI11	|	GET planificador:de:mierda 
+ESI11	|	GET memory:leaks 
+ESI11	|	GET key1 
+ESI11	|	GET key1 
+ESI11	|	SET nofunciona unachota
+ESI11	|	GET nofunciona 
+ESI11	|	GET planificador:de:mierda 
+ESI11	|	GET memory:leaks 
+ESI11	|	GET key1 
+ESI11	|	SET nofunciona unachota
+ESI12	|	GET nofunciona 
+ESI12	|	GET planificador:de:mierda 
+ESI12	|	GET memory:leaks 
+ESI12	|	GET key1 
+ESI12	|	SET nofunciona unachota
+ESI11	|	GET nofunciona 
+ESI11	|	GET planificador:de:mierda 
+ESI11	|	GET memory:leaks 
+ESI11	|	GET key1 
+ESI11	|	SET nofunciona unachota
+ESI12	|	GET nofunciona 
+ESI12	|	GET planificador:de:mierda 
+ESI12	|	GET memory:leaks 
+ESI12	|	GET key1 
+ESI12	|	SET nofunciona unachota
+ESI11	|	GET nofunciona 
+ESI11	|	GET planificador:de:mierda 
+ESI11	|	GET memory:leaks 
+ESI11	|	GET key1 
+ESI11	|	SET nofunciona unachota
+ESI12	|	GET nofunciona 
+ESI12	|	GET planificador:de:mierda 
+ESI12	|	GET memory:leaks 
+ESI12	|	GET key1 
+ESI12	|	SET nofunciona unachota
+ESI11	|	GET nofunciona 
+ESI11	|	GET planificador:de:mierda 
+ESI11	|	GET memory:leaks 
+ESI11	|	GET key1 
+ESI11	|	SET nofunciona unachota
+ESI12	|	GET nofunciona 
+ESI12	|	GET planificador:de:mierda 
+ESI12	|	GET memory:leaks 
+ESI12	|	GET key1 
+ESI12	|	SET nofunciona unachota
+ESI13	|	GET nofunciona 
+ESI13	|	GET planificador:de:mierda 
+ESI13	|	GET memory:leaks 
+ESI13	|	GET key1 
+ESI13	|	SET nofunciona unachota
+ESI14	|	GET nofunciona 
+ESI14	|	GET planificador:de:mierda 
+ESI14	|	GET memory:leaks 
+ESI14	|	GET key1 
+ESI14	|	SET nofunciona unachota
+ESI15	|	GET nofunciona 
+ESI15	|	GET planificador:de:mierda 
+ESI15	|	GET memory:leaks 
+ESI15	|	GET key1 
+ESI15	|	SET nofunciona unachota
+ESI16	|	GET nofunciona 
+ESI16	|	GET planificador:de:mierda 
+ESI16	|	GET memory:leaks 
+ESI16	|	GET key1 
+ESI16	|	SET nofunciona unachota
+ESI17	|	GET nofunciona 
+ESI17	|	GET planificador:de:mierda 
+ESI17	|	GET memory:leaks 
+ESI17	|	GET key1 
+ESI17	|	SET nofunciona unachota
+ESI18	|	GET nofunciona 
+ESI18	|	GET planificador:de:mierda 
+ESI18	|	GET memory:leaks 
+ESI18	|	GET key1 
+ESI18	|	SET nofunciona unachota
+ESI19	|	GET nofunciona 
+ESI19	|	GET planificador:de:mierda 
+ESI19	|	GET memory:leaks 
+ESI19	|	GET key1 
+ESI19	|	SET nofunciona unachota
+ESI20	|	GET nofunciona 
+ESI20	|	GET planificador:de:mierda 
+ESI20	|	GET memory:leaks 
+ESI20	|	GET key1 
+ESI20	|	SET nofunciona unachota
+ESI11	|	GET nofunciona 
+ESI11	|	GET planificador:de:mierda 
+ESI11	|	GET memory:leaks 
+ESI11	|	GET key1 
+ESI11	|	SET nofunciona unachota
+ESI11	|	STORE nofunciona 
+ESI12	|	GET nofunciona 
+ESI12	|	GET planificador:de:mierda 
+ESI12	|	GET memory:leaks 
+ESI12	|	GET key1 
+ESI12	|	SET nofunciona unachota
+ESI12	|	STORE nofunciona 
+ESI13	|	GET nofunciona 
+ESI13	|	GET planificador:de:mierda 
+ESI13	|	GET memory:leaks 
+ESI13	|	GET key1 
+ESI13	|	SET nofunciona unachota
+ESI13	|	STORE nofunciona 
+ESI14	|	GET nofunciona 
+ESI14	|	GET planificador:de:mierda 
+ESI14	|	GET memory:leaks 
+ESI14	|	GET key1 
+ESI14	|	SET nofunciona unachota
+ESI14	|	STORE nofunciona 
+ESI15	|	GET pruebebeba 
+ESI15	|	GET soylomax 
+ESI15	|	GET gana:croacia 
+ESI15	|	GET aguante:las:rusas 
+ESI15	|	GET te:pruebo:todos 
+ESI15	|	GET barra:cero 
+ESI15	|	GET key2 
+ESI15	|	GET key4 
+ESI16	|	GET nofunciona 
+ESI16	|	GET planificador:de:mierda 
+ESI16	|	GET memory:leaks 
+ESI16	|	GET key1 
+ESI16	|	SET nofunciona unachota
+ESI16	|	SET nofunciona APA
+ESI16	|	STORE nofunciona 
+ESI17	|	SET key2 deberiamorir
+ESI20	|	SET key2 deberiamorir
+ESI21	|	GET nofunciona 
+ESI21	|	GET planificador:de:mierda 
+ESI21	|	GET memory:leaks 
+ESI21	|	GET key1 
+ESI22	|	SET key2 deberiamorir
+ESI21	|	GET key1 
+ESI21	|	SET nofunciona unachota
+ESI21	|	SET nofunciona APA
+ESI21	|	STORE nofunciona 
+ESI23	|	GET nofunciona 
+ESI23	|	GET planificador:de:mierda 
+ESI23	|	GET memory:leaks 
+ESI23	|	GET key1 
+ESI23	|	SET nofunciona unachota
+ESI23	|	SET nofunciona APA
+ESI23	|	STORE nofunciona 
+ESI24	|	SET key2 deberiamorir
+ESI11	|	GET nofunciona 
+ESI11	|	GET planificador:de:mierda 
+ESI11	|	GET memory:leaks 
+ESI11	|	GET key1 
+ESI12	|	SET key2 deberiamorir
+ESI11	|	GET key1 
+ESI11	|	SET nofunciona unachota
+ESI11	|	SET nofunciona APA
+ESI11	|	STORE nofunciona 
+ESI13	|	SET key2 deberiamorir
+ESI11	|	GET nofunciona 
+ESI11	|	GET planificador:de:mierda 
+ESI11	|	GET memory:leaks 
+ESI11	|	GET key1 
+ESI11	|	SET nofunciona unachota
+ESI11	|	SET nofunciona APA
+ESI11	|	STORE nofunciona 
+ESI12	|	SET key2 deberiamorir
+ESI13	|	SET key2 deberiamorir
+ESI14	|	SET key2 deberiamorir
+ESI15	|	GET nofunciona 
+ESI15	|	GET planificador:de:mierda 
+ESI15	|	GET memory:leaks 
+ESI15	|	GET key1 
+ESI15	|	SET nofunciona unachota
+ESI15	|	SET nofunciona APA
+ESI15	|	STORE nofunciona 
+ESI16	|	SET key2 deberiamorir
+ESI17	|	SET key2 deberiamorir
+ESI18	|	GET nofunciona 
+ESI18	|	GET planificador:de:mierda 
+ESI18	|	GET memory:leaks 
+ESI18	|	GET key1 
+ESI18	|	SET nofunciona unachota
+ESI18	|	SET nofunciona APA
+ESI18	|	STORE nofunciona 
+ESI19	|	SET key2 deberiamorir
+ESI20	|	SET key2 deberiamorir
+ESI13	|	GET e3:sony:juegos 
+ESI13	|	GET e3:microsoft:juegos 
+ESI13	|	SET e3:sony:juegos TLOU2
+ESI13	|	SET e3:sony:juegos Spiderman
+ESI13	|	SET e3:sony:juegos GhostOfTsushima
+ESI13	|	SET e3:sony:juegos DeathStranding
+ESI13	|	SET e3:sony:juegos ResidenEvil2Remake
+ESI13	|	SET e3:sony:juegos Destiny2DLCForsaken
+ESI13	|	SET e3:microsoft:juegos DLCCuphead
+ESI13	|	SET e3:microsoft:juegos ForzaHorizon4
+ESI13	|	SET e3:microsoft:juegos Gears5
+ESI13	|	SET e3:microsoft:juegos MetroExodus
+ESI13	|	SET e3:microsoft:juegos Fallout76
+ESI13	|	SET e3:microsoft:juegos TheDivision2
+ESI13	|	SET e3:microsoft:juegos DyingLight2
+ESI13	|	SET e3:microsoft:juegos Crackdown3
+ESI13	|	SET e3:microsoft:juegos HaloInfinite
+ESI13	|	SET e3:microsoft:juegos KingdomHearts3
+ESI13	|	STORE e3:microsoft:juegos 
+ESI13	|	STORE e3:sony:juegos 
+ESI14	|	GET postre:ingrediente1 
+ESI14	|	GET postre:ingrediente2 
+ESI14	|	GET postre:ingrediente3 
+ESI14	|	GET postre:ingrediente4 
+ESI14	|	GET postre:ingrediente5 
+ESI14	|	GET postre:ingrediente6 
+ESI14	|	GET postre:ingrediente7 
+ESI14	|	GET postre:ingrediente8 
+ESI14	|	GET postre:ingrediente9 
+ESI14	|	GET postre:ingrediente10 
+ESI14	|	SET postre:ingrediente1 huevos
+ESI14	|	SET postre:ingrediente2 azucar
+ESI14	|	SET postre:ingrediente3 quesomascarpone
+ESI14	|	SET postre:ingrediente4 crema
+ESI14	|	SET postre:ingrediente5 esenciavainilla
+ESI14	|	SET postre:ingrediente6 oporto
+ESI14	|	SET postre:ingrediente7 cafe
+ESI14	|	SET postre:ingrediente8 vainillas
+ESI14	|	SET postre:ingrediente9 cacaoamargo
+ESI14	|	SET postre:ingrediente10 licordecafe
+ESI14	|	STORE postre:ingrediente1 
+ESI14	|	STORE postre:ingrediente2 
+ESI14	|	STORE postre:ingrediente3 
+ESI14	|	STORE postre:ingrediente4 
+ESI14	|	STORE postre:ingrediente5 
+ESI14	|	STORE postre:ingrediente6 
+ESI14	|	STORE postre:ingrediente7 
+ESI14	|	STORE postre:ingrediente8 
+ESI14	|	STORE postre:ingrediente9 
+ESI14	|	STORE postre:ingrediente10 
+ESI15	|	GET sony:consola:ps1 
+ESI15	|	GET sony:consola:ps2 
+ESI15	|	GET sony:consola:ps3 
+ESI15	|	GET sony:consola:ps4 
+ESI15	|	GET microsoft:consola:xbox 
+ESI15	|	GET microsoft:consola:xbox360 
+ESI15	|	GET microsoft:consola:xboxone 
+ESI15	|	GET nintendo:consola:nes 
+ESI15	|	GET nintendo:consola:snes 
+ESI15	|	GET nintendo:consola:nintendo64 
+ESI15	|	GET nintendo:consola:gamecube 
+ESI15	|	GET nintendo:consola:wii 
+ESI15	|	GET nintendo:consola:wiiu 
+ESI15	|	GET nintendo:consola:switch 
+ESI15	|	SET nintendo:consola:nes Mario
+ESI15	|	SET nintendo:consola:snes SuperMario
+ESI15	|	SET nintendo:consola:nintendo64 Mario64
+ESI15	|	SET nintendo:consola:gamecube Mario
+ESI15	|	SET nintendo:consola:wii MarioGalaxy
+ESI15	|	SET nintendo:consola:wiiu RIP
+ESI15	|	SET nintendo:consola:switch MarioOddysey
+ESI15	|	SET sony:consola:ps1 FinalFantasy
+ESI15	|	SET sony:consola:ps2 GodOfWar
+ESI15	|	SET sony:consola:ps3 TLOU
+ESI15	|	SET sony:consola:ps4 Bloodborne
+ESI15	|	SET microsoft:consola:xbox Halo
+ESI15	|	SET microsoft:consola:xbox360 Halo
+ESI15	|	SET microsoft:consola:xboxone Halo
+ESI13	|	GET e3:sony:juegos 
+ESI13	|	GET e3:microsoft:juegos 
+ESI13	|	SET e3:sony:juegos TLOU2
+ESI13	|	SET e3:sony:juegos Spiderman
+ESI13	|	SET e3:sony:juegos GhostOfTsushima
+ESI13	|	SET e3:sony:juegos DeathStranding
+ESI13	|	SET e3:sony:juegos ResidenEvil2Remake
+ESI13	|	SET e3:sony:juegos Destiny2DLCForsaken
+ESI13	|	SET e3:microsoft:juegos DLCCuphead
+ESI13	|	SET e3:microsoft:juegos ForzaHorizon4
+ESI13	|	SET e3:microsoft:juegos Gears5
+ESI13	|	SET e3:microsoft:juegos MetroExodus
+ESI13	|	SET e3:microsoft:juegos Fallout76
+ESI13	|	SET e3:microsoft:juegos TheDivision2
+ESI13	|	SET e3:microsoft:juegos DyingLight2
+ESI13	|	SET e3:microsoft:juegos Crackdown3
+ESI13	|	GET e3:sony:juegos 
+ESI13	|	GET e3:microsoft:juegos 
+ESI13	|	SET e3:sony:juegos TLOU2
+ESI13	|	SET e3:sony:juegos Spiderman
+ESI13	|	SET e3:sony:juegos GhostOfTsushima
+ESI13	|	SET e3:sony:juegos DeathStranding
+ESI13	|	SET e3:sony:juegos ResidenEvil2Remake
+ESI13	|	SET e3:sony:juegos Destiny2DLCForsaken
+ESI13	|	SET e3:microsoft:juegos DLCCuphead
+ESI13	|	SET e3:microsoft:juegos ForzaHorizon4
+ESI13	|	SET e3:microsoft:juegos Gears5
+ESI13	|	SET e3:microsoft:juegos MetroExodus
+ESI13	|	SET e3:microsoft:juegos Fallout76
+ESI13	|	SET e3:microsoft:juegos TheDivision2
+ESI13	|	SET e3:microsoft:juegos DyingLight2
+ESI13	|	SET e3:microsoft:juegos Crackdown3
+ESI13	|	SET e3:microsoft:juegos HaloInfinite
+ESI13	|	SET e3:microsoft:juegos KingdomHearts3
+ESI13	|	STORE e3:microsoft:juegos 
+ESI13	|	STORE e3:sony:juegos 
+ESI14	|	GET postre:ingrediente1 
+ESI15	|	GET sony:consola:ps1 
+ESI15	|	GET sony:consola:ps2 
+ESI15	|	GET sony:consola:ps3 
+ESI15	|	GET sony:consola:ps4 
+ESI15	|	GET microsoft:consola:xbox 
+ESI15	|	GET microsoft:consola:xbox360 
+ESI15	|	GET microsoft:consola:xboxone 
+ESI15	|	GET nintendo:consola:nes 
+ESI15	|	GET nintendo:consola:snes 
+ESI15	|	GET nintendo:consola:nintendo64 
+ESI15	|	GET nintendo:consola:gamecube 
+ESI15	|	GET nintendo:consola:wii 
+ESI15	|	GET nintendo:consola:wiiu 
+ESI15	|	GET nintendo:consola:switch 
+ESI15	|	SET nintendo:consola:nes Mario
+ESI15	|	SET nintendo:consola:snes SuperMario
+ESI15	|	SET nintendo:consola:nintendo64 Mario64
+ESI15	|	SET nintendo:consola:gamecube Mario
+ESI15	|	SET nintendo:consola:wii MarioGalaxy
+ESI15	|	SET nintendo:consola:wiiu RIP
+ESI15	|	SET nintendo:consola:switch MarioOddysey
+ESI15	|	SET sony:consola:ps1 FinalFantasy
+ESI15	|	SET sony:consola:ps2 GodOfWar
+ESI15	|	SET sony:consola:ps3 TLOU
+ESI15	|	SET sony:consola:ps4 Bloodborne
+ESI15	|	SET microsoft:consola:xbox Halo
+ESI15	|	SET microsoft:consola:xbox360 Halo
+ESI15	|	SET microsoft:consola:xboxone Halo
+ESI17	|	GET platoprincipal:ingrediente5 
+ESI17	|	GET platoprincipal:ingrediente4 
+ESI17	|	GET platoprincipal:ingrediente3 
+ESI17	|	GET platoprincipal:ingrediente2 
+ESI17	|	GET platoprincipal:ingrediente1 
+ESI17	|	SET platoprincipal:ingrediente1 milanesadecarne
+ESI17	|	SET platoprincipal:ingrediente2 queso
+ESI17	|	SET platoprincipal:ingrediente3 jamon
+ESI17	|	SET platoprincipal:ingrediente4 lechuga
+ESI17	|	SET platoprincipal:ingrediente5 tomate
+ESI17	|	STORE platoprincipal:ingrediente1 
+ESI17	|	STORE platoprincipal:ingrediente2 
+ESI17	|	STORE platoprincipal:ingrediente3 
+ESI17	|	STORE platoprincipal:ingrediente4 
+ESI17	|	STORE platoprincipal:ingrediente5 
+ESI18	|	GET sandwich:bondiola:simple 
+ESI18	|	GET sandwich:bondiola:jyq 
+ESI18	|	GET sandwich:bondiola:completo 
+ESI18	|	GET sandwich:lomo:simple 
+ESI18	|	GET sandwich:lomo:jyq 
+ESI18	|	GET sandwich:lomo:completo 
+ESI18	|	GET sandwich:vacio:simple 
+ESI18	|	GET sandwich:vacio:jyq 
+ESI18	|	GET sandwich:vacio:completo 
+ESI18	|	GET sandwich:choripan 
+ESI18	|	GET sandwich:morcipan 
+ESI18	|	GET parrilla:chinchulines 
+ESI18	|	GET parrilla:rinion 
+ESI18	|	GET parrilla:tiraasado 
+ESI18	|	GET parrilla:vacio 
+ESI18	|	GET parrilla:entrania 
+ESI18	|	GET parrilla:bifedelomo 
+ESI18	|	GET parrilla:matambre:simple 
+ESI18	|	GET parrilla:matambre:alapizza 
+ESI18	|	GET parrilla:ojodebife 
+ESI18	|	GET parrilla:molleja 
+ESI18	|	GET parrilla:pareja 
+ESI18	|	GET cocina:papasfritas 
+ESI18	|	GET cocina:batatasfritas 
+ESI18	|	GET cocina:tallarines 
+ESI18	|	GET cocina:ravioles 
+ESI18	|	GET cocina:nioquis 
+ESI18	|	GET cocina:suprema 
+ESI18	|	GET cocina:milanesa:carne 
+ESI18	|	GET cocina:milanesa:pollo 
+ESI18	|	SET sandwich:bondiola:simple panbondiola
+ESI18	|	SET sandwich:bondiola:jyq panjamonquesobondiola
+ESI18	|	SET sandwich:bondiola:completo panjamonquesolechugatomatebondiola
+ESI18	|	SET sandwich:lomo:simple panlomo
+ESI18	|	SET sandwich:lomo:jyq panjamonquesolomo
+ESI18	|	SET sandwich:lomo:completo panjamonquesolechugatomatelomo
+ESI18	|	SET sandwich:vacio:simple panvacio
+ESI18	|	SET sandwich:vacio:jyq panjamonquesovacio
+ESI18	|	SET sandwich:vacio:completo panjamonquesolechugatomatevacio
+ESI18	|	SET sandwich:choripan panchorizo
+ESI18	|	SET sandwich:morcipan panmorcilla
+ESI18	|	SET parrilla:chinchulines chinchulineslimon
+ESI18	|	SET parrilla:rinion rinionylimon
+ESI18	|	SET parrilla:tiraasado porcionde3o4huesos
+ESI18	|	SET parrilla:vacio vacioconfritas
+ESI18	|	SET parrilla:entrania entraniaconfritas
+ESI18	|	SET parrilla:bifedelomo bifeconfritas
+ESI18	|	SET parrilla:matambre:simple matambrefritas
+ESI18	|	SET parrilla:matambre:alapizza matambrejamonquesooregano
+ESI18	|	SET parrilla:ojodebife ojodebifeconfritas
+ESI18	|	SET parrilla:molleja mollejaconlimon
+ESI18	|	SET parrilla:pareja chorizoymorcilla
+ESI18	|	SET cocina:papasfritas papayaceite
+ESI18	|	SET cocina:batatasfritas batatayaceite
+ESI18	|	SET cocina:tallarines tallarinescontuco
+ESI18	|	SET cocina:ravioles raviolesdejyqcontuco
+ESI18	|	SET cocina:nioquis nioquisdepapacontuco
+ESI18	|	SET cocina:suprema supremaalamaryland
+ESI18	|	SET cocina:milanesa:carne milanesadecarneconfritas
+ESI18	|	SET cocina:milanesa:pollo milanesadepolloconfritas
+ESI18	|	STORE sandwich:bondiola:simple 
+ESI18	|	STORE sandwich:bondiola:jyq 
+ESI18	|	STORE sandwich:bondiola:completo 
+ESI18	|	STORE sandwich:lomo:simple 
+ESI18	|	STORE sandwich:lomo:jyq 
+ESI18	|	STORE sandwich:lomo:completo 
+ESI18	|	STORE sandwich:vacio:simple 
+ESI18	|	STORE sandwich:vacio:jyq 
+ESI18	|	STORE sandwich:vacio:completo 
+ESI18	|	STORE sandwich:choripan 
+ESI18	|	STORE sandwich:morcipan 
+ESI18	|	STORE parrilla:chinchulines 
+ESI18	|	STORE parrilla:rinion 
+ESI18	|	STORE parrilla:tiraasado 
+ESI18	|	STORE parrilla:vacio 
+ESI18	|	STORE parrilla:entrania 
+ESI18	|	STORE parrilla:bifedelomo 
+ESI18	|	STORE parrilla:matambre:simple 
+ESI18	|	STORE parrilla:matambre:alapizza 
+ESI18	|	STORE parrilla:ojodebife 
+ESI18	|	STORE parrilla:molleja 
+ESI18	|	STORE parrilla:pareja 
+ESI18	|	STORE cocina:papasfritas 
+ESI18	|	STORE cocina:batatasfritas 
+ESI18	|	STORE cocina:tallarines 
+ESI18	|	STORE cocina:ravioles 
+ESI13	|	GET platoprincipal:ingrediente5 
+ESI13	|	GET platoprincipal:ingrediente4 
+ESI13	|	GET platoprincipal:ingrediente3 
+ESI13	|	GET platoprincipal:ingrediente2 
+ESI13	|	GET platoprincipal:ingrediente1 
+ESI13	|	SET platoprincipal:ingrediente1 milanesadecarne
+ESI13	|	SET platoprincipal:ingrediente2 queso
+ESI13	|	SET platoprincipal:ingrediente3 jamon
+ESI13	|	SET platoprincipal:ingrediente4 lechuga
+ESI13	|	SET platoprincipal:ingrediente5 tomate
+ESI13	|	STORE platoprincipal:ingrediente1 
+ESI13	|	STORE platoprincipal:ingrediente2 
+ESI13	|	STORE platoprincipal:ingrediente3 
+ESI13	|	STORE platoprincipal:ingrediente4 
+ESI13	|	STORE platoprincipal:ingrediente5 
+ESI14	|	GET sandwich:bondiola:simple 
+ESI14	|	GET sandwich:bondiola:jyq 
+ESI14	|	GET sandwich:bondiola:completo 
+ESI14	|	GET sandwich:lomo:simple 
+ESI14	|	GET sandwich:lomo:jyq 
+ESI14	|	GET sandwich:lomo:completo 
+ESI14	|	GET sandwich:vacio:simple 
+ESI14	|	GET sandwich:vacio:jyq 
+ESI14	|	GET sandwich:vacio:completo 
+ESI14	|	GET sandwich:choripan 
+ESI14	|	GET sandwich:morcipan 
+ESI14	|	GET parrilla:chinchulines 
+ESI14	|	GET parrilla:rinion 
+ESI14	|	GET parrilla:tiraasado 
+ESI14	|	GET parrilla:vacio 
+ESI14	|	GET parrilla:entrania 
+ESI14	|	GET parrilla:bifedelomo 
+ESI14	|	GET parrilla:matambre:simple 
+ESI14	|	GET parrilla:matambre:alapizza 
+ESI14	|	GET parrilla:ojodebife 
+ESI14	|	GET parrilla:molleja 
+ESI14	|	GET parrilla:pareja 
+ESI14	|	GET cocina:papasfritas 
+ESI14	|	GET cocina:batatasfritas 
+ESI14	|	GET cocina:tallarines 
+ESI14	|	GET cocina:ravioles 
+ESI14	|	GET cocina:nioquis 
+ESI14	|	GET cocina:suprema 
+ESI14	|	GET cocina:milanesa:carne 
+ESI14	|	GET cocina:milanesa:pollo 
+ESI14	|	SET sandwich:bondiola:simple panbondiola
+ESI14	|	SET sandwich:bondiola:jyq panjamonquesobondiola
+ESI14	|	SET sandwich:bondiola:completo panjamonquesolechugatomatebondiola
+ESI14	|	SET sandwich:lomo:simple panlomo
+ESI14	|	SET sandwich:lomo:jyq panjamonquesolomo
+ESI14	|	SET sandwich:lomo:completo panjamonquesolechugatomatelomo
+ESI14	|	SET sandwich:vacio:simple panvacio
+ESI14	|	SET sandwich:vacio:jyq panjamonquesovacio
+ESI14	|	SET sandwich:vacio:completo panjamonquesolechugatomatevacio
+ESI14	|	SET sandwich:choripan panchorizo
+ESI14	|	SET sandwich:morcipan panmorcilla
+ESI14	|	SET parrilla:chinchulines chinchulineslimon
+ESI14	|	SET parrilla:rinion rinionylimon
+ESI14	|	SET parrilla:tiraasado porcionde3o4huesos
+ESI14	|	SET parrilla:vacio vacioconfritas
+ESI14	|	SET parrilla:entrania entraniaconfritas
+ESI14	|	SET parrilla:bifedelomo bifeconfritas
+ESI14	|	SET parrilla:matambre:simple matambrefritas
+ESI14	|	SET parrilla:matambre:alapizza matambrejamonquesooregano
+ESI14	|	SET parrilla:ojodebife ojodebifeconfritas
+ESI14	|	SET parrilla:molleja mollejaconlimon
+ESI14	|	SET parrilla:pareja chorizoymorcilla
+ESI14	|	SET cocina:papasfritas papayaceite
+ESI14	|	SET cocina:batatasfritas batatayaceite
+ESI14	|	SET cocina:tallarines tallarinescontuco
+ESI14	|	SET cocina:ravioles raviolesdejyqcontuco
+ESI14	|	SET cocina:nioquis nioquisdepapacontuco
+ESI14	|	SET cocina:suprema supremaalamaryland
+ESI14	|	SET cocina:milanesa:carne milanesadecarneconfritas
+ESI14	|	SET cocina:milanesa:pollo milanesadepolloconfritas
+ESI14	|	STORE sandwich:bondiola:simple 
+ESI14	|	STORE sandwich:bondiola:jyq 
+ESI14	|	STORE sandwich:bondiola:completo 
+ESI14	|	STORE sandwich:lomo:simple 
+ESI14	|	STORE sandwich:lomo:jyq 
+ESI14	|	STORE sandwich:lomo:completo 
+ESI14	|	STORE sandwich:vacio:simple 
+ESI14	|	STORE sandwich:vacio:jyq 
+ESI14	|	STORE sandwich:vacio:completo 
+ESI14	|	STORE sandwich:choripan 
+ESI14	|	STORE sandwich:morcipan 
+ESI14	|	STORE parrilla:chinchulines 
+ESI14	|	STORE parrilla:rinion 
+ESI14	|	STORE parrilla:tiraasado 
+ESI14	|	STORE parrilla:vacio 
+ESI14	|	STORE parrilla:entrania 
+ESI14	|	STORE parrilla:bifedelomo 
+ESI14	|	STORE parrilla:matambre:simple 
+ESI14	|	STORE parrilla:matambre:alapizza 
+ESI14	|	STORE parrilla:ojodebife 
+ESI14	|	STORE parrilla:molleja 
+ESI14	|	STORE parrilla:pareja 
+ESI14	|	STORE cocina:papasfritas 
+ESI14	|	STORE cocina:batatasfritas 
+ESI14	|	STORE cocina:tallarines 
+ESI14	|	STORE cocina:ravioles 
+ESI14	|	STORE cocina:nioquis 
+ESI14	|	STORE cocina:suprema 
+ESI14	|	STORE cocina:milanesa:carne 
+ESI14	|	STORE cocina:milanesa:pollo 
+ESI13	|	GET e3:sony:juegos 
+ESI13	|	GET e3:microsoft:juegos 
+ESI13	|	SET e3:sony:juegos TLOU2
+ESI13	|	SET e3:sony:juegos Spiderman
+ESI13	|	SET e3:sony:juegos GhostOfTsushima
+ESI13	|	SET e3:sony:juegos DeathStranding
+ESI13	|	SET e3:sony:juegos ResidenEvil2Remake
+ESI13	|	SET e3:sony:juegos Destiny2DLCForsaken
+ESI13	|	SET e3:microsoft:juegos DLCCuphead
+ESI13	|	SET e3:microsoft:juegos ForzaHorizon4
+ESI13	|	SET e3:microsoft:juegos Gears5
+ESI13	|	SET e3:microsoft:juegos MetroExodus
+ESI13	|	SET e3:microsoft:juegos Fallout76
+ESI13	|	SET e3:microsoft:juegos TheDivision2
+ESI13	|	SET e3:microsoft:juegos DyingLight2
+ESI13	|	SET e3:microsoft:juegos Crackdown3
+ESI13	|	SET e3:microsoft:juegos HaloInfinite
+ESI13	|	SET e3:microsoft:juegos KingdomHearts3
+ESI13	|	STORE e3:microsoft:juegos 
+ESI13	|	STORE e3:sony:juegos 
+ESI14	|	GET postre:ingrediente1 
+ESI15	|	GET sony:consola:ps1 
+ESI15	|	GET sony:consola:ps2 
+ESI15	|	GET sony:consola:ps3 
+ESI15	|	GET sony:consola:ps4 
+ESI15	|	GET microsoft:consola:xbox 
+ESI15	|	GET microsoft:consola:xbox360 
+ESI15	|	GET microsoft:consola:xboxone 
+ESI15	|	GET nintendo:consola:nes 
+ESI15	|	GET nintendo:consola:snes 
+ESI15	|	GET nintendo:consola:nintendo64 
+ESI15	|	GET nintendo:consola:gamecube 
+ESI15	|	GET nintendo:consola:wii 
+ESI15	|	GET nintendo:consola:wiiu 
+ESI15	|	GET nintendo:consola:switch 
+ESI15	|	SET nintendo:consola:nes Mario
+ESI15	|	SET nintendo:consola:snes SuperMario
+ESI15	|	SET nintendo:consola:nintendo64 Mario64
+ESI15	|	SET nintendo:consola:gamecube Mario
+ESI15	|	SET nintendo:consola:wii MarioGalaxy
+ESI15	|	SET nintendo:consola:wiiu RIP
+ESI15	|	SET nintendo:consola:switch MarioOddysey
+ESI15	|	SET sony:consola:ps1 FinalFantasy
+ESI15	|	SET sony:consola:ps2 GodOfWar
+ESI15	|	SET sony:consola:ps3 TLOU
+ESI15	|	SET sony:consola:ps4 Bloodborne
+ESI15	|	SET microsoft:consola:xbox Halo
+ESI15	|	SET microsoft:consola:xbox360 Halo
+ESI15	|	SET microsoft:consola:xboxone Halo
+ESI16	|	GET platoprincipal:ingrediente5 
+ESI16	|	GET platoprincipal:ingrediente4 
+ESI16	|	GET platoprincipal:ingrediente3 
+ESI16	|	GET platoprincipal:ingrediente2 
+ESI16	|	GET platoprincipal:ingrediente1 
+ESI16	|	SET platoprincipal:ingrediente1 milanesadecarne
+ESI16	|	SET platoprincipal:ingrediente2 queso
+ESI16	|	SET platoprincipal:ingrediente3 jamon
+ESI16	|	SET platoprincipal:ingrediente4 lechuga
+ESI16	|	SET platoprincipal:ingrediente5 tomate
+ESI16	|	STORE platoprincipal:ingrediente1 
+ESI16	|	STORE platoprincipal:ingrediente2 
+ESI16	|	STORE platoprincipal:ingrediente3 
+ESI16	|	STORE platoprincipal:ingrediente4 
+ESI16	|	STORE platoprincipal:ingrediente5 
+ESI17	|	GET sandwich:bondiola:simple 
+ESI17	|	GET sandwich:bondiola:jyq 
+ESI17	|	GET sandwich:bondiola:completo 
+ESI17	|	GET sandwich:lomo:simple 
+ESI17	|	GET sandwich:lomo:jyq 
+ESI17	|	GET sandwich:lomo:completo 
+ESI17	|	GET sandwich:vacio:simple 
+ESI17	|	GET sandwich:vacio:jyq 
+ESI17	|	GET sandwich:vacio:completo 
+ESI17	|	GET sandwich:choripan 
+ESI17	|	GET sandwich:morcipan 
+ESI17	|	GET parrilla:chinchulines 
+ESI17	|	GET parrilla:rinion 
+ESI17	|	GET parrilla:tiraasado 
+ESI17	|	GET parrilla:vacio 
+ESI17	|	GET parrilla:entrania 
+ESI17	|	GET parrilla:bifedelomo 
+ESI17	|	GET parrilla:matambre:simple 
+ESI17	|	GET parrilla:matambre:alapizza 
+ESI17	|	GET parrilla:ojodebife 
+ESI17	|	GET parrilla:molleja 
+ESI17	|	GET parrilla:pareja 
+ESI17	|	GET cocina:papasfritas 
+ESI17	|	GET cocina:batatasfritas 
+ESI17	|	GET cocina:tallarines 
+ESI17	|	GET cocina:ravioles 
+ESI17	|	GET cocina:nioquis 
+ESI17	|	GET cocina:suprema 
+ESI17	|	GET cocina:milanesa:carne 
+ESI17	|	GET cocina:milanesa:pollo 
+ESI17	|	SET sandwich:bondiola:simple panbondiola
+ESI17	|	SET sandwich:bondiola:jyq panjamonquesobondiola
+ESI17	|	SET sandwich:bondiola:completo panjamonquesolechugatomatebondiola
+ESI17	|	SET sandwich:lomo:simple panlomo
+ESI17	|	SET sandwich:lomo:jyq panjamonquesolomo
+ESI17	|	SET sandwich:lomo:completo panjamonquesolechugatomatelomo
+ESI17	|	SET sandwich:vacio:simple panvacio
+ESI17	|	SET sandwich:vacio:jyq panjamonquesovacio
+ESI17	|	SET sandwich:vacio:completo panjamonquesolechugatomatevacio
+ESI17	|	SET sandwich:choripan panchorizo
+ESI17	|	SET sandwich:morcipan panmorcilla
+ESI17	|	SET parrilla:chinchulines chinchulineslimon
+ESI17	|	SET parrilla:rinion rinionylimon
+ESI17	|	SET parrilla:tiraasado porcionde3o4huesos
+ESI17	|	SET parrilla:vacio vacioconfritas
+ESI17	|	SET parrilla:entrania entraniaconfritas
+ESI17	|	SET parrilla:bifedelomo bifeconfritas
+ESI17	|	SET parrilla:matambre:simple matambrefritas
+ESI17	|	SET parrilla:matambre:alapizza matambrejamonquesooregano
+ESI17	|	SET parrilla:ojodebife ojodebifeconfritas
+ESI17	|	SET parrilla:molleja mollejaconlimon
+ESI17	|	SET parrilla:pareja chorizoymorcilla
+ESI17	|	SET cocina:papasfritas papayaceite
+ESI17	|	SET cocina:batatasfritas batatayaceite
+ESI17	|	SET cocina:tallarines tallarinescontuco
+ESI17	|	SET cocina:ravioles raviolesdejyqcontuco
+ESI17	|	SET cocina:nioquis nioquisdepapacontuco
+ESI17	|	SET cocina:suprema supremaalamaryland
+ESI17	|	SET cocina:milanesa:carne milanesadecarneconfritas
+ESI17	|	SET cocina:milanesa:pollo milanesadepolloconfritas
+ESI17	|	STORE sandwich:bondiola:simple 
+ESI17	|	STORE sandwich:bondiola:jyq 
+ESI17	|	STORE sandwich:bondiola:completo 
+ESI17	|	STORE sandwich:lomo:simple 
+ESI17	|	STORE sandwich:lomo:jyq 
+ESI17	|	STORE sandwich:lomo:completo 
+ESI17	|	STORE sandwich:vacio:simple 
+ESI17	|	STORE sandwich:vacio:jyq 
+ESI17	|	STORE sandwich:vacio:completo 
+ESI17	|	STORE sandwich:choripan 
+ESI17	|	STORE sandwich:morcipan 
+ESI17	|	STORE parrilla:chinchulines 
+ESI17	|	STORE parrilla:rinion 
+ESI17	|	STORE parrilla:tiraasado 
+ESI17	|	STORE parrilla:vacio 
+ESI17	|	STORE parrilla:entrania 
+ESI17	|	STORE parrilla:bifedelomo 
+ESI17	|	STORE parrilla:matambre:simple 
+ESI17	|	STORE parrilla:matambre:alapizza 
+ESI17	|	STORE parrilla:ojodebife 
+ESI17	|	STORE parrilla:molleja 
+ESI17	|	STORE parrilla:pareja 
+ESI17	|	STORE cocina:papasfritas 
+ESI17	|	STORE cocina:batatasfritas 
+ESI17	|	STORE cocina:tallarines 
+ESI17	|	STORE cocina:ravioles 
+ESI17	|	STORE cocina:nioquis 
+ESI17	|	STORE cocina:suprema 
+ESI17	|	STORE cocina:milanesa:carne 
+ESI17	|	STORE cocina:milanesa:pollo 
+ESI14	|	GET postre:ingrediente1 
+ESI14	|	GET postre:ingrediente2 
+ESI14	|	GET postre:ingrediente3 
+ESI14	|	GET postre:ingrediente4 
+ESI14	|	GET postre:ingrediente5 
+ESI14	|	GET postre:ingrediente6 
+ESI14	|	GET postre:ingrediente7 
+ESI14	|	GET postre:ingrediente8 
+ESI14	|	GET postre:ingrediente9 
+ESI14	|	GET postre:ingrediente10 
+ESI14	|	SET postre:ingrediente1 huevos
+ESI14	|	SET postre:ingrediente2 azucar
+ESI14	|	SET postre:ingrediente3 quesomascarpone
+ESI14	|	SET postre:ingrediente4 crema
+ESI14	|	SET postre:ingrediente5 esenciavainilla
+ESI14	|	SET postre:ingrediente6 oporto
+ESI14	|	SET postre:ingrediente7 cafe
+ESI14	|	SET postre:ingrediente8 vainillas
+ESI14	|	SET postre:ingrediente9 cacaoamargo
+ESI14	|	SET postre:ingrediente10 licordecafe
+ESI14	|	STORE postre:ingrediente1 
+ESI14	|	STORE postre:ingrediente2 
+ESI14	|	STORE postre:ingrediente3 
+ESI14	|	STORE postre:ingrediente4 
+ESI14	|	STORE postre:ingrediente5 
+ESI14	|	STORE postre:ingrediente6 
+ESI14	|	STORE postre:ingrediente7 
+ESI14	|	STORE postre:ingrediente8 
+ESI14	|	STORE postre:ingrediente9 

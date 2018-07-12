@@ -455,6 +455,7 @@ void* esperarConexionesClientes(void* esperarConexion){
 				conexionEsi=true;
 				pthread_mutex_lock(&nuevoEsiSem);
 				moverAListos(nuevoESI);
+				conexionEsi=false;
 				pthread_mutex_unlock(&esperarNuevoEsiSem);
 			}
 

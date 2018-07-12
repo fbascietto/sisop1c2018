@@ -1,0 +1,50 @@
+[INFO] 12:09:09:203 ESI/(17930:17930): Conectado con el coordinador
+[TRACE] 12:09:09:203 ESI/(17930:17930): ID del ESI: 16
+[INFO] 12:09:09:204 ESI/(17930:17930): conectando con el Planificador
+[INFO] 12:09:09:204 ESI/(17930:17930): Conectado con el planificador
+[INFO] 12:09:09:204 ESI/(17930:17930): Comienzo a correr script
+[INFO] 12:09:09:204 ESI/(17930:17930): Espero mensaje del planificador
+[INFO] 12:09:09:205 ESI/(17930:17930): Recibi mensaje del planificador, recibi 11
+[TRACE] 12:09:09:443 ESI/(17930:17930): recibi 13 del coordinador
+[INFO] 12:09:09:443 ESI/(17930:17930): Espero mensaje del planificador
+[INFO] 12:09:09:443 ESI/(17930:17930): Recibi mensaje del planificador, recibi 11
+[TRACE] 12:09:09:683 ESI/(17930:17930): recibi 13 del coordinador
+[INFO] 12:09:09:683 ESI/(17930:17930): Espero mensaje del planificador
+[INFO] 12:09:09:683 ESI/(17930:17930): Recibi mensaje del planificador, recibi 11
+[TRACE] 12:09:09:922 ESI/(17930:17930): recibi 13 del coordinador
+[INFO] 12:09:09:922 ESI/(17930:17930): Espero mensaje del planificador
+[INFO] 12:09:09:922 ESI/(17930:17930): Recibi mensaje del planificador, recibi 11
+[TRACE] 12:09:10:162 ESI/(17930:17930): recibi 13 del coordinador
+[INFO] 12:09:10:162 ESI/(17930:17930): Espero mensaje del planificador
+[INFO] 12:09:10:162 ESI/(17930:17930): Recibi mensaje del planificador, recibi 11
+[TRACE] 12:09:10:402 ESI/(17930:17930): recibi 13 del coordinador
+[INFO] 12:09:10:403 ESI/(17930:17930): Espero mensaje del planificador
+[INFO] 12:09:10:403 ESI/(17930:17930): Recibi mensaje del planificador, recibi 11
+[TRACE] 12:09:10:682 ESI/(17930:17930): recibi 13 del coordinador
+[INFO] 12:09:10:682 ESI/(17930:17930): Espero mensaje del planificador
+[INFO] 12:09:10:683 ESI/(17930:17930): Recibi mensaje del planificador, recibi 11
+[TRACE] 12:09:10:962 ESI/(17930:17930): recibi 13 del coordinador
+[INFO] 12:09:10:963 ESI/(17930:17930): Espero mensaje del planificador
+[INFO] 12:09:10:963 ESI/(17930:17930): Recibi mensaje del planificador, recibi 11
+[TRACE] 12:09:11:242 ESI/(17930:17930): recibi 13 del coordinador
+[INFO] 12:09:11:242 ESI/(17930:17930): Espero mensaje del planificador
+[INFO] 12:09:11:242 ESI/(17930:17930): Recibi mensaje del planificador, recibi 11
+[TRACE] 12:09:11:522 ESI/(17930:17930): recibi 13 del coordinador
+[INFO] 12:09:11:522 ESI/(17930:17930): Espero mensaje del planificador
+[INFO] 12:09:11:522 ESI/(17930:17930): Recibi mensaje del planificador, recibi 11
+[TRACE] 12:09:11:802 ESI/(17930:17930): recibi 13 del coordinador
+[INFO] 12:09:11:802 ESI/(17930:17930): Espero mensaje del planificador
+[INFO] 12:09:11:802 ESI/(17930:17930): Recibi mensaje del planificador, recibi 11
+[TRACE] 12:09:12:82 ESI/(17930:17930): recibi 13 del coordinador
+[INFO] 12:09:12:82 ESI/(17930:17930): Espero mensaje del planificador
+[INFO] 12:09:12:82 ESI/(17930:17930): Recibi mensaje del planificador, recibi 11
+[TRACE] 12:09:12:362 ESI/(17930:17930): recibi 13 del coordinador
+[INFO] 12:09:12:362 ESI/(17930:17930): Espero mensaje del planificador
+[INFO] 12:09:12:362 ESI/(17930:17930): Recibi mensaje del planificador, recibi 11
+[TRACE] 12:09:12:642 ESI/(17930:17930): recibi 13 del coordinador
+[INFO] 12:09:12:642 ESI/(17930:17930): Espero mensaje del planificador
+[INFO] 12:09:12:642 ESI/(17930:17930): Recibi mensaje del planificador, recibi 11
+[TRACE] 12:09:12:923 ESI/(17930:17930): recibi 13 del coordinador
+[INFO] 12:09:12:923 ESI/(17930:17930): Espero mensaje del planificador
+[INFO] 12:09:12:923 ESI/(17930:17930): Recibi mensaje del planificador, recibi 11
+[TRACE] 12:09:13:203 ESI/(17930:17930): recibi 13 del coordinador

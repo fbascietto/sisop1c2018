@@ -1,0 +1,3 @@
+Si vas a actualizar los ejecutables recorda cambiar en el codigo la ejecucion de los logs y archivos de config a la opcion de la vm server
+
+Usar el path dentro de library_path y completalo con la ruta para ejecutar el export.

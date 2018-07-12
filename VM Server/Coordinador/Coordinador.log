@@ -1,0 +1,181 @@
+[TRACE] 12:07:52:0 Coordinador/(17910:17912): Se crea nueva clave inicialmente bloqueada: postre:ingrediente1
+[TRACE] 12:08:11:259 Coordinador/(17910:17910): Conexión de Instancia1.
+[TRACE] 12:08:13:268 Coordinador/(17910:17910): Conexión de Instancia2.
+[TRACE] 12:08:14:988 Coordinador/(17910:17910): Conexión de Instancia3.
+[TRACE] 12:08:26:529 Coordinador/(17910:17910): Conexion de ESI.
+[TRACE] 12:08:26:530 Coordinador/(17910:17922): id de socket 13
+[TRACE] 12:08:29:56 Coordinador/(17910:17910): Conexion de ESI.
+[TRACE] 12:08:29:57 Coordinador/(17910:17924): id de socket 14
+[TRACE] 12:08:30:769 Coordinador/(17910:17910): Conexion de ESI.
+[TRACE] 12:08:30:770 Coordinador/(17910:17926): id de socket 15
+[TRACE] 12:08:35:306 Coordinador/(17910:17922): No se encontro la clave e3:sony:juegos en ninguna instancia
+[TRACE] 12:08:35:306 Coordinador/(17910:17922): se eligio la instancia Instancia1 para el guardado de clave
+[TRACE] 12:08:36:988 Coordinador/(17910:17922): No se encontro la clave e3:microsoft:juegos en ninguna instancia
+[TRACE] 12:08:36:988 Coordinador/(17910:17922): se eligio la instancia Instancia2 para el guardado de clave
+[TRACE] 12:08:39:826 Coordinador/(17910:17922): se libero la clave e3:microsoft:juegos
+[TRACE] 12:08:40:106 Coordinador/(17910:17922): se libero la clave e3:sony:juegos
+[TRACE] 12:08:43:947 Coordinador/(17910:17926): No se encontro la clave nintendo:consola:nes en ninguna instancia
+[TRACE] 12:08:43:947 Coordinador/(17910:17926): se eligio la instancia Instancia3 para el guardado de clave
+[TRACE] 12:08:44:227 Coordinador/(17910:17926): No se encontro la clave nintendo:consola:snes en ninguna instancia
+[TRACE] 12:08:44:227 Coordinador/(17910:17926): se eligio la instancia Instancia1 para el guardado de clave
+[TRACE] 12:08:44:506 Coordinador/(17910:17926): No se encontro la clave nintendo:consola:nintendo64 en ninguna instancia
+[TRACE] 12:08:44:506 Coordinador/(17910:17926): se eligio la instancia Instancia2 para el guardado de clave
+[TRACE] 12:08:44:787 Coordinador/(17910:17926): No se encontro la clave nintendo:consola:gamecube en ninguna instancia
+[TRACE] 12:08:44:787 Coordinador/(17910:17926): se eligio la instancia Instancia3 para el guardado de clave
+[TRACE] 12:08:45:67 Coordinador/(17910:17926): No se encontro la clave nintendo:consola:wii en ninguna instancia
+[TRACE] 12:08:45:67 Coordinador/(17910:17926): se eligio la instancia Instancia1 para el guardado de clave
+[TRACE] 12:08:45:347 Coordinador/(17910:17926): No se encontro la clave nintendo:consola:wiiu en ninguna instancia
+[TRACE] 12:08:45:347 Coordinador/(17910:17926): se eligio la instancia Instancia2 para el guardado de clave
+[TRACE] 12:08:45:626 Coordinador/(17910:17926): No se encontro la clave nintendo:consola:switch en ninguna instancia
+[TRACE] 12:08:45:626 Coordinador/(17910:17926): se eligio la instancia Instancia3 para el guardado de clave
+[TRACE] 12:08:45:906 Coordinador/(17910:17926): No se encontro la clave sony:consola:ps1 en ninguna instancia
+[TRACE] 12:08:45:906 Coordinador/(17910:17926): se eligio la instancia Instancia1 para el guardado de clave
+[TRACE] 12:08:46:187 Coordinador/(17910:17926): No se encontro la clave sony:consola:ps2 en ninguna instancia
+[TRACE] 12:08:46:187 Coordinador/(17910:17926): se eligio la instancia Instancia2 para el guardado de clave
+[TRACE] 12:08:46:466 Coordinador/(17910:17926): No se encontro la clave sony:consola:ps3 en ninguna instancia
+[TRACE] 12:08:46:466 Coordinador/(17910:17926): se eligio la instancia Instancia3 para el guardado de clave
+[TRACE] 12:08:46:747 Coordinador/(17910:17926): No se encontro la clave sony:consola:ps4 en ninguna instancia
+[TRACE] 12:08:46:747 Coordinador/(17910:17926): se eligio la instancia Instancia1 para el guardado de clave
+[TRACE] 12:08:47:27 Coordinador/(17910:17926): No se encontro la clave microsoft:consola:xbox en ninguna instancia
+[TRACE] 12:08:47:27 Coordinador/(17910:17926): se eligio la instancia Instancia2 para el guardado de clave
+[TRACE] 12:08:47:306 Coordinador/(17910:17926): No se encontro la clave microsoft:consola:xbox360 en ninguna instancia
+[TRACE] 12:08:47:306 Coordinador/(17910:17926): se eligio la instancia Instancia3 para el guardado de clave
+[TRACE] 12:08:47:588 Coordinador/(17910:17926): No se encontro la clave microsoft:consola:xboxone en ninguna instancia
+[TRACE] 12:08:47:588 Coordinador/(17910:17926): se eligio la instancia Instancia1 para el guardado de clave
+[TRACE] 12:09:09:203 Coordinador/(17910:17910): Conexion de ESI.
+[TRACE] 12:09:09:205 Coordinador/(17910:17931): id de socket 16
+[TRACE] 12:09:10:603 Coordinador/(17910:17931): No se encontro la clave platoprincipal:ingrediente1 en ninguna instancia
+[TRACE] 12:09:10:603 Coordinador/(17910:17931): se eligio la instancia Instancia2 para el guardado de clave
+[TRACE] 12:09:10:883 Coordinador/(17910:17931): No se encontro la clave platoprincipal:ingrediente2 en ninguna instancia
+[TRACE] 12:09:10:883 Coordinador/(17910:17931): se eligio la instancia Instancia3 para el guardado de clave
+[TRACE] 12:09:10:995 Coordinador/(17910:17910): Conexion de ESI.
+[TRACE] 12:09:10:996 Coordinador/(17910:17933): id de socket 17
+[TRACE] 12:09:11:164 Coordinador/(17910:17931): No se encontro la clave platoprincipal:ingrediente3 en ninguna instancia
+[TRACE] 12:09:11:164 Coordinador/(17910:17931): se eligio la instancia Instancia1 para el guardado de clave
+[TRACE] 12:09:11:442 Coordinador/(17910:17931): No se encontro la clave platoprincipal:ingrediente4 en ninguna instancia
+[TRACE] 12:09:11:442 Coordinador/(17910:17931): se eligio la instancia Instancia2 para el guardado de clave
+[TRACE] 12:09:11:722 Coordinador/(17910:17931): No se encontro la clave platoprincipal:ingrediente5 en ninguna instancia
+[TRACE] 12:09:11:722 Coordinador/(17910:17931): se eligio la instancia Instancia3 para el guardado de clave
+[TRACE] 12:09:12:42 Coordinador/(17910:17931): se libero la clave platoprincipal:ingrediente1
+[TRACE] 12:09:12:322 Coordinador/(17910:17931): se libero la clave platoprincipal:ingrediente2
+[TRACE] 12:09:12:602 Coordinador/(17910:17931): se libero la clave platoprincipal:ingrediente3
+[TRACE] 12:09:12:883 Coordinador/(17910:17931): se libero la clave platoprincipal:ingrediente4
+[TRACE] 12:09:13:162 Coordinador/(17910:17931): se libero la clave platoprincipal:ingrediente5
+[TRACE] 12:09:20:609 Coordinador/(17910:17933): No se encontro la clave sandwich:bondiola:simple en ninguna instancia
+[TRACE] 12:09:20:609 Coordinador/(17910:17933): se eligio la instancia Instancia1 para el guardado de clave
+[TRACE] 12:09:20:886 Coordinador/(17910:17933): No se encontro la clave sandwich:bondiola:jyq en ninguna instancia
+[TRACE] 12:09:20:887 Coordinador/(17910:17933): se eligio la instancia Instancia2 para el guardado de clave
+[TRACE] 12:09:21:167 Coordinador/(17910:17933): No se encontro la clave sandwich:bondiola:completo en ninguna instancia
+[TRACE] 12:09:21:167 Coordinador/(17910:17933): se eligio la instancia Instancia3 para el guardado de clave
+[TRACE] 12:09:21:447 Coordinador/(17910:17933): No se encontro la clave sandwich:lomo:simple en ninguna instancia
+[TRACE] 12:09:21:447 Coordinador/(17910:17933): se eligio la instancia Instancia1 para el guardado de clave
+[TRACE] 12:09:21:727 Coordinador/(17910:17933): No se encontro la clave sandwich:lomo:jyq en ninguna instancia
+[TRACE] 12:09:21:727 Coordinador/(17910:17933): se eligio la instancia Instancia2 para el guardado de clave
+[TRACE] 12:09:22:8 Coordinador/(17910:17933): No se encontro la clave sandwich:lomo:completo en ninguna instancia
+[TRACE] 12:09:22:8 Coordinador/(17910:17933): se eligio la instancia Instancia3 para el guardado de clave
+[TRACE] 12:09:22:286 Coordinador/(17910:17933): No se encontro la clave sandwich:vacio:simple en ninguna instancia
+[TRACE] 12:09:22:286 Coordinador/(17910:17933): se eligio la instancia Instancia1 para el guardado de clave
+[TRACE] 12:09:22:567 Coordinador/(17910:17933): No se encontro la clave sandwich:vacio:jyq en ninguna instancia
+[TRACE] 12:09:22:567 Coordinador/(17910:17933): se eligio la instancia Instancia2 para el guardado de clave
+[TRACE] 12:09:22:848 Coordinador/(17910:17933): No se encontro la clave sandwich:vacio:completo en ninguna instancia
+[TRACE] 12:09:22:848 Coordinador/(17910:17933): se eligio la instancia Instancia3 para el guardado de clave
+[TRACE] 12:09:23:127 Coordinador/(17910:17933): No se encontro la clave sandwich:choripan en ninguna instancia
+[TRACE] 12:09:23:127 Coordinador/(17910:17933): se eligio la instancia Instancia1 para el guardado de clave
+[TRACE] 12:09:23:408 Coordinador/(17910:17933): No se encontro la clave sandwich:morcipan en ninguna instancia
+[TRACE] 12:09:23:409 Coordinador/(17910:17933): se eligio la instancia Instancia2 para el guardado de clave
+[TRACE] 12:09:23:686 Coordinador/(17910:17933): No se encontro la clave parrilla:chinchulines en ninguna instancia
+[TRACE] 12:09:23:686 Coordinador/(17910:17933): se eligio la instancia Instancia3 para el guardado de clave
+[TRACE] 12:09:23:966 Coordinador/(17910:17933): No se encontro la clave parrilla:rinion en ninguna instancia
+[TRACE] 12:09:23:966 Coordinador/(17910:17933): se eligio la instancia Instancia1 para el guardado de clave
+[TRACE] 12:09:24:247 Coordinador/(17910:17933): No se encontro la clave parrilla:tiraasado en ninguna instancia
+[TRACE] 12:09:24:247 Coordinador/(17910:17933): se eligio la instancia Instancia2 para el guardado de clave
+[TRACE] 12:09:24:527 Coordinador/(17910:17933): No se encontro la clave parrilla:vacio en ninguna instancia
+[TRACE] 12:09:24:527 Coordinador/(17910:17933): se eligio la instancia Instancia3 para el guardado de clave
+[TRACE] 12:09:24:807 Coordinador/(17910:17933): No se encontro la clave parrilla:entrania en ninguna instancia
+[TRACE] 12:09:24:807 Coordinador/(17910:17933): se eligio la instancia Instancia1 para el guardado de clave
+[TRACE] 12:09:25:87 Coordinador/(17910:17933): No se encontro la clave parrilla:bifedelomo en ninguna instancia
+[TRACE] 12:09:25:87 Coordinador/(17910:17933): se eligio la instancia Instancia2 para el guardado de clave
+[TRACE] 12:09:25:367 Coordinador/(17910:17933): No se encontro la clave parrilla:matambre:simple en ninguna instancia
+[TRACE] 12:09:25:367 Coordinador/(17910:17933): se eligio la instancia Instancia3 para el guardado de clave
+[TRACE] 12:09:25:647 Coordinador/(17910:17933): No se encontro la clave parrilla:matambre:alapizza en ninguna instancia
+[TRACE] 12:09:25:647 Coordinador/(17910:17933): se eligio la instancia Instancia1 para el guardado de clave
+[TRACE] 12:09:25:926 Coordinador/(17910:17933): No se encontro la clave parrilla:ojodebife en ninguna instancia
+[TRACE] 12:09:25:926 Coordinador/(17910:17933): se eligio la instancia Instancia2 para el guardado de clave
+[TRACE] 12:09:26:208 Coordinador/(17910:17933): No se encontro la clave parrilla:molleja en ninguna instancia
+[TRACE] 12:09:26:208 Coordinador/(17910:17933): se eligio la instancia Instancia3 para el guardado de clave
+[TRACE] 12:09:26:487 Coordinador/(17910:17933): No se encontro la clave parrilla:pareja en ninguna instancia
+[TRACE] 12:09:26:487 Coordinador/(17910:17933): se eligio la instancia Instancia1 para el guardado de clave
+[TRACE] 12:09:26:766 Coordinador/(17910:17933): No se encontro la clave cocina:papasfritas en ninguna instancia
+[TRACE] 12:09:26:766 Coordinador/(17910:17933): se eligio la instancia Instancia2 para el guardado de clave
+[TRACE] 12:09:27:47 Coordinador/(17910:17933): No se encontro la clave cocina:batatasfritas en ninguna instancia
+[TRACE] 12:09:27:47 Coordinador/(17910:17933): se eligio la instancia Instancia3 para el guardado de clave
+[TRACE] 12:09:27:328 Coordinador/(17910:17933): No se encontro la clave cocina:tallarines en ninguna instancia
+[TRACE] 12:09:27:328 Coordinador/(17910:17933): se eligio la instancia Instancia1 para el guardado de clave
+[TRACE] 12:09:27:608 Coordinador/(17910:17933): No se encontro la clave cocina:ravioles en ninguna instancia
+[TRACE] 12:09:27:608 Coordinador/(17910:17933): se eligio la instancia Instancia2 para el guardado de clave
+[TRACE] 12:09:27:887 Coordinador/(17910:17933): No se encontro la clave cocina:nioquis en ninguna instancia
+[TRACE] 12:09:27:887 Coordinador/(17910:17933): se eligio la instancia Instancia3 para el guardado de clave
+[TRACE] 12:09:28:167 Coordinador/(17910:17933): No se encontro la clave cocina:suprema en ninguna instancia
+[TRACE] 12:09:28:167 Coordinador/(17910:17933): se eligio la instancia Instancia1 para el guardado de clave
+[TRACE] 12:09:28:447 Coordinador/(17910:17933): No se encontro la clave cocina:milanesa:carne en ninguna instancia
+[TRACE] 12:09:28:447 Coordinador/(17910:17933): se eligio la instancia Instancia2 para el guardado de clave
+[TRACE] 12:09:28:727 Coordinador/(17910:17933): No se encontro la clave cocina:milanesa:pollo en ninguna instancia
+[TRACE] 12:09:28:727 Coordinador/(17910:17933): se eligio la instancia Instancia3 para el guardado de clave
+[TRACE] 12:09:29:46 Coordinador/(17910:17933): se libero la clave sandwich:bondiola:simple
+[TRACE] 12:09:29:327 Coordinador/(17910:17933): se libero la clave sandwich:bondiola:jyq
+[TRACE] 12:09:29:610 Coordinador/(17910:17933): se libero la clave sandwich:bondiola:completo
+[TRACE] 12:09:29:890 Coordinador/(17910:17933): se libero la clave sandwich:lomo:simple
+[TRACE] 12:09:30:170 Coordinador/(17910:17933): se libero la clave sandwich:lomo:jyq
+[TRACE] 12:09:30:451 Coordinador/(17910:17933): se libero la clave sandwich:lomo:completo
+[TRACE] 12:09:30:730 Coordinador/(17910:17933): se libero la clave sandwich:vacio:simple
+[TRACE] 12:09:31:10 Coordinador/(17910:17933): se libero la clave sandwich:vacio:jyq
+[TRACE] 12:09:31:290 Coordinador/(17910:17933): se libero la clave sandwich:vacio:completo
+[TRACE] 12:09:31:570 Coordinador/(17910:17933): se libero la clave sandwich:choripan
+[TRACE] 12:09:31:850 Coordinador/(17910:17933): se libero la clave sandwich:morcipan
+[TRACE] 12:09:32:130 Coordinador/(17910:17933): se libero la clave parrilla:chinchulines
+[TRACE] 12:09:32:410 Coordinador/(17910:17933): se libero la clave parrilla:rinion
+[TRACE] 12:09:32:690 Coordinador/(17910:17933): se libero la clave parrilla:tiraasado
+[TRACE] 12:09:32:974 Coordinador/(17910:17933): se libero la clave parrilla:vacio
+[TRACE] 12:09:33:255 Coordinador/(17910:17933): se libero la clave parrilla:entrania
+[TRACE] 12:09:33:543 Coordinador/(17910:17933): se libero la clave parrilla:bifedelomo
+[TRACE] 12:09:33:822 Coordinador/(17910:17933): se libero la clave parrilla:matambre:simple
+[TRACE] 12:09:34:110 Coordinador/(17910:17933): se libero la clave parrilla:matambre:alapizza
+[TRACE] 12:09:34:390 Coordinador/(17910:17933): se libero la clave parrilla:ojodebife
+[TRACE] 12:09:34:674 Coordinador/(17910:17933): se libero la clave parrilla:molleja
+[TRACE] 12:09:34:954 Coordinador/(17910:17933): se libero la clave parrilla:pareja
+[TRACE] 12:09:35:234 Coordinador/(17910:17933): se libero la clave cocina:papasfritas
+[TRACE] 12:09:35:514 Coordinador/(17910:17933): se libero la clave cocina:batatasfritas
+[TRACE] 12:09:35:794 Coordinador/(17910:17933): se libero la clave cocina:tallarines
+[TRACE] 12:09:36:74 Coordinador/(17910:17933): se libero la clave cocina:ravioles
+[TRACE] 12:09:36:354 Coordinador/(17910:17933): se libero la clave cocina:nioquis
+[TRACE] 12:09:36:634 Coordinador/(17910:17933): se libero la clave cocina:suprema
+[TRACE] 12:09:36:914 Coordinador/(17910:17933): se libero la clave cocina:milanesa:carne
+[TRACE] 12:09:37:194 Coordinador/(17910:17933): se libero la clave cocina:milanesa:pollo
+[TRACE] 12:10:20:27 Coordinador/(17910:17924): No se encontro la clave postre:ingrediente1 en ninguna instancia
+[TRACE] 12:10:20:27 Coordinador/(17910:17924): se eligio la instancia Instancia1 para el guardado de clave
+[TRACE] 12:10:20:307 Coordinador/(17910:17924): No se encontro la clave postre:ingrediente2 en ninguna instancia
+[TRACE] 12:10:20:307 Coordinador/(17910:17924): se eligio la instancia Instancia2 para el guardado de clave
+[TRACE] 12:10:20:587 Coordinador/(17910:17924): No se encontro la clave postre:ingrediente3 en ninguna instancia
+[TRACE] 12:10:20:587 Coordinador/(17910:17924): se eligio la instancia Instancia3 para el guardado de clave
+[TRACE] 12:10:20:867 Coordinador/(17910:17924): No se encontro la clave postre:ingrediente4 en ninguna instancia
+[TRACE] 12:10:20:867 Coordinador/(17910:17924): se eligio la instancia Instancia1 para el guardado de clave
+[TRACE] 12:10:21:146 Coordinador/(17910:17924): No se encontro la clave postre:ingrediente5 en ninguna instancia
+[TRACE] 12:10:21:146 Coordinador/(17910:17924): se eligio la instancia Instancia2 para el guardado de clave
+[TRACE] 12:10:21:427 Coordinador/(17910:17924): No se encontro la clave postre:ingrediente6 en ninguna instancia
+[TRACE] 12:10:21:427 Coordinador/(17910:17924): se eligio la instancia Instancia3 para el guardado de clave
+[TRACE] 12:10:21:707 Coordinador/(17910:17924): No se encontro la clave postre:ingrediente7 en ninguna instancia
+[TRACE] 12:10:21:707 Coordinador/(17910:17924): se eligio la instancia Instancia1 para el guardado de clave
+[TRACE] 12:10:21:987 Coordinador/(17910:17924): No se encontro la clave postre:ingrediente8 en ninguna instancia
+[TRACE] 12:10:21:987 Coordinador/(17910:17924): se eligio la instancia Instancia2 para el guardado de clave
+[TRACE] 12:10:22:267 Coordinador/(17910:17924): No se encontro la clave postre:ingrediente9 en ninguna instancia
+[TRACE] 12:10:22:267 Coordinador/(17910:17924): se eligio la instancia Instancia3 para el guardado de clave
+[TRACE] 12:10:22:547 Coordinador/(17910:17924): No se encontro la clave postre:ingrediente10 en ninguna instancia
+[TRACE] 12:10:22:547 Coordinador/(17910:17924): se eligio la instancia Instancia1 para el guardado de clave
+[TRACE] 12:10:22:866 Coordinador/(17910:17924): se libero la clave postre:ingrediente1
+[TRACE] 12:10:23:146 Coordinador/(17910:17924): se libero la clave postre:ingrediente2
+[TRACE] 12:10:23:427 Coordinador/(17910:17924): se libero la clave postre:ingrediente3
+[TRACE] 12:10:23:706 Coordinador/(17910:17924): se libero la clave postre:ingrediente4
+[TRACE] 12:10:23:986 Coordinador/(17910:17924): se libero la clave postre:ingrediente5
+[TRACE] 12:10:24:266 Coordinador/(17910:17924): se libero la clave postre:ingrediente6
+[TRACE] 12:10:24:726 Coordinador/(17910:17924): se libero la clave postre:ingrediente7
+[TRACE] 12:10:25:6 Coordinador/(17910:17924): se libero la clave postre:ingrediente8
