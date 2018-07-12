@@ -49,7 +49,7 @@ int main(){
 	pthread_join(threadCoordinador, NULL);
 
 	free(esperarConexion);
-	destruirSemaforos();
+
 	exit_gracefully(0);
 
 	return 0;
@@ -141,6 +141,8 @@ void destruirSemaforos(){
 	pthread_mutex_destroy(&pausarPlanificacionSem);
 	pthread_mutex_destroy(&iniciarConsolaSem);
 	pthread_mutex_destroy(&esperarConsolaSem);
+	pthread_mutex_destroy(&esperarNuevoEsiSem);
+	pthread_mutex_destroy(&nuevoEsiSem);
 }
 
 void * iniciaConsola(){
@@ -154,6 +156,7 @@ void * iniciaConsola(){
 	char* bloquear = "bloquear";
 	char* desbloquear = "desbloquear";
 	char* listar = "listar";
+	char* terminados = "terminados";
 	char* status = "status";
 	char* kill = "kill";
 	char* deadlock = "deadlock";
@@ -272,6 +275,18 @@ void * iniciaConsola(){
 
 			free(linea);
 
+		}else if(!strncmp(linea, terminados, strlen(terminados))){
+
+			log_trace(logPlan,"Consola recibe ""%s""", status);
+
+			parametros = string_split(linea, " ");
+			if(parametros[1] != NULL){
+				log_error(logPlan, "La funcion no lleva argumentos.");
+			}else{
+				listFinished();
+			}
+			free(linea);
+
 		} else if(!strncmp(linea, status, strlen(status)))
 		{
 			log_trace(logPlan,"Consola recibe ""%s""", status);
@@ -338,11 +353,13 @@ void * iniciaConsola(){
 
 			string_append(&help, "Destino-Rusia Planificador: Ayuda\n");
 			string_append(&help, "Los parámetros se indican con <> \n------\n");
-			string_append(&help, "pausa: Pausar planificación : El Planificador no le dará nuevas órdenes de ejecución a ningún ESI mientras se encuentre pausado.\n");
+			string_append(&help, "pausar: Pausar planificación : El Planificador no le dará nuevas órdenes de ejecución a ningún ESI mientras se encuentre pausado.\n");
 			string_append(&help, "continuar: Continuar planificación : Reanuda el Planificador.\n");
 			string_append(&help, "bloquear <clave> <ID>: Se bloqueará el proceso ESI hasta ser desbloqueado, especificado por dicho <ID> en la cola del recurso <clave>..\n");
 			string_append(&help, "desbloquear <clave>: Se desbloqueara el proceso ESI con el ID especificado. Solo se bloqueará ESIs que fueron bloqueados con la consola. Si un ESI está bloqueado esperando un recurso, no podrá ser desbloqueado de esta forma.\n");
 			string_append(&help, "listar <clave>: Lista los procesos encolados esperando a la clave.\n");
+			string_append(&help, "status <clave>: Muestra proceso al que esta asignado, instancia en la que esta guardada la clave o sino existe donde la pondria y los procesos bloqueados por la clave.\n");
+			string_append(&help, "terminados: Lista los procesos terminados en orden.\n");
 			string_append(&help, "kill <ID>: finaliza el proceso.\n");
 			string_append(&help, "deadlock: Analiza los deadlocks que existan en el sistema y a que ESI están asociados.\n");
 			string_append(&help, "exit: Sale del programa.\n");
@@ -366,16 +383,16 @@ void configureLogger(){
 	LogL = LOG_LEVEL_TRACE;
 
 	/* ejecutar desde ECLIPSE
+	 */
 	vaciarArchivo("../Recursos/Logs/Planificador.log");
 	logPlan = log_create("../Recursos/Logs/Planificador.log","Planificador", true, LogL);
-	 */
 
 
 
 	/* para ejecutar desde CONSOLA
-	 */
 	vaciarArchivo("../../Recursos/Logs/Planificador.log");
 	logPlan = log_create("../../Recursos/Logs/Planificador.log","Planificador", true, LogL);
+	 */
 
 
 	/* para ejecutar desde la VM Server
@@ -391,12 +408,12 @@ void cargar_configuracion(){
 	t_config* infoConfig;
 
 	/*	para correr desde ECLIPSE
+	 */
 	infoConfig = config_create("../Recursos/Configuracion/planificador.config");
- */
 
 	/* para correr desde CONSOLA
-	 */
 	infoConfig = config_create("../../Recursos/Configuracion/planificador.config");
+	 */
 
 	/* para correr desde la VM Server
 	infoConfig = config_create("planificador.config");
@@ -478,6 +495,7 @@ void cargar_configuracion(){
 
 void exit_gracefully(int return_nr) {
 	sem_destroy(&productorConsumidor);
+	destruirSemaforos();
 	quitarBloqueoSistema();
 	free(keySolicitada);
 	queue_destroy_and_destroy_elements(colaListos, eliminarEsi);

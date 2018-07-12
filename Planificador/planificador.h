@@ -125,6 +125,7 @@ void finalizarESIEnEjecucion();
 void moverABloqueados();
 void mostrarColaListos();
 void agregarEspera(void* esi);
+void finalizarESI(t_proceso_esi*);
 
 //funciones de keys
 void liberarKeys(t_proceso_esi* esi);
@@ -149,6 +150,7 @@ void mostarEsiPoseedor(char* keySearch);
 void obtenerValor(char* keySearch);
 void obtenerInstancia(char* keySearch);
 void listBlockedProcesses(char* keySearch);
+void listFinished();
 void matarProceso(int ESI_ID);
 void detectarDeadlock();
 void quitarBloqueoSistema();
@@ -169,6 +171,7 @@ void convertirABarra0(char*, int);
 void eliminarEsi(void* elemento);
 void eliminarKey(void* elemento);
 bool procesoYaDetectado(int id, t_list* deadlocks);
+void imprimirEsis(t_queue*, char*);
 
 //funciones mock
 void testearDeadlock();

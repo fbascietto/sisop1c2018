@@ -77,14 +77,13 @@ t_proceso_esi* removerEsiSegunID(t_list* procesos, int ID){
 		esiRemovido = list_get(procesos, i);
 
 		if(coincideID(esiRemovido->id, ID)){
-			list_remove(procesos, i);
-			break;
+			return (t_proceso_esi*) list_remove(procesos, i);
 		}
 
-		esiRemovido = NULL;
 
 	}
 
+	esiRemovido = NULL;
 	return esiRemovido;
 
 }
@@ -126,7 +125,7 @@ void block(char* key_value, int ESI_ID){
 			}
 			else{
 				t_clave* clavePoseedora = list_find(listaKeys, estaElESIBloqueado);
-				if(clavePoseedora !=NULL) log_warning(logPlan, "el proceso %d a matar esta ya bloqueado por el proceso %d", ESI_ID, clavePoseedora->esi_poseedor->id);
+				if(clavePoseedora !=NULL) log_warning(logPlan, "el proceso %d a matar ya esta bloqueado por la key %s", ESI_ID, clavePoseedora->nombre);
 			}
 
 		}
@@ -286,6 +285,24 @@ void mostarEsiPoseedor(char* keySearch){
 
 }
 
+void imprimirEsis(t_queue* bloqueados, char* msj) {
+
+	int i;
+
+	for (i = 0; i < list_size(bloqueados->elements); ++i) {
+		t_proceso_esi* esi = list_get(bloqueados->elements, i);
+		string_append_with_format(&msj, "ESI %d", esi->id);
+		if (i + 1 < list_size(bloqueados->elements)) {
+			string_append(&msj, ", ");
+		} else {
+			string_append(&msj, ".");
+		}
+	}
+
+	log_debug(logPlan, msj);
+
+}
+
 void listBlockedProcesses(char* keySearch){
 
 	t_clave* key = obtenerKey(keySearch);
@@ -305,24 +322,33 @@ void listBlockedProcesses(char* keySearch){
 
 		if(queue_is_empty(bloqueados)){
 			string_append_with_format(&msj, "No hay bloqueados por la clave %s.", keySearch);
+			log_debug(logPlan, msj);
 		}else{
 			string_append_with_format(&msj, "Listado de esis bloqueados por %s: ", keySearch);
-
-			int i;
-			for (i = 0; i < list_size(bloqueados->elements); ++i) {
-				t_proceso_esi* esi = list_get(bloqueados->elements,i);
-				string_append_with_format(&msj, "ESI %d", esi->id);
-				if(i + 1 < list_size(bloqueados->elements)){
-					string_append(&msj, ", ");
-				}else{
-					string_append(&msj, ".");
-				}
-			}
+			imprimirEsis(bloqueados, msj);
 		}
 
-		log_debug(logPlan, msj);
 
 	}
+
+	free(msj);
+
+}
+
+void listFinished(){
+
+	char* msj = string_new();
+
+	if(queue_is_empty(colaTerminados)){
+
+		string_append_with_format(&msj, "No hay procesos terminados.");
+		log_debug(logPlan, msj);
+		free(msj);
+		return;
+
+	}
+
+	imprimirEsis(colaTerminados, msj);
 
 	free(msj);
 
@@ -477,7 +503,7 @@ void matarProceso(int ESI_ID){
 				log_trace(logPlan, "el proceso %d a matar estaba en listos", proceso_a_matar->id);
 			}
 			else{
-				log_warning("No existe el id de proceso %d\n", ESI_ID);
+				log_warning(logPlan, "No existe el id de proceso %d\n", ESI_ID);
 			}
 
 		}
