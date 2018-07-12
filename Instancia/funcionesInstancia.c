@@ -27,7 +27,7 @@ int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada, int socket){
 	int n = calculoCantidadEntradas(lenValue);
 	pos = findNFreeBloques(t_inst_bitmap, n);
 
-	if(pos==-1 || socket == 0){
+	if(pos==-1 && socket!=0){
 		if(cuentaBloquesLibre(t_inst_bitmap)>= n){
 			log_trace(logT,"No hay %d bloques contiguos, es necesario compactar",n);
 			if(enviarInt(socket,COMPACTACION)<=0){
@@ -43,8 +43,6 @@ int calcularSiguienteEntrada(int lenValue, t_entrada ** entrada, int socket){
 			log_error(logE,"No hay %d bloques libres, se reemplaza entrada",n);
 			seleccionarAlgoritmo();
 		}
-	}else{
-
 	}
 	return pos;
 }
