@@ -182,9 +182,6 @@ void cargar_configuracion(){
 	/* para correr desde ECLIPSE */
 	infoConfig = config_create("../Recursos/Configuracion/coordinador.config");
 
-
-
-
 	/*para correr desde CONSOLA
 	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
 	*/

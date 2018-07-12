@@ -139,7 +139,7 @@ int archivoAentrada(char* filename){
 		string_append(&value, line);
 	}
 
-	int lenValue = strlen(value);
+	int lenValue = strlen(value)+1;
 
 	int pos = calcularSiguienteEntrada(lenValue, &entrada, 0);
 
@@ -187,7 +187,7 @@ int reviewPuntoMontaje(t_list * whitelist){
 						return strcmp((char *)key,res->d_name)==0;
 					}
 
-					if (strcmp( res->d_name, "." ) && strcmp( res->d_name, ".." ) && strcmp(res->d_name, instancia) && list_any_satisfy(whitelist,_esKey)){
+					if (list_any_satisfy(whitelist,_esKey)){
 						archivoAentrada(res->d_name);
 						count++;
 					}
@@ -243,7 +243,7 @@ void escribirEntrada(char * escribir, int pos, char * nombre_archivo){
 		exit(EXIT_FAILURE);
 	   }
 
-	int lenValue = strlen(escribir);
+	int lenValue = strlen(escribir)+1;
 	int exactPos = pos*tamanioEntrada;
 	int b;
 
@@ -317,7 +317,7 @@ int recibirEntrada(int socket){
 		return -1;
 	}
 
-	int lenValue = strlen(value);
+	int lenValue = strlen(value)+1;
 	int entradasAOcupar = calculoCantidadEntradas(lenValue);
 
 	t_entrada* entrada = NULL;
@@ -417,17 +417,14 @@ void leer_entrada(t_entrada* entrada, char** value){
 
 
 	int exactPos = entrada->entry*tamanioEntrada;
-	*value = malloc(entrada->size+1);
+	*value = malloc(entrada->size);
 
 	int b = 0;
-
-
-
-	for(b=0;b< entrada->entry;b++){
+	for(b=0;b< entrada->size;b++){
 		(*value)[b] = map[exactPos+b];
 	}
 
-//	memcpy(*value,map+exactPos,entrada->size);
+	/* memcpy(*value,map+exactPos,entrada->size); */
 	log_trace(logT,"Se leyó con exito el value de la clave %s.", entrada->key);
 	munmap(map,fileStat.st_size);
 
@@ -752,7 +749,7 @@ bool compactar(){
 		escribirEntrada(value,pos,nombre_archivo);
 		free(value);
 		entrada->entry=pos;
-		pos += calculoCantidadEntradas(strlen(value));
+		pos += calculoCantidadEntradas(strlen(value)+1);
 	}
 
 	char * punto_montaje = string_from_format("%s%s.dat",punto_Montaje,nombre_Instancia);
