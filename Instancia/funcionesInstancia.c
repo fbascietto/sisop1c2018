@@ -425,7 +425,7 @@ void leer_entrada(t_entrada* entrada, char** value){
 
 	int b = 0;
 	int exactPos = entrada->entry*tamanioEntrada;
-	*value = malloc(entrada->size);
+	*value = malloc(entrada->size+1);
 
 	for(b=0;b<bytesAleer;b++){
 		(*value)[b] = map[exactPos+b];

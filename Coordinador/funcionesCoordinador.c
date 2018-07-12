@@ -89,7 +89,7 @@ int crearInstancia(int nuevoSocket){
 
 
 
-	if(existeInstancia(nombreInstancia,instancia)){
+	if(existeInstancia(nombreInstancia,&instancia)){
 		instancia->socketInstancia = nuevoSocket;
 		enviarClavesAGuardar(instancia);
 		free(nombreInstancia);
@@ -114,17 +114,17 @@ void enviarClavesAGuardar(t_instancia * instancia){
 	int i;
 	for(i=0;i<size;i++){
 		enviarInt(instancia->socketInstancia, MANTENER_KEY);
-		enviarMensaje(instancia->socketInstancia, (char*)list_get(instancia,i));
+		enviarMensaje(instancia->socketInstancia, (char*)list_get(instancia->claves,i));
 	}
 	enviarInt(instancia->socketInstancia, FIN);
 }
 
-bool existeInstancia(char* nombreInstancia, t_instancia * instancia){
+bool existeInstancia(char* nombreInstancia, t_instancia ** instancia){
 	bool encontro = false;
 	void mismo_nombre(void* parametro) {
 		t_instancia* inst = (t_instancia*) parametro;
 		if( strcmp(inst->nombre,nombreInstancia) == 0){
-			instancia = inst;
+			*instancia = inst;
 			encontro = true;
 		}
 	}
@@ -366,15 +366,17 @@ void atenderConsolaPlanificador(void *args){
 
 	while(1){
 
-		recibirMensajeConsolaPlanificador(argsConsolaPlanificador->socketPlanificador);
+		if(recibirMensajeConsolaPlanificador(argsConsolaPlanificador->socketPlanificador)<=0){
+			break;;
+		}
 	}
 
 }
 
-void recibirMensajeConsolaPlanificador(int socket){
+int recibirMensajeConsolaPlanificador(int socket){
 	int mensaje;
 
-	recibirInt(socket, &mensaje);
+	int len =recibirInt(socket, &mensaje);
 
 	switch(mensaje){
 
@@ -397,9 +399,14 @@ void recibirMensajeConsolaPlanificador(int socket){
 
 	default:
 
-		log_error(logE, "No reconozco ese mensaje %d\n", mensaje);
+		if(len <= 0){
+			log_error(logE, "Planificador Desconectado");
+			return -1;
+		}
 
+		log_error(logE, "No reconozco ese mensaje %d\n", mensaje);
 	}
+	return 1;
 }
 
 void procesarObtenerValorKey(int socket){
@@ -639,8 +646,8 @@ int ejecutar_operacion_set(int socket){
 
 
 
-
-	if(buscarInstanciaContenedora(clave, &instancia)<=0){
+	int instancia_encontrada = buscarInstanciaContenedora(clave, &instancia);
+	if(instancia_encontrada<=0){
 
 		log_trace(logT,"No se encontro la clave %s en ninguna instancia", clave);
 		if(!key_creada(clave)){
@@ -671,7 +678,12 @@ int ejecutar_operacion_set(int socket){
 			return ejecutar_operacion_set(socket);
 		}else{
 
-			list_add(instancia->claves,clave);
+
+			if(instancia_encontrada<=0){
+				list_add(instancia->claves,clave);
+			}else{
+				free(clave);
+			}
 
 			enviarInt(socket, EJECUCION_OK);
 		}
