@@ -263,7 +263,10 @@ void escribirEntrada(char * escribir, int pos, char * nombre_archivo){
 		exit(EXIT_FAILURE);
 	   }
 
-	int lenValue = strlen(escribir)+1;
+	int lenValue = strlen(escribir);
+	if(lenValue % tamanioEntrada != 0){
+		lenValue++;
+	}
 	int exactPos = pos*tamanioEntrada;
 
 
@@ -337,7 +340,11 @@ int recibirEntrada(int socket){
 		return -1;
 	}
 
-	int lenValue = strlen(value)+1;
+	int lenValue = strlen(value);
+	int mod = lenValue % tamanioEntrada;
+	if( mod != 0){
+		lenValue++;;
+	}
 	int entradasAOcupar = calculoCantidadEntradas(lenValue);
 
 	t_entrada* entrada = NULL;
@@ -363,7 +370,7 @@ int recibirEntrada(int socket){
 		}else{
 			int i;
 			for(i=0;i<entradasOcupadas;i++){
-				bitarray_clean_bit(t_inst_bitmap,i);
+				bitarray_clean_bit(t_inst_bitmap,i+entrada->entry);
 			}
 		}
 	}
@@ -475,14 +482,14 @@ void configureLoggers(char* instName){
 
 	char* logPath = string_new();
 
-	/* para correr desde ECLIPSE  */
+	/* para correr desde ECLIPSE*/
 	string_append(&logPath,"../Recursos/Logs/");
 
 
 	/* para correr desde CONSOLA
 
 	string_append(&logPath,"../../Recursos/Logs/");
- */
+	*/
 	/* para correr en la VM Server
 	string_append(&logPath,"");
 	 */
@@ -523,13 +530,13 @@ int algoritmoR(char* algoritmo){
 
 int calculoLRU(int bloques, t_entrada ** entrada){
 
-	int menos_usado = INT_MAX;
+	int menos_usado = -1;;
 
 	void buscarMenosUsado(void* parametro) {
 
 		t_entrada* entrada_aux = (t_entrada*) parametro;
 
-		if(menos_usado > (operacionNumero - entrada_aux->ultimaRef)
+		if(menos_usado < (operacionNumero - entrada_aux->ultimaRef)
 				&& (1 == (calculoCantidadEntradas(entrada_aux->size)))){
 			menos_usado = operacionNumero - entrada_aux->ultimaRef;
 			*entrada = entrada_aux;
@@ -538,7 +545,7 @@ int calculoLRU(int bloques, t_entrada ** entrada){
 
 	list_iterate(tablaEntradas,buscarMenosUsado);
 
-	if(menos_usado == INT_MAX){
+	if(menos_usado == -1){
 		return -1;
 	}else{
 		return 1;
@@ -556,10 +563,8 @@ int calculoBSU(int bloques, t_entrada ** entrada){
 		t_entrada* entrada_aux = list_get(tablaEntradas, i);
 		int bloques_entrada = calculoCantidadEntradas(entrada_aux->size);
 		if(entrada_aux->size>mayor_tamanio && bloques_entrada == 1){
-			if(bloques_entrada >= bloques){
-				mayor_tamanio = bloques_entrada;
+				mayor_tamanio = entrada_aux->size;
 				*entrada = entrada_aux;
-			}
 		}
 	}
 	return mayor_tamanio;
@@ -569,15 +574,24 @@ int calculoBSU(int bloques, t_entrada ** entrada){
 int calculoCircular(int bloques, t_entrada ** entrada){
 	int posInicial = numEntradaActual;
 	while(1){
-		t_entrada* entrada_aux = list_get(tablaEntradas,numEntradaActual);
+		bool encontro = false;
+		bool entradaConEntry(void* parametro){
+			t_entrada * entrada_aux = (t_entrada*) parametro;
+			encontro =  (entrada_aux->entry == numEntradaActual);
+			return encontro;
+		}
+
+		t_entrada* entrada_aux = list_find(tablaEntradas,entradaConEntry);
 		numEntradaActual++;
-		if(calculoCantidadEntradas(entrada_aux->size) == 1){
-			*entrada = entrada_aux;
-			return 1;
+		if(encontro){
+			if(calculoCantidadEntradas(entrada_aux->size) == 1){
+				*entrada = entrada_aux;
+				return 1;
+			}
 		}
 		if(numEntradaActual > list_size(tablaEntradas)){
-			numEntradaActual = 0;
-		}
+						numEntradaActual = 0;
+					}
 		if(numEntradaActual == posInicial){
 			return -1;
 		}
@@ -599,14 +613,12 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	/* SI SE CORRE DESDE ECLIPSE	 */
+	/* SI SE CORRE DESDE ECLIPSE*/
 	infoConfig = config_create("../Recursos/Configuracion/instancia.config");
 
 	/* SI SE CORRE DESDE CONSOLA
-
 	infoConfig = config_create("../../Recursos/Configuracion/instancia.config");
-	*/
-
+*/
 
 	/* SI SE CORRE EN LA VM SERVER
 	infoConfig = config_create("instancia.config");
@@ -794,14 +806,20 @@ bool compactar(){
 		char * value;
 		leer_entrada(entrada,&value);
 		escribirEntrada(value,pos,nombre_archivo);
-		free(value);
+
 		entrada->entry=pos;
+		int len = strlen(value);
+		if(len%tamanioEntrada !=0){
+			len++;
+		}
 		pos += calculoCantidadEntradas(strlen(value)+1);
+		free(value);
 	}
 
 	char * punto_montaje = string_from_format("%s%s.dat",punto_Montaje,nombre_Instancia);
+	char * nuevo_nombre_archivo = string_from_format("%s%s.dat",punto_Montaje,nombre_archivo);
 
-	if(rename(nombre_archivo,punto_montaje)<0){
+	if(rename(nuevo_nombre_archivo,punto_montaje)<0){
 		ejecucion_ok = false;
 		log_error(logE, "no se pudo realizar compactacion ya que no es posible reemplazar el punto de montaje");
 	}else{
@@ -811,7 +829,7 @@ bool compactar(){
 			bitarray_set_bit(t_inst_bitmap,a);
 		}
 	}
-
+	free(nuevo_nombre_archivo);
 	free(punto_montaje);
 	free(nombre_archivo);
 
