@@ -325,11 +325,11 @@ int recibirKey(int socket, char ** key){
 			if(size <= 0) llegoTodo = 1;
 		}
  	 */
-	key = recibirMensajeArchivo(socket);
-	if(strcmp(key,"-1")==0){
+	*key = recibirMensajeArchivo(socket);
+	if(strcmp(*key,"-1")==0){
 		return -1;
 	} else {
-		return strlen(key);
+		return strlen(*key);
 	}
 
 }
