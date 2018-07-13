@@ -304,24 +304,34 @@ int recibirValue(int socketConn, char** value){
 }
 
 int recibirKey(int socket, char ** key){
+
+
+	/*
 	int size = LONGITUD_CLAVE;
-		*key = malloc(size);
+	*key = malloc(size);
 
-			int largoLeido = 0, llegoTodo = 0, totalLeido = 0;
-		while(!llegoTodo){
-				largoLeido = recv(socket, *key + totalLeido, size, 0);
+		int largoLeido = 0, llegoTodo = 0, totalLeido = 0;
+	while(!llegoTodo){
+			largoLeido = recv(socket, *key + totalLeido, size, 0);
 
-				//toda esta fumada es para cuando algun cliente se desconecta.
-				if(largoLeido == -1){
-					printf("Socket dice: Cliente en socket N° %d se desconecto\n", socket);
-					log_error(logT,"no se recibio nada del socket %d",socket);
-				}
-
-				totalLeido += largoLeido;
-				size -= largoLeido;
-				if(size <= 0) llegoTodo = 1;
+			//toda esta fumada es para cuando algun cliente se desconecta.
+			if(largoLeido == -1){
+				printf("Socket dice: Cliente en socket N° %d se desconecto\n", socket);
+				log_error(logT,"no se recibio nada del socket %d",socket);
 			}
-		return totalLeido;
+
+			totalLeido += largoLeido;
+			size -= largoLeido;
+			if(size <= 0) llegoTodo = 1;
+		}
+ 	 */
+	key = recibirMensajeArchivo(socket);
+	if(strcmp(key,"-1")==0){
+		return -1;
+	} else {
+		return strlen(key);
+	}
+
 }
 
 
@@ -482,14 +492,14 @@ void configureLoggers(char* instName){
 
 	char* logPath = string_new();
 
-	/* para correr desde ECLIPSE*/
+	/* para correr desde ECLIPSE
 	string_append(&logPath,"../Recursos/Logs/");
+*/
 
-
-	/* para correr desde CONSOLA
+	/* para correr desde CONSOLA*/
 
 	string_append(&logPath,"../../Recursos/Logs/");
-	*/
+
 	/* para correr en la VM Server
 	string_append(&logPath,"");
 	 */
@@ -613,12 +623,12 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	/* SI SE CORRE DESDE ECLIPSE*/
+	/* SI SE CORRE DESDE ECLIPSE
 	infoConfig = config_create("../Recursos/Configuracion/instancia.config");
-
-	/* SI SE CORRE DESDE CONSOLA
-	infoConfig = config_create("../../Recursos/Configuracion/instancia.config");
 */
+	/* SI SE CORRE DESDE CONSOLA*/
+	infoConfig = config_create("../../Recursos/Configuracion/instancia.config");
+
 
 	/* SI SE CORRE EN LA VM SERVER
 	infoConfig = config_create("instancia.config");
