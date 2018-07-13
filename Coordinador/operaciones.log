@@ -158,3 +158,29 @@ ESI19	|	SET e3:microsoft:juegos HaloInfinite
 ESI19	|	SET e3:microsoft:juegos KingdomHearts3
 ESI19	|	STORE e3:microsoft:juegos 
 ESI19	|	STORE e3:sony:juegos 
+ESI10	|	GET e3:sony:juegos 
+ESI10	|	GET e3:microsoft:juegos 
+ESI10	|	SET e3:sony:juegos TLOU2
+ESI10	|	GET e3:sony:juegos 
+ESI10	|	GET e3:microsoft:juegos 
+ESI10	|	SET e3:sony:juegos TLOU2
+ESI10	|	GET e3:sony:juegos 
+ESI10	|	GET e3:microsoft:juegos 
+ESI10	|	SET e3:sony:juegos TLOU2
+ESI10	|	SET e3:sony:juegos Spiderman
+ESI10	|	SET e3:sony:juegos GhostOfTsushima
+ESI10	|	SET e3:sony:juegos DeathStranding
+ESI10	|	SET e3:sony:juegos ResidenEvil2Remake
+ESI10	|	SET e3:sony:juegos Destiny2DLCForsaken
+ESI10	|	SET e3:microsoft:juegos DLCCuphead
+ESI10	|	SET e3:microsoft:juegos ForzaHorizon4
+ESI10	|	SET e3:microsoft:juegos Gears5
+ESI10	|	SET e3:microsoft:juegos MetroExodus
+ESI10	|	SET e3:microsoft:juegos Fallout76
+ESI10	|	SET e3:microsoft:juegos TheDivision2
+ESI10	|	SET e3:microsoft:juegos DyingLight2
+ESI10	|	SET e3:microsoft:juegos Crackdown3
+ESI10	|	SET e3:microsoft:juegos HaloInfinite
+ESI10	|	SET e3:microsoft:juegos KingdomHearts3
+ESI10	|	STORE e3:microsoft:juegos 
+ESI10	|	STORE e3:sony:juegos 

@@ -40,6 +40,7 @@ void *esperarConexiones(void *args) {
 				pthread_t threadAtencionESI;
 				t_argumentos_thESI* nuevoESI = malloc(sizeof(t_argumentos_thESI));
 				nuevoESI->socketESI = nuevoSocket;
+
 				if(pthread_create(&threadAtencionESI,NULL, atenderESI, (void*) nuevoESI)){
 					log_error(logE,"Error generando thread para ESI");
 				}
@@ -164,8 +165,8 @@ int enviarEntradaInstancia(char key[LONGITUD_CLAVE], char* value, t_instancia * 
 
 }
 
-int enviarKey(char key[LONGITUD_CLAVE], int socket ){
-	int totalEnviado = 0;
+int enviarKey(char * key, int socket ){
+	/*int totalEnviado = 0;
 	int lenEnviado = 0;
 	while(totalEnviado < LONGITUD_CLAVE) {
 		lenEnviado = 0;
@@ -173,7 +174,9 @@ int enviarKey(char key[LONGITUD_CLAVE], int socket ){
 		if(lenEnviado < 0){ perror("error al enviar"); return -1;}
 		totalEnviado = totalEnviado + lenEnviado;
 	}
-	return totalEnviado;
+	return totalEnviado;*/
+	 return enviarMensaje(socket,key);
+
 }
 
 int enviarValue(char * value, int socket){
@@ -184,14 +187,14 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	/* para correr desde ECLIPSE
+	/* para correr desde ECLIPSE */
 	infoConfig = config_create("../Recursos/Configuracion/coordinador.config");
- */
+
 
 	/*para correr desde CONSOLA
-	 */
-	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
 
+	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
+ */
 
 	/* para correr desde la VM Server
 	infoConfig = config_create("coordinador.config");
@@ -229,20 +232,20 @@ void configureLoggers(){
 	E = LOG_LEVEL_ERROR;
 
 
-	/* para correr desde ECLIPSE
+	/* para correr desde ECLIPSE */
 	vaciarArchivo("../Recursos/Logs/Coordinador.log");
 	logT = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
-	 */
+
 
 	/* para correr desde CONSOLA
-	 */
+
 	vaciarArchivo("../../Recursos/Logs/Coordinador.log");
 	logT = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
-
+ */
 
 	/* para correr desde la VM Server
 	vaciarArchivo("Coordinador.log");
@@ -500,6 +503,7 @@ int ejecutarOperacionGET(int socket){
 	char * clave;
 	clave = recibirMensajeArchivo(socket);
 	logueaOperacion("GET",clave,"",socket);
+	log_trace(logT,"recibi operacion get con la clave %s",clave);
 	enviarInt(argsPlanificador->socketPlanificador, GET_KEY);
 	enviarMensaje(argsPlanificador->socketPlanificador, clave);
 

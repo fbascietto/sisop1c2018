@@ -495,6 +495,7 @@ void configureLoggers(char* instName){
 	char* logPath = string_new();
 
 	/* para correr desde ECLIPSE
+<<<<<<< Updated upstream
 */
 	string_append(&logPath,"../Recursos/Logs/");
 
@@ -502,6 +503,15 @@ void configureLoggers(char* instName){
 	string_append(&logPath,"../../Recursos/Logs/");
 
 */
+=======
+
+	string_append(&logPath,"../Recursos/Logs/");*/
+
+	/* para correr desde CONSOLA*/
+
+	string_append(&logPath,"../../Recursos/Logs/");
+
+>>>>>>> Stashed changes
 
 	/* para correr en la VM Server
 	string_append(&logPath,"");
@@ -626,13 +636,14 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	/* SI SE CORRE DESDE ECLIPSE*/
+	/* SI SE CORRE DESDE ECLIPSE
 	infoConfig = config_create("../Recursos/Configuracion/instancia.config");
 
-	/* SI SE CORRE DESDE CONSOLA
+*/
+	/* SI SE CORRE DESDE CONSOLA*/
 	infoConfig = config_create("../../Recursos/Configuracion/instancia.config");
 
-*/
+
 	/* SI SE CORRE EN LA VM SERVER
 	infoConfig = config_create("instancia.config");
 	 */

@@ -383,16 +383,16 @@ void configureLogger(){
 	LogL = LOG_LEVEL_TRACE;
 
 	/* ejecutar desde ECLIPSE
-	 */
+
 	vaciarArchivo("../Recursos/Logs/Planificador.log");
 	logPlan = log_create("../Recursos/Logs/Planificador.log","Planificador", true, LogL);
+*/
 
 
-
-	/* para ejecutar desde CONSOLA
+	/* para ejecutar desde CONSOLA */
 	vaciarArchivo("../../Recursos/Logs/Planificador.log");
 	logPlan = log_create("../../Recursos/Logs/Planificador.log","Planificador", true, LogL);
-	 */
+
 
 
 	/* para ejecutar desde la VM Server
@@ -408,12 +408,12 @@ void cargar_configuracion(){
 	t_config* infoConfig;
 
 	/*	para correr desde ECLIPSE
-	 */
-	infoConfig = config_create("../Recursos/Configuracion/planificador.config");
 
-	/* para correr desde CONSOLA
+	infoConfig = config_create("../Recursos/Configuracion/planificador.config");
+ */
+	/* para correr desde CONSOLA */
 	infoConfig = config_create("../../Recursos/Configuracion/planificador.config");
-	 */
+
 
 	/* para correr desde la VM Server
 	infoConfig = config_create("planificador.config");
