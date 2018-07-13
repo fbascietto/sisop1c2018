@@ -71,12 +71,13 @@ int main() {
 						if(enviarInt(coordinador_socket,ENTRADAS_OCUPADAS)<=0){
 							log_error(logE,"coordinador desconectado");
 							mantenerLoop = false;
+						} else {
 
-							if(enviarInt(coordinador_socket,cuentaBloquesUsados(t_inst_bitmap))<=0){
-								log_error(logE,"coordinador desconectado");
-								mantenerLoop = false;
+						if(enviarInt(coordinador_socket,cuentaBloquesUsados(t_inst_bitmap))<=0){
+							log_error(logE,"coordinador desconectado");
+							mantenerLoop = false;
 
-							};
+						};
 						}
 						break;
 					}
