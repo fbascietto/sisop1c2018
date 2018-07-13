@@ -60,21 +60,28 @@ int main() {
 					log_trace(logT,"Se recibe instruccion SET.\n");
 					cantidadEntradas = recibirEntrada(coordinador_socket);
 					if(cantidadEntradas<=0){
-						log_error(logE,"coordinador desconectado");
-						mantenerLoop = false;
-						break;
-					}
-					if(enviarInt(coordinador_socket,ENTRADAS_OCUPADAS)<=0){
-						log_error(logE,"coordinador desconectado");
-						mantenerLoop = false;
-						break;
+						log_warning(logT,"No fue posible guardar la entrada");
+						if(enviarInt(coordinador_socket,ERROR_EJECUCION)<=0){
+							log_error(logE,"coordinador desconectado");
+							mantenerLoop = false;
 
-					}
-					if(enviarInt(coordinador_socket,cuentaBloquesUsados(t_inst_bitmap))<=0){
-						log_error(logE,"coordinador desconectado");
-						mantenerLoop = false;
+						}
 						break;
-					};
+					}else{
+						if(enviarInt(coordinador_socket,ENTRADAS_OCUPADAS)<=0){
+							log_error(logE,"coordinador desconectado");
+							mantenerLoop = false;
+
+							if(enviarInt(coordinador_socket,cuentaBloquesUsados(t_inst_bitmap))<=0){
+								log_error(logE,"coordinador desconectado");
+								mantenerLoop = false;
+
+							};
+						}
+						break;
+					}
+
+
 					break;
 				case STORE_ENTRADA:
 					operacionNumero++;
