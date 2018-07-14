@@ -328,7 +328,7 @@ void imprimirEsis(t_queue* bloqueados, char* msj) {
 
 	int i;
 
-	for (i = 0; i < list_size(bloqueados->elements); ++i) {
+	for (i = 0; i < list_size(bloqueados->elements); i++) {
 		t_proceso_esi* esi = list_get(bloqueados->elements, i);
 		string_append_with_format(&msj, "ESI %d", esi->id);
 		if (i + 1 < list_size(bloqueados->elements)) {

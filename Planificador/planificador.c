@@ -277,7 +277,7 @@ void * iniciaConsola(){
 
 		}else if(!strncmp(linea, terminados, strlen(terminados))){
 
-			log_trace(logPlan,"Consola recibe ""%s""", status);
+			log_trace(logPlan,"Consola recibe ""%s""", terminados);
 
 			parametros = string_split(linea, " ");
 			if(parametros[1] != NULL){
