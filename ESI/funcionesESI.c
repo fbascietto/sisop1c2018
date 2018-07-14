@@ -16,13 +16,13 @@ t_config* cargar_configuracion(){
 	 */
 
 	/* para correr desde CONSOLA
-	 */
 	infoConfig = config_create("../../Recursos/Configuracion/esi.config");
+	 */
 
 
 	/*para correr en la VM SERVER
-	infoConfig = config_create("esi.config");
 	 */
+	infoConfig = config_create("esi.config");
 
 	if(config_has_property(infoConfig, "IP_COORDINADOR")){
 		coordinador_IP = config_get_string_value(infoConfig, "IP_COORDINADOR");
@@ -58,18 +58,18 @@ void configureLoggers(){
 	 */
 
 	/* para correr desde CONSOLA
-	 */
 	vaciarArchivo("../../Recursos/Logs/ESI.log");
 	logT = log_create("../../Recursos/Logs/ESI.log","ESI", true, T);
 	logI = log_create("../../Recursos/Logs/ESI.log", "ESI", true, I);
 	logE = log_create("../../Recursos/Logs/ESI.log", "ESI", true, E);
+	 */
 
 	/* para correr desde la VM Server
 	vaciarArchivo("ESI.log");
+	 */
 	logT = log_create("ESI.log","ESI", true, T);
 	logI = log_create("ESI.log", "ESI", true, I);
 	logE = log_create("ESI.log", "ESI", true, E);
-	 */
 
 }
 

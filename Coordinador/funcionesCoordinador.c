@@ -181,14 +181,14 @@ void cargar_configuracion(){
 	infoConfig = config_create("../Recursos/Configuracion/coordinador.config");
 */
 
-	/*para correr desde CONSOLA*/
+	/*para correr desde CONSOLA
 
 	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
-
+*/
 
 	/* para correr desde la VM Server
-	infoConfig = config_create("coordinador.config");
 	 */
+	infoConfig = config_create("coordinador.config");
 
 
 	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){
@@ -229,19 +229,20 @@ void configureLoggers(){
 	logE = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
 */
 
-	/* para correr desde CONSOLA*/
+	/* para correr desde CONSOLA
 
 	vaciarArchivo("../../Recursos/Logs/Coordinador.log");
 	logT = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
+*/
 
 	/* para correr desde la VM Server
 	vaciarArchivo("Coordinador.log");
+	 */
 	logT = log_create("Coordinador.log", "Coordinador", true, T);
 	logI = log_create("Coordinador.log", "Coordinador", true, I);
 	logE = log_create("Coordinador.log", "Coordinador", true, E);
-	 */
 }
 
 void destroyLoggers(){
