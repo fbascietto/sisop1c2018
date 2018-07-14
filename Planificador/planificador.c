@@ -411,14 +411,14 @@ void cargar_configuracion(){
 
 	infoConfig = config_create("../Recursos/Configuracion/planificador.config");
 */
-	/* para correr desde CONSOLA*/
+	/* para correr desde CONSOLA
 	infoConfig = config_create("../../Recursos/Configuracion/planificador.config");
-
+*/
 
 	/* para correr desde la VM Server
 
-	infoConfig = config_create("planificador.config");
 	*/
+	infoConfig = config_create("planificador.config");
 
 
 	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){

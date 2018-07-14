@@ -244,9 +244,9 @@ void configureLoggers(){
 	logE = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
 */
 
-	/* para correr desde la VM Server*/
+	/* para correr desde la VM Server
 	vaciarArchivo("Coordinador.log");
-
+*/
 	logT = log_create("Coordinador.log", "Coordinador", true, T);
 	logI = log_create("Coordinador.log", "Coordinador", true, I);
 	logE = log_create("Coordinador.log", "Coordinador", true, E);

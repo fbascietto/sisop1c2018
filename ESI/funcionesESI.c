@@ -64,8 +64,9 @@ void configureLoggers(){
 	logE = log_create("../../Recursos/Logs/ESI.log", "ESI", true, E);
 	 */
 
-	/* para correr desde la VM Server */
+	/* para correr desde la VM Server
 	vaciarArchivo("ESI.log");
+*/
 
 	logT = log_create("ESI.log","ESI", true, T);
 	logI = log_create("ESI.log", "ESI", true, I);

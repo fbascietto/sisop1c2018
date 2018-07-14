@@ -5,15 +5,18 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../biblio_sockets.c \
-../biblioteca.c 
+../biblioteca.c \
+../file_cleaner.c 
 
 OBJS += \
 ./biblio_sockets.o \
-./biblioteca.o 
+./biblioteca.o \
+./file_cleaner.o 
 
 C_DEPS += \
 ./biblio_sockets.d \
-./biblioteca.d 
+./biblioteca.d \
+./file_cleaner.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

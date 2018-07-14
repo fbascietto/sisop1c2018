@@ -25,7 +25,7 @@ endif
 all: Coordinador
 
 dependents:
-	-cd /home/utnso/workspace/Biblioteca/Debug && $(MAKE) all
+	-cd /home/utnso/workspace/Biblioteca/Debug && $(MAKE) clean all
 
 # Tool invocations
 Coordinador: $(OBJS) $(USER_OBJS) /home/utnso/workspace/Biblioteca/Debug/libBiblioteca.so

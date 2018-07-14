@@ -25,7 +25,7 @@ endif
 all: ESI
 
 dependents:
-	-cd /home/utnso/workspace/Biblioteca/Debug && $(MAKE) all
+	-cd /home/utnso/workspace/Biblioteca/Debug && $(MAKE) clean all
 
 # Tool invocations
 ESI: $(OBJS) $(USER_OBJS) /home/utnso/workspace/Biblioteca/Debug/libBiblioteca.so
