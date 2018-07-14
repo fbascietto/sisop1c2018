@@ -499,11 +499,11 @@ void configureLoggers(char* instName){
 	string_append(&logPath,"../Recursos/Logs/");*/
 
 	/* para correr desde CONSOLA
+
 	string_append(&logPath,"../../Recursos/Logs/");
 */
-
 	/* para correr en la VM Server
-	 */
+ */
 	string_append(&logPath,"");
 
 
@@ -652,13 +652,13 @@ void cargar_configuracion(){
 	/* SI SE CORRE DESDE ECLIPSE
 	infoConfig = config_create("../Recursos/Configuracion/instancia.config");
 
-*/
+ */
 	/* SI SE CORRE DESDE CONSOLA
 	infoConfig = config_create("../../Recursos/Configuracion/instancia.config");
 */
 
-	/* SI SE CORRE EN LA VM SERVER
-	 */
+	/* SI SE CORRE EN LA VM SERVER */
+
 	infoConfig = config_create("instancia.config");
 
 	if(config_has_property(infoConfig, "IP_COORDINADOR")){

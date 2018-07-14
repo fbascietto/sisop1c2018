@@ -42,6 +42,10 @@ int main() {
 		log_trace(logT,"Se inicializó la Instancia, se encontraron %d entradas de una ejecución anterior.", check);
 		list_destroy(whitelist);
 		bool mantenerLoop = true;
+
+
+		enviarInt(coordinador_socket,cuentaBloquesUsados(t_inst_bitmap));
+
 		while(mantenerLoop){
 			int instruccion;
 

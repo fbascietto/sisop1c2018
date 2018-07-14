@@ -88,6 +88,11 @@ int crearInstancia(int nuevoSocket){
 		instancia->socketInstancia = nuevoSocket;
 		enviarClavesAGuardar(instancia);
 		free(nombreInstancia);
+		int entradasOcupadas = 0;
+		recibirInt(instancia->socketInstancia,&entradasOcupadas);
+		instancia->entradasOcupadas = entradasOcupadas;
+		log_trace(logT,"Conexión de %s con %d entradas ocupadas", instancia->nombre,entradasOcupadas);
+
 		return 1;
 	}
 
@@ -95,13 +100,16 @@ int crearInstancia(int nuevoSocket){
 
 	instancia->nombre = nombreInstancia;
 	instancia->socketInstancia = nuevoSocket;
-	instancia->entradasOcupadas = 0;
+
 
 
 	instancia->claves = list_create();
 	list_add(instancias,instancia);
 	enviarInt(instancia->socketInstancia, FIN);
-	log_trace(logT,"Conexión de %s.", instancia->nombre);
+	int entradasOcupadas = 0;
+	recibirInt(instancia->socketInstancia,&entradasOcupadas);
+	instancia->entradasOcupadas = entradasOcupadas;
+	log_trace(logT,"Conexión de %s con %d entradas ocupadas", instancia->nombre,entradasOcupadas);
 	return 1;
 }
 
@@ -177,17 +185,17 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	/* para correr desde ECLIPSE*/
+	/* para correr desde ECLIPSE
 	infoConfig = config_create("../Recursos/Configuracion/coordinador.config");
-
+*/
 	/*para correr desde CONSOLA
 
 	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
 	*/
 
 
-	/* para correr desde la VM Server
-	 */
+	/* para correr desde la VM Server */
+
 	infoConfig = config_create("coordinador.config");
 
 
@@ -222,12 +230,12 @@ void configureLoggers(){
 	E = LOG_LEVEL_ERROR;
 
 
-	/* para correr desde ECLIPSE*/
-	vaciarArchivo("../Recursos/Logs/Coordinador.log");
+	/* para correr desde ECLIPSE
+	//vaciarArchivo("../Recursos/Logs/Coordinador.log");
 	logT = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
-
+*/
 	/* para correr desde CONSOLA
 
 	vaciarArchivo("../../Recursos/Logs/Coordinador.log");
@@ -236,9 +244,9 @@ void configureLoggers(){
 	logE = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
 */
 
-	/* para correr desde la VM Server
+	/* para correr desde la VM Server*/
 	vaciarArchivo("Coordinador.log");
-	 */
+
 	logT = log_create("Coordinador.log", "Coordinador", true, T);
 	logI = log_create("Coordinador.log", "Coordinador", true, I);
 	logE = log_create("Coordinador.log", "Coordinador", true, E);
@@ -565,7 +573,6 @@ int elegirInstancia(t_instancia ** instancia, char * key, bool esSimulacion){
 			proximaPosicion = 0;
 		}
 		*instancia = list_get(instancias_conectadas,proximaPosicion);
-		t_instancia * instancia_aux = (t_instancia *) *instancia;
 		proximaPosicion++;
 		if(!esSimulacion){
 			proxima_posicion_instancia = proximaPosicion;
