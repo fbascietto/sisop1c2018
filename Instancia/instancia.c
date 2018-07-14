@@ -33,10 +33,9 @@ int main() {
 
 		operacionNumero = 0;
 
-		/*pthread_t threadDump;
 		if(pthread_create(&threadDump,NULL,dump, NULL)){
 			log_error(logE,"Error generando thread para Dump");
-		}*/
+		}
 
 		int check = reviewPuntoMontaje(whitelist);
 
@@ -79,7 +78,6 @@ int main() {
 						if(enviarInt(coordinador_socket,cuentaBloquesUsados(t_inst_bitmap))<=0){
 							log_error(logE,"coordinador desconectado");
 							mantenerLoop = false;
-
 						};
 						}
 						break;
@@ -116,12 +114,19 @@ int main() {
 
 			pthread_mutex_unlock(&mx_Dump);
 		}
-		//pthread_join(threadDump, NULL);
+
 		close_gracefully();
 	return 0;
 }
 
 void close_gracefully(){
+
+	pthread_mutex_lock(&mx_Dump);
+
+	pthread_cancel(threadDump);
+
+	//pthread_mutex_unlock(&mx_Dump);
+
 	void liberarEntrada(void * parametro){
 		free(parametro);
 	}

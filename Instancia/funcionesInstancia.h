@@ -24,7 +24,6 @@
 #include <limits.h>
 
 #define ROUNDUP(x,y) ((x - 1) / y + 1)
-#define CANTIDAD_BLOQUES_ARCHIVO(FILE_SIZE, BLOCK_SIZE) ((FILE_SIZE > 0) ? ROUNDUP(FILE_SIZE, BLOCK_SIZE) : 1)
 #define SIN_ENTRADA -10
 
 typedef struct {
@@ -55,6 +54,7 @@ t_log* logI;
 t_log* logE;
 int operacionNumero;
 t_bitarray* t_inst_bitmap;
+pthread_t threadDump;
 pthread_mutex_t mx_Dump;
 
 /** Inicializacion **/

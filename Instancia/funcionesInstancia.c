@@ -496,13 +496,10 @@ void configureLoggers(char* instName){
 
 	/* para correr desde ECLIPSE
 
-
 	string_append(&logPath,"../Recursos/Logs/");*/
 
 	/* para correr desde CONSOLA*/
-
 	string_append(&logPath,"../../Recursos/Logs/");
-
 
 
 	/* para correr en la VM Server
@@ -884,7 +881,7 @@ void dump(){
 
 	while(1){
 
-		sleep(intervalo_dump*1000);
+		sleep(intervalo_dump);
 
 		pthread_mutex_lock(&mx_Dump);
 
@@ -904,7 +901,9 @@ void dump(){
 
 		log_trace(logT,"Dump completado. Se generaron %d archivos. Errores: %d.",i-e,e);
 
+
 		pthread_mutex_unlock(&mx_Dump);
+
 	}
 }
 
