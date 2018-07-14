@@ -70,9 +70,9 @@
 
 
 //Protocolo de Algoritmos de la instancia
-#define CIRCULAR 76
-#define LRU 77
-#define BSU 78
+#define CIRCULAR 101
+#define LRU 102
+#define BSU 103
 
 
 #endif /* PROTOCOLO_H_ */

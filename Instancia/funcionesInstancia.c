@@ -363,7 +363,7 @@ int recibirEntrada(int socket){
 		int pos = calcularSiguienteEntrada(lenValue, &entrada, socket);
 
 			if(pos<0 && entrada == NULL){
-				return -1;
+				return pos;
 			}else if(entrada == NULL){
 				entrada = malloc(sizeof(t_entrada));
 				entrada->entry = pos;
@@ -495,15 +495,7 @@ void configureLoggers(char* instName){
 	char* logPath = string_new();
 
 	/* para correr desde ECLIPSE
-<<<<<<< Updated upstream
-*/
-	string_append(&logPath,"../Recursos/Logs/");
 
-	/* para correr desde CONSOLA
-	string_append(&logPath,"../../Recursos/Logs/");
-
-*/
-=======
 
 	string_append(&logPath,"../Recursos/Logs/");*/
 
@@ -511,7 +503,7 @@ void configureLoggers(char* instName){
 
 	string_append(&logPath,"../../Recursos/Logs/");
 
->>>>>>> Stashed changes
+
 
 	/* para correr en la VM Server
 	string_append(&logPath,"");
@@ -554,13 +546,17 @@ int algoritmoR(char* algoritmo){
 int calculoLRU(int bloques, t_entrada ** entrada){
 
 	int menos_usado = -1;;
-
+	int min_size = INT_MAX;
 	void buscarMenosUsado(void* parametro) {
 
 		t_entrada* entrada_aux = (t_entrada*) parametro;
+		int bloques = calculoCantidadEntradas(entrada_aux->size);
+		if(min_size > bloques){
+			min_size = bloques;
+		}
 
 		if(menos_usado < (operacionNumero - entrada_aux->ultimaRef)
-				&& (1 == (calculoCantidadEntradas(entrada_aux->size)))){
+				&& (1 == bloques)){
 			menos_usado = operacionNumero - entrada_aux->ultimaRef;
 			*entrada = entrada_aux;
 		}
@@ -569,6 +565,9 @@ int calculoLRU(int bloques, t_entrada ** entrada){
 	list_iterate(tablaEntradas,buscarMenosUsado);
 
 	if(menos_usado == -1){
+		if(min_size > 1){
+			return SIN_ENTRADA;
+		}
 		return -1;
 	}else{
 		return 1;
@@ -582,24 +581,38 @@ int calculoBSU(int bloques, t_entrada ** entrada){
 	int mayor_tamanio= -1;
 	int size = list_size(tablaEntradas);
 	int i;
+	int min_size = INT_MAX;
 	for(i=0;i<size;i++){
 		t_entrada* entrada_aux = list_get(tablaEntradas, i);
 		int bloques_entrada = calculoCantidadEntradas(entrada_aux->size);
+		if(min_size > bloques_entrada){
+			min_size = bloques_entrada;
+		}
 		if(entrada_aux->size>mayor_tamanio && bloques_entrada == 1){
-				mayor_tamanio = entrada_aux->size;
-				*entrada = entrada_aux;
+			mayor_tamanio = entrada_aux->size;
+			*entrada = entrada_aux;
 		}
 	}
+	if(min_size > 1){
+					return SIN_ENTRADA;
+				}
 	return mayor_tamanio;
 
 
 }
 int calculoCircular(int bloques, t_entrada ** entrada){
 	int posInicial = numEntradaActual;
+	int min_size = INT_MAX;
 	while(1){
 		bool encontro = false;
+
 		bool entradaConEntry(void* parametro){
+
 			t_entrada * entrada_aux = (t_entrada*) parametro;
+			int bloques = calculoCantidadEntradas(entrada_aux->size);
+			if(min_size > bloques){
+				min_size = bloques;
+			}
 			encontro =  (entrada_aux->entry == numEntradaActual);
 			return encontro;
 		}
@@ -613,9 +626,12 @@ int calculoCircular(int bloques, t_entrada ** entrada){
 			}
 		}
 		if(numEntradaActual > list_size(tablaEntradas)){
-						numEntradaActual = 0;
-					}
+			numEntradaActual = 0;
+		}
 		if(numEntradaActual == posInicial){
+			if(min_size > 1){
+				return SIN_ENTRADA;
+			}
 			return -1;
 		}
 	}
