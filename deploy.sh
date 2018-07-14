@@ -34,6 +34,6 @@ sudo make
 
 cd /home/utnso/tp-2018-1c-Destino-Rusia/Instancia/
 
-sudo cp -r makefiles instancia1
-sudo cp -r makefiles instancia2
-sudo cp -r makefiles instancia3 
+sudo cp -rp makefiles instancia1
+sudo cp -rp makefiles instancia2
+sudo cp -rp makefiles instancia3 
