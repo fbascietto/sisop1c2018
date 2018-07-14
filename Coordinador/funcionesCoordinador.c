@@ -386,7 +386,7 @@ void atenderPlanificador(void *args){
 
 }
 
-void atenderConsolaPlanificador(void *args){
+void* atenderConsolaPlanificador(void *args){
 
 	while(1){
 
@@ -394,6 +394,8 @@ void atenderConsolaPlanificador(void *args){
 			break;;
 		}
 	}
+
+	return NULL;
 
 }
 
@@ -964,7 +966,7 @@ void remover_clave(t_instancia* instancia, char * key){
 /***** La mini consola mágica del Coordinador *****/
 
 
-void escucharConsola(){
+void* escucharConsola(){
 
 	char* linea;
 
@@ -986,10 +988,12 @@ void escucharConsola(){
 
 		free(linea);
 	}
+
+	return NULL;
 }
 
 void * cls(){
-	return system("clear");
+	return (void*) system("clear");
 }
 
 /***** Fin mini consola Mágica del Coordinador ******/

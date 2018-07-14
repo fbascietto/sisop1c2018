@@ -6,6 +6,7 @@
 #include "../Recursos/protocolo.h"
 #include "../Biblioteca/biblio_sockets.h"
 #include "../Biblioteca/file_cleaner.h"
+#include "unistd.h"
 
 #ifndef ESI_H_
 #define ESI_H_
