@@ -45,11 +45,6 @@ void *esperarConexiones(void *args) {
 					log_error(logE,"Error generando thread para ESI");
 				}
 
-/*
-				if(pthread_join(threadAtencionESI, NULL)){
-					log_error(logE,"Error uniendo thread para ESI");
-				}*/
-
 				break;
 
 			case PLANIFICADOR:;
@@ -57,17 +52,11 @@ void *esperarConexiones(void *args) {
 			break;
 
 			case CONSOLA_PLANIFICADOR:;
-			pthread_t threadAtencionConsolaPlanificador;
+
 			argsConsolaPlanificador->socketPlanificador = nuevoSocket;
 			if(pthread_create(&threadAtencionConsolaPlanificador,NULL,atenderConsolaPlanificador, NULL)){
 				log_error(logE,"Error generando thread para Planificador");
 			}
-
-/*
-			if(pthread_join(threadAtencionConsolaPlanificador, NULL)){
-				log_error(logE,"Error uniendo thread para CONSOLA_PLANIFICADOR");
-			}*/
-
 			break;
 
 			case INSTANCIA:
@@ -188,14 +177,14 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	/* para correr desde ECLIPSE */
+	/* para correr desde ECLIPSE
 	infoConfig = config_create("../Recursos/Configuracion/coordinador.config");
+*/
 
-
-	/*para correr desde CONSOLA
+	/*para correr desde CONSOLA*/
 
 	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
-*/
+
 
 	/* para correr desde la VM Server
 	infoConfig = config_create("coordinador.config");
@@ -234,19 +223,19 @@ void configureLoggers(){
 
 
 	/* para correr desde ECLIPSE
-	vaciarArchivo("../Recursos/Logs/Coordinador.log");*/
+	vaciarArchivo("../Recursos/Logs/Coordinador.log");
 	logT = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
+*/
 
-
-	/* para correr desde CONSOLA
+	/* para correr desde CONSOLA*/
 
 	vaciarArchivo("../../Recursos/Logs/Coordinador.log");
 	logT = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
-*/
+
 	/* para correr desde la VM Server
 	vaciarArchivo("Coordinador.log");
 	logT = log_create("Coordinador.log", "Coordinador", true, T);
@@ -583,6 +572,7 @@ int elegirInstancia(t_instancia ** instancia, char * key, bool esSimulacion){
 		return proximaPosicion;
 	}else
 		if(strcmp(coordinador_Algoritmo,"LSU")==0){
+			list_destroy(instancias_conectadas);
 			return ejecutarAlgoritmoLSU(instancia);
 		}else
 			if(strcmp(coordinador_Algoritmo,"KE")==0){
@@ -1012,6 +1002,12 @@ void exit_gracefully(){
 		free(inst);
 
 	}
+
+	pthread_cancel(threadAtencionConsolaPlanificador);
+	pthread_detach(threadAtencionConsolaPlanificador);
+	pthread_cancel(threadEscucharConsola);
+	pthread_detach(threadEscucharConsola);
+
 	free(esperarConexion);
 	free(argsPlanificador);
 	free(coordinador_Algoritmo);

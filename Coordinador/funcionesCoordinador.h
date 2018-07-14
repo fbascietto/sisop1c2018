@@ -47,6 +47,9 @@ typedef struct {
 	int entradasOcupadas;
 } t_instancia;
 
+pthread_t threadAtencionConsolaPlanificador;
+pthread_t threadEscucharConsola;
+
 int coordinador_Puerto_Escucha;
 char* coordinador_Algoritmo;
 int cantidad_Entradas;
