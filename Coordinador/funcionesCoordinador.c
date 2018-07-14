@@ -185,9 +185,9 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	/* para correr desde ECLIPSE*/
+	/* para correr desde ECLIPSE
 	infoConfig = config_create("../Recursos/Configuracion/coordinador.config");
-
+*/
 	/*para correr desde CONSOLA
 
 	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
@@ -195,9 +195,9 @@ void cargar_configuracion(){
 
 
 	/* para correr desde la VM Server
-
-	infoConfig = config_create("coordinador.config");
 */
+	infoConfig = config_create("coordinador.config");
+
 
 	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){
 		coordinador_Puerto_Escucha = config_get_int_value(infoConfig, "PUERTO_ESCUCHA");
@@ -230,12 +230,12 @@ void configureLoggers(){
 	E = LOG_LEVEL_ERROR;
 
 
-	/* para correr desde ECLIPSE*/
+	/* para correr desde ECLIPSE
 	//vaciarArchivo("../Recursos/Logs/Coordinador.log");
 	logT = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
-
+*/
 	/* para correr desde CONSOLA
 
 	vaciarArchivo("../../Recursos/Logs/Coordinador.log");
@@ -244,14 +244,14 @@ void configureLoggers(){
 	logE = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
 */
 
-	/* para correr desde la VM Server
-	vaciarArchivo("Coordinador.log");
+	/* para correr desde la VM Server*/
+	//vaciarArchivo("Coordinador.log");
 
 	logT = log_create("Coordinador.log", "Coordinador", true, T);
 	logI = log_create("Coordinador.log", "Coordinador", true, I);
 	logE = log_create("Coordinador.log", "Coordinador", true, E);
 
-*/
+
 }
 
 void destroyLoggers(){
@@ -357,6 +357,7 @@ void recibirMensajeESI(int socket){
 			}
 			break;
 		case STORE_KEY:
+
 			if(ejecutar_operacion_store(socket)<0){
 				finalizar = true;
 				enviarInt(socket, EJECUCION_INVALIDA);
@@ -841,9 +842,8 @@ void informarCompactacion(t_instancia * instancia){
 int ejecutar_operacion_store(int socket){
 	t_instancia * instancia;
 	char* clave;
+	log_trace(logT,"Se recibio solicitud de STORE");
 	clave = recibirMensajeArchivo(socket);
-
-
 
 	int instancia_encontrada;
 	logueaOperacion("STORE",clave,"",socket);
@@ -894,6 +894,7 @@ int ejecutar_operacion_store(int socket){
 int ejecutar_operacion_store_instancia(char * key, t_instancia * instancia){
 	int socket = instancia->socketInstancia;
 	int resultado;
+	enviarInt(socket,STORE_ENTRADA);
 	int conecto = recibirInt(socket,&resultado);
 	if(conecto<=0 || resultado != ENVIO_ENTRADA){
 		instancia->socketInstancia = -1;

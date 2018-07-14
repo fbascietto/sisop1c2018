@@ -500,16 +500,16 @@ void configureLoggers(char* instName){
 
 
 
-	/* para correr desde CONSOLA*/
+	/* para correr desde CONSOLA
 
 
-	string_append(&logPath,"../../Recursos/Logs/");
+	string_append(&logPath,"../../Recursos/Logs/");*/
 
-	/* para correr en la VM Server
+	/* para correr en la VM Server */
 
 	string_append(&logPath,"");
 
- */
+
 	string_append(&logPath,instName);
 	string_append(&logPath,".log");
 
@@ -656,15 +656,15 @@ void cargar_configuracion(){
 	infoConfig = config_create("../Recursos/Configuracion/instancia.config");
 
  */
-	/* SI SE CORRE DESDE CONSOLA*/
+	/* SI SE CORRE DESDE CONSOLA
 	infoConfig = config_create("../../Recursos/Configuracion/instancia.config");
+*/
 
 
-
-	/* SI SE CORRE EN LA VM SERVER
+	/* SI SE CORRE EN LA VM SERVER*/
 
 	infoConfig = config_create("instancia.config");
-*/
+
 	if(config_has_property(infoConfig, "IP_COORDINADOR")){
 		coordinador_IP = string_from_format("%s",config_get_string_value(infoConfig, "IP_COORDINADOR"));
 
