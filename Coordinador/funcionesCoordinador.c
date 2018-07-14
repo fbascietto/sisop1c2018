@@ -338,7 +338,7 @@ void recibirMensajeESI(int socket){
 		break;
 
 		case SET_KEY:
-			if(ejecutar_operacion_set(socket)<0){
+			if(ejecutar_operacion_set(socket,recibirMensajeArchivo(socket),recibirMensajeArchivo(socket))<0){
 				finalizar = true;
 				enviarInt(socket, EJECUCION_INVALIDA);
 			}
@@ -658,7 +658,7 @@ int contieneClaveInstancia(t_instancia * instancia, char * key){
 
 	bool contieneClave(void* parametro) {
 		char* clave_aux = (char*) parametro;
-		return (strcmp(clave_aux,key)==0);
+		return (strcmp(clave_aux,key)==0) && instancia->socketInstancia != -1;
 	}
 
 	t_list* list = list_filter(instancia->claves,contieneClave);
@@ -670,13 +670,9 @@ int contieneClaveInstancia(t_instancia * instancia, char * key){
 
 
 /***************** OPERACION SET ******************/
-int ejecutar_operacion_set(int socket){
-	char * clave;
-	char * valor;
+int ejecutar_operacion_set(int socket, char* clave, char * valor){
 	t_instancia * instancia;
 
-	clave = recibirMensajeArchivo(socket);
-	valor = recibirMensajeArchivo(socket);
 	logueaOperacion("SET",clave,valor,socket);
 
 
@@ -710,9 +706,8 @@ int ejecutar_operacion_set(int socket){
 	switch(codigo){
 	case CLAVE_RESERVADA:
 		if(ejecutar_operacion_set_instancia(clave, valor, instancia)<=0){
-			return ejecutar_operacion_set(socket);
+			return ejecutar_operacion_set(socket, clave, valor);
 		}else{
-
 
 			if(instancia_encontrada<=0){
 				list_add(instancia->claves,clave);
@@ -724,14 +719,15 @@ int ejecutar_operacion_set(int socket){
 		}
 		break;
 	case CLAVE_NO_RESERVADA:
+		free(clave);
 		enviarInt(socket, EJECUCION_INVALIDA);
 		break;
 	case CLAVE_INEXISTENTE:
+		free(clave);
 		enviarInt(socket, EJECUCION_INVALIDA);
 		break;
 	}
 	free(valor);
-
 
 	return 1;
 

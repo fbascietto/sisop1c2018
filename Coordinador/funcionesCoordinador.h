@@ -92,7 +92,7 @@ int enviarEntradaInstancia(char * key , char * value, t_instancia * instancia);
 int bloquearKey(char * key);
 void liberar_clave(char * key);
 int ejecutarOperacionGET(int socket);
-int ejecutar_operacion_set(int socket);
+int ejecutar_operacion_set(int socket, char* clave, char * valor);
 int ejecutar_operacion_set_instancia(char * key, char * value, t_instancia * instancia);
 int ejecutar_operacion_store(int socket);
 int ejecutar_operacion_store_instancia(char * key, t_instancia * instancia);
