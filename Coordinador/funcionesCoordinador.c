@@ -572,7 +572,7 @@ int elegirInstancia(t_instancia ** instancia, char * key, bool esSimulacion){
 	}
 	if(strcmp(coordinador_Algoritmo,"EL")==0){
 		int proximaPosicion = proxima_posicion_instancia;
-		if(proximaPosicion  >= list_size(instancias) ){
+		if(proximaPosicion  >= list_size(instancias_conectadas) ){
 			proximaPosicion = 0;
 		}
 		*instancia = list_get(instancias_conectadas,proximaPosicion);
@@ -681,7 +681,7 @@ int contieneClaveInstancia(t_instancia * instancia, char * key){
 
 	bool contieneClave(void* parametro) {
 		char* clave_aux = (char*) parametro;
-		return (strcmp(clave_aux,key)==0) && instancia->socketInstancia != -1;
+		return (strcmp(clave_aux,key)==0); // && instancia->socketInstancia != -1;
 	}
 
 	t_list* list = list_filter(instancia->claves,contieneClave);
@@ -730,7 +730,20 @@ int ejecutar_operacion_set(int socket, char* clave, char * valor){
 
 	switch(codigo){
 	case CLAVE_RESERVADA:
+		if(instancia_encontrada>0 && instancia->socketInstancia == -1){
+			log_error(logE,"error de comunicacion con la instancia %s al enviar la clave %s",instancia->nombre, clave);
+			remover_clave(instancia,clave);
+			free(clave);
+			return INSTANCIA_DESCONECTADA;
+		}
+
 		if(ejecutar_operacion_set_instancia(clave, valor, instancia)<=0){
+			if(instancia_encontrada>0){
+				log_error(logE,"error de comunicacion con la instancia %s al enviar la clave %s",instancia->nombre, clave);
+				remover_clave(instancia,clave);
+				free(clave);
+				return INSTANCIA_DESCONECTADA;
+			}
 			return ejecutar_operacion_set(socket, clave, valor);
 		}else{
 
@@ -779,8 +792,9 @@ int ejecutar_operacion_set_instancia(char * key, char * value, t_instancia * ins
 	int conecto = recibirInt(socket,&resultado);
 	if(conecto<=0 || resultado != ENVIO_ENTRADA){
 		instancia->socketInstancia = -1;
+		// TODO: eliminar clave
 		log_trace(logE,"error de comunicacion con la instancia %s al enviar la clave %s",instancia->nombre, key);
-		return -1;
+		return INSTANCIA_DESCONECTADA;
 	}
 
 	if(resultado<=0){
@@ -983,6 +997,7 @@ void remover_clave(t_instancia* instancia, char * key){
 
 	char * clave_borrar = list_remove_by_condition(instancia->claves, igualA);
 	free(clave_borrar);
+	log_trace(logT, "Se borró la clave %s de la instancia %s.",key, instancia->nombre);
 }
 
 /***** La mini consola mágica del Coordinador *****/

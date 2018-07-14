@@ -383,6 +383,7 @@ void * iniciaConsola(){
 
 		}
 		else {
+			parametros = string_split(linea, " ");
 			log_error(logPlan, "No se reconoce el comando ""%s"".", linea);
 			log_info(logPlan, "Para más información utilice el comando ""%s"".", info);
 			free(linea);
@@ -444,14 +445,14 @@ void cargar_configuracion(){
 	 */
 
 	/* para correr desde CONSOLA
-*/
+
 	infoConfig = config_create("../../Recursos/Configuracion/planificador.config");
 
+*/
+	/* para correr desde la VM Server*/
 
-	/* para correr desde la VM Server
 
 	infoConfig = config_create("planificador.config");
-*/
 
 
 	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){

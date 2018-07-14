@@ -23,7 +23,7 @@
 #include <commons/collections/list.h>
 
 #define LISTA_INSTANCIAS_VACIA -2
-
+#define INSTANCIA_DESCONECTADA -5
 
 typedef struct {
 	int socketESI;
