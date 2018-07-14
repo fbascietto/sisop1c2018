@@ -498,13 +498,14 @@ void configureLoggers(char* instName){
 
 	string_append(&logPath,"../Recursos/Logs/");*/
 
+
+
 	/* para correr desde CONSOLA
 	string_append(&logPath,"../../Recursos/Logs/");
  */
 
 	/* para correr en la VM Server
- */
-	string_append(&logPath,"");
+	string_append(&logPath,"");*/
 
 
 	string_append(&logPath,instName);
@@ -658,6 +659,7 @@ void cargar_configuracion(){
 */
 
 	/* SI SE CORRE EN LA VM SERVER */
+
 	infoConfig = config_create("instancia.config");
 
 	if(config_has_property(infoConfig, "IP_COORDINADOR")){

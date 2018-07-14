@@ -184,3 +184,535 @@ ESI10	|	SET e3:microsoft:juegos HaloInfinite
 ESI10	|	SET e3:microsoft:juegos KingdomHearts3
 ESI10	|	STORE e3:microsoft:juegos 
 ESI10	|	STORE e3:sony:juegos 
+ESI13	|	GET a 
+ESI13	|	GET b 
+ESI13	|	GET c 
+ESI13	|	GET d 
+ESI13	|	GET e 
+ESI13	|	GET f 
+ESI13	|	GET g 
+ESI13	|	GET h 
+ESI13	|	GET i 
+ESI13	|	GET j 
+ESI13	|	GET k 
+ESI13	|	GET ll 
+ESI13	|	GET m 
+ESI13	|	GET o 
+ESI13	|	GET p 
+ESI13	|	GET q 
+ESI13	|	GET r 
+ESI13	|	GET s 
+ESI13	|	GET t 
+ESI13	|	GET u 
+ESI13	|	GET v 
+ESI13	|	GET w 
+ESI13	|	GET x 
+ESI13	|	GET y 
+ESI13	|	GET z 
+ESI13	|	SET a MENEM
+ESI13	|	SET b MENEM
+ESI13	|	SET c MENEM
+ESI13	|	GET a 
+ESI13	|	GET b 
+ESI13	|	GET c 
+ESI13	|	GET d 
+ESI13	|	GET e 
+ESI13	|	GET f 
+ESI13	|	GET g 
+ESI13	|	GET h 
+ESI13	|	GET i 
+ESI13	|	GET j 
+ESI13	|	GET k 
+ESI13	|	GET ll 
+ESI13	|	GET m 
+ESI13	|	GET o 
+ESI13	|	GET p 
+ESI13	|	GET q 
+ESI13	|	GET r 
+ESI13	|	GET s 
+ESI13	|	GET t 
+ESI13	|	GET u 
+ESI13	|	GET v 
+ESI13	|	GET w 
+ESI13	|	GET x 
+ESI13	|	GET y 
+ESI13	|	GET z 
+ESI13	|	SET a MENEM
+ESI13	|	SET b MENEM
+ESI13	|	SET c MENEM
+ESI13	|	SET d MENEM
+ESI13	|	SET e MENEM
+ESI13	|	SET f MENEM
+ESI13	|	SET g MENEM
+ESI13	|	SET h MENEM
+ESI13	|	SET i MENEM
+ESI13	|	SET j MENEM
+ESI13	|	SET k MENEM
+ESI13	|	SET ll MENEM
+ESI13	|	SET m MENEM
+ESI13	|	SET o MENEM
+ESI13	|	SET p MENEM
+ESI13	|	SET q MENEM
+ESI13	|	SET r MENEM
+ESI13	|	SET s MENEM
+ESI13	|	SET t MENEM
+ESI13	|	SET u MENEM
+ESI13	|	SET v MENEM
+ESI13	|	SET w MENEM
+ESI13	|	SET x MENEM
+ESI13	|	SET y MENEM
+ESI13	|	SET z MENEM
+ESI13	|	GET a 
+ESI13	|	GET b 
+ESI13	|	GET c 
+ESI13	|	GET d 
+ESI13	|	GET e 
+ESI13	|	GET f 
+ESI13	|	GET g 
+ESI13	|	GET h 
+ESI13	|	GET i 
+ESI13	|	GET j 
+ESI13	|	GET k 
+ESI13	|	GET ll 
+ESI13	|	GET m 
+ESI13	|	GET n 
+ESI13	|	GET o 
+ESI13	|	GET p 
+ESI13	|	GET q 
+ESI13	|	GET r 
+ESI13	|	GET s 
+ESI13	|	GET t 
+ESI13	|	GET u 
+ESI13	|	GET v 
+ESI13	|	GET w 
+ESI13	|	GET x 
+ESI13	|	GET y 
+ESI13	|	GET z 
+ESI13	|	SET a MENEM
+ESI13	|	SET b MENEM
+ESI13	|	SET c MENEM
+ESI13	|	SET d MENEM
+ESI13	|	SET e MENEM
+ESI13	|	SET f MENEM
+ESI13	|	SET g MENEM
+ESI13	|	SET h MENEM
+ESI13	|	SET i MENEM
+ESI13	|	SET j MENEM
+ESI13	|	SET k MENEM
+ESI13	|	SET ll MENEM
+ESI13	|	SET m MENEM
+ESI13	|	SET n MENEM
+ESI13	|	SET o MENEM
+ESI13	|	GET a 
+ESI13	|	GET b 
+ESI13	|	GET c 
+ESI13	|	GET d 
+ESI13	|	GET e 
+ESI13	|	GET f 
+ESI13	|	GET g 
+ESI13	|	GET h 
+ESI13	|	GET i 
+ESI13	|	GET j 
+ESI13	|	GET k 
+ESI13	|	GET ll 
+ESI13	|	GET m 
+ESI13	|	GET n 
+ESI13	|	GET o 
+ESI13	|	GET p 
+ESI13	|	GET q 
+ESI13	|	GET r 
+ESI13	|	GET s 
+ESI13	|	GET t 
+ESI13	|	GET u 
+ESI13	|	GET v 
+ESI13	|	GET w 
+ESI13	|	GET x 
+ESI13	|	GET y 
+ESI13	|	GET z 
+ESI13	|	SET a MENEM
+ESI13	|	SET b MENEM
+ESI13	|	SET c MENEM
+ESI13	|	SET d MENEM
+ESI13	|	SET e MENEM
+ESI13	|	SET f MENEM
+ESI13	|	SET g MENEM
+ESI13	|	SET h MENEM
+ESI13	|	SET i MENEM
+ESI13	|	SET j MENEM
+ESI13	|	SET k MENEM
+ESI13	|	SET ll MENEM
+ESI13	|	SET m MENEM
+ESI13	|	SET n MENEM
+ESI13	|	SET o MENEM
+ESI13	|	GET a 
+ESI13	|	GET b 
+ESI13	|	GET c 
+ESI13	|	GET d 
+ESI13	|	GET e 
+ESI13	|	GET f 
+ESI13	|	GET g 
+ESI13	|	GET h 
+ESI13	|	GET i 
+ESI13	|	GET j 
+ESI13	|	GET k 
+ESI13	|	GET ll 
+ESI13	|	GET m 
+ESI13	|	GET n 
+ESI13	|	GET o 
+ESI13	|	GET p 
+ESI13	|	GET q 
+ESI13	|	GET r 
+ESI13	|	GET s 
+ESI13	|	GET t 
+ESI13	|	GET u 
+ESI13	|	GET v 
+ESI13	|	GET w 
+ESI13	|	GET x 
+ESI13	|	GET y 
+ESI13	|	GET z 
+ESI13	|	SET a MENEM
+ESI13	|	SET b MENEM
+ESI13	|	SET c MENEM
+ESI13	|	SET d MENEM
+ESI13	|	SET e MENEM
+ESI13	|	SET f MENEM
+ESI13	|	SET g MENEM
+ESI13	|	SET h MENEM
+ESI13	|	SET i MENEM
+ESI13	|	SET j MENEM
+ESI13	|	SET k MENEM
+ESI13	|	SET ll MENEM
+ESI13	|	SET m MENEM
+ESI13	|	SET n MENEM
+ESI13	|	SET o MENEM
+ESI13	|	SET p MENEM
+ESI13	|	SET q MENEM
+ESI13	|	SET r MENEM
+ESI13	|	SET s MENEM
+ESI13	|	SET t MENEM
+ESI13	|	SET u MENEM
+ESI13	|	SET v MENEM
+ESI13	|	SET w MENEM
+ESI13	|	SET x MENEM
+ESI13	|	SET y MENEM
+ESI13	|	SET z MENEM
+ESI15	|	GET e3:sony:juegos 
+ESI15	|	GET e3:microsoft:juegos 
+ESI15	|	SET e3:sony:juegos TLOU2
+ESI15	|	SET e3:sony:juegos Spiderman
+ESI15	|	SET e3:sony:juegos GhostOfTsushima
+ESI15	|	SET e3:sony:juegos DeathStranding
+ESI15	|	SET e3:sony:juegos ResidenEvil2Remake
+ESI15	|	SET e3:sony:juegos Destiny2DLCForsaken
+ESI15	|	SET e3:microsoft:juegos DLCCuphead
+ESI15	|	SET e3:microsoft:juegos ForzaHorizon4
+ESI15	|	SET e3:microsoft:juegos Gears5
+ESI15	|	SET e3:microsoft:juegos MetroExodus
+ESI15	|	SET e3:microsoft:juegos Fallout76
+ESI15	|	SET e3:microsoft:juegos TheDivision2
+ESI15	|	SET e3:microsoft:juegos DyingLight2
+ESI15	|	SET e3:microsoft:juegos Crackdown3
+ESI15	|	SET e3:microsoft:juegos HaloInfinite
+ESI15	|	SET e3:microsoft:juegos KingdomHearts3
+ESI15	|	STORE e3:microsoft:juegos 
+ESI15	|	STORE e3:sony:juegos 
+ESI12	|	GET sandwich:bondiola:simple 
+ESI12	|	GET sandwich:bondiola:jyq 
+ESI12	|	GET sandwich:bondiola:completo 
+ESI12	|	GET sandwich:lomo:simple 
+ESI12	|	GET sandwich:lomo:jyq 
+ESI12	|	GET sandwich:lomo:completo 
+ESI12	|	GET sandwich:vacio:simple 
+ESI12	|	GET sandwich:vacio:jyq 
+ESI12	|	GET sandwich:vacio:completo 
+ESI12	|	GET sandwich:choripan 
+ESI12	|	GET sandwich:morcipan 
+ESI12	|	GET parrilla:chinchulines 
+ESI12	|	GET parrilla:rinion 
+ESI12	|	GET parrilla:tiraasado 
+ESI12	|	GET parrilla:vacio 
+ESI12	|	GET parrilla:entrania 
+ESI12	|	GET parrilla:bifedelomo 
+ESI12	|	GET parrilla:matambre:simple 
+ESI12	|	GET parrilla:matambre:alapizza 
+ESI12	|	GET parrilla:ojodebife 
+ESI12	|	GET parrilla:molleja 
+ESI12	|	GET parrilla:pareja 
+ESI12	|	GET cocina:papasfritas 
+ESI12	|	GET cocina:batatasfritas 
+ESI12	|	GET cocina:tallarines 
+ESI12	|	GET cocina:ravioles 
+ESI12	|	GET cocina:nioquis 
+ESI12	|	GET cocina:suprema 
+ESI12	|	GET cocina:milanesa:carne 
+ESI12	|	GET cocina:milanesa:pollo 
+ESI12	|	SET sandwich:bondiola:simple panbondiola
+ESI9	|	GET sandwich:bondiola:simple 
+ESI9	|	GET sandwich:bondiola:jyq 
+ESI9	|	GET sandwich:bondiola:completo 
+ESI9	|	GET sandwich:lomo:simple 
+ESI9	|	GET sandwich:lomo:jyq 
+ESI9	|	GET sandwich:lomo:completo 
+ESI9	|	GET sandwich:vacio:simple 
+ESI9	|	GET sandwich:vacio:jyq 
+ESI9	|	GET sandwich:vacio:completo 
+ESI9	|	GET sandwich:choripan 
+ESI9	|	GET sandwich:morcipan 
+ESI9	|	GET parrilla:chinchulines 
+ESI9	|	GET parrilla:rinion 
+ESI9	|	GET parrilla:tiraasado 
+ESI9	|	GET parrilla:vacio 
+ESI9	|	GET parrilla:entrania 
+ESI9	|	GET parrilla:bifedelomo 
+ESI9	|	GET parrilla:matambre:simple 
+ESI9	|	GET parrilla:matambre:alapizza 
+ESI9	|	GET parrilla:ojodebife 
+ESI9	|	GET parrilla:molleja 
+ESI9	|	GET parrilla:pareja 
+ESI9	|	GET cocina:papasfritas 
+ESI9	|	GET cocina:batatasfritas 
+ESI9	|	GET cocina:tallarines 
+ESI9	|	GET cocina:ravioles 
+ESI9	|	GET cocina:nioquis 
+ESI9	|	GET cocina:suprema 
+ESI9	|	GET cocina:milanesa:carne 
+ESI9	|	GET cocina:milanesa:pollo 
+ESI9	|	SET sandwich:bondiola:simple panbondiola
+ESI11	|	GET sandwich:bondiola:simple 
+ESI10	|	GET sandwich:bondiola:simple 
+ESI10	|	GET sandwich:bondiola:jyq 
+ESI10	|	GET sandwich:bondiola:completo 
+ESI10	|	GET sandwich:lomo:simple 
+ESI10	|	GET sandwich:lomo:jyq 
+ESI10	|	GET sandwich:lomo:completo 
+ESI10	|	GET sandwich:vacio:simple 
+ESI10	|	GET sandwich:vacio:jyq 
+ESI10	|	GET sandwich:vacio:completo 
+ESI10	|	GET sandwich:choripan 
+ESI10	|	GET sandwich:morcipan 
+ESI10	|	GET parrilla:chinchulines 
+ESI10	|	GET parrilla:rinion 
+ESI10	|	GET parrilla:tiraasado 
+ESI10	|	GET parrilla:vacio 
+ESI10	|	GET parrilla:entrania 
+ESI10	|	GET parrilla:bifedelomo 
+ESI10	|	GET parrilla:matambre:simple 
+ESI10	|	GET parrilla:matambre:alapizza 
+ESI10	|	GET parrilla:ojodebife 
+ESI10	|	GET parrilla:molleja 
+ESI10	|	GET parrilla:pareja 
+ESI10	|	GET cocina:papasfritas 
+ESI10	|	GET cocina:batatasfritas 
+ESI10	|	GET cocina:tallarines 
+ESI10	|	GET cocina:ravioles 
+ESI10	|	GET cocina:nioquis 
+ESI10	|	GET cocina:suprema 
+ESI10	|	GET cocina:milanesa:carne 
+ESI10	|	GET cocina:milanesa:pollo 
+ESI10	|	SET sandwich:bondiola:simple panbondiola
+ESI10	|	GET sandwich:bondiola:simple 
+ESI10	|	GET sandwich:bondiola:jyq 
+ESI10	|	GET sandwich:bondiola:completo 
+ESI10	|	GET sandwich:lomo:simple 
+ESI10	|	GET sandwich:lomo:jyq 
+ESI10	|	GET sandwich:lomo:completo 
+ESI10	|	GET sandwich:vacio:simple 
+ESI10	|	GET sandwich:vacio:jyq 
+ESI10	|	GET sandwich:vacio:completo 
+ESI10	|	GET sandwich:choripan 
+ESI10	|	GET sandwich:morcipan 
+ESI10	|	GET parrilla:chinchulines 
+ESI10	|	GET parrilla:rinion 
+ESI10	|	GET parrilla:tiraasado 
+ESI10	|	GET parrilla:vacio 
+ESI10	|	GET parrilla:entrania 
+ESI10	|	GET parrilla:bifedelomo 
+ESI10	|	GET parrilla:matambre:simple 
+ESI10	|	GET parrilla:matambre:alapizza 
+ESI10	|	GET parrilla:ojodebife 
+ESI10	|	GET parrilla:molleja 
+ESI10	|	GET parrilla:pareja 
+ESI10	|	GET cocina:papasfritas 
+ESI10	|	GET cocina:batatasfritas 
+ESI10	|	GET cocina:tallarines 
+ESI10	|	GET cocina:ravioles 
+ESI10	|	GET cocina:nioquis 
+ESI10	|	GET cocina:suprema 
+ESI10	|	GET cocina:milanesa:carne 
+ESI10	|	GET cocina:milanesa:pollo 
+ESI10	|	SET sandwich:bondiola:simple panbondiola
+ESI10	|	GET sandwich:bondiola:simple 
+ESI10	|	GET sandwich:bondiola:jyq 
+ESI10	|	GET sandwich:bondiola:completo 
+ESI10	|	GET sandwich:lomo:simple 
+ESI10	|	GET sandwich:lomo:jyq 
+ESI10	|	GET sandwich:lomo:completo 
+ESI10	|	GET sandwich:vacio:simple 
+ESI10	|	GET sandwich:vacio:jyq 
+ESI10	|	GET sandwich:vacio:completo 
+ESI10	|	GET sandwich:choripan 
+ESI10	|	GET sandwich:morcipan 
+ESI10	|	GET parrilla:chinchulines 
+ESI10	|	GET parrilla:rinion 
+ESI10	|	GET parrilla:tiraasado 
+ESI10	|	GET parrilla:vacio 
+ESI10	|	GET parrilla:entrania 
+ESI10	|	GET parrilla:bifedelomo 
+ESI10	|	GET parrilla:matambre:simple 
+ESI10	|	GET parrilla:matambre:alapizza 
+ESI10	|	GET parrilla:ojodebife 
+ESI10	|	GET parrilla:molleja 
+ESI10	|	GET parrilla:pareja 
+ESI10	|	GET cocina:papasfritas 
+ESI10	|	GET cocina:batatasfritas 
+ESI10	|	GET cocina:tallarines 
+ESI10	|	GET cocina:ravioles 
+ESI10	|	GET cocina:nioquis 
+ESI10	|	GET cocina:suprema 
+ESI10	|	GET cocina:milanesa:carne 
+ESI10	|	GET cocina:milanesa:pollo 
+ESI10	|	SET sandwich:bondiola:simple panbondiola
+ESI11	|	GET sandwich:bondiola:simple 
+ESI11	|	GET sandwich:bondiola:jyq 
+ESI11	|	GET sandwich:bondiola:completo 
+ESI11	|	GET sandwich:lomo:simple 
+ESI11	|	GET sandwich:lomo:jyq 
+ESI11	|	GET sandwich:lomo:completo 
+ESI11	|	GET sandwich:vacio:simple 
+ESI11	|	GET sandwich:vacio:jyq 
+ESI11	|	GET sandwich:vacio:completo 
+ESI11	|	GET sandwich:choripan 
+ESI11	|	GET sandwich:morcipan 
+ESI11	|	GET parrilla:chinchulines 
+ESI11	|	GET parrilla:rinion 
+ESI11	|	GET parrilla:tiraasado 
+ESI11	|	GET parrilla:vacio 
+ESI11	|	GET parrilla:entrania 
+ESI11	|	GET parrilla:bifedelomo 
+ESI11	|	GET parrilla:matambre:simple 
+ESI11	|	GET parrilla:matambre:alapizza 
+ESI11	|	GET parrilla:ojodebife 
+ESI11	|	GET parrilla:molleja 
+ESI11	|	GET parrilla:pareja 
+ESI11	|	GET cocina:papasfritas 
+ESI11	|	GET cocina:batatasfritas 
+ESI11	|	GET cocina:tallarines 
+ESI11	|	GET cocina:ravioles 
+ESI11	|	GET cocina:nioquis 
+ESI11	|	GET cocina:suprema 
+ESI11	|	GET cocina:milanesa:carne 
+ESI11	|	GET cocina:milanesa:pollo 
+ESI11	|	SET sandwich:bondiola:simple panbondiola
+ESI9	|	GET sandwich:bondiola:simple 
+ESI9	|	GET sandwich:bondiola:jyq 
+ESI9	|	GET sandwich:bondiola:completo 
+ESI9	|	GET sandwich:lomo:simple 
+ESI9	|	GET sandwich:lomo:jyq 
+ESI9	|	GET sandwich:lomo:completo 
+ESI9	|	GET sandwich:vacio:simple 
+ESI9	|	GET sandwich:vacio:jyq 
+ESI9	|	GET sandwich:vacio:completo 
+ESI9	|	GET sandwich:choripan 
+ESI9	|	GET sandwich:morcipan 
+ESI9	|	GET parrilla:chinchulines 
+ESI9	|	GET parrilla:rinion 
+ESI9	|	GET parrilla:tiraasado 
+ESI9	|	GET parrilla:vacio 
+ESI9	|	GET parrilla:entrania 
+ESI9	|	GET parrilla:bifedelomo 
+ESI9	|	GET parrilla:matambre:simple 
+ESI9	|	GET parrilla:matambre:alapizza 
+ESI9	|	GET parrilla:ojodebife 
+ESI9	|	GET sandwich:bondiola:simple 
+ESI9	|	GET sandwich:bondiola:jyq 
+ESI9	|	GET sandwich:bondiola:completo 
+ESI9	|	GET sandwich:lomo:simple 
+ESI9	|	GET sandwich:lomo:jyq 
+ESI9	|	GET sandwich:lomo:completo 
+ESI9	|	GET sandwich:vacio:simple 
+ESI9	|	GET sandwich:vacio:jyq 
+ESI9	|	GET sandwich:vacio:completo 
+ESI9	|	GET sandwich:choripan 
+ESI9	|	GET sandwich:morcipan 
+ESI9	|	GET parrilla:chinchulines 
+ESI9	|	GET parrilla:rinion 
+ESI9	|	GET parrilla:tiraasado 
+ESI9	|	GET parrilla:vacio 
+ESI9	|	GET parrilla:entrania 
+ESI9	|	GET parrilla:bifedelomo 
+ESI9	|	GET parrilla:matambre:simple 
+ESI9	|	GET parrilla:matambre:alapizza 
+ESI9	|	GET parrilla:ojodebife 
+ESI9	|	GET parrilla:molleja 
+ESI9	|	GET parrilla:pareja 
+ESI9	|	GET cocina:papasfritas 
+ESI9	|	GET cocina:batatasfritas 
+ESI9	|	GET cocina:tallarines 
+ESI9	|	GET cocina:ravioles 
+ESI9	|	GET cocina:nioquis 
+ESI9	|	GET cocina:suprema 
+ESI9	|	GET cocina:milanesa:carne 
+ESI9	|	GET cocina:milanesa:pollo 
+ESI9	|	SET sandwich:bondiola:simple panbondiola
+ESI10	|	GET sandwich:bondiola:simple 
+ESI10	|	GET sandwich:bondiola:simple 
+ESI10	|	GET sandwich:bondiola:jyq 
+ESI10	|	GET sandwich:bondiola:completo 
+ESI10	|	GET sandwich:lomo:simple 
+ESI10	|	GET sandwich:lomo:jyq 
+ESI10	|	GET sandwich:lomo:completo 
+ESI10	|	GET sandwich:vacio:simple 
+ESI10	|	GET sandwich:vacio:jyq 
+ESI10	|	GET sandwich:vacio:completo 
+ESI10	|	GET sandwich:choripan 
+ESI10	|	GET sandwich:morcipan 
+ESI10	|	GET parrilla:chinchulines 
+ESI10	|	GET parrilla:rinion 
+ESI10	|	GET parrilla:tiraasado 
+ESI10	|	GET parrilla:vacio 
+ESI10	|	GET parrilla:entrania 
+ESI10	|	GET parrilla:bifedelomo 
+ESI10	|	GET parrilla:matambre:simple 
+ESI10	|	GET parrilla:matambre:alapizza 
+ESI10	|	GET parrilla:ojodebife 
+ESI10	|	GET parrilla:molleja 
+ESI10	|	GET parrilla:pareja 
+ESI10	|	GET cocina:papasfritas 
+ESI10	|	GET cocina:batatasfritas 
+ESI10	|	GET cocina:tallarines 
+ESI10	|	GET cocina:ravioles 
+ESI10	|	GET cocina:nioquis 
+ESI10	|	GET cocina:suprema 
+ESI10	|	GET cocina:milanesa:carne 
+ESI10	|	GET cocina:milanesa:pollo 
+ESI10	|	SET sandwich:bondiola:simple panbondiola
+ESI10	|	SET sandwich:bondiola:jyq panjamonquesobondiola
+ESI10	|	SET sandwich:bondiola:completo panjamonquesolechugatomatebondiola
+ESI10	|	SET sandwich:lomo:simple panlomo
+ESI10	|	SET sandwich:lomo:jyq panjamonquesolomo
+ESI10	|	SET sandwich:lomo:completo panjamonquesolechugatomatelomo
+ESI10	|	SET sandwich:vacio:simple panvacio
+ESI10	|	SET sandwich:vacio:jyq panjamonquesovacio
+ESI10	|	SET sandwich:vacio:completo panjamonquesolechugatomatevacio
+ESI10	|	SET sandwich:choripan panchorizo
+ESI10	|	SET sandwich:morcipan panmorcilla
+ESI10	|	SET parrilla:chinchulines chinchulineslimon
+ESI10	|	SET parrilla:rinion rinionylimon
+ESI10	|	SET parrilla:tiraasado porcionde3o4huesos
+ESI10	|	SET parrilla:vacio vacioconfritas
+ESI10	|	SET parrilla:entrania entraniaconfritas
+ESI10	|	SET parrilla:bifedelomo bifeconfritas
+ESI10	|	SET parrilla:matambre:simple matambrefritas
+ESI10	|	SET parrilla:matambre:alapizza matambrejamonquesooregano
+ESI10	|	SET parrilla:ojodebife ojodebifeconfritas
+ESI10	|	SET parrilla:molleja mollejaconlimon
+ESI10	|	SET parrilla:pareja chorizoymorcilla
+ESI10	|	SET cocina:papasfritas papayaceite
+ESI10	|	SET cocina:batatasfritas batatayaceite
+ESI10	|	SET cocina:tallarines tallarinescontuco
+ESI10	|	SET cocina:ravioles raviolesdejyqcontuco
+ESI10	|	SET cocina:nioquis nioquisdepapacontuco
+ESI10	|	SET cocina:suprema supremaalamaryland
+ESI10	|	SET cocina:milanesa:carne milanesadecarneconfritas
+ESI10	|	SET cocina:milanesa:pollo milanesadepolloconfritas
+ESI10	|	STORE sandwich:bondiola:simple 

@@ -424,13 +424,17 @@ void configureLogger(){
 	logPlan = log_create("../../Recursos/Logs/Planificador.log","Planificador", true, LogL);
 */
 
-	/* para ejecutar desde la VM Server
-	vaciarArchivo("Planificador.log");
-	*/
+
+
+	/* para ejecutar desde la VM Server*/
+//	vaciarArchivo("Planificador.log");
+
+
 	logPlan = log_create("Planificador.log","Planificador", true, LogL);
 
 
 	log_trace(logPlan, "inicializacion de logs");
+
 }
 
 void cargar_configuracion(){
@@ -445,9 +449,9 @@ void cargar_configuracion(){
 
 
 	/* para correr desde la VM Server
-	 */
-	infoConfig = config_create("planificador.config");
 
+	infoConfig = config_create("planificador.config");
+*/
 
 
 	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){

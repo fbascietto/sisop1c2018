@@ -61,6 +61,7 @@ int main() {
 				case ENVIO_ENTRADA:
 					operacionNumero++;
 					log_trace(logT,"Se recibe instruccion SET.\n");
+					enviarInt(coordinador_socket,ENVIO_ENTRADA);
 					cantidadEntradas = recibirEntrada(coordinador_socket);
 					if(cantidadEntradas<=0){
 						if(cantidadEntradas == SIN_ENTRADA){
@@ -92,6 +93,7 @@ int main() {
 				case STORE_ENTRADA:
 					operacionNumero++;
 					log_trace(logT,"Se recibe instruccion STORE.\n");
+					enviarInt(coordinador_socket,ENVIO_ENTRADA);
 					ejecutarStore(coordinador_socket);
 					if(enviarInt(coordinador_socket,cuentaBloquesUsados(t_inst_bitmap))<=0){
 						log_error(logE,"coordinador desconectado");

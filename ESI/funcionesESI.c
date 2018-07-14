@@ -13,15 +13,15 @@ t_config* cargar_configuracion(){
 
 	/* para correr desde ECLIPSE
 	infoConfig = config_create("../Recursos/Configuracion/esi.config");
-
 */
+
 	/* para correr desde CONSOLA
+
 	infoConfig = config_create("../../Recursos/Configuracion/esi.config");
 	*/
 
+	/*para correr en la VM SERVER*/
 
-	/*para correr en la VM SERVER
-*/
 	infoConfig = config_create("esi.config");
 
 	if(config_has_property(infoConfig, "IP_COORDINADOR")){
@@ -50,7 +50,7 @@ void configureLoggers(){
 	I = LOG_LEVEL_INFO;
 	E = LOG_LEVEL_ERROR;
 
-	/* para correr desde ECLIPSE *
+	/* para correr desde ECLIPSE
 	vaciarArchivo("../Recursos/Logs/ESI.log");
 	logT = log_create("../Recursos/Logs/ESI.log","ESI", false, T);
 	logI = log_create("../Recursos/Logs/ESI.log", "ESI", false, I);
@@ -64,9 +64,9 @@ void configureLoggers(){
 	logE = log_create("../../Recursos/Logs/ESI.log", "ESI", true, E);
 	 */
 
-	/* para correr desde la VM Server
-	vaciarArchivo("ESI.log");
-*/
+	/* para correr desde la VM Server*/
+	//vaciarArchivo("ESI.log");
+
 
 	logT = log_create("ESI.log","ESI", true, T);
 	logI = log_create("ESI.log", "ESI", true, I);

@@ -188,8 +188,8 @@ void cargar_configuracion(){
 	/* para correr desde ECLIPSE
 	infoConfig = config_create("../Recursos/Configuracion/coordinador.config");
 */
-	/*para correr desde CONSOLA
 
+	/*para correr desde CONSOLA
 	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
 	*/
 
@@ -243,12 +243,14 @@ void configureLoggers(){
 	logE = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
 */
 
-	/* para correr desde la VM Server
-	vaciarArchivo("Coordinador.log");
-*/
+	/* para correr desde la VM Server*/
+	//vaciarArchivo("Coordinador.log");
+
 	logT = log_create("Coordinador.log", "Coordinador", true, T);
 	logI = log_create("Coordinador.log", "Coordinador", true, I);
 	logE = log_create("Coordinador.log", "Coordinador", true, E);
+
+
 }
 
 void destroyLoggers(){
@@ -354,6 +356,7 @@ void recibirMensajeESI(int socket){
 			}
 			break;
 		case STORE_KEY:
+
 			if(ejecutar_operacion_store(socket)<0){
 				finalizar = true;
 				enviarInt(socket, EJECUCION_INVALIDA);
@@ -655,8 +658,9 @@ int buscarInstanciaContenedora(char * key, t_instancia ** instancia){
 	bool contieneClave(void* parametro) {
 		t_instancia* inst = (t_instancia*) parametro;
 		encontro = contieneClaveInstancia(inst,key);
+
 		++pos;
-		return encontro > 0;
+		return encontro >0;
 	}
 
 	*instancia = (t_instancia *)list_find(instancias,contieneClave);
@@ -768,7 +772,17 @@ bool key_creada(char * key){
 
 int ejecutar_operacion_set_instancia(char * key, char * value, t_instancia * instancia){
 	int socket = instancia->socketInstancia;
-	if(enviarInt(socket,ENVIO_ENTRADA)<=0){
+	enviarInt(socket,ENVIO_ENTRADA);
+
+	int resultado;
+	int conecto = recibirInt(socket,&resultado);
+	if(conecto<=0 || resultado != ENVIO_ENTRADA){
+		instancia->socketInstancia = -1;
+		log_trace(logE,"error de comunicacion con la instancia %s al enviar la clave %s",instancia->nombre, key);
+		return -1;
+	}
+
+	if(resultado<=0){
 		instancia->socketInstancia = -1;
 		log_trace(logE,"error de comunicacion con la instancia %s al enviar la clave %s",instancia->nombre, key);
 		return -1;
@@ -827,9 +841,8 @@ void informarCompactacion(t_instancia * instancia){
 int ejecutar_operacion_store(int socket){
 	t_instancia * instancia;
 	char* clave;
+	log_trace(logT,"Se recibio solicitud de STORE");
 	clave = recibirMensajeArchivo(socket);
-
-
 
 	int instancia_encontrada;
 	logueaOperacion("STORE",clave,"",socket);
@@ -879,7 +892,10 @@ int ejecutar_operacion_store(int socket){
 
 int ejecutar_operacion_store_instancia(char * key, t_instancia * instancia){
 	int socket = instancia->socketInstancia;
-	if(enviarInt(socket,STORE_ENTRADA)<=0){
+	int resultado;
+	enviarInt(socket,STORE_ENTRADA);
+	int conecto = recibirInt(socket,&resultado);
+	if(conecto<=0 || resultado != ENVIO_ENTRADA){
 		instancia->socketInstancia = -1;
 		liberar_clave(key);
 		log_trace(logE,"error al ejecutar STORE con instancia %s de la clave %s",instancia->nombre, key);
