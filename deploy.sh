@@ -14,17 +14,22 @@ cd /home/utnso/parsi/src
 sudo make install
 
 cd /home/utnso/tp-2018-1c-Destino-Rusia/Biblioteca/makefiles
+sudo make clean
 sudo make
 
 sudo cp libBiblioteca.so /usr/lib
 
 cd /home/utnso/tp-2018-1c-Destino-Rusia/Coordinador/makefiles
+sudo make clean
 sudo make
 cd /home/utnso/tp-2018-1c-Destino-Rusia/Instancia/makefiles
+sudo make clean
 sudo make
 cd /home/utnso/tp-2018-1c-Destino-Rusia/Planificador/makefiles
+sudo make clean
 sudo make
 cd /home/utnso/tp-2018-1c-Destino-Rusia/ESI/makefiles
+sudo make clean
 sudo make
 
 cd /home/utnso/tp-2018-1c-Destino-Rusia/Instancia/
