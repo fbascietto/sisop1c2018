@@ -319,7 +319,8 @@ void recibirMensajeESI(int socket){
 	bool finalizar = false;
 	int mensaje;
 	while(1){
-
+		char* key;
+		char* value;
 
 		if(recibirInt(socket, &mensaje)<=0){
 			log_trace(logT, "ESI socket %d desconectado", socket);
@@ -338,7 +339,9 @@ void recibirMensajeESI(int socket){
 		break;
 
 		case SET_KEY:
-			if(ejecutar_operacion_set(socket,recibirMensajeArchivo(socket),recibirMensajeArchivo(socket))<0){
+			key = recibirMensajeArchivo(socket);
+			value = recibirMensajeArchivo(socket);
+			if(ejecutar_operacion_set(socket,key,value)<0){
 				finalizar = true;
 				enviarInt(socket, EJECUCION_INVALIDA);
 			}
