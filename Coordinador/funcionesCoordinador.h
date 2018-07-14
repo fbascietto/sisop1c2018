@@ -22,6 +22,8 @@
 #include "../Biblioteca/file_cleaner.h"
 #include <commons/collections/list.h>
 
+#define LISTA_INSTANCIAS_VACIA -2
+
 
 typedef struct {
 	int socketESI;
@@ -75,7 +77,7 @@ void configureLoggers();
 void destroyLoggers();
 void* atenderESI(void *args);
 void atenderPlanificador(void *args);
-void atenderConsolaPlanificador(void *args);
+void* atenderConsolaPlanificador(void *args);
 int recibirMensajeConsolaPlanificador(int socket);
 void recibirMensajePlanificador(int socket);
 int crearInstancia(int nuevoSocket);
@@ -109,9 +111,10 @@ void informarCompactacion(t_instancia * instancia);
 void remover_clave(t_instancia* instancia, char * key);
 void enviarClavesAGuardar(t_instancia * instancia);
 void exit_gracefully();
+int siguiente(int, int);
 
 /***** mini consola del Coordinador *****/
-void escucharConsola();
+void* escucharConsola();
 void * cls();
 
 //funciones a borrar

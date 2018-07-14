@@ -179,7 +179,7 @@ void continuarPlanificador(){
 /*
  * Consulta al coordinador el valor de una clave, imprime resultado.
  */
-void obtenerValor(char* keySearch){
+int obtenerValor(char* keySearch){
 	enviarInt(socketConsolaCoordinador,OBTENER_VALOR_DE_KEY);
 	enviarMensaje(socketConsolaCoordinador, keySearch);
 	int busquedaClave;
@@ -200,11 +200,17 @@ void obtenerValor(char* keySearch){
 	case CLAVE_CREADA:
 		string_append(&msj, "Clave sin valor.");
 		break;
+	case NO_HAY_INSTANCIAS_CONECTADAS:
+		string_append(&msj, "No hay instancias conectadas.");
+		return NO_HAY_INSTANCIAS_CONECTADAS;
+		break;
 	}
 
 	log_debug(logPlan, msj);
 
 	free(msj);
+
+	return 1;
 
 }
 
@@ -234,6 +240,9 @@ void obtenerInstancia(char* keySearch){
 		string_append(&msj, "La clave no fue encontrada, se simula distribucion.");
 		string_append(&msj2, "La clave se guardaria en: ");
 		break;
+	case NO_HAY_INSTANCIAS_CONECTADAS:
+		string_append(&msj, "No hay instancias conectadas.");
+		break;
 	}
 	log_debug(logPlan, msj);
 
@@ -251,8 +260,9 @@ void obtenerInstancia(char* keySearch){
 
 void getStatus(char* keySearch){
 	mostarEsiPoseedor(keySearch);
-	obtenerValor(keySearch);
-	obtenerInstancia(keySearch);
+	if(obtenerValor(keySearch) != NO_HAY_INSTANCIAS_CONECTADAS){
+		obtenerInstancia(keySearch);
+	}
 	listBlockedProcesses(keySearch);
 }
 

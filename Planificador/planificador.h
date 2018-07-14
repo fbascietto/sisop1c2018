@@ -147,7 +147,7 @@ void pauseScheduler();
 void goOn();
 void getStatus(char* keySearch);
 void mostarEsiPoseedor(char* keySearch);
-void obtenerValor(char* keySearch);
+int obtenerValor(char* keySearch);
 void obtenerInstancia(char* keySearch);
 void listBlockedProcesses(char* keySearch);
 void listFinished();
