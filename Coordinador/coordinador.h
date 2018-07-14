@@ -15,6 +15,4 @@
 #include "../Biblioteca/biblio_sockets.h"
 #include "funcionesCoordinador.h"
 
-
-
 #endif /* COORDINADOR_H_ */

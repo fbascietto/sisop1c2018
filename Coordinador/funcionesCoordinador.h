@@ -22,6 +22,8 @@
 #include "../Biblioteca/file_cleaner.h"
 #include <commons/collections/list.h>
 
+#define LISTA_INSTANCIAS_VACIA -2
+
 
 typedef struct {
 	int socketESI;

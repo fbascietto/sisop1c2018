@@ -440,7 +440,9 @@ void procesarObtenerValorKey(int socket){
 
 	clave = recibirMensajeArchivo(socket);
 	retorno = obtenerValue(clave, &keyValue);
-	if(retorno == CLAVE_INEXISTENTE){
+	if(retorno == LISTA_INSTANCIAS_VACIA){
+		enviarInt(socket,NO_HAY_INSTANCIAS_CONECTADAS);
+	}else if(retorno == CLAVE_INEXISTENTE){
 		if(key_creada(clave)){
 			enviarInt(socket, CLAVE_CREADA);
 		} else {
@@ -465,7 +467,10 @@ void procesarDondeEstaLaClave(int socket){
 	if(retorno > 0){
 		enviarInt(socket, CLAVE_ENCONTRADA);
 	}else{
-		simularBuscarInstanciaContenedora(clave, &instancia);
+		if(simularBuscarInstanciaContenedora(clave, &instancia) == LISTA_INSTANCIAS_VACIA){
+			enviarInt(socket, NO_HAY_INSTANCIAS_CONECTADAS);
+			return;
+		}
 		enviarInt(socket, CLAVE_NO_ENCONTRADA);
 	}
 
@@ -550,35 +555,41 @@ int bloquearKey(char * key){
 }
 
 int elegirInstancia(t_instancia ** instancia, char * key, bool esSimulacion){
+	bool conectada(void* parametro) {
+		t_instancia* inst = (t_instancia*) parametro;
 
+		return (inst->socketInstancia > 0);
+	}
+	t_list * instancias_conectadas = list_filter(instancias,conectada);
+
+	if(list_is_empty(instancias_conectadas)){
+		list_destroy(instancias_conectadas);
+		return LISTA_INSTANCIAS_VACIA;
+	}
 	if(strcmp(coordinador_Algoritmo,"EL")==0){
 		int proximaPosicion = proxima_posicion_instancia;
 		if(proximaPosicion  >= list_size(instancias) ){
 			proximaPosicion = 0;
 		}
-		*instancia = list_get(instancias,proximaPosicion);
+		*instancia = list_get(instancias_conectadas,proximaPosicion);
 		t_instancia * instancia_aux = (t_instancia *) *instancia;
 		log_trace(logT,"se eligio la instancia %s para el guardado de clave", instancia_aux->nombre);
 		proximaPosicion++;
 		if(!esSimulacion){
 			proxima_posicion_instancia = proximaPosicion;
 		}
+		list_destroy(instancias_conectadas);
 		return proximaPosicion;
 	}else
 		if(strcmp(coordinador_Algoritmo,"LSU")==0){
 			return ejecutarAlgoritmoLSU(*instancia);
 		}else
 			if(strcmp(coordinador_Algoritmo,"KE")==0){
-				bool conectada(void* parametro) {
-					t_instancia* inst = (t_instancia*) parametro;
-
-					return (inst->socketInstancia > 0);
-				}
 				char letra = key[0];
-				t_list * instancias_conectadas = list_filter(instancias,conectada);
 				int q = list_size(instancias_conectadas);
 				if(q<=0){
 					log_trace(logT,"no hay instancias conectadas para almacenar la clave %s", key);
+					list_destroy(instancias_conectadas);
 					return -1;
 				}
 				int q_letras = 26 / q;
@@ -593,7 +604,7 @@ int elegirInstancia(t_instancia ** instancia, char * key, bool esSimulacion){
 							*instancia = list_get(instancias_conectadas,i);
 						}
 				}
-				free(instancias_conectadas);
+				list_destroy(instancias_conectadas);
 				return 1;
 			}
 
@@ -613,6 +624,7 @@ int ejecutarAlgoritmoLSU(t_instancia* instancia){
 			menorCantidadDeEntradas = instanciaIterada->entradasOcupadas;
 		}
 	}
+	list_destroy(instanciasConectadas);
 	return 1;
 }
 
@@ -890,6 +902,12 @@ void liberar_clave(char * key){
 
 int obtenerValue(char * key, char** value){
 	t_instancia * instancia;
+	t_list * instancias_conectadas = obtenerInstanciasConectadas();
+	if(list_is_empty(instancias_conectadas)){
+		list_destroy(instancias_conectadas);
+		return LISTA_INSTANCIAS_VACIA;
+	}
+	list_destroy(instancias_conectadas);
 	if(buscarInstanciaContenedora(key, &instancia)<=0){
 		log_error(logE,"La clave %s no se encuentra en ninguna instancia",key);
 		return CLAVE_INEXISTENTE;
