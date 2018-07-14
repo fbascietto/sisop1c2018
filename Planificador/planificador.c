@@ -440,8 +440,8 @@ void cargar_configuracion(){
 	 */
 
 	/* para correr desde CONSOLA
-*/
 	infoConfig = config_create("../../Recursos/Configuracion/planificador.config");
+*/
 
 
 	/* para correr desde la VM Server

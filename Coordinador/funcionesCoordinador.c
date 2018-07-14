@@ -195,7 +195,6 @@ void cargar_configuracion(){
 
 
 	/* para correr desde la VM Server */
-
 	infoConfig = config_create("coordinador.config");
 
 
