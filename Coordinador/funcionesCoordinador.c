@@ -321,9 +321,8 @@ void* atenderESI(void *args){
 	t_argumentos_thESI* nuevoESI = (t_argumentos_thESI*) args;
 	log_trace(logT, "id de socket %d", nuevoESI->socketESI);
 	recibirMensajeESI(nuevoESI->socketESI);
-	int retorno = nuevoESI->socketESI;
 	free(nuevoESI);
-	return (void*)retorno;
+	return (void*)pthread_detach(pthread_self());
 }
 
 void recibirMensajeESI(int socket){
@@ -1013,7 +1012,7 @@ void exit_gracefully(){
 		free(inst);
 
 	}
-
+	free(esperarConexion);
 	free(argsPlanificador);
 	free(coordinador_Algoritmo);
 	free(argsConsolaPlanificador);

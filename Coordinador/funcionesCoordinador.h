@@ -64,6 +64,7 @@ FILE* logOp;
 t_argumentos_thPlanificador * argsPlanificador;
 t_argumentos_thPlanificador * argsConsolaPlanificador;
 pthread_mutex_t mx_logOp;
+t_esperar_conexion *esperarConexion;
 
 int proxima_posicion_instancia;
 t_list * instancias;
