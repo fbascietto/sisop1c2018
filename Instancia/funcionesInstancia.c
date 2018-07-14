@@ -175,7 +175,7 @@ int archivoAentrada(char* filename){
 
 	almacenarEntrada(filename,entrada,lenValue);
 
-	escribirEntrada(value, pos, nombre_Instancia);
+	escribirEntrada(value, filename, pos, nombre_Instancia);
 
 	fclose(arch);
 	free(line);
@@ -249,7 +249,7 @@ int abrirArchivoDatos(char * path, char * filename){
 }
 
 
-void escribirEntrada(char * escribir, int pos, char * nombre_archivo){
+void escribirEntrada(char * escribir, char* key, int pos, char * nombre_archivo){
 
 	unsigned char* map;
 
@@ -285,7 +285,7 @@ void escribirEntrada(char * escribir, int pos, char * nombre_archivo){
 	}
 
 
-	log_trace(logT,"Se escribió con exito sobre la entrada %d y con un total de %d entradas.", pos, entradasOcupadas);
+	log_trace(logT,"Se escribió con exito sobre la entrada %d y con un total de %d entradas. Key:%s - Valor:%s", pos, entradasOcupadas,key,escribir);
 
 	munmap(map,qEntradas * tamanioEntrada);
 
@@ -388,7 +388,8 @@ int recibirEntrada(int socket){
 	}
 
 	almacenarEntrada(key, entrada, lenValue);
-	escribirEntrada(value, entrada->entry, nombre_Instancia);
+	escribirEntrada(value, key, entrada->entry, nombre_Instancia);
+
 
 	free(key);
 	free(value);
@@ -843,7 +844,7 @@ bool compactar(){
 		t_entrada * entrada = (t_entrada*)list_get(tablaEntradas,i);
 		char * value;
 		leer_entrada(entrada,&value);
-		escribirEntrada(value,pos,nombre_archivo);
+		escribirEntrada(value,entrada->key,pos,nombre_archivo);
 
 		entrada->entry=pos;
 		int len = strlen(value);

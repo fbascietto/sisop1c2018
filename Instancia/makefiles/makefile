@@ -8,6 +8,7 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include Debug2/subdir.mk
 -include subdir.mk
 -include objects.mk
 
@@ -25,13 +26,13 @@ endif
 all: Instancia
 
 dependents:
-	-cd /home/utnso/workspace/Biblioteca/Debug && $(MAKE) clean all
+	-cd /home/utnso/tp-2018-1c-Destino-Rusia/Biblioteca/Debug && $(MAKE) clean all
 
 # Tool invocations
-Instancia: $(OBJS) $(USER_OBJS) /home/utnso/workspace/Biblioteca/Debug/libBiblioteca.so
+Instancia: $(OBJS) $(USER_OBJS) /home/utnso/tp-2018-1c-Destino-Rusia/Biblioteca/Debug/libBiblioteca.so
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C Linker'
-	gcc -L"/home/utnso/workspace/Biblioteca/Debug" -o "Instancia" $(OBJS) $(USER_OBJS) $(LIBS)
+	gcc -L"/home/utnso/tp-2018-1c-Destino-Rusia/Biblioteca/Debug" -o "Instancia" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -41,6 +42,6 @@ clean:
 	-@echo ' '
 
 .PHONY: all clean dependents
-/home/utnso/workspace/Biblioteca/Debug/libBiblioteca.so:
+/home/utnso/tp-2018-1c-Destino-Rusia/Biblioteca/Debug/libBiblioteca.so:
 
 -include ../makefile.targets
