@@ -106,6 +106,7 @@ int crearInstancia(int nuevoSocket){
 
 	instancia->nombre = nombreInstancia;
 	instancia->socketInstancia = nuevoSocket;
+	instancia->entradasOcupadas = 0;
 
 
 	instancia->claves = list_create();
@@ -194,7 +195,7 @@ void cargar_configuracion(){
 	/*para correr desde CONSOLA
 
 	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
- */
+*/
 
 	/* para correr desde la VM Server
 	infoConfig = config_create("coordinador.config");
@@ -232,8 +233,8 @@ void configureLoggers(){
 	E = LOG_LEVEL_ERROR;
 
 
-	/* para correr desde ECLIPSE */
-	vaciarArchivo("../Recursos/Logs/Coordinador.log");
+	/* para correr desde ECLIPSE
+	vaciarArchivo("../Recursos/Logs/Coordinador.log");*/
 	logT = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
@@ -245,8 +246,7 @@ void configureLoggers(){
 	logT = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
- */
-
+*/
 	/* para correr desde la VM Server
 	vaciarArchivo("Coordinador.log");
 	logT = log_create("Coordinador.log", "Coordinador", true, T);
@@ -566,7 +566,7 @@ int elegirInstancia(t_instancia ** instancia, char * key, bool esSimulacion){
 		return proximaPosicion;
 	}else
 		if(strcmp(coordinador_Algoritmo,"LSU")==0){
-			return ejecutarAlgoritmoLSU(*instancia);
+			return ejecutarAlgoritmoLSU(instancia);
 		}else
 			if(strcmp(coordinador_Algoritmo,"KE")==0){
 				bool conectada(void* parametro) {
@@ -582,10 +582,11 @@ int elegirInstancia(t_instancia ** instancia, char * key, bool esSimulacion){
 					return -1;
 				}
 
-				int q_letras = 26 / q;
-				int resto = 26 % q;
-				int i = 0;
 				char valor_a = 'a';
+				char valor_z = 'z';
+				int q_letras = (valor_z-valor_a) / q;
+				int resto = (valor_z-valor_a) % q;
+				int i = 0;
 
 				for(;i<q;i++){
 					if(letra-valor_a >= (q_letras*i) && letra-valor_a < (q_letras*(i+1))){
@@ -604,7 +605,7 @@ int elegirInstancia(t_instancia ** instancia, char * key, bool esSimulacion){
 	return -1;
 }
 
-int ejecutarAlgoritmoLSU(t_instancia* instancia){
+int ejecutarAlgoritmoLSU(t_instancia** instancia){
 	int menorCantidadDeEntradas=INT_MAX;
 	t_instancia* instanciaIterada;
 	int i;
@@ -612,7 +613,7 @@ int ejecutarAlgoritmoLSU(t_instancia* instancia){
 	for (i = 0; i < list_size(instanciasConectadas); ++i) {
 		instanciaIterada = list_get(instanciasConectadas,i);
 		if(instanciaIterada->entradasOcupadas < menorCantidadDeEntradas){
-			instancia = instanciaIterada;
+			*instancia = instanciaIterada;
 			menorCantidadDeEntradas = instanciaIterada->entradasOcupadas;
 		}
 	}
