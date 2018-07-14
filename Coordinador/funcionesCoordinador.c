@@ -581,19 +581,22 @@ int elegirInstancia(t_instancia ** instancia, char * key, bool esSimulacion){
 					log_trace(logT,"no hay instancias conectadas para almacenar la clave %s", key);
 					return -1;
 				}
+
 				int q_letras = 26 / q;
 				int resto = 26 % q;
 				int i = 0;
+				char valor_a = 'a';
 
 				for(;i<q;i++){
-					if(letra-26 >= (q_letras*i) && letra-26 < (q_letras*(i+1))){
+					if(letra-valor_a >= (q_letras*i) && letra-valor_a < (q_letras*(i+1))){
 						*instancia = list_get(instancias_conectadas,i);
+						break;
 					}else
-						if(resto>0 && q == i){
+						if(resto>0 && q == i+1){
 							*instancia = list_get(instancias_conectadas,i);
 						}
 				}
-				free(instancias_conectadas);
+				list_destroy(instancias_conectadas);
 				return 1;
 			}
 

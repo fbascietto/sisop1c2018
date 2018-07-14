@@ -25,6 +25,7 @@
 
 #define ROUNDUP(x,y) ((x - 1) / y + 1)
 #define CANTIDAD_BLOQUES_ARCHIVO(FILE_SIZE, BLOCK_SIZE) ((FILE_SIZE > 0) ? ROUNDUP(FILE_SIZE, BLOCK_SIZE) : 1)
+#define SIN_ENTRADA -10
 
 typedef struct {
 	char key[LONGITUD_CLAVE];

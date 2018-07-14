@@ -60,6 +60,9 @@ int main() {
 					log_trace(logT,"Se recibe instruccion SET.\n");
 					cantidadEntradas = recibirEntrada(coordinador_socket);
 					if(cantidadEntradas<=0){
+						if(cantidadEntradas == SIN_ENTRADA){
+							log_warning(logT, "No hay entradas atomicas para reemplazar");
+						}
 						log_warning(logT,"No fue posible guardar la entrada");
 						if(enviarInt(coordinador_socket,ERROR_EJECUCION)<=0){
 							log_error(logE,"coordinador desconectado");
