@@ -1,0 +1,201 @@
+[TRACE] 10:18:21:596 Coordinador/(7156:7186): Se crea nueva clave inicialmente bloqueada: spoiler2
+[TRACE] 10:18:21:598 Coordinador/(7156:7186): Se crea nueva clave inicialmente bloqueada: principal3
+[TRACE] 10:18:21:599 Coordinador/(7156:7186): Se crea nueva clave inicialmente bloqueada: spoiler3
+[TRACE] 10:18:21:600 Coordinador/(7156:7186): Se crea nueva clave inicialmente bloqueada: principal4
+[TRACE] 10:18:24:645 Coordinador/(7156:7156): Conexión de Inst1 con 0 entradas ocupadas
+[TRACE] 10:19:08:944 Coordinador/(7156:7156): Conexion de ESI.
+[TRACE] 10:19:08:951 Coordinador/(7156:7217): id de socket 10
+[TRACE] 10:19:09:152 Coordinador/(7156:7217): recibi operacion get con la clave principal1
+[TRACE] 10:19:09:359 Coordinador/(7156:7217): No se encontro la clave principal1 en ninguna instancia
+[TRACE] 10:19:09:359 Coordinador/(7156:7217): se eligio la instancia Inst1 para el guardado de clave
+[TRACE] 10:19:21:959 Coordinador/(7156:7156): Conexión de Inst2 con 0 entradas ocupadas
+[TRACE] 10:19:24:394 Coordinador/(7156:7156): Conexion de ESI.
+[TRACE] 10:19:24:396 Coordinador/(7156:7232): id de socket 12
+[TRACE] 10:19:38:310 Coordinador/(7156:7232): recibi operacion get con la clave principal1
+[TRACE] 10:23:19:307 Coordinador/(7156:7232): No se encontro la clave principal1 en ninguna instancia
+[TRACE] 10:37:47:511 Coordinador/(8473:8495): Se crea nueva clave inicialmente bloqueada: spoiler2
+[TRACE] 10:37:47:511 Coordinador/(8473:8495): Se crea nueva clave inicialmente bloqueada: principal3
+[TRACE] 10:37:47:511 Coordinador/(8473:8495): Se crea nueva clave inicialmente bloqueada: spoiler3
+[TRACE] 10:37:47:511 Coordinador/(8473:8495): Se crea nueva clave inicialmente bloqueada: principal4
+[TRACE] 10:37:50:649 Coordinador/(8473:8473): Conexión de Inst1 con 0 entradas ocupadas
+[TRACE] 10:38:13:472 Coordinador/(8473:8473): Conexion de ESI.
+[TRACE] 10:38:13:476 Coordinador/(8473:8514): id de socket 10
+[TRACE] 10:38:21:512 Coordinador/(8473:8514): recibi operacion get con la clave principal1
+[TRACE] 10:38:21:715 Coordinador/(8473:8514): No se encontro la clave principal1 en ninguna instancia
+[TRACE] 10:38:21:715 Coordinador/(8473:8514): se eligio la instancia Inst1 para el guardado de clave
+[TRACE] 10:38:34:116 Coordinador/(8473:8473): Conexión de Inst2 con 0 entradas ocupadas
+[TRACE] 10:38:38:230 Coordinador/(8473:8473): Conexion de ESI.
+[TRACE] 10:38:38:236 Coordinador/(8473:8537): id de socket 12
+[TRACE] 10:38:42:473 Coordinador/(8473:8537): recibi operacion get con la clave principal1
+[ERROR] 10:39:52:731 Coordinador/(8473:8537): error de comunicacion con la instancia Inst1 al enviar la clave principal1
+[TRACE] 10:41:19:772 Coordinador/(8473:8488): Se finaliza el Coordinador a pedido.
+[TRACE] 10:41:38:241 Coordinador/(8769:8786): Se crea nueva clave inicialmente bloqueada: spoiler2
+[TRACE] 10:41:38:244 Coordinador/(8769:8786): Se crea nueva clave inicialmente bloqueada: principal3
+[TRACE] 10:41:38:244 Coordinador/(8769:8786): Se crea nueva clave inicialmente bloqueada: spoiler3
+[TRACE] 10:41:38:244 Coordinador/(8769:8786): Se crea nueva clave inicialmente bloqueada: principal4
+[TRACE] 10:41:40:675 Coordinador/(8769:8769): Conexión de Inst1 con 0 entradas ocupadas
+[TRACE] 10:43:29:535 Coordinador/(8769:8889): Se crea nueva clave inicialmente bloqueada: spoiler2
+[TRACE] 10:43:29:535 Coordinador/(8769:8889): Se crea nueva clave inicialmente bloqueada: principal3
+[TRACE] 10:43:29:535 Coordinador/(8769:8889): Se crea nueva clave inicialmente bloqueada: spoiler3
+[TRACE] 10:43:29:535 Coordinador/(8769:8889): Se crea nueva clave inicialmente bloqueada: principal4
+[TRACE] 10:44:25:437 Coordinador/(8989:8989): Conexión de Inst1 con 0 entradas ocupadas
+[TRACE] 10:44:33:708 Coordinador/(8989:8989): Conexion de ESI.
+[TRACE] 10:44:33:710 Coordinador/(8989:9016): id de socket 10
+[TRACE] 10:44:37:81 Coordinador/(8989:9016): recibi operacion get con la clave principal1
+[TRACE] 10:44:37:284 Coordinador/(8989:9016): recibi operacion get con la clave principal2
+[TRACE] 10:44:37:526 Coordinador/(8989:9016): recibi operacion get con la clave principal3
+[TRACE] 10:44:37:768 Coordinador/(8989:9016): No se encontro la clave principal1 en ninguna instancia
+[TRACE] 10:44:37:768 Coordinador/(8989:9016): se eligio la instancia Inst1 para el guardado de clave
+[TRACE] 10:44:38:89 Coordinador/(8989:9016): No se encontro la clave principal2 en ninguna instancia
+[TRACE] 10:44:38:89 Coordinador/(8989:9016): se eligio la instancia Inst1 para el guardado de clave
+[TRACE] 10:44:38:415 Coordinador/(8989:9016): No se encontro la clave principal3 en ninguna instancia
+[TRACE] 10:44:38:416 Coordinador/(8989:9016): se eligio la instancia Inst1 para el guardado de clave
+[TRACE] 10:44:49:341 Coordinador/(8989:8989): Conexión de Inst2 con 0 entradas ocupadas
+[TRACE] 10:44:55:10 Coordinador/(8989:8989): Conexion de ESI.
+[TRACE] 10:44:55:16 Coordinador/(8989:9036): id de socket 12
+[TRACE] 10:44:55:223 Coordinador/(8989:9036): recibi operacion get con la clave principal1
+[TRACE] 10:44:55:463 Coordinador/(8989:9036): recibi operacion get con la clave principal2
+[TRACE] 10:44:55:707 Coordinador/(8989:9036): recibi operacion get con la clave principal3
+[ERROR] 10:44:55:987 Coordinador/(8989:9036): error de comunicacion con la instancia Inst1 al enviar la clave principal1
+[TRACE] 10:44:55:988 Coordinador/(8989:9036): Se borró la clave principal1 de la instancia Inst1.
+[TRACE] 10:45:58:153 Coordinador/(9101:9101): Conexión de Inst1 con 0 entradas ocupadas
+[TRACE] 10:46:09:690 Coordinador/(9101:9101): Conexion de ESI.
+[TRACE] 10:46:09:693 Coordinador/(9101:9127): id de socket 10
+[TRACE] 10:46:09:908 Coordinador/(9101:9127): recibi operacion get con la clave principal1
+[TRACE] 10:46:10:111 Coordinador/(9101:9127): recibi operacion get con la clave principal2
+[TRACE] 10:46:10:352 Coordinador/(9101:9127): recibi operacion get con la clave principal3
+[TRACE] 10:46:10:594 Coordinador/(9101:9127): No se encontro la clave principal1 en ninguna instancia
+[TRACE] 10:46:10:595 Coordinador/(9101:9127): se eligio la instancia Inst1 para el guardado de clave
+[TRACE] 10:46:10:917 Coordinador/(9101:9127): No se encontro la clave principal2 en ninguna instancia
+[TRACE] 10:46:10:917 Coordinador/(9101:9127): se eligio la instancia Inst1 para el guardado de clave
+[TRACE] 10:46:11:239 Coordinador/(9101:9127): No se encontro la clave principal3 en ninguna instancia
+[TRACE] 10:46:11:240 Coordinador/(9101:9127): se eligio la instancia Inst1 para el guardado de clave
+[TRACE] 10:46:18:606 Coordinador/(9101:9101): Conexión de Inst2 con 0 entradas ocupadas
+[TRACE] 10:46:25:197 Coordinador/(9101:9101): Conexion de ESI.
+[TRACE] 10:46:25:201 Coordinador/(9101:9139): id de socket 12
+[TRACE] 10:46:30:377 Coordinador/(9101:9139): recibi operacion get con la clave principal1
+[TRACE] 10:46:34:955 Coordinador/(9101:9139): recibi operacion get con la clave principal2
+[TRACE] 10:46:38:953 Coordinador/(9101:9139): recibi operacion get con la clave principal3
+[ERROR] 10:47:12:799 Coordinador/(9101:9139): error de comunicacion con la instancia Inst1 al enviar la clave principal1
+[TRACE] 10:47:13:895 Coordinador/(9101:9139): Se borró la clave principal1 de la instancia Inst1.
+[TRACE] 10:51:56:302 Coordinador/(9101:9101): Conexion de ESI.
+[TRACE] 10:51:56:306 Coordinador/(9101:9735): id de socket 13
+[TRACE] 10:51:59:202 Coordinador/(9101:9735): recibi operacion get con la clave principal2
+[TRACE] 10:52:35:507 Coordinador/(9101:9735): recibi operacion get con la clave principal2
+[TRACE] 10:52:46:198 Coordinador/(9101:9735): recibi operacion get con la clave principal2
+[TRACE] 10:53:40:151 Coordinador/(9101:9735): recibi operacion get con la clave principal2
+[TRACE] 10:53:40:393 Coordinador/(9101:9735): recibi operacion get con la clave principal3
+[TRACE] 10:54:25:794 Coordinador/(9101:9735): recibi operacion get con la clave principal3
+[TRACE] 10:54:26:37 Coordinador/(9101:9735): No se encontro la clave principal2 en ninguna instancia
+[TRACE] 10:55:56:166 Coordinador/(9875:9875): Conexión de Inst1 con 0 entradas ocupadas
+[TRACE] 10:56:09:168 Coordinador/(9875:9875): Conexion de ESI.
+[TRACE] 10:56:09:174 Coordinador/(9875:9909): id de socket 10
+[TRACE] 10:56:09:377 Coordinador/(9875:9909): recibi operacion get con la clave principal2
+[TRACE] 10:56:09:581 Coordinador/(9875:9909): recibi operacion get con la clave principal3
+[TRACE] 10:56:09:824 Coordinador/(9875:9909): No se encontro la clave principal2 en ninguna instancia
+[TRACE] 10:56:09:824 Coordinador/(9875:9909): se eligio la instancia Inst1 para el guardado de clave
+[TRACE] 10:56:10:152 Coordinador/(9875:9909): No se encontro la clave principal3 en ninguna instancia
+[TRACE] 10:56:10:152 Coordinador/(9875:9909): se eligio la instancia Inst1 para el guardado de clave
+[TRACE] 10:56:25:655 Coordinador/(9875:9875): Conexión de Inst2 con 0 entradas ocupadas
+[TRACE] 10:56:30:737 Coordinador/(9875:9875): Conexion de ESI.
+[TRACE] 10:56:30:740 Coordinador/(9875:9926): id de socket 12
+[TRACE] 10:56:30:941 Coordinador/(9875:9926): recibi operacion get con la clave principal2
+[TRACE] 10:56:31:180 Coordinador/(9875:9926): recibi operacion get con la clave principal3
+[ERROR] 10:56:31:459 Coordinador/(9875:9926): error de comunicacion con la instancia Inst1 al enviar la clave principal2
+[TRACE] 10:56:31:459 Coordinador/(9875:9926): Se borró la clave principal2 de la instancia Inst1.
+[TRACE] 10:57:15:160 Coordinador/(9875:9875): Conexion de ESI.
+[TRACE] 10:57:15:162 Coordinador/(9875:9943): id de socket 13
+[TRACE] 10:57:18:883 Coordinador/(9875:9943): recibi operacion get con la clave principal2
+[TRACE] 10:58:06:602 Coordinador/(9875:9943): recibi operacion get con la clave principal2
+[TRACE] 10:58:13:454 Coordinador/(9875:9943): recibi operacion get con la clave principal3
+[TRACE] 10:58:53:989 Coordinador/(9875:9943): recibi operacion get con la clave principal3
+[TRACE] 10:59:08:15 Coordinador/(9875:9943): No se encontro la clave principal2 en ninguna instancia
+[TRACE] 11:01:42:686 Coordinador/(10163:10163): Conexión de Inst1 con 0 entradas ocupadas
+[TRACE] 11:02:04:37 Coordinador/(10163:10163): Conexion de ESI.
+[TRACE] 11:02:04:40 Coordinador/(10163:10199): id de socket 10
+[TRACE] 11:02:07:160 Coordinador/(10163:10199): recibi operacion get con la clave principal2
+[TRACE] 11:02:07:363 Coordinador/(10163:10199): recibi operacion get con la clave principal3
+[TRACE] 11:02:07:608 Coordinador/(10163:10199): No se encontro la clave principal2 en ninguna instancia
+[TRACE] 11:02:07:608 Coordinador/(10163:10199): se eligio la instancia Inst1 para el guardado de clave
+[TRACE] 11:02:07:929 Coordinador/(10163:10199): No se encontro la clave principal3 en ninguna instancia
+[TRACE] 11:02:07:929 Coordinador/(10163:10199): se eligio la instancia Inst1 para el guardado de clave
+[TRACE] 11:02:15:160 Coordinador/(10163:10163): Conexión de Inst2 con 0 entradas ocupadas
+[TRACE] 11:02:26:40 Coordinador/(10163:10163): Conexion de ESI.
+[TRACE] 11:02:26:43 Coordinador/(10163:10220): id de socket 12
+[TRACE] 11:02:26:259 Coordinador/(10163:10220): recibi operacion get con la clave principal2
+[TRACE] 11:02:26:505 Coordinador/(10163:10220): recibi operacion get con la clave principal3
+[ERROR] 11:02:26:784 Coordinador/(10163:10220): error de comunicacion con la instancia Inst1 al enviar la clave principal2
+[TRACE] 11:02:26:784 Coordinador/(10163:10220): Se borró la clave principal2 de la instancia Inst1.
+[TRACE] 11:02:37:753 Coordinador/(10163:10163): Conexion de ESI.
+[TRACE] 11:02:37:756 Coordinador/(10163:10229): id de socket 13
+[TRACE] 11:02:47:145 Coordinador/(10163:10229): recibi operacion get con la clave principal2
+[TRACE] 11:03:06:608 Coordinador/(10163:10229): recibi operacion get con la clave principal2
+[TRACE] 11:03:08:606 Coordinador/(10163:10229): recibi operacion get con la clave principal3
+[TRACE] 11:03:28:489 Coordinador/(10163:10229): recibi operacion get con la clave principal3
+[TRACE] 11:04:41:482 Coordinador/(10163:10229): No se encontro la clave principal2 en ninguna instancia
+[TRACE] 11:08:23:9 Coordinador/(10522:10522): Conexión de Inst1 con 0 entradas ocupadas
+[TRACE] 11:08:47:259 Coordinador/(10522:10522): Conexion de ESI.
+[TRACE] 11:08:47:261 Coordinador/(10522:10558): id de socket 10
+[TRACE] 11:08:50:24 Coordinador/(10522:10558): recibi operacion get con la clave principal2
+[TRACE] 11:08:51:628 Coordinador/(10522:10558): recibi operacion get con la clave principal3
+[TRACE] 11:08:52:843 Coordinador/(10522:10558): No se encontro la clave principal2 en ninguna instancia
+[TRACE] 11:08:54:832 Coordinador/(10522:10558): se eligio la instancia Inst1 para el guardado de clave
+[TRACE] 11:08:55:158 Coordinador/(10522:10558): No se encontro la clave principal3 en ninguna instancia
+[TRACE] 11:08:55:158 Coordinador/(10522:10558): se eligio la instancia Inst1 para el guardado de clave
+[TRACE] 11:09:10:118 Coordinador/(10522:10522): Conexión de Inst2 con 0 entradas ocupadas
+[TRACE] 11:09:20:79 Coordinador/(10522:10522): Conexion de ESI.
+[TRACE] 11:09:20:83 Coordinador/(10522:10586): id de socket 12
+[TRACE] 11:09:20:295 Coordinador/(10522:10586): recibi operacion get con la clave principal2
+[TRACE] 11:09:20:538 Coordinador/(10522:10586): recibi operacion get con la clave principal3
+[ERROR] 11:09:20:819 Coordinador/(10522:10586): error de comunicacion con la instancia Inst1 al enviar la clave principal2
+[TRACE] 11:09:20:820 Coordinador/(10522:10586): Se borró la clave principal2 de la instancia Inst1.
+[ERROR] 11:09:32:956 Coordinador/(10522:10542): Planificador Desconectado
+[ERROR] 11:11:33:858 Coordinador/(10667:10679): Planificador Desconectado
+[ERROR] 11:12:14:285 Coordinador/(10729:10741): Planificador Desconectado
+[TRACE] 11:14:21:214 Coordinador/(10729:10729): Conexión de Inst1 con 0 entradas ocupadas
+[TRACE] 11:14:30:501 Coordinador/(10729:10729): Conexion de ESI.
+[TRACE] 11:14:30:505 Coordinador/(10729:10894): id de socket 12
+[TRACE] 11:14:30:706 Coordinador/(10729:10894): recibi operacion get con la clave principal2
+[TRACE] 11:14:30:914 Coordinador/(10729:10894): recibi operacion get con la clave principal3
+[TRACE] 11:14:31:158 Coordinador/(10729:10894): No se encontro la clave principal2 en ninguna instancia
+[TRACE] 11:14:31:159 Coordinador/(10729:10894): se eligio la instancia Inst1 para el guardado de clave
+[TRACE] 11:14:31:481 Coordinador/(10729:10894): No se encontro la clave principal3 en ninguna instancia
+[TRACE] 11:14:31:481 Coordinador/(10729:10894): se eligio la instancia Inst1 para el guardado de clave
+[TRACE] 11:14:42:276 Coordinador/(10729:10729): Conexión de Inst2 con 0 entradas ocupadas
+[TRACE] 11:14:54:579 Coordinador/(10729:10729): Conexion de ESI.
+[TRACE] 11:14:54:581 Coordinador/(10729:10916): id de socket 14
+[TRACE] 11:14:54:783 Coordinador/(10729:10916): recibi operacion get con la clave principal2
+[TRACE] 11:14:55:27 Coordinador/(10729:10916): recibi operacion get con la clave principal3
+[ERROR] 11:14:55:315 Coordinador/(10729:10916): error de comunicacion con la instancia Inst1 al enviar la clave principal2
+[TRACE] 11:14:55:315 Coordinador/(10729:10916): Se borró la clave principal2 de la instancia Inst1.
+[TRACE] 11:16:07:858 Coordinador/(10729:10729): Conexion de ESI.
+[TRACE] 11:16:07:862 Coordinador/(10729:10947): id de socket 15
+[TRACE] 11:16:16:530 Coordinador/(10729:10947): recibi operacion get con la clave principal2
+[TRACE] 11:16:22:182 Coordinador/(10729:10947): recibi operacion get con la clave principal3
+[TRACE] 11:16:45:471 Coordinador/(10729:10947): No se encontro la clave principal2 en ninguna instancia
+[TRACE] 11:17:28:163 Coordinador/(10729:10947): se eligio la instancia Inst2 para el guardado de clave
+[TRACE] 11:17:52:346 Coordinador/(10729:10947): No se encontro la clave principal3 en ninguna instancia
+[TRACE] 11:21:53:276 Coordinador/(11288:11288): Conexión de Inst1 con 0 entradas ocupadas
+[TRACE] 11:22:06:206 Coordinador/(11288:11288): Conexion de ESI.
+[TRACE] 11:22:06:212 Coordinador/(11288:11321): id de socket 10
+[TRACE] 11:22:06:413 Coordinador/(11288:11321): recibi operacion get con la clave principal2
+[TRACE] 11:22:06:615 Coordinador/(11288:11321): recibi operacion get con la clave principal3
+[TRACE] 11:22:06:856 Coordinador/(11288:11321): No se encontro la clave principal2 en ninguna instancia
+[TRACE] 11:22:06:857 Coordinador/(11288:11321): se eligio la instancia Inst1 para el guardado de clave
+[TRACE] 11:22:07:177 Coordinador/(11288:11321): No se encontro la clave principal3 en ninguna instancia
+[TRACE] 11:22:07:177 Coordinador/(11288:11321): se eligio la instancia Inst1 para el guardado de clave
+[TRACE] 11:22:13:193 Coordinador/(11288:11288): Conexión de Inst2 con 0 entradas ocupadas
+[TRACE] 11:22:15:94 Coordinador/(11288:11288): Conexion de ESI.
+[TRACE] 11:22:15:97 Coordinador/(11288:11332): id de socket 12
+[TRACE] 11:22:15:299 Coordinador/(11288:11332): recibi operacion get con la clave principal2
+[TRACE] 11:22:15:541 Coordinador/(11288:11332): recibi operacion get con la clave principal3
+[ERROR] 11:22:15:821 Coordinador/(11288:11332): error de comunicacion con la instancia Inst1 al enviar la clave principal2
+[TRACE] 11:22:15:821 Coordinador/(11288:11332): Se borró la clave principal2 de la instancia Inst1.
+[TRACE] 11:22:54:522 Coordinador/(11288:11288): Conexion de ESI.
+[TRACE] 11:22:54:525 Coordinador/(11288:11346): id de socket 13
+[TRACE] 11:23:07:229 Coordinador/(11288:11346): recibi operacion get con la clave principal2
+[TRACE] 11:23:14:342 Coordinador/(11288:11346): recibi operacion get con la clave principal3
+[TRACE] 11:23:33:901 Coordinador/(11288:11346): No se encontro la clave principal2 en ninguna instancia
+[TRACE] 11:23:54:354 Coordinador/(11288:11346): se eligio la instancia Inst2 para el guardado de clave
+[ERROR] 11:24:37:290 Coordinador/(11288:11346): error de comunicacion con la instancia Inst1 al enviar la clave principal3
+[TRACE] 11:24:37:981 Coordinador/(11288:11346): Se borró la clave principal3 de la instancia Inst1.

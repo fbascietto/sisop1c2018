@@ -1,0 +1,527 @@
+[TRACE] 10:14:29:757 Instancia/(6998:6998): Conectado a Coordinador OK.
+
+[TRACE] 10:14:29:759 Instancia/(6998:6998): Se inicializó la Instancia, se encontraron 0 entradas de una ejecución anterior.
+[ERROR] 10:14:36:130 Instancia/(6998:6998): coordinador desconectado
+[TRACE] 10:19:21:958 Instancia/(7228:7228): Conectado a Coordinador OK.
+
+[TRACE] 10:19:21:959 Instancia/(7228:7228): Se inicializó la Instancia, se encontraron 0 entradas de una ejecución anterior.
+[TRACE] 10:19:31:960 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:19:31:961 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:19:41:961 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:19:41:961 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:19:51:962 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:19:51:962 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:20:01:963 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:20:01:964 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:20:11:988 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:20:11:989 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:20:21:989 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:20:21:989 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:20:31:990 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:20:31:990 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:20:41:991 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:20:41:991 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:20:51:991 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:20:51:991 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:21:01:992 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:21:01:992 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:21:11:993 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:21:11:993 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:21:21:994 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:21:21:994 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:21:31:995 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:21:31:995 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:21:41:996 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:21:41:996 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:21:51:997 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:21:51:997 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:22:01:998 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:22:01:998 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:22:11:998 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:22:11:999 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:22:22:31 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:22:22:55 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:22:32:57 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:22:32:57 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:22:42:59 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:22:42:59 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:22:52:60 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:22:52:60 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:23:02:61 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:23:02:61 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:23:12:62 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:23:12:62 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:23:22:62 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:23:22:63 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:23:32:63 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:23:32:63 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:23:42:64 Instancia/(7228:7229): Orden de efectuar DUMP recibida.
+[TRACE] 10:23:42:64 Instancia/(7228:7229): Dump completado. Se generaron 0 archivos. Errores: 0.
+[ERROR] 10:23:43:239 Instancia/(7228:7228): coordinador desconectado
+[TRACE] 10:38:34:116 Instancia/(8532:8532): Conectado a Coordinador OK.
+
+[TRACE] 10:38:34:116 Instancia/(8532:8532): Se inicializó la Instancia, se encontraron 0 entradas de una ejecución anterior.
+[TRACE] 10:38:44:118 Instancia/(8532:8533): Orden de efectuar DUMP recibida.
+[TRACE] 10:38:44:118 Instancia/(8532:8533): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:38:54:119 Instancia/(8532:8533): Orden de efectuar DUMP recibida.
+[TRACE] 10:38:54:119 Instancia/(8532:8533): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:39:04:119 Instancia/(8532:8533): Orden de efectuar DUMP recibida.
+[TRACE] 10:39:04:120 Instancia/(8532:8533): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:39:14:124 Instancia/(8532:8533): Orden de efectuar DUMP recibida.
+[TRACE] 10:39:14:124 Instancia/(8532:8533): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:39:24:125 Instancia/(8532:8533): Orden de efectuar DUMP recibida.
+[TRACE] 10:39:24:125 Instancia/(8532:8533): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:39:34:125 Instancia/(8532:8533): Orden de efectuar DUMP recibida.
+[TRACE] 10:39:34:125 Instancia/(8532:8533): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:39:44:126 Instancia/(8532:8533): Orden de efectuar DUMP recibida.
+[TRACE] 10:39:44:127 Instancia/(8532:8533): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:39:54:130 Instancia/(8532:8533): Orden de efectuar DUMP recibida.
+[TRACE] 10:39:54:130 Instancia/(8532:8533): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:40:04:137 Instancia/(8532:8533): Orden de efectuar DUMP recibida.
+[TRACE] 10:40:04:137 Instancia/(8532:8533): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:40:14:139 Instancia/(8532:8533): Orden de efectuar DUMP recibida.
+[TRACE] 10:40:14:139 Instancia/(8532:8533): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:40:24:140 Instancia/(8532:8533): Orden de efectuar DUMP recibida.
+[TRACE] 10:40:24:140 Instancia/(8532:8533): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:40:34:141 Instancia/(8532:8533): Orden de efectuar DUMP recibida.
+[TRACE] 10:40:34:141 Instancia/(8532:8533): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:40:44:143 Instancia/(8532:8533): Orden de efectuar DUMP recibida.
+[TRACE] 10:40:44:143 Instancia/(8532:8533): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:40:54:144 Instancia/(8532:8533): Orden de efectuar DUMP recibida.
+[TRACE] 10:40:54:144 Instancia/(8532:8533): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:41:04:146 Instancia/(8532:8533): Orden de efectuar DUMP recibida.
+[TRACE] 10:41:04:146 Instancia/(8532:8533): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:41:14:157 Instancia/(8532:8533): Orden de efectuar DUMP recibida.
+[TRACE] 10:41:14:157 Instancia/(8532:8533): Dump completado. Se generaron 0 archivos. Errores: 0.
+[ERROR] 10:41:19:785 Instancia/(8532:8532): coordinador desconectado
+[TRACE] 10:44:49:341 Instancia/(9033:9033): Conectado a Coordinador OK.
+
+[TRACE] 10:44:49:341 Instancia/(9033:9033): Se inicializó la Instancia, se encontraron 0 entradas de una ejecución anterior.
+[TRACE] 10:44:59:350 Instancia/(9033:9034): Orden de efectuar DUMP recibida.
+[TRACE] 10:44:59:351 Instancia/(9033:9034): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:45:09:354 Instancia/(9033:9034): Orden de efectuar DUMP recibida.
+[TRACE] 10:45:09:355 Instancia/(9033:9034): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:45:19:355 Instancia/(9033:9034): Orden de efectuar DUMP recibida.
+[TRACE] 10:45:19:355 Instancia/(9033:9034): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:45:29:356 Instancia/(9033:9034): Orden de efectuar DUMP recibida.
+[TRACE] 10:45:29:356 Instancia/(9033:9034): Dump completado. Se generaron 0 archivos. Errores: 0.
+[ERROR] 10:45:37:705 Instancia/(9033:9033): coordinador desconectado
+[TRACE] 10:46:18:604 Instancia/(9130:9130): Conectado a Coordinador OK.
+
+[TRACE] 10:46:18:605 Instancia/(9130:9130): Se inicializó la Instancia, se encontraron 0 entradas de una ejecución anterior.
+[TRACE] 10:46:28:607 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:46:28:607 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:46:38:608 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:46:38:608 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:46:48:617 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:46:48:617 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:46:58:617 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:46:58:617 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:47:08:618 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:47:08:619 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:47:18:620 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:47:18:620 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:47:28:620 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:47:28:621 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:47:38:622 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:47:38:622 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:47:48:624 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:47:48:625 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:47:58:625 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:47:58:625 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:48:08:626 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:48:08:626 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:48:18:628 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:48:18:628 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:48:28:629 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:48:28:629 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:48:38:631 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:48:38:631 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:48:48:634 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:48:48:634 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:48:58:634 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:48:58:635 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:49:08:636 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:49:08:636 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:49:18:637 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:49:18:638 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:49:29:195 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:49:29:195 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:49:39:210 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:49:39:211 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:49:49:221 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:49:49:222 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:49:59:222 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:49:59:222 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:50:09:222 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:50:09:222 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:50:19:224 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:50:19:224 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:50:29:232 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:50:29:233 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:50:39:233 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:50:39:234 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:50:49:238 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:50:49:238 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:50:59:241 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:50:59:242 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:51:09:242 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:51:09:243 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:51:19:244 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:51:19:244 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:51:29:245 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:51:29:245 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:51:39:247 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:51:39:247 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:51:49:249 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:51:49:250 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:51:59:250 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:51:59:251 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:52:09:256 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:52:09:256 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:52:19:258 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:52:19:259 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:52:29:262 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:52:29:263 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:52:39:264 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:52:39:264 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:52:49:265 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:52:49:265 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:52:59:267 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:52:59:267 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:53:09:273 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:53:09:273 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:53:19:275 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:53:19:275 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:53:29:276 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:53:29:276 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:53:39:277 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:53:39:277 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:53:49:279 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:53:49:279 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:53:59:280 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:53:59:280 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:54:09:282 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:54:09:282 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:54:19:286 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:54:19:286 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:54:29:287 Instancia/(9130:9131): Orden de efectuar DUMP recibida.
+[TRACE] 10:54:29:288 Instancia/(9130:9131): Dump completado. Se generaron 0 archivos. Errores: 0.
+[ERROR] 10:54:29:936 Instancia/(9130:9130): coordinador desconectado
+[TRACE] 10:56:25:652 Instancia/(9918:9918): Conectado a Coordinador OK.
+
+[TRACE] 10:56:25:654 Instancia/(9918:9918): Se inicializó la Instancia, se encontraron 0 entradas de una ejecución anterior.
+[TRACE] 10:56:35:656 Instancia/(9918:9919): Orden de efectuar DUMP recibida.
+[TRACE] 10:56:35:657 Instancia/(9918:9919): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:56:45:657 Instancia/(9918:9919): Orden de efectuar DUMP recibida.
+[TRACE] 10:56:45:657 Instancia/(9918:9919): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:56:55:658 Instancia/(9918:9919): Orden de efectuar DUMP recibida.
+[TRACE] 10:56:55:658 Instancia/(9918:9919): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:57:05:660 Instancia/(9918:9919): Orden de efectuar DUMP recibida.
+[TRACE] 10:57:05:660 Instancia/(9918:9919): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:57:15:660 Instancia/(9918:9919): Orden de efectuar DUMP recibida.
+[TRACE] 10:57:15:661 Instancia/(9918:9919): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:57:25:662 Instancia/(9918:9919): Orden de efectuar DUMP recibida.
+[TRACE] 10:57:25:662 Instancia/(9918:9919): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:57:35:663 Instancia/(9918:9919): Orden de efectuar DUMP recibida.
+[TRACE] 10:57:35:663 Instancia/(9918:9919): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:57:45:681 Instancia/(9918:9919): Orden de efectuar DUMP recibida.
+[TRACE] 10:57:45:683 Instancia/(9918:9919): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:57:55:684 Instancia/(9918:9919): Orden de efectuar DUMP recibida.
+[TRACE] 10:57:55:684 Instancia/(9918:9919): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:58:05:685 Instancia/(9918:9919): Orden de efectuar DUMP recibida.
+[TRACE] 10:58:05:686 Instancia/(9918:9919): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:58:15:687 Instancia/(9918:9919): Orden de efectuar DUMP recibida.
+[TRACE] 10:58:15:687 Instancia/(9918:9919): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:58:25:688 Instancia/(9918:9919): Orden de efectuar DUMP recibida.
+[TRACE] 10:58:25:688 Instancia/(9918:9919): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:58:35:689 Instancia/(9918:9919): Orden de efectuar DUMP recibida.
+[TRACE] 10:58:35:689 Instancia/(9918:9919): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:58:45:689 Instancia/(9918:9919): Orden de efectuar DUMP recibida.
+[TRACE] 10:58:45:690 Instancia/(9918:9919): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:58:55:694 Instancia/(9918:9919): Orden de efectuar DUMP recibida.
+[TRACE] 10:58:55:694 Instancia/(9918:9919): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:59:05:701 Instancia/(9918:9919): Orden de efectuar DUMP recibida.
+[TRACE] 10:59:05:701 Instancia/(9918:9919): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:59:15:702 Instancia/(9918:9919): Orden de efectuar DUMP recibida.
+[TRACE] 10:59:15:702 Instancia/(9918:9919): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:59:25:708 Instancia/(9918:9919): Orden de efectuar DUMP recibida.
+[TRACE] 10:59:25:708 Instancia/(9918:9919): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:59:35:708 Instancia/(9918:9919): Orden de efectuar DUMP recibida.
+[TRACE] 10:59:35:708 Instancia/(9918:9919): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:59:45:718 Instancia/(9918:9919): Orden de efectuar DUMP recibida.
+[TRACE] 10:59:45:719 Instancia/(9918:9919): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:59:55:720 Instancia/(9918:9919): Orden de efectuar DUMP recibida.
+[TRACE] 10:59:55:720 Instancia/(9918:9919): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:00:05:721 Instancia/(9918:9919): Orden de efectuar DUMP recibida.
+[TRACE] 11:00:05:721 Instancia/(9918:9919): Dump completado. Se generaron 0 archivos. Errores: 0.
+[ERROR] 11:00:11:43 Instancia/(9918:9918): coordinador desconectado
+[TRACE] 11:02:15:158 Instancia/(10212:10212): Conectado a Coordinador OK.
+
+[TRACE] 11:02:15:160 Instancia/(10212:10212): Se inicializó la Instancia, se encontraron 0 entradas de una ejecución anterior.
+[TRACE] 11:02:25:161 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:02:25:161 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:02:35:163 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:02:35:163 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:02:45:164 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:02:45:164 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:02:55:172 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:02:55:172 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:03:05:173 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:03:05:173 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:03:15:179 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:03:15:179 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:03:25:180 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:03:25:180 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:03:35:181 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:03:35:181 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:03:45:185 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:03:45:185 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:03:55:186 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:03:55:187 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:04:05:187 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:04:05:189 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:04:15:190 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:04:15:190 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:04:25:190 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:04:25:190 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:04:35:197 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:04:35:199 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:04:45:200 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:04:45:200 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:04:55:208 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:04:55:208 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:05:05:209 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:05:05:209 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:05:15:210 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:05:15:210 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:05:25:211 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:05:25:212 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:05:35:212 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:05:35:214 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:05:45:214 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:05:45:214 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:05:55:218 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:05:55:218 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:06:05:219 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:06:05:219 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:06:15:220 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:06:15:220 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:06:25:229 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:06:25:229 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:06:35:231 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:06:35:231 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:06:45:233 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:06:45:233 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:06:55:234 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:06:55:234 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:07:05:238 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:07:05:238 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:07:15:245 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:07:15:245 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:07:25:247 Instancia/(10212:10213): Orden de efectuar DUMP recibida.
+[TRACE] 11:07:25:247 Instancia/(10212:10213): Dump completado. Se generaron 0 archivos. Errores: 0.
+[ERROR] 11:07:31:37 Instancia/(10212:10212): coordinador desconectado
+[TRACE] 11:09:10:117 Instancia/(10576:10576): Conectado a Coordinador OK.
+
+[TRACE] 11:09:10:118 Instancia/(10576:10576): Se inicializó la Instancia, se encontraron 0 entradas de una ejecución anterior.
+[TRACE] 11:09:20:119 Instancia/(10576:10577): Orden de efectuar DUMP recibida.
+[TRACE] 11:09:20:119 Instancia/(10576:10577): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:09:30:127 Instancia/(10576:10577): Orden de efectuar DUMP recibida.
+[TRACE] 11:09:30:127 Instancia/(10576:10577): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:09:40:128 Instancia/(10576:10577): Orden de efectuar DUMP recibida.
+[TRACE] 11:09:40:129 Instancia/(10576:10577): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:09:50:129 Instancia/(10576:10577): Orden de efectuar DUMP recibida.
+[TRACE] 11:09:50:129 Instancia/(10576:10577): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:10:00:130 Instancia/(10576:10577): Orden de efectuar DUMP recibida.
+[TRACE] 11:10:00:130 Instancia/(10576:10577): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:10:10:131 Instancia/(10576:10577): Orden de efectuar DUMP recibida.
+[TRACE] 11:10:10:131 Instancia/(10576:10577): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:10:20:131 Instancia/(10576:10577): Orden de efectuar DUMP recibida.
+[TRACE] 11:10:20:132 Instancia/(10576:10577): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:10:30:132 Instancia/(10576:10577): Orden de efectuar DUMP recibida.
+[TRACE] 11:10:30:132 Instancia/(10576:10577): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:10:40:133 Instancia/(10576:10577): Orden de efectuar DUMP recibida.
+[TRACE] 11:10:40:133 Instancia/(10576:10577): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:10:50:135 Instancia/(10576:10577): Orden de efectuar DUMP recibida.
+[TRACE] 11:10:50:135 Instancia/(10576:10577): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:14:42:274 Instancia/(10908:10908): Conectado a Coordinador OK.
+
+[TRACE] 11:14:42:276 Instancia/(10908:10908): Se inicializó la Instancia, se encontraron 0 entradas de una ejecución anterior.
+[TRACE] 11:14:52:278 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:14:52:278 Instancia/(10908:10909): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:15:02:278 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:15:02:279 Instancia/(10908:10909): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:15:12:279 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:15:12:279 Instancia/(10908:10909): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:15:22:284 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:15:22:285 Instancia/(10908:10909): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:15:32:351 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:15:32:351 Instancia/(10908:10909): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:15:42:352 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:15:42:352 Instancia/(10908:10909): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:15:52:353 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:15:52:353 Instancia/(10908:10909): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:16:02:354 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:16:02:354 Instancia/(10908:10909): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:16:12:363 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:16:12:363 Instancia/(10908:10909): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:16:22:365 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:16:22:365 Instancia/(10908:10909): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:16:32:366 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:16:32:366 Instancia/(10908:10909): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:16:42:367 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:16:42:367 Instancia/(10908:10909): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:16:52:368 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:16:52:368 Instancia/(10908:10909): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:17:02:385 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:17:02:386 Instancia/(10908:10909): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:17:12:387 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:17:12:387 Instancia/(10908:10909): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:17:22:391 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:17:22:392 Instancia/(10908:10909): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:17:31:96 Instancia/(10908:10908): Se recibe instruccion SET.
+
+[TRACE] 11:17:31:135 Instancia/(10908:10908): Se escribió con exito sobre la entrada 0 y con un total de 1 entradas.
+[TRACE] 11:17:32:393 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:17:32:393 Instancia/(10908:10909): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:17:32:394 Instancia/(10908:10909): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:17:42:394 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:17:42:395 Instancia/(10908:10909): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:17:42:395 Instancia/(10908:10909): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:17:52:396 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:17:52:396 Instancia/(10908:10909): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:17:52:396 Instancia/(10908:10909): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:18:02:397 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:18:02:398 Instancia/(10908:10909): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:18:02:398 Instancia/(10908:10909): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:18:12:400 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:18:12:400 Instancia/(10908:10909): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:18:12:401 Instancia/(10908:10909): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:18:22:402 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:18:22:402 Instancia/(10908:10909): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:18:22:402 Instancia/(10908:10909): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:18:32:410 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:18:32:411 Instancia/(10908:10909): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:18:32:411 Instancia/(10908:10909): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:18:42:412 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:18:42:412 Instancia/(10908:10909): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:18:42:413 Instancia/(10908:10909): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:18:52:415 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:18:52:415 Instancia/(10908:10909): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:18:52:415 Instancia/(10908:10909): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:19:02:415 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:19:02:415 Instancia/(10908:10909): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:19:02:416 Instancia/(10908:10909): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:19:12:418 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:19:12:419 Instancia/(10908:10909): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:19:12:419 Instancia/(10908:10909): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:19:22:422 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:19:22:422 Instancia/(10908:10909): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:19:22:422 Instancia/(10908:10909): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:19:32:425 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:19:32:425 Instancia/(10908:10909): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:19:32:425 Instancia/(10908:10909): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:19:42:425 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:19:42:426 Instancia/(10908:10909): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:19:42:426 Instancia/(10908:10909): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:19:52:428 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:19:52:428 Instancia/(10908:10909): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:19:52:428 Instancia/(10908:10909): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:20:02:431 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:20:02:431 Instancia/(10908:10909): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:20:02:431 Instancia/(10908:10909): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:20:12:432 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:20:12:432 Instancia/(10908:10909): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:20:12:432 Instancia/(10908:10909): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:20:22:439 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:20:22:439 Instancia/(10908:10909): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:20:22:440 Instancia/(10908:10909): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:20:32:444 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:20:32:444 Instancia/(10908:10909): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:20:32:446 Instancia/(10908:10909): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:20:42:447 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:20:42:447 Instancia/(10908:10909): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:20:42:448 Instancia/(10908:10909): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:20:52:449 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:20:52:450 Instancia/(10908:10909): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:20:52:450 Instancia/(10908:10909): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:21:02:452 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:21:02:453 Instancia/(10908:10909): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:21:02:453 Instancia/(10908:10909): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:21:12:454 Instancia/(10908:10909): Orden de efectuar DUMP recibida.
+[TRACE] 11:21:12:454 Instancia/(10908:10909): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:21:12:455 Instancia/(10908:10909): Dump completado. Se generaron 1 archivos. Errores: 0.
+[ERROR] 11:21:22:414 Instancia/(10908:10908): coordinador desconectado
+[TRACE] 11:22:13:192 Instancia/(11327:11327): Conectado a Coordinador OK.
+
+[TRACE] 11:22:13:193 Instancia/(11327:11327): Se inicializó la Instancia, se encontraron 0 entradas de una ejecución anterior.
+[TRACE] 11:22:23:194 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:22:23:194 Instancia/(11327:11328): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:22:33:200 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:22:33:200 Instancia/(11327:11328): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:22:43:201 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:22:43:201 Instancia/(11327:11328): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:22:53:203 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:22:53:203 Instancia/(11327:11328): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:23:03:205 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:23:03:205 Instancia/(11327:11328): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:23:13:206 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:23:13:206 Instancia/(11327:11328): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:23:23:207 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:23:23:208 Instancia/(11327:11328): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:23:33:208 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:23:33:209 Instancia/(11327:11328): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:23:43:209 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:23:43:209 Instancia/(11327:11328): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:23:53:210 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:23:53:210 Instancia/(11327:11328): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 11:24:01:452 Instancia/(11327:11327): Se recibe instruccion SET.
+
+[TRACE] 11:24:01:491 Instancia/(11327:11327): Se escribió con exito sobre la entrada 0 y con un total de 1 entradas.
+[TRACE] 11:24:03:211 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:24:03:211 Instancia/(11327:11328): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:24:03:211 Instancia/(11327:11328): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:24:13:212 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:24:13:212 Instancia/(11327:11328): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:24:13:212 Instancia/(11327:11328): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:24:23:216 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:24:23:216 Instancia/(11327:11328): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:24:23:219 Instancia/(11327:11328): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:24:33:221 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:24:33:221 Instancia/(11327:11328): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:24:33:222 Instancia/(11327:11328): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:24:43:224 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:24:43:224 Instancia/(11327:11328): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:24:43:225 Instancia/(11327:11328): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:24:53:225 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:24:53:226 Instancia/(11327:11328): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:24:53:227 Instancia/(11327:11328): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:25:03:229 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:25:03:229 Instancia/(11327:11328): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:25:03:229 Instancia/(11327:11328): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:25:13:231 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:25:13:231 Instancia/(11327:11328): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:25:13:231 Instancia/(11327:11328): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:25:23:234 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:25:23:234 Instancia/(11327:11328): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:25:23:235 Instancia/(11327:11328): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:25:33:235 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:25:33:235 Instancia/(11327:11328): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:25:33:236 Instancia/(11327:11328): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:25:43:237 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:25:43:237 Instancia/(11327:11328): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:25:43:238 Instancia/(11327:11328): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:25:53:241 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:25:53:241 Instancia/(11327:11328): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:25:53:241 Instancia/(11327:11328): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:26:03:242 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:26:03:242 Instancia/(11327:11328): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:26:03:243 Instancia/(11327:11328): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:26:13:244 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:26:13:245 Instancia/(11327:11328): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:26:13:245 Instancia/(11327:11328): Dump completado. Se generaron 1 archivos. Errores: 0.
+[TRACE] 11:26:23:245 Instancia/(11327:11328): Orden de efectuar DUMP recibida.
+[TRACE] 11:26:23:246 Instancia/(11327:11328): Se leyó con exito el value de la clave principal2.
+[TRACE] 11:26:23:246 Instancia/(11327:11328): Dump completado. Se generaron 1 archivos. Errores: 0.
+[ERROR] 11:26:27:75 Instancia/(11327:11327): coordinador desconectado

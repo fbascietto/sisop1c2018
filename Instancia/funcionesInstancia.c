@@ -501,13 +501,11 @@ void configureLoggers(char* instName){
 
 
 	/* para correr desde CONSOLA
+	string_append(&logPath,"../../Recursos/Logs/");
+ */
 
-
-	string_append(&logPath,"../../Recursos/Logs/");*/
-
-	/* para correr en la VM Server */
-
-	string_append(&logPath,"");
+	/* para correr en la VM Server
+	string_append(&logPath,"");*/
 
 
 	string_append(&logPath,instName);
@@ -660,8 +658,7 @@ void cargar_configuracion(){
 	infoConfig = config_create("../../Recursos/Configuracion/instancia.config");
 */
 
-
-	/* SI SE CORRE EN LA VM SERVER*/
+	/* SI SE CORRE EN LA VM SERVER */
 
 	infoConfig = config_create("instancia.config");
 

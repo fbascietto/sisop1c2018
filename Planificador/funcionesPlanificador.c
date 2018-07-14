@@ -118,8 +118,8 @@ void* planificar(void * args){
 			actualizarColaListos();
 			ordenarListos(); //sin esta funcion deberia funcionar como FIFO
 			esi_ejecutando = queue_pop(colaListos); //agarra al primero de la lista
-//			esi_ejecutando->rafagaActualPrevia = esi_ejecutando->rafagaActual;
-				esi_ejecutando->rafagaActual=0;
+			//			esi_ejecutando->rafagaActualPrevia = esi_ejecutando->rafagaActual;
+			esi_ejecutando->rafagaActual=0;
 			//			esi_ejecutando->tiempoEspera=0;
 			//			esi_ejecutando->rafagaEstimada = esi_ejecutando->rafagaEstimadaSiguiente;
 			log_info(logPlan, "esi %d enviado a ejecutar", esi_ejecutando->id);
@@ -245,7 +245,7 @@ void cambiarEstimado(void* esi){
 		unEsi -> rafagaEstimadaSiguiente = promedioExponencial(unEsi);
 		break;
 	case HRRN:
-		unEsi -> rafagaEstimadaSiguiente = estimacionHRRN(unEsi);
+			unEsi -> rafagaEstimadaSiguiente = estimacionHRRN(unEsi);
 		break;
 	}
 }
@@ -260,8 +260,14 @@ float promedioExponencial(t_proceso_esi* unEsi){
 }
 
 float estimacionHRRN(t_proceso_esi* unEsi){
-	float promedio = promedioExponencial(unEsi);
-	float estimacion = 1.0 + (unEsi->tiempoEspera / promedio);
+	float estimacion;
+	if(unEsi->rafagaActual == 0){ //es decir, todavia no ejecuto
+		estimacion = 1 + (unEsi->tiempoEspera / unEsi->rafagaEstimada);
+//		estimacion = unEsi->rafagaEstimada;
+	}else{
+		float promedio = promedioExponencial(unEsi);
+		estimacion = 1.0 + (unEsi->tiempoEspera / promedio);
+	}
 	//	log_info(logPlan, "estimacion HRRN: 1.0 + (%d / %f) = %f", unEsi->tiempoEspera, promedio, estimacion);
 	return estimacion;
 }

@@ -1,0 +1,16 @@
+[TRACE] 10:10:35:101 Instancia/(6747:6747): Conectado a Coordinador OK.
+
+[TRACE] 10:10:35:103 Instancia/(6747:6747): Se inicializó la Instancia, se encontraron 0 entradas de una ejecución anterior.
+[TRACE] 10:10:45:105 Instancia/(6747:6750): Orden de efectuar DUMP recibida.
+[TRACE] 10:10:45:105 Instancia/(6747:6750): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:10:55:106 Instancia/(6747:6750): Orden de efectuar DUMP recibida.
+[TRACE] 10:10:55:106 Instancia/(6747:6750): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:11:07:832 Instancia/(6797:6797): Conectado a Coordinador OK.
+
+[TRACE] 10:11:07:832 Instancia/(6797:6797): Se inicializó la Instancia, se encontraron 0 entradas de una ejecución anterior.
+[TRACE] 10:11:17:833 Instancia/(6797:6798): Orden de efectuar DUMP recibida.
+[TRACE] 10:11:17:834 Instancia/(6797:6798): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:11:27:834 Instancia/(6797:6798): Orden de efectuar DUMP recibida.
+[TRACE] 10:11:27:834 Instancia/(6797:6798): Dump completado. Se generaron 0 archivos. Errores: 0.
+[TRACE] 10:11:37:835 Instancia/(6797:6798): Orden de efectuar DUMP recibida.
+[TRACE] 10:11:37:835 Instancia/(6797:6798): Dump completado. Se generaron 0 archivos. Errores: 0.

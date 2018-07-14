@@ -440,15 +440,7 @@ void configureLogger(){
 
 void cargar_configuracion(){
 
-	/*	para correr desde ECLIPSE
-	infoConfig = config_create("../Recursos/Configuracion/planificador.config");
-	 */
 
-	/* para correr desde CONSOLA
-
-	infoConfig = config_create("../../Recursos/Configuracion/planificador.config");
-
-*/
 	/* para correr desde la VM Server*/
 
 

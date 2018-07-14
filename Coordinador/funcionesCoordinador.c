@@ -188,14 +188,13 @@ void cargar_configuracion(){
 	/* para correr desde ECLIPSE
 	infoConfig = config_create("../Recursos/Configuracion/coordinador.config");
 */
-	/*para correr desde CONSOLA
 
+	/*para correr desde CONSOLA
 	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
 	*/
 
 
-	/* para correr desde la VM Server
-*/
+	/* para correr desde la VM Server */
 	infoConfig = config_create("coordinador.config");
 
 
