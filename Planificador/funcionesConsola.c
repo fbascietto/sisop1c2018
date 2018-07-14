@@ -153,7 +153,7 @@ void block(char* key_value, int ESI_ID){
 
 		}
 
-	}else if(esi_ejecutando->id == ESI_ID ||
+	}else if((esi_ejecutando !=NULL && esi_ejecutando->id == ESI_ID) ||
 			coincideCola(colaListos, ESI_ID) ||
 			estaBloqueado(ESI_ID) ||
 			coincideCola(colaTerminados, ESI_ID)){
