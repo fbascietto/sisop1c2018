@@ -7,7 +7,6 @@ git clone https://github.com/sisoputnfrba/so-commons-library.git
 git clone https://github.com/sisoputnfrba/parsi
 git clone https://github.com/sisoputnfrba/Pruebas-ESI
 
-chmod 777 /home/utnso/Pruebas-ESI/
 
 cd /home/utnso/so-commons-library/
 sudo make install
