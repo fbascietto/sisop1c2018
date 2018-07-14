@@ -42,6 +42,23 @@ bool coincideCola(t_queue* procesos, int idProceso){
 
 }
 
+bool estaBloqueado(int id){
+
+	int i;
+	t_clave* key;
+
+	for(i=0; i< list_size(listaKeys); i++){
+
+		key = list_get(listaKeys, i);
+
+		if(coincideCola(key->colaBloqueados, id)) return true;
+
+	}
+
+	return false;
+
+}
+
 
 /*
  * Tener en cuenta que puede devolver NULL
@@ -113,8 +130,7 @@ void block(char* key_value, int ESI_ID){
 				queue_push(key->colaBloqueados, esi_ejecutando);
 			}
 
-		}
-		else{
+		}else{
 			t_proceso_esi* esi_a_bloquear = removerEsiSegunID(colaListos->elements, ESI_ID);
 
 			if(esi_a_bloquear != NULL){
@@ -122,18 +138,31 @@ void block(char* key_value, int ESI_ID){
 				queue_push(key->colaBloqueados, esi_a_bloquear);
 				log_debug(logPlan, "esi %d enviado a la cola de bloqueados de la key %s", ESI_ID, key_value);
 
-			}
-			else{
+			}else{
 				t_clave* clavePoseedora = list_find(listaKeys, estaElESIBloqueado);
-				if(clavePoseedora !=NULL) log_warning(logPlan, "el proceso %d a matar ya esta bloqueado por la key %s", ESI_ID, clavePoseedora->nombre);
+				if(clavePoseedora !=NULL){
+					log_warning(logPlan, "el esi %d a matar ya esta bloqueado por la key %s", ESI_ID, clavePoseedora->nombre);
+				}else{
+					if(coincideCola(colaTerminados, ESI_ID)){
+						log_warning(logPlan, "el esi %d ya termino de ejecutar", ESI_ID);
+					}else{
+						log_warning(logPlan, "el esi ingresado no existe");
+					}
+				}
 			}
 
 		}
 
-	}
-	else{
+	}else if(esi_ejecutando->id == ESI_ID ||
+			coincideCola(colaListos, ESI_ID) ||
+			estaBloqueado(ESI_ID) ||
+			coincideCola(colaTerminados, ESI_ID)){
 		log_warning(logPlan, "la key ingresada no existe");
+	}else{
+		log_warning(logPlan, "la key y el esi ingresados no existen");
 	}
+
+
 }
 
 void unblock(char* key_value){

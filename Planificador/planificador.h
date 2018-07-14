@@ -172,6 +172,7 @@ void eliminarEsi(void* elemento);
 void eliminarKey(void* elemento);
 bool procesoYaDetectado(int id, t_list* deadlocks);
 void imprimirEsis(t_queue*, char*);
+bool estaBloqueado(int id);
 
 //funciones mock
 void testearDeadlock();
