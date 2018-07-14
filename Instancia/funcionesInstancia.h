@@ -93,7 +93,7 @@ int calculoLRU(int bloques, t_entrada ** entrada);
 
 /** Compactación y dump **/
 bool compactar();
-void dump();
+void* dump();
 
 /** Funciones de bitmap **/
 t_bitarray *crearBitmapVacio();

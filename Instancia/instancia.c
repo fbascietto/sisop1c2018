@@ -124,7 +124,7 @@ void close_gracefully(){
 	pthread_mutex_lock(&mx_Dump);
 
 	pthread_cancel(threadDump);
-
+	pthread_detach(threadDump);
 	//pthread_mutex_unlock(&mx_Dump);
 
 	void liberarEntrada(void * parametro){

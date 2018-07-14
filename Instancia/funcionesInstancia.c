@@ -137,7 +137,7 @@ void inicializarPuntoMontaje(char * path, char * filename){
 
 	free(nuevoArchivo);
 	int fd = fileno(instanciaDat);
-	fallocate(fd,0,0,qEntradas*tamanioEntrada); /* se alloca la memoria a mapear */
+	posix_fallocate(fd,0,qEntradas*tamanioEntrada);
 	fclose(instanciaDat);
 }
 
@@ -873,7 +873,7 @@ bool compactar(){
 	return ejecucion_ok;
 }
 
-void dump(){
+void* dump(){
 
 	int size;
 	int i,e;
