@@ -231,6 +231,8 @@ int obtenerValor(char* keySearch){
 		break;
 	case NO_HAY_INSTANCIAS_CONECTADAS:
 		string_append(&msj, "No hay instancias conectadas.");
+		log_debug(logPlan, msj);
+		free(msj);
 		return NO_HAY_INSTANCIAS_CONECTADAS;
 		break;
 	}
@@ -324,21 +326,21 @@ void mostarEsiPoseedor(char* keySearch){
 
 }
 
-void imprimirEsis(t_queue* bloqueados, char* msj) {
+void imprimirEsis(t_queue* bloqueados, char** msj) {
 
 	int i;
 
 	for (i = 0; i < list_size(bloqueados->elements); i++) {
 		t_proceso_esi* esi = list_get(bloqueados->elements, i);
-		string_append_with_format(&msj, "ESI %d", esi->id);
+		string_append_with_format(msj, "ESI %d", esi->id);
 		if (i + 1 < list_size(bloqueados->elements)) {
-			string_append(&msj, ", ");
+			string_append(msj, ", ");
 		} else {
-			string_append(&msj, ".");
+			string_append(msj, ".");
 		}
 	}
 
-	log_debug(logPlan, msj);
+	log_debug(logPlan, *msj);
 
 }
 
@@ -364,7 +366,7 @@ void listBlockedProcesses(char* keySearch){
 			log_debug(logPlan, msj);
 		}else{
 			string_append_with_format(&msj, "Listado de esis bloqueados por %s: ", keySearch);
-			imprimirEsis(bloqueados, msj);
+			imprimirEsis(bloqueados, &msj);
 		}
 
 
@@ -387,7 +389,7 @@ void listFinished(){
 
 	}
 
-	imprimirEsis(colaTerminados, msj);
+	imprimirEsis(colaTerminados, &msj);
 
 	free(msj);
 
@@ -613,7 +615,10 @@ void detectarDeadlock(){
 
 			if(!list_is_empty(deadlocks)){
 
-				if(procesoYaDetectado(key->esi_poseedor->id, deadlocks)) continue;
+				if(procesoYaDetectado(key->esi_poseedor->id, deadlocks)) {
+					list_destroy(procesosEnDeadlock);
+					continue;
+				}
 
 			}
 
@@ -625,11 +630,14 @@ void detectarDeadlock(){
 
 		}
 
+		list_destroy(procesosEnDeadlock);
+
 	}
 
 	if(list_is_empty(deadlocks)) log_info(logPlan, "No hay deadlock");
 
 	list_clean(deadlocks);
+	list_destroy(keysFiltradas);
 
 
 }
@@ -741,6 +749,8 @@ bool estaLaKey(t_list* keys, t_clave* key){
 
 	int i;
 	t_clave* keyEncontrada;
+
+	if(key == NULL) return false;
 
 	for(i=0; i<list_size(keys); i++){
 

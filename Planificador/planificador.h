@@ -67,6 +67,7 @@ float alfa;
 int coordinador_Puerto;
 int planificador_Puerto_Escucha;
 char** claves_Ini_Bloqueadas;
+t_config* infoConfig;
 t_log_level LogL;
 t_log* logPlan;
 
@@ -173,8 +174,10 @@ void convertirABarra0(char*, int);
 void eliminarEsi(void* elemento);
 void eliminarKey(void* elemento);
 bool procesoYaDetectado(int id, t_list* deadlocks);
-void imprimirEsis(t_queue*, char*);
+void imprimirEsis(t_queue*, char**);
 bool estaBloqueado(int id);
+void liberarParametros(char**);
+void liberarEsiEnEjecucion();
 
 //funciones mock
 void testearDeadlock();

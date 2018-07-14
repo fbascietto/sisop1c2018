@@ -80,12 +80,13 @@ void inicializarColas(){
 void cargarKeysBloqueadasIniciales(){
 
 	t_clave* nuevaKey;
+	char* clave;
+	int i;
 
-	int i=0;
+	for(i=0; claves_Ini_Bloqueadas[i] != NULL; i++){
 
-	while(claves_Ini_Bloqueadas[i] != NULL){
+		clave = claves_Ini_Bloqueadas[i];
 
-		char* clave = claves_Ini_Bloqueadas[i];
 		size_t tamanioClave = strlen(clave);
 
 		if(tamanioClave > LONGITUD_CLAVE){
@@ -94,7 +95,7 @@ void cargarKeysBloqueadasIniciales(){
 		}
 		nuevaKey = malloc(sizeof(t_clave));
 		convertirABarra0(nuevaKey->nombre, LONGITUD_CLAVE);
-		strncpy(nuevaKey->nombre, clave, strlen(clave));
+		strncpy(nuevaKey->nombre, clave, tamanioClave);
 		nuevaKey->colaBloqueados = queue_create();
 		nuevaKey->esi_poseedor = esiBloqueoSistema;
 		list_add(esiBloqueoSistema->clavesTomadas, nuevaKey);
@@ -103,8 +104,10 @@ void cargarKeysBloqueadasIniciales(){
 		enviarInt(socketConsolaCoordinador, CREAR_KEY_INICIALMENTE_BLOQUEADA);
 		enviarMensaje(socketConsolaCoordinador, clave);
 
-		i++;
 	}
+
+
+	liberarParametros(claves_Ini_Bloqueadas);
 
 
 }
@@ -350,25 +353,34 @@ void * iniciaConsola(){
 		{
 			log_trace(logPlan,"Consola recibe ""%s""\n", info);
 
+			parametros = string_split(linea, " ");
 			char* help = string_new();
 
-			string_append(&help, "Destino-Rusia Planificador: Ayuda\n");
-			string_append(&help, "Los parámetros se indican con <> \n------\n");
-			string_append(&help, "pausar: Pausar planificación : El Planificador no le dará nuevas órdenes de ejecución a ningún ESI mientras se encuentre pausado.\n");
-			string_append(&help, "continuar: Continuar planificación : Reanuda el Planificador.\n");
-			string_append(&help, "bloquear <clave> <ID>: Se bloqueará el proceso ESI hasta ser desbloqueado, especificado por dicho <ID> en la cola del recurso <clave>..\n");
-			string_append(&help, "desbloquear <clave>: Se desbloqueara el proceso ESI con el ID especificado. Solo se bloqueará ESIs que fueron bloqueados con la consola. Si un ESI está bloqueado esperando un recurso, no podrá ser desbloqueado de esta forma.\n");
-			string_append(&help, "listar <clave>: Lista los procesos encolados esperando a la clave.\n");
-			string_append(&help, "status <clave>: Muestra proceso al que esta asignado, instancia en la que esta guardada la clave o sino existe donde la pondria y los procesos bloqueados por la clave.\n");
-			string_append(&help, "terminados: Lista los procesos terminados en orden.\n");
-			string_append(&help, "kill <ID>: finaliza el proceso.\n");
-			string_append(&help, "deadlock: Analiza los deadlocks que existan en el sistema y a que ESI están asociados.\n");
-			string_append(&help, "exit: Sale del programa.\n");
+			if(parametros[1] != NULL){
+				log_error(logPlan, "La funcion no lleva argumentos.");
+			}else{
 
-			log_info(logPlan, help);
+
+				string_append(&help, "Destino-Rusia Planificador: Ayuda\n");
+				string_append(&help, "Los parámetros se indican con <> \n------\n");
+				string_append(&help, "pausar: Pausar planificación : El Planificador no le dará nuevas órdenes de ejecución a ningún ESI mientras se encuentre pausado.\n");
+				string_append(&help, "continuar: Continuar planificación : Reanuda el Planificador.\n");
+				string_append(&help, "bloquear <clave> <ID>: Se bloqueará el proceso ESI hasta ser desbloqueado, especificado por dicho <ID> en la cola del recurso <clave>..\n");
+				string_append(&help, "desbloquear <clave>: Se desbloqueara el proceso ESI con el ID especificado. Solo se bloqueará ESIs que fueron bloqueados con la consola. Si un ESI está bloqueado esperando un recurso, no podrá ser desbloqueado de esta forma.\n");
+				string_append(&help, "listar <clave>: Lista los procesos encolados esperando a la clave.\n");
+				string_append(&help, "status <clave>: Muestra proceso al que esta asignado, instancia en la que esta guardada la clave o sino existe donde la pondria y los procesos bloqueados por la clave.\n");
+				string_append(&help, "terminados: Lista los procesos terminados en orden.\n");
+				string_append(&help, "kill <ID>: finaliza el proceso.\n");
+				string_append(&help, "deadlock: Analiza los deadlocks que existan en el sistema y a que ESI están asociados.\n");
+				string_append(&help, "exit: Sale del programa.\n");
+
+				log_info(logPlan, help);
+
+			}
 
 			free(help);
 			free(linea);
+
 		}
 		else {
 			log_error(logPlan, "No se reconoce el comando ""%s"".", linea);
@@ -376,7 +388,25 @@ void * iniciaConsola(){
 			free(linea);
 		}
 
+		liberarParametros(parametros);
+
 	}
+
+
+}
+
+void liberarParametros(char** parametros){
+
+	int i;
+
+	for(i=0; parametros[i] != NULL; i++){
+
+		free(parametros[i]);
+
+	}
+
+	free(parametros);
+
 }
 
 void configureLogger(){
@@ -388,21 +418,22 @@ void configureLogger(){
 	logPlan = log_create("../Recursos/Logs/Planificador.log","Planificador", true, LogL);
 	 */
 
-	/* para ejecutar desde CONSOLA*/
+
+	/* para ejecutar desde CONSOLA
 //	vaciarArchivo("../../Recursos/Logs/Planificador.log");
 	logPlan = log_create("../../Recursos/Logs/Planificador.log","Planificador", true, LogL);
+*/
 
-	/* para ejecutar desde la VM Server*/
-//	vaciarArchivo("Planificador.log");
-//	logPlan = log_create("Planificador.log","Planificador", true, LogL);
+	/* para ejecutar desde la VM Server
+	vaciarArchivo("Planificador.log");
+	*/
+	logPlan = log_create("Planificador.log","Planificador", true, LogL);
 
 
 	log_trace(logPlan, "inicializacion de logs");
 }
 
 void cargar_configuracion(){
-
-	t_config* infoConfig;
 
 	/*	para correr desde ECLIPSE
 	infoConfig = config_create("../Recursos/Configuracion/planificador.config");
@@ -412,9 +443,10 @@ void cargar_configuracion(){
 */
 	infoConfig = config_create("../../Recursos/Configuracion/planificador.config");
 
+
 	/* para correr desde la VM Server
+	 */
 	infoConfig = config_create("planificador.config");
-	*/
 
 
 
@@ -486,33 +518,49 @@ void cargar_configuracion(){
 		log_warning(logPlan, msj);
 		free(msj);
 
+
 	}
 
 }
 
 void exit_gracefully(int return_nr) {
+
+	void castearYDestruirLista(void* parametro){
+
+		t_list* lista = (t_list*) parametro;
+
+		list_destroy_and_destroy_elements(lista, eliminarEsi);
+
+	}
+
 	sem_destroy(&productorConsumidor);
 	destruirSemaforos();
+	liberarEsiEnEjecucion();
 	quitarBloqueoSistema();
 	free(keySolicitada);
 	queue_destroy_and_destroy_elements(colaListos, eliminarEsi);
 	queue_destroy_and_destroy_elements(colaTerminados, eliminarEsi);
 	list_destroy_and_destroy_elements(listaKeys, eliminarKey);
-	list_destroy(deadlocks);
+	list_destroy_and_destroy_elements(deadlocks, castearYDestruirLista);
 	log_info(logPlan, "planificador finalizado");
 	log_destroy(logPlan);
+	config_destroy(infoConfig);
 	exit(return_nr);
+}
+
+void liberarEsiEnEjecucion(){
+	if(esi_ejecutando != NULL) eliminarEsi(esi_ejecutando);
 }
 
 void eliminarEsi(void* elemento){
 	t_proceso_esi* esi = (t_proceso_esi*) elemento;
-	list_clean(esi->clavesTomadas);
+	list_destroy(esi->clavesTomadas);
 	free(esi);
 }
 
 void eliminarKey(void* elemento){
 	t_clave* key = (t_clave*) elemento;
-	queue_clean(key->colaBloqueados);
+	queue_destroy_and_destroy_elements(key->colaBloqueados, eliminarEsi);
 	key->esi_poseedor=NULL;
 	free(key);
 }
