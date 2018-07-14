@@ -177,14 +177,14 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	/* para correr desde ECLIPSE
+	/* para correr desde ECLIPSE*/
 	infoConfig = config_create("../Recursos/Configuracion/coordinador.config");
-*/
 
-	/*para correr desde CONSOLA*/
+
+	/*para correr desde CONSOLA
 
 	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
-
+	*/
 
 	/* para correr desde la VM Server
 	infoConfig = config_create("coordinador.config");
@@ -222,20 +222,20 @@ void configureLoggers(){
 	E = LOG_LEVEL_ERROR;
 
 
-	/* para correr desde ECLIPSE
+	/* para correr desde ECLIPSE*/
 	vaciarArchivo("../Recursos/Logs/Coordinador.log");
 	logT = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
-*/
 
-	/* para correr desde CONSOLA*/
+
+	/* para correr desde CONSOLA
 
 	vaciarArchivo("../../Recursos/Logs/Coordinador.log");
 	logT = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
-
+*/
 	/* para correr desde la VM Server
 	vaciarArchivo("Coordinador.log");
 	logT = log_create("Coordinador.log", "Coordinador", true, T);
@@ -566,7 +566,6 @@ int elegirInstancia(t_instancia ** instancia, char * key, bool esSimulacion){
 		}
 		*instancia = list_get(instancias_conectadas,proximaPosicion);
 		t_instancia * instancia_aux = (t_instancia *) *instancia;
-		log_trace(logT,"se eligio la instancia %s para el guardado de clave", instancia_aux->nombre);
 		proximaPosicion++;
 		if(!esSimulacion){
 			proxima_posicion_instancia = proximaPosicion;
@@ -589,18 +588,28 @@ int elegirInstancia(t_instancia ** instancia, char * key, bool esSimulacion){
 
 				char valor_a = 'a';
 				char valor_z = 'z';
-				int q_letras = (valor_z-valor_a) / q;
-				int resto = (valor_z-valor_a) % q;
+				int q_letras = (valor_z-valor_a + 1) / q;
+				int resto = (valor_z-valor_a + 1) % q;
 				int i = 0;
 
+				if(resto>0){
+					q_letras++;
+				}
+
+
+				int valor_final = letra-valor_a;
+
 				for(;i<q;i++){
-					if(letra-valor_a >= (q_letras*i) && letra-valor_a < (q_letras*(i+1))){
+					int limite_inferior = (q_letras*i);
+					int limite_superior = (q_letras*(i+1));
+					if(q !=i+1 && valor_final >= limite_inferior && valor_final < limite_superior){
 						*instancia = list_get(instancias_conectadas,i);
 						break;
 					}else
-						if(resto>0 && q == i+1){
-							*instancia = list_get(instancias_conectadas,i);
-						}
+					if( q == i+1){
+						*instancia = list_get(instancias_conectadas,i);
+					}
+
 				}
 				list_destroy(instancias_conectadas);
 				return 1;
@@ -700,6 +709,8 @@ int ejecutar_operacion_set(int socket, char* clave, char * valor){
 			free(clave);
 			return -1;
 		}
+		log_trace(logT,"se eligio la instancia %s para el guardado de clave", instancia->nombre);
+
 	}
 	enviarInt(argsPlanificador->socketPlanificador, SET_KEY);
 	enviarMensaje(argsPlanificador->socketPlanificador, clave);
