@@ -14,7 +14,6 @@
 #include "../Recursos/estructuras.h"
 #include "../Recursos/protocolo.h"
 #include "../Biblioteca/biblio_sockets.h"
-#include "../Biblioteca/file_cleaner.h"
 #include <semaphore.h>
 
 #ifndef PLANIFICADOR_H_

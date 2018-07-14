@@ -389,16 +389,15 @@ void configureLogger(){
 */
 
 
-	/* para ejecutar desde CONSOLA */
+	/* para ejecutar desde CONSOLA
 	vaciarArchivo("../../Recursos/Logs/Planificador.log");
 	logPlan = log_create("../../Recursos/Logs/Planificador.log","Planificador", true, LogL);
-
-
+*/
 
 	/* para ejecutar desde la VM Server
 	vaciarArchivo("Planificador.log");
-	logPlan = log_create("Planificador.log","Planificador", true, LogL);
 	 */
+	logPlan = log_create("Planificador.log","Planificador", true, LogL);
 
 	log_trace(logPlan, "inicializacion de logs");
 }
@@ -411,13 +410,13 @@ void cargar_configuracion(){
 
 	infoConfig = config_create("../Recursos/Configuracion/planificador.config");
  */
-	/* para correr desde CONSOLA */
+	/* para correr desde CONSOLA
 	infoConfig = config_create("../../Recursos/Configuracion/planificador.config");
-
+*/
 
 	/* para correr desde la VM Server
-	infoConfig = config_create("planificador.config");
 	 */
+	infoConfig = config_create("planificador.config");
 
 
 
