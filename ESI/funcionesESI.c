@@ -15,15 +15,15 @@ t_config* cargar_configuracion(){
 	infoConfig = config_create("../Recursos/Configuracion/esi.config");
 
 */
-	/* para correr desde CONSOLA
+	/* para correr desde CONSOLA	*/
+
 	infoConfig = config_create("../../Recursos/Configuracion/esi.config");
-	*/
 
 
 	/*para correr en la VM SERVER
-*/
-	infoConfig = config_create("esi.config");
 
+	infoConfig = config_create("esi.config");
+*/
 	if(config_has_property(infoConfig, "IP_COORDINADOR")){
 		coordinador_IP = config_get_string_value(infoConfig, "IP_COORDINADOR");
 	}

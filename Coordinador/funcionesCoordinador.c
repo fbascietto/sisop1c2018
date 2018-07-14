@@ -185,19 +185,19 @@ void cargar_configuracion(){
 
 	t_config* infoConfig;
 
-	/* para correr desde ECLIPSE
+	/* para correr desde ECLIPSE*/
 	infoConfig = config_create("../Recursos/Configuracion/coordinador.config");
-*/
+
 	/*para correr desde CONSOLA
 
 	infoConfig = config_create("../../Recursos/Configuracion/coordinador.config");
 	*/
 
 
-	/* para correr desde la VM Server */
+	/* para correr desde la VM Server
 
 	infoConfig = config_create("coordinador.config");
-
+*/
 
 	if(config_has_property(infoConfig, "PUERTO_ESCUCHA")){
 		coordinador_Puerto_Escucha = config_get_int_value(infoConfig, "PUERTO_ESCUCHA");
@@ -230,12 +230,12 @@ void configureLoggers(){
 	E = LOG_LEVEL_ERROR;
 
 
-	/* para correr desde ECLIPSE
+	/* para correr desde ECLIPSE*/
 	//vaciarArchivo("../Recursos/Logs/Coordinador.log");
 	logT = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, T);
 	logI = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, I);
 	logE = log_create("../Recursos/Logs/Coordinador.log", "Coordinador", true, E);
-*/
+
 	/* para correr desde CONSOLA
 
 	vaciarArchivo("../../Recursos/Logs/Coordinador.log");
@@ -246,10 +246,12 @@ void configureLoggers(){
 
 	/* para correr desde la VM Server
 	vaciarArchivo("Coordinador.log");
-*/
+
 	logT = log_create("Coordinador.log", "Coordinador", true, T);
 	logI = log_create("Coordinador.log", "Coordinador", true, I);
 	logE = log_create("Coordinador.log", "Coordinador", true, E);
+
+*/
 }
 
 void destroyLoggers(){
@@ -656,8 +658,9 @@ int buscarInstanciaContenedora(char * key, t_instancia ** instancia){
 	bool contieneClave(void* parametro) {
 		t_instancia* inst = (t_instancia*) parametro;
 		encontro = contieneClaveInstancia(inst,key);
+
 		++pos;
-		return encontro > 0;
+		return encontro >0;
 	}
 
 	*instancia = (t_instancia *)list_find(instancias,contieneClave);
@@ -769,7 +772,17 @@ bool key_creada(char * key){
 
 int ejecutar_operacion_set_instancia(char * key, char * value, t_instancia * instancia){
 	int socket = instancia->socketInstancia;
-	if(enviarInt(socket,ENVIO_ENTRADA)<=0){
+	enviarInt(socket,ENVIO_ENTRADA);
+
+	int resultado;
+	int conecto = recibirInt(socket,&resultado);
+	if(conecto<=0 || resultado != ENVIO_ENTRADA){
+		instancia->socketInstancia = -1;
+		log_trace(logE,"error de comunicacion con la instancia %s al enviar la clave %s",instancia->nombre, key);
+		return -1;
+	}
+
+	if(resultado<=0){
 		instancia->socketInstancia = -1;
 		log_trace(logE,"error de comunicacion con la instancia %s al enviar la clave %s",instancia->nombre, key);
 		return -1;
@@ -880,7 +893,9 @@ int ejecutar_operacion_store(int socket){
 
 int ejecutar_operacion_store_instancia(char * key, t_instancia * instancia){
 	int socket = instancia->socketInstancia;
-	if(enviarInt(socket,STORE_ENTRADA)<=0){
+	int resultado;
+	int conecto = recibirInt(socket,&resultado);
+	if(conecto<=0 || resultado != ENVIO_ENTRADA){
 		instancia->socketInstancia = -1;
 		liberar_clave(key);
 		log_trace(logE,"error al ejecutar STORE con instancia %s de la clave %s",instancia->nombre, key);
