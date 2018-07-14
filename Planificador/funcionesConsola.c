@@ -128,6 +128,7 @@ void block(char* key_value, int ESI_ID){
 
 			if(esi_ejecutando->id == ESI_ID){
 				queue_push(key->colaBloqueados, esi_ejecutando);
+				log_debug(logPlan, "esi %d enviado a la cola de bloqueados de la key %s", ESI_ID, key_value);
 			}
 
 		}else{
@@ -171,7 +172,6 @@ void unblock(char* key_value){
 	if(key != NULL){
 		if(queue_size(key->colaBloqueados) > 0){
 			t_proceso_esi* esi_a_desbloquear = queue_pop(key->colaBloqueados);
-			cambiarEstimado(esi_a_desbloquear);
 			moverAListos(esi_a_desbloquear);
 			log_debug(logPlan, "esi %d desbloqueado", esi_a_desbloquear->id);
 		} else{
@@ -511,7 +511,7 @@ void matarProceso(int ESI_ID){
 
 	t_proceso_esi* proceso_a_matar;
 	proceso_a_matar = esi_ejecutando;
-	bool coincide;
+	bool coincide = false;
 
 	if(proceso_a_matar != NULL){
 		coincide = coincideID(proceso_a_matar);
@@ -783,6 +783,7 @@ void imprimirIDs(t_list* procesosEnDeadlock){
 	free(esis);
 
 }
+
 
 
 

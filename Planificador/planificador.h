@@ -27,7 +27,9 @@ typedef struct {
 	int fd;
 	t_list* clavesTomadas;
 	float rafagaEstimada;
+	float rafagaEstimadaSiguiente;
 	int rafagaActual;
+	int rafagaActualPrevia;
 	int tiempoEspera;
 	int ordenLlegada;
 } t_proceso_esi;
@@ -81,10 +83,11 @@ t_queue* colaListos;
 t_queue* colaTerminados;
 
 //esi en ejecucion
-unsigned int ordenDeLlegada;
+int ordenDeLlegada;
 t_proceso_esi* esi_ejecutando;
 t_proceso_esi* esiBloqueoSistema;
 char* keySolicitada;
+bool desalojado;
 
 //auxiliar para funcion de deadlock
 bool encontroDeadlock;

@@ -6,7 +6,7 @@ void* escucharCoordinador(void* args){
 		char* keyBuscada;
 		t_clave* claveObtenida = NULL;
 		recibirInt(socketCoordinador,&mensaje);
-		log_trace(logPlan, "recibi mensaje del coordinador, recibi un %d", mensaje);
+		//		log_trace(logPlan, "recibi mensaje del coordinador, recibi un %d", mensaje);
 
 		switch(mensaje){
 		case GET_KEY:
@@ -117,12 +117,14 @@ void* planificar(void * args){
 
 			actualizarColaListos();
 			ordenarListos(); //sin esta funcion deberia funcionar como FIFO
-			esi_ejecutando = queue_pop(colaListos);
-			esi_ejecutando->rafagaActual=0;
+			esi_ejecutando = queue_pop(colaListos); //agarra al primero de la lista
+//			esi_ejecutando->rafagaActualPrevia = esi_ejecutando->rafagaActual;
+				esi_ejecutando->rafagaActual=0;
+			//			esi_ejecutando->tiempoEspera=0;
+			//			esi_ejecutando->rafagaEstimada = esi_ejecutando->rafagaEstimadaSiguiente;
 			log_info(logPlan, "esi %d enviado a ejecutar", esi_ejecutando->id);
 
 			while(replanificar) {
-
 
 				enviarAEjecutar(esi_ejecutando);
 				replanificar = recibirMensajeEsi(esi_ejecutando->fd);
@@ -149,7 +151,10 @@ void mostrarColaListos(){
 	log_warning(logPlan, "cola de listos de arriba a abajo");
 	for(int i=0; i<queue_size(colaListos); i++){
 		t_proceso_esi* esi = list_get(colaListos->elements, i);
-		log_debug(logPlan, "ESI %d con rafagaEstimada %f", esi->id, esi->rafagaEstimada);
+		log_trace(logPlan, "esi %d con estimado n+1: %f", esi->id, esi->rafagaEstimadaSiguiente);
+		log_trace(logPlan, "rafaga estimada n: %f", esi->rafagaEstimada);
+		log_trace(logPlan, "tiempo espera: %d", esi->tiempoEspera);
+		log_trace(logPlan, "rafaga actual: %d", esi->rafagaActual);
 	}
 }
 
@@ -167,10 +172,10 @@ void swap(int x, int y, t_list* unaLista)
 bool mejorEstimado(t_proceso_esi* esiA, t_proceso_esi* esiB){
 	switch(planificador_Algoritmo){
 	case HRRN:;
-	return (esiA->rafagaEstimada > esiB->rafagaEstimada) || ((esiA->rafagaEstimada == esiB->rafagaEstimada) && (esiA->ordenLlegada < esiB->ordenLlegada));
+	return (esiA->rafagaEstimadaSiguiente > esiB->rafagaEstimadaSiguiente) || ((esiA->rafagaEstimadaSiguiente == esiB->rafagaEstimadaSiguiente) && (esiA->ordenLlegada < esiB->ordenLlegada));
 	break;
 	default:;
-	return (esiA->rafagaEstimada < esiB->rafagaEstimada) || ((esiA->rafagaEstimada == esiB->rafagaEstimada) && (esiA->ordenLlegada < esiB->ordenLlegada));
+	return (esiA->rafagaEstimadaSiguiente < esiB->rafagaEstimadaSiguiente) || ((esiA->rafagaEstimadaSiguiente == esiB->rafagaEstimadaSiguiente) && (esiA->ordenLlegada < esiB->ordenLlegada));
 	break;
 	}
 }
@@ -220,7 +225,6 @@ void quick(t_list* unaLista, int start, int end){
 
 void actualizarColaListos(){
 	if(planificador_Algoritmo == HRRN){
-		list_iterate(colaListos->elements, agregarEspera);
 		list_iterate(colaListos->elements, cambiarEstimado);
 	}
 }
@@ -235,13 +239,13 @@ void cambiarEstimado(void* esi){
 	t_proceso_esi* unEsi = (t_proceso_esi*) esi;
 	switch(planificador_Algoritmo){
 	case SJF_SIN_DESALOJO:
-		unEsi -> rafagaEstimada = promedioExponencial(unEsi);
+		unEsi -> rafagaEstimadaSiguiente = promedioExponencial(unEsi);
 		break;
 	case SJF_CON_DESALOJO:
-		unEsi -> rafagaEstimada = promedioExponencial(unEsi);
+		unEsi -> rafagaEstimadaSiguiente = promedioExponencial(unEsi);
 		break;
 	case HRRN:
-		unEsi -> rafagaEstimada = estimacionHRRN(unEsi);
+		unEsi -> rafagaEstimadaSiguiente = estimacionHRRN(unEsi);
 		break;
 	}
 }
@@ -250,12 +254,16 @@ void cambiarEstimado(void* esi){
 float promedioExponencial(t_proceso_esi* unEsi){
 	float actual = unEsi->rafagaActual * alfa;
 	float estimado = unEsi->rafagaEstimada * (1.0 - alfa);
+	//	log_info(logPlan, "promedio exponencial del esi %d", unEsi->id);
+	//	log_info(logPlan, "(%d * %f) + (%f * (1.0 - %f) = %f", unEsi->rafagaActual, alfa, unEsi->rafagaEstimada, alfa, (actual + estimado));
 	return actual + estimado;
 }
 
 float estimacionHRRN(t_proceso_esi* unEsi){
 	float promedio = promedioExponencial(unEsi);
-	return 1.0 + (unEsi->tiempoEspera / promedio);
+	float estimacion = 1.0 + (unEsi->tiempoEspera / promedio);
+	//	log_info(logPlan, "estimacion HRRN: 1.0 + (%d / %f) = %f", unEsi->tiempoEspera, promedio, estimacion);
+	return estimacion;
 }
 
 t_proceso_esi* recibirNuevoESI(int idESI, int fd){
@@ -263,15 +271,22 @@ t_proceso_esi* recibirNuevoESI(int idESI, int fd){
 	nuevoProcesoESI->id = idESI;
 	nuevoProcesoESI->fd = fd;
 	nuevoProcesoESI->clavesTomadas = list_create();
+	nuevoProcesoESI->ordenLlegada = ordenDeLlegada++;
 	nuevoProcesoESI -> rafagaActual = 0;
 	nuevoProcesoESI ->tiempoEspera = 0;
+	nuevoProcesoESI ->rafagaActualPrevia = 0;
 	nuevoProcesoESI ->rafagaEstimada = estimacion_inicial;
+	nuevoProcesoESI ->rafagaEstimadaSiguiente = estimacion_inicial;
 	return nuevoProcesoESI;
 }
 
 void moverAListos(t_proceso_esi* procesoEsi){
-	procesoEsi->tiempoEspera=0;
+
+	procesoEsi->rafagaEstimada = procesoEsi->rafagaEstimadaSiguiente;
 	procesoEsi->ordenLlegada = ordenDeLlegada++;
+	procesoEsi->tiempoEspera=0;
+
+	cambiarEstimado(procesoEsi);
 	queue_push(colaListos,procesoEsi);
 	log_trace(logPlan, "ESI %d agregado a la cola de listos!", procesoEsi->id);
 	sem_post(&productorConsumidor);
@@ -295,9 +310,9 @@ bool recibirMensajeEsi(int socketCliente){
 		return iterar;
 	}
 
-	log_trace(logPlan, "recibi del esi en ejecucion el mensaje %d", mensaje);
 	esi_ejecutando->rafagaActual++;
-	actualizarColaListos();
+	list_iterate(colaListos->elements, agregarEspera);
+	log_trace(logPlan, "mensaje %d del ESI", mensaje);
 	switch(mensaje){
 
 	/*
@@ -318,11 +333,24 @@ bool recibirMensajeEsi(int socketCliente){
 			t_proceso_esi* ESIMenorRafaga = queue_pop(colaListos);
 			sem_wait(&productorConsumidor);
 
-			if(ESIMenorRafaga->rafagaEstimada < (esi_ejecutando->rafagaEstimada - esi_ejecutando->rafagaActual)){
+			if(esi_ejecutando->rafagaActualPrevia != 0){
+				esi_ejecutando->rafagaActual += esi_ejecutando->rafagaActualPrevia;
+				esi_ejecutando->rafagaActualPrevia=0;
+			}
+
+
+			if(ESIMenorRafaga->rafagaEstimadaSiguiente < (esi_ejecutando->rafagaEstimadaSiguiente - esi_ejecutando->rafagaActual)){
 				log_warning(logPlan,"el ESI %d tiene menor rafaga que el esi %d, que esta en ejecucion", ESIMenorRafaga->id, esi_ejecutando->id);
 				log_warning(logPlan,"intercambiando esis");
-				cambiarEstimado(esi_ejecutando);
-				moverAListos(esi_ejecutando);
+
+				esi_ejecutando->ordenLlegada = ordenDeLlegada++;
+				esi_ejecutando->tiempoEspera=0;
+				esi_ejecutando->rafagaActualPrevia = esi_ejecutando->rafagaActual;
+				//				esi_ejecutando->rafagaEstimada = esi_ejecutando->rafagaEstimadaSiguiente;
+				queue_push(colaListos,esi_ejecutando);
+				log_trace(logPlan, "ESI %d agregado a la cola de listos!", esi_ejecutando->id);
+				sem_post(&productorConsumidor);
+
 				esi_ejecutando = ESIMenorRafaga;
 				esi_ejecutando->rafagaActual=0;
 			} else{
@@ -363,6 +391,7 @@ bool recibirMensajeEsi(int socketCliente){
 
 void moverABloqueados(){
 	t_proceso_esi* esi = esi_ejecutando;
+	//	esi->tiempoEspera=0;
 	block(keySolicitada, esi->id);
 	esi_ejecutando = NULL;
 }
@@ -450,11 +479,15 @@ void* esperarConexionesClientes(void* esperarConexion){
 			log_debug(logPlan, "ESI creado!");
 
 			if(pausarPlanificacion || queue_is_empty(colaListos)){
-				moverAListos(nuevoESI);
+				queue_push(colaListos,nuevoESI);
+				log_trace(logPlan, "ESI %d agregado a la cola de listos!", nuevoESI->id);
+				sem_post(&productorConsumidor);
 			}else{
 				conexionEsi=true;
 				pthread_mutex_lock(&nuevoEsiSem);
-				moverAListos(nuevoESI);
+				queue_push(colaListos,nuevoESI);
+				log_trace(logPlan, "ESI %d agregado a la cola de listos!", nuevoESI->id);
+				sem_post(&productorConsumidor);
 				conexionEsi=false;
 				pthread_mutex_unlock(&esperarNuevoEsiSem);
 			}

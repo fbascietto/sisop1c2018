@@ -499,11 +499,20 @@ void configureLoggers(char* instName){
 	string_append(&logPath,"../Recursos/Logs/");*/
 
 	/* para correr desde CONSOLA
+<<<<<<< Updated upstream
+=======
+	string_append(&logPath,"../../Recursos/Logs/");
+ */
+>>>>>>> Stashed changes
 
 	string_append(&logPath,"../../Recursos/Logs/");
 */
 	/* para correr en la VM Server
+<<<<<<< Updated upstream
  */
+=======
+	 */
+>>>>>>> Stashed changes
 	string_append(&logPath,"");
 
 
@@ -659,6 +668,11 @@ void cargar_configuracion(){
 
 	/* SI SE CORRE EN LA VM SERVER */
 
+<<<<<<< Updated upstream
+=======
+	/* SI SE CORRE EN LA VM SERVER
+	 */
+>>>>>>> Stashed changes
 	infoConfig = config_create("instancia.config");
 
 	if(config_has_property(infoConfig, "IP_COORDINADOR")){
